@@ -1,31 +1,23 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate, useLocation, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { useNavigate, Link, useSearchParams } from 'react-router-dom';
-import { GraduationCap, Lock, Mail, ArrowRight, ShieldCheck, UserCheck, Eye, EyeOff, Sparkles } from 'lucide-react';
+import { GraduationCap, UserCheck, ShieldCheck, Mail, Lock, ArrowRight, Eye, EyeOff, Sparkles } from 'lucide-react';
 import { Alert } from '../components/Alert';
 
 export const Login = () => {
-  const { login } = useAuth();
-  const navigate = useNavigate();
-  const [searchParams] = useSearchParams();
-  const requestedRole = searchParams.get('role')?.toUpperCase();
-
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    // If role parameter is present, set sensible default demo email
-    if (requestedRole === 'TEACHER') {
-      setEmail('teacher.sarah@edupulse.local');
-    } else if (requestedRole === 'ADMIN') {
-      setEmail('admin@edupulse.local');
-    } else if (requestedRole === 'STUDENT') {
-      setEmail('student1@edupulse.local');
-    }
-  }, [requestedRole]);
+  const { login } = useAuth();
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  // Read role context from query params: /login?role=STUDENT | TEACHER | ADMIN
+  const searchParams = new URLSearchParams(location.search);
+  const requestedRole = (searchParams.get('role') || 'STUDENT').toUpperCase();
 
   const redirectByRole = (role) => {
     switch (role) {
@@ -77,9 +69,9 @@ export const Login = () => {
     if (requestedRole === 'TEACHER') {
       return {
         badge: 'Faculty Portal',
-        badgeColor: 'bg-teal-50 dark:bg-teal-950/60 text-academic-teal border-teal-200 dark:border-teal-800',
+        badgeColor: 'bg-teal-50 dark:bg-teal-950/50 text-teal-700 dark:text-teal-300 border-teal-200 dark:border-teal-800 shadow-xs',
         icon: UserCheck,
-        iconBg: 'bg-academic-teal text-white',
+        iconBg: 'bg-gradient-to-br from-teal-500 to-emerald-600 text-white',
         title: 'Faculty & Instructor Sign In',
         subtitle: 'Class curriculum, analytics, and early warning interventions'
       };
@@ -87,18 +79,18 @@ export const Login = () => {
     if (requestedRole === 'ADMIN') {
       return {
         badge: 'Administration',
-        badgeColor: 'bg-rose-50 dark:bg-rose-950/60 text-rose-700 border-rose-200 dark:border-rose-800',
+        badgeColor: 'bg-rose-50 dark:bg-rose-950/50 text-rose-700 dark:text-rose-300 border-rose-200 dark:border-rose-800 shadow-xs',
         icon: ShieldCheck,
-        iconBg: 'bg-rose-600 text-white',
+        iconBg: 'bg-gradient-to-br from-rose-500 to-red-600 text-white',
         title: 'Institutional Administrator Sign In',
         subtitle: 'Campus cohorts, global settings, and audit logs'
       };
     }
     return {
       badge: 'Learner Portal',
-      badgeColor: 'bg-blue-50 dark:bg-blue-950/60 text-academic-blue border-blue-200 dark:border-blue-800',
+      badgeColor: 'bg-indigo-50 dark:bg-indigo-950/50 text-indigo-700 dark:text-indigo-300 border-indigo-200 dark:border-indigo-800 shadow-xs',
       icon: GraduationCap,
-      iconBg: 'bg-academic-blue text-white',
+      iconBg: 'bg-gradient-to-br from-indigo-500 to-violet-600 text-white',
       title: 'Sign in to EduPulse',
       subtitle: 'Adaptive learning paths, BKT mastery, and AI tutor'
     };
@@ -108,8 +100,11 @@ export const Login = () => {
   const PortalIcon = portal.icon;
 
   return (
-    <div className="min-h-[calc(100vh-4rem)] flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 bg-slate-50 dark:bg-academic-darkBg transition-colors">
-      <div className="max-w-md w-full space-y-6">
+    <div className="min-h-[calc(100vh-4rem)] flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 bg-slate-50 dark:bg-[#080B11] transition-colors relative overflow-hidden">
+      {/* Ambient background glow */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-indigo-500/10 dark:bg-indigo-500/15 rounded-full blur-3xl pointer-events-none"></div>
+
+      <div className="max-w-md w-full space-y-6 relative z-10">
         <div className="text-center space-y-2">
           <div className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold border mb-1 transition-all ${portal.badgeColor}`}>
             <PortalIcon className="w-3.5 h-3.5" />
@@ -126,7 +121,7 @@ export const Login = () => {
 
         {error && <Alert type="error" message={error} />}
 
-        <div className="bg-white dark:bg-academic-darkCard p-8 rounded-3xl border border-slate-200 dark:border-academic-darkBorder shadow-sm space-y-6">
+        <div className="bg-white/95 dark:bg-[#0F1626]/95 backdrop-blur-xl p-8 rounded-3xl border border-slate-200/90 dark:border-slate-800/90 shadow-2xl space-y-6">
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
               <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-2">
@@ -142,7 +137,7 @@ export const Login = () => {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="name@edupulse.local"
-                  className="w-full pl-10 pr-4 py-2.5 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl text-sm text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-academic-blue focus:bg-white dark:focus:bg-slate-900 transition-all"
+                  className="w-full pl-10 pr-4 py-2.5 bg-slate-50/80 dark:bg-[#080B11]/80 border border-slate-200 dark:border-slate-700 rounded-xl text-sm text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 focus:bg-white dark:focus:bg-[#080B11] transition-all"
                 />
               </div>
             </div>
@@ -161,12 +156,12 @@ export const Login = () => {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="••••••••"
-                  className="w-full pl-10 pr-10 py-2.5 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl text-sm text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-academic-blue focus:bg-white dark:focus:bg-slate-900 transition-all"
+                  className="w-full pl-10 pr-10 py-2.5 bg-slate-50/80 dark:bg-[#080B11]/80 border border-slate-200 dark:border-slate-700 rounded-xl text-sm text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 focus:bg-white dark:focus:bg-[#080B11] transition-all"
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute inset-y-0 right-0 pr-3.5 flex items-center text-slate-400 hover:text-slate-600 dark:hover:text-slate-200"
+                  className="absolute inset-y-0 right-0 pr-3.5 flex items-center text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 cursor-pointer"
                   tabIndex={-1}
                 >
                   {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
@@ -177,7 +172,7 @@ export const Login = () => {
             <button
               type="submit"
               disabled={loading}
-              className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-xl text-sm font-semibold text-white bg-academic-blue hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-academic-blue shadow-sm disabled:opacity-50 transition-all cursor-pointer"
+              className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-xl text-sm font-bold text-white bg-gradient-to-r from-indigo-600 via-indigo-500 to-violet-600 hover:from-indigo-500 hover:to-violet-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 shadow-lg shadow-indigo-500/25 hover:shadow-indigo-500/40 hover:-translate-y-0.5 active:translate-y-0 disabled:opacity-50 transition-all cursor-pointer"
             >
               {loading ? 'Authenticating...' : 'Sign In'}
               <ArrowRight className="w-4 h-4" />
@@ -186,38 +181,38 @@ export const Login = () => {
 
           {/* Quick Demo Accounts */}
           <div className="relative flex py-1 items-center">
-            <div className="flex-grow border-t border-slate-200 dark:border-slate-700"></div>
-            <span className="flex-shrink mx-4 text-xs font-semibold text-slate-400 dark:text-slate-500 uppercase tracking-wider">
+            <div className="flex-grow border-t border-slate-200/80 dark:border-slate-800"></div>
+            <span className="flex-shrink mx-4 text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider">
               1-Click Demo Accounts
             </span>
-            <div className="flex-grow border-t border-slate-200 dark:border-slate-700"></div>
+            <div className="flex-grow border-t border-slate-200/80 dark:border-slate-800"></div>
           </div>
 
           <div className="grid grid-cols-3 gap-2">
             <button
               type="button"
               onClick={() => quickLogin('student1@edupulse.local', 'Password@123')}
-              className="p-2.5 text-xs font-semibold rounded-xl border border-blue-200 dark:border-blue-900 bg-blue-50/60 dark:bg-blue-950/40 text-blue-800 dark:text-blue-300 hover:bg-blue-100 dark:hover:bg-blue-900/60 transition-colors flex flex-col items-center gap-1 cursor-pointer"
+              className="p-2.5 text-xs font-bold rounded-xl border border-indigo-200 dark:border-indigo-900 bg-indigo-50/60 dark:bg-indigo-950/40 text-indigo-800 dark:text-indigo-300 hover:bg-indigo-100 dark:hover:bg-indigo-900/60 hover:-translate-y-0.5 transition-all flex flex-col items-center gap-1.5 cursor-pointer shadow-xs"
             >
-              <GraduationCap className="w-4 h-4 text-academic-blue" />
+              <GraduationCap className="w-4 h-4 text-indigo-500" />
               <span>Student</span>
             </button>
 
             <button
               type="button"
               onClick={() => quickLogin('teacher.sarah@edupulse.local', 'Password@123')}
-              className="p-2.5 text-xs font-semibold rounded-xl border border-teal-200 dark:border-teal-900 bg-teal-50/60 dark:bg-teal-950/40 text-teal-800 dark:text-teal-300 hover:bg-teal-100 dark:hover:bg-teal-900/60 transition-colors flex flex-col items-center gap-1 cursor-pointer"
+              className="p-2.5 text-xs font-bold rounded-xl border border-teal-200 dark:border-teal-900 bg-teal-50/60 dark:bg-teal-950/40 text-teal-800 dark:text-teal-300 hover:bg-teal-100 dark:hover:bg-teal-900/60 hover:-translate-y-0.5 transition-all flex flex-col items-center gap-1.5 cursor-pointer shadow-xs"
             >
-              <UserCheck className="w-4 h-4 text-academic-teal" />
+              <UserCheck className="w-4 h-4 text-teal-500" />
               <span>Teacher</span>
             </button>
 
             <button
               type="button"
               onClick={() => quickLogin('admin@edupulse.local', 'Password@123')}
-              className="p-2.5 text-xs font-semibold rounded-xl border border-rose-200 dark:border-rose-900 bg-rose-50/60 dark:bg-rose-950/40 text-rose-800 dark:text-rose-300 hover:bg-rose-100 dark:hover:bg-rose-900/60 transition-colors flex flex-col items-center gap-1 cursor-pointer"
+              className="p-2.5 text-xs font-bold rounded-xl border border-rose-200 dark:border-rose-900 bg-rose-50/60 dark:bg-rose-950/40 text-rose-800 dark:text-rose-300 hover:bg-rose-100 dark:hover:bg-rose-900/60 hover:-translate-y-0.5 transition-all flex flex-col items-center gap-1.5 cursor-pointer shadow-xs"
             >
-              <ShieldCheck className="w-4 h-4 text-rose-600" />
+              <ShieldCheck className="w-4 h-4 text-rose-500" />
               <span>Admin</span>
             </button>
           </div>
@@ -226,7 +221,7 @@ export const Login = () => {
         <div className="text-center space-y-1">
           <p className="text-sm text-slate-600 dark:text-slate-400">
             New student?{' '}
-            <Link to="/register" className="font-semibold text-academic-blue hover:underline">
+            <Link to="/register" className="font-bold text-indigo-600 dark:text-indigo-400 hover:underline">
               Create an account
             </Link>
           </p>

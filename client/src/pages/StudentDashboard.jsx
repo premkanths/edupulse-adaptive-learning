@@ -59,12 +59,15 @@ export const StudentDashboard = () => {
   return (
     <div className="space-y-8">
       {/* Welcome Banner */}
-      <div className="bg-academic-navy text-white rounded-3xl p-8 shadow-sm flex flex-col md:flex-row items-start md:items-center justify-between gap-6 border border-slate-800">
-        <div className="space-y-2">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-academic-blue/30 text-blue-300 border border-blue-400/30">
-            <Zap className="w-3.5 h-3.5 text-amber-300" /> Bayesian Knowledge Tracing Active
+      <div className="bg-gradient-to-br from-[#0F1626] via-[#131B2E] to-[#090D16] text-white rounded-3xl p-8 sm:p-10 shadow-xl flex flex-col md:flex-row items-start md:items-center justify-between gap-6 border border-indigo-500/25 relative overflow-hidden">
+        {/* Ambient top right glow */}
+        <div className="absolute top-0 right-0 -mr-16 -mt-16 w-80 h-80 bg-gradient-to-br from-indigo-500/20 via-purple-500/15 to-transparent rounded-full blur-2xl pointer-events-none"></div>
+
+        <div className="space-y-2.5 relative z-10">
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 shadow-xs">
+            <Zap className="w-3.5 h-3.5 text-amber-300 animate-pulse" /> Bayesian Knowledge Tracing Active
           </div>
-          <h1 className="text-3xl font-black tracking-tight">
+          <h1 className="text-3xl sm:text-4xl font-black tracking-tight bg-gradient-to-r from-white via-indigo-100 to-sky-200 bg-clip-text text-transparent">
             Welcome back, {data?.studentName}!
           </h1>
           <p className="text-slate-300 text-sm max-w-xl leading-relaxed">
@@ -72,7 +75,7 @@ export const StudentDashboard = () => {
           </p>
         </div>
 
-        <div className="flex flex-wrap gap-2.5">
+        <div className="flex flex-wrap gap-3 relative z-10">
           <Link to="/student/assistant">
             <Button variant="teal" size="sm" icon={Bot}>
               AI Study Assistant
@@ -274,9 +277,9 @@ export const StudentDashboard = () => {
           </Card>
 
           {/* Socratic AI Study Assistant Promo */}
-          <Card className="bg-gradient-to-br from-blue-50/50 to-teal-50/50 dark:from-blue-950/20 dark:to-teal-950/20 border-academic-blue/30">
+          <Card className="bg-gradient-to-br from-indigo-500/10 via-purple-500/5 to-sky-500/10 dark:from-indigo-950/30 dark:via-purple-950/20 dark:to-transparent border-indigo-500/30">
             <div className="space-y-3">
-              <div className="w-9 h-9 rounded-xl bg-academic-blue text-white flex items-center justify-center">
+              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500 to-violet-600 text-white flex items-center justify-center shadow-md shadow-indigo-500/25">
                 <Bot className="w-5 h-5" />
               </div>
               <div>

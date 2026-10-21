@@ -71,7 +71,7 @@ export const Sidebar = () => {
   const links = getLinks();
 
   return (
-    <aside className="w-64 bg-white dark:bg-academic-darkCard border-r border-slate-200 dark:border-academic-darkBorder min-h-[calc(100vh-4rem)] p-4 hidden md:block transition-colors">
+    <aside className="w-64 bg-white/70 dark:bg-[#080B11]/80 backdrop-blur-xl border-r border-slate-200/80 dark:border-slate-800/70 min-h-[calc(100vh-4rem)] p-4 hidden md:block transition-colors">
       <div className="space-y-1">
         {links.map((link) => {
           const Icon = link.icon;
@@ -82,8 +82,8 @@ export const Sidebar = () => {
               className={({ isActive }) =>
                 `flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold transition-all ${
                   isActive
-                    ? 'bg-blue-50 dark:bg-blue-950/60 text-academic-blue font-bold shadow-sm'
-                    : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 hover:bg-slate-50 dark:hover:bg-slate-800'
+                    ? 'bg-gradient-to-r from-indigo-500/15 via-violet-500/10 to-transparent text-indigo-600 dark:text-indigo-400 font-bold border-l-2 border-indigo-600 dark:border-indigo-400 shadow-xs'
+                    : 'text-slate-600 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-300 hover:bg-slate-100/70 dark:hover:bg-slate-850/60'
                 }`
               }
             >
@@ -94,11 +94,13 @@ export const Sidebar = () => {
         })}
       </div>
 
-      <div className="mt-8 p-4 bg-slate-50 dark:bg-slate-900/60 rounded-2xl border border-slate-200 dark:border-slate-800 transition-colors">
+      <div className="mt-8 p-4 bg-gradient-to-br from-indigo-500/5 via-violet-500/5 to-transparent dark:from-indigo-950/30 dark:via-purple-950/20 dark:to-transparent rounded-2xl border border-indigo-200/50 dark:border-indigo-800/40 transition-colors">
         <div className="flex items-center gap-2 mb-1.5">
-          <GraduationCap className="w-4 h-4 text-academic-blue" />
-          <span className="text-[11px] font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider">
-            EduPulse v2.0
+          <div className="w-6 h-6 rounded-lg bg-gradient-to-br from-indigo-500 to-violet-600 flex items-center justify-center text-white shadow-xs">
+            <GraduationCap className="w-3.5 h-3.5" />
+          </div>
+          <span className="text-[11px] font-extrabold bg-gradient-to-r from-indigo-600 to-violet-600 dark:from-indigo-300 dark:to-violet-300 bg-clip-text text-transparent uppercase tracking-wider">
+            EduPulse Pro
           </span>
         </div>
         <p className="text-[11px] text-slate-500 dark:text-slate-400 leading-relaxed">

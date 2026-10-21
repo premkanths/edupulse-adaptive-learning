@@ -49,12 +49,15 @@ export const TeacherDashboard = () => {
   return (
     <div className="space-y-8">
       {/* Welcome Header */}
-      <div className="bg-academic-navy text-white rounded-3xl p-8 shadow-sm flex flex-col md:flex-row items-start md:items-center justify-between gap-6 border border-slate-800">
-        <div className="space-y-2">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-academic-teal/30 text-teal-300 border border-teal-400/30">
+      <div className="bg-gradient-to-br from-[#0B1522] via-[#0F1E2E] to-[#080E16] text-white rounded-3xl p-8 sm:p-10 shadow-xl flex flex-col md:flex-row items-start md:items-center justify-between gap-6 border border-teal-500/25 relative overflow-hidden">
+        {/* Ambient top right glow */}
+        <div className="absolute top-0 right-0 -mr-16 -mt-16 w-80 h-80 bg-gradient-to-br from-teal-500/20 via-emerald-500/15 to-transparent rounded-full blur-2xl pointer-events-none"></div>
+
+        <div className="space-y-2.5 relative z-10">
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-teal-500/20 text-teal-300 border border-teal-500/30 shadow-xs">
             Faculty Instructor Portal &amp; Academic Cohorts
           </div>
-          <h1 className="text-3xl font-black tracking-tight">
+          <h1 className="text-3xl sm:text-4xl font-black tracking-tight bg-gradient-to-r from-white via-teal-100 to-sky-200 bg-clip-text text-transparent">
             Welcome, {data?.teacherName}!
           </h1>
           <p className="text-slate-300 text-sm max-w-xl leading-relaxed">
@@ -62,7 +65,7 @@ export const TeacherDashboard = () => {
           </p>
         </div>
 
-        <div className="flex flex-wrap gap-2.5">
+        <div className="flex flex-wrap gap-3 relative z-10">
           <Link to="/teacher/quizzes/ai-generate">
             <Button variant="primary" size="sm" icon={Sparkles}>
               AI Quiz Generator

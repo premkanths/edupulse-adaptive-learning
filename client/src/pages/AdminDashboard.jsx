@@ -61,12 +61,15 @@ export const AdminDashboard = () => {
   return (
     <div className="space-y-8">
       {/* Header */}
-      <div className="bg-academic-navy text-white rounded-3xl p-8 shadow-sm flex flex-col md:flex-row items-start md:items-center justify-between gap-6 border border-slate-800">
-        <div className="space-y-2">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-rose-500/30 text-rose-300 border border-rose-400/30">
-            <ShieldCheck className="w-3.5 h-3.5 text-rose-400" /> Platform Superadmin Portal
+      <div className="bg-gradient-to-br from-[#1A0B16] via-[#1F1020] to-[#0D0811] text-white rounded-3xl p-8 sm:p-10 shadow-xl flex flex-col md:flex-row items-start md:items-center justify-between gap-6 border border-rose-500/25 relative overflow-hidden">
+        {/* Ambient top right glow */}
+        <div className="absolute top-0 right-0 -mr-16 -mt-16 w-80 h-80 bg-gradient-to-br from-rose-500/20 via-red-500/15 to-transparent rounded-full blur-2xl pointer-events-none"></div>
+
+        <div className="space-y-2.5 relative z-10">
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-rose-500/20 text-rose-300 border border-rose-400/30 shadow-xs">
+            <ShieldCheck className="w-3.5 h-3.5 text-rose-400 animate-pulse" /> Platform Superadmin Portal
           </div>
-          <h1 className="text-3xl font-black tracking-tight">
+          <h1 className="text-3xl sm:text-4xl font-black tracking-tight bg-gradient-to-r from-white via-rose-100 to-sky-200 bg-clip-text text-transparent">
             EduPulse System Administration
           </h1>
           <p className="text-slate-300 text-sm max-w-xl leading-relaxed">
@@ -74,7 +77,7 @@ export const AdminDashboard = () => {
           </p>
         </div>
 
-        <div className="flex flex-wrap gap-2.5">
+        <div className="flex flex-wrap gap-3 relative z-10">
           <Link to="/admin/reports">
             <Button variant="primary" size="sm" icon={FileText}>
               Institutional Reports

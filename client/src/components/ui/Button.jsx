@@ -3,7 +3,7 @@ import { Loader2 } from 'lucide-react';
 
 export const Button = ({
   children,
-  variant = 'primary', // primary, secondary, outline, destructive, ghost
+  variant = 'primary', // primary, secondary, outline, destructive, ghost, teal
   size = 'md', // sm, md, lg
   loading = false,
   disabled = false,
@@ -13,15 +13,15 @@ export const Button = ({
   onClick,
   ...props
 }) => {
-  const baseStyles = 'inline-flex items-center justify-center font-medium rounded-xl transition-all focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed select-none';
+  const baseStyles = 'inline-flex items-center justify-center font-semibold rounded-xl transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed select-none cursor-pointer';
 
   const variantStyles = {
-    primary: 'bg-academic-blue hover:bg-blue-700 text-white shadow-sm focus:ring-academic-blue dark:bg-academic-blue dark:hover:bg-blue-600',
-    secondary: 'bg-slate-100 hover:bg-slate-200 text-slate-800 dark:bg-slate-800 dark:hover:bg-slate-700 dark:text-slate-200 focus:ring-slate-400',
-    outline: 'border border-slate-300 dark:border-slate-700 bg-transparent hover:bg-slate-50 dark:hover:bg-slate-800/60 text-slate-700 dark:text-slate-200 focus:ring-slate-400',
-    destructive: 'bg-rose-600 hover:bg-rose-700 text-white shadow-sm focus:ring-rose-500',
-    ghost: 'bg-transparent hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300 focus:ring-slate-400',
-    teal: 'bg-academic-teal hover:bg-teal-700 text-white shadow-sm focus:ring-academic-teal',
+    primary: 'bg-gradient-to-r from-indigo-600 via-indigo-500 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white shadow-md shadow-indigo-500/25 hover:shadow-lg hover:shadow-indigo-500/40 hover:-translate-y-0.5 active:translate-y-0 active:scale-[0.99] focus:ring-indigo-500',
+    secondary: 'bg-white/90 dark:bg-slate-800/80 hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-100 border border-slate-200/80 dark:border-slate-700/80 shadow-sm hover:shadow hover:-translate-y-0.5 active:translate-y-0 focus:ring-indigo-400',
+    outline: 'border border-indigo-200 dark:border-indigo-800/80 bg-transparent hover:bg-indigo-50/60 dark:hover:bg-indigo-950/40 text-indigo-700 dark:text-indigo-300 focus:ring-indigo-400',
+    destructive: 'bg-gradient-to-r from-rose-600 to-red-600 hover:from-rose-500 hover:to-red-500 text-white shadow-md shadow-rose-500/25 hover:shadow-lg hover:shadow-rose-500/40 hover:-translate-y-0.5 active:translate-y-0 focus:ring-rose-500',
+    ghost: 'bg-transparent hover:bg-slate-100 dark:hover:bg-slate-800/80 text-slate-600 dark:text-slate-300 focus:ring-indigo-400',
+    teal: 'bg-gradient-to-r from-teal-600 via-teal-500 to-emerald-600 hover:from-teal-500 hover:to-emerald-500 text-white shadow-md shadow-teal-500/25 hover:shadow-lg hover:shadow-teal-500/40 hover:-translate-y-0.5 active:translate-y-0 focus:ring-teal-500',
   };
 
   const sizeStyles = {
