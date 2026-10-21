@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { GraduationCap, Users, ShieldCheck, Brain, TrendingUp, Sparkles, ArrowRight, CheckCircle, Award, Zap } from 'lucide-react';
+import { GraduationCap, Users, ShieldCheck, Brain, TrendingUp, Sparkles, ArrowRight, CheckCircle, Bot } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { ThemeToggle } from '../components/ui/ThemeToggle';
 
@@ -74,31 +74,27 @@ export const LandingPage = () => {
         <div className="text-center max-w-3xl mx-auto space-y-5">
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-bold bg-indigo-50 dark:bg-indigo-950/60 text-indigo-700 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-800 shadow-xs">
             <Sparkles className="w-3.5 h-3.5 text-indigo-600 dark:text-indigo-400" />
-            <span>EduPulse 2.0 &bull; Psychometric AI &amp; Adaptive Intelligence Platform</span>
+            <span>EduPulse | Adaptive Learning &amp; Student Analytics</span>
           </div>
 
           <h1 className="text-4xl sm:text-5xl md:text-6xl font-black tracking-tight leading-tight sm:leading-tight md:leading-tight text-gray-900 dark:text-gray-50">
-            Personalized Academic Mastery Grounded in{' '}
+            Personalized Learning.{' '}
             <span className="text-indigo-600 dark:text-indigo-400">
-              Psychometric Science
+              Measurable Progress.
             </span>
           </h1>
 
           <p className="text-base sm:text-lg text-gray-600 dark:text-gray-300 leading-relaxed font-normal">
-            EduPulse combines Bayesian Knowledge Tracing (BKT) with multi-model machine learning and local Socratic AI to deliver dynamic practice paths and timely early-warning intervention.
+            EduPulse is an AI-powered adaptive learning and student performance analytics platform that helps learners understand their strengths and knowledge gaps while enabling instructors to monitor academic progress, identify students who may need support, and make data-informed teaching decisions.
           </p>
 
-          {/* Quick Stats Badges */}
-          <div className="flex flex-wrap items-center justify-center gap-2.5 pt-2">
-            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800 shadow-xs">
-              <Zap className="w-3 h-3 text-emerald-600 dark:text-emerald-400" /> 94.6% ML Risk Accuracy
-            </span>
-            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-indigo-50 dark:bg-indigo-950/60 text-indigo-700 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-800 shadow-xs">
-              <Brain className="w-3 h-3 text-indigo-600 dark:text-indigo-400" /> Bayesian Knowledge Tracing
-            </span>
-            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-purple-50 dark:bg-purple-950/60 text-purple-700 dark:text-purple-300 border border-purple-200 dark:border-purple-800 shadow-xs">
-              <Award className="w-3 h-3 text-purple-600 dark:text-purple-400" /> IEEE 2026 Camera-Ready Suite
-            </span>
+          <div className="pt-2">
+            <button
+              onClick={() => handlePortalSelect(isAuthenticated ? user?.role : 'STUDENT')}
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-bold text-sm bg-indigo-600 hover:bg-indigo-700 text-white shadow-xs hover:-translate-y-0.5 active:translate-y-0 transition-all cursor-pointer"
+            >
+              Go to Dashboard <ArrowRight className="w-4 h-4" />
+            </button>
           </div>
         </div>
 
@@ -119,22 +115,26 @@ export const LandingPage = () => {
                   Student Portal
                 </h2>
                 <p className="text-sm text-gray-600 dark:text-gray-300 mt-2 leading-relaxed">
-                  Diagnose weak knowledge components, practice adaptive prerequisite-aware questions, and study with your personalized AI Socratic assistant.
+                  Your personalized learning space to track academic progress, discover knowledge gaps, practice challenging concepts, and receive AI-powered learning recommendations.
                 </p>
               </div>
 
               <div className="space-y-2.5 pt-3 border-t border-gray-100 dark:border-gray-800">
                 <div className="flex items-center gap-2.5 text-xs font-medium text-gray-700 dark:text-gray-300">
                   <CheckCircle className="w-4 h-4 text-emerald-600 dark:text-emerald-400 flex-shrink-0" />
-                  <span>Real-time BKT Topic Mastery Heatmaps</span>
+                  <span>Personalized Learning Recommendations</span>
                 </div>
                 <div className="flex items-center gap-2.5 text-xs font-medium text-gray-700 dark:text-gray-300">
                   <CheckCircle className="w-4 h-4 text-emerald-600 dark:text-emerald-400 flex-shrink-0" />
-                  <span>Prerequisite-aware question recommendations</span>
+                  <span>Topic-wise Progress Tracking</span>
                 </div>
                 <div className="flex items-center gap-2.5 text-xs font-medium text-gray-700 dark:text-gray-300">
                   <CheckCircle className="w-4 h-4 text-emerald-600 dark:text-emerald-400 flex-shrink-0" />
-                  <span>GitHub, LeetCode &amp; HackerRank portfolio linking</span>
+                  <span>Practice and Knowledge Gap Analysis</span>
+                </div>
+                <div className="flex items-center gap-2.5 text-xs font-medium text-gray-700 dark:text-gray-300">
+                  <CheckCircle className="w-4 h-4 text-emerald-600 dark:text-emerald-400 flex-shrink-0" />
+                  <span>AI Learning Assistance</span>
                 </div>
               </div>
             </div>
@@ -173,22 +173,26 @@ export const LandingPage = () => {
                   Teacher / Faculty Portal
                 </h2>
                 <p className="text-sm text-gray-600 dark:text-gray-300 mt-2 leading-relaxed">
-                  Monitor cohort conceptual mastery matrices, identify at-risk students before examinations, and author adaptive quizzes with AI drafting.
+                  A dedicated space for instructors to monitor student performance, analyze learning progress, identify students who may need additional support, and make informed academic decisions.
                 </p>
               </div>
 
               <div className="space-y-2.5 pt-3 border-t border-gray-100 dark:border-gray-800">
                 <div className="flex items-center gap-2.5 text-xs font-medium text-gray-700 dark:text-gray-300">
                   <CheckCircle className="w-4 h-4 text-teal-600 dark:text-teal-400 flex-shrink-0" />
-                  <span>Ensemble ML At-Risk Early Warning System</span>
+                  <span>Student Performance Analytics</span>
                 </div>
                 <div className="flex items-center gap-2.5 text-xs font-medium text-gray-700 dark:text-gray-300">
                   <CheckCircle className="w-4 h-4 text-teal-600 dark:text-teal-400 flex-shrink-0" />
-                  <span>Bulk CSV marks &amp; attendance import validation</span>
+                  <span>Class and Topic-wise Insights</span>
                 </div>
                 <div className="flex items-center gap-2.5 text-xs font-medium text-gray-700 dark:text-gray-300">
                   <CheckCircle className="w-4 h-4 text-teal-600 dark:text-teal-400 flex-shrink-0" />
-                  <span>AI question authoring with 4-option validation</span>
+                  <span>Early Identification of Learning Difficulties</span>
+                </div>
+                <div className="flex items-center gap-2.5 text-xs font-medium text-gray-700 dark:text-gray-300">
+                  <CheckCircle className="w-4 h-4 text-teal-600 dark:text-teal-400 flex-shrink-0" />
+                  <span>Academic Progress Monitoring</span>
                 </div>
               </div>
             </div>
@@ -214,25 +218,25 @@ export const LandingPage = () => {
               <Brain className="w-5 h-5" /> Bayesian Knowledge Tracing
             </div>
             <p className="text-xs text-gray-600 dark:text-gray-300 leading-relaxed font-normal">
-              Calculates latent learning transitions with Corbett &amp; Anderson priors (P(L0)=0.30, P(T)=0.20, P(G)=0.20, P(S)=0.10).
+              Estimates student topic mastery from quiz responses and updates learning progress to identify concepts that need more practice.
             </p>
           </div>
 
           <div className="p-6 rounded-2xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 shadow-xs space-y-2.5">
             <div className="flex items-center gap-2.5 text-teal-600 dark:text-teal-400 font-bold text-sm">
-              <TrendingUp className="w-5 h-5" /> Multi-Model ML Classification
+              <TrendingUp className="w-5 h-5" /> Multi-Model Machine Learning
             </div>
             <p className="text-xs text-gray-600 dark:text-gray-300 leading-relaxed font-normal">
-              Random Forest &amp; Gradient Boosting classifiers delivering ROC-AUC &gt; 0.98 for student dropout risk prediction.
+              Analyzes academic performance and learning indicators using machine learning models such as Random Forest and Gradient Boosting to support the early identification of students who may need additional help.
             </p>
           </div>
 
           <div className="p-6 rounded-2xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 shadow-xs space-y-2.5">
             <div className="flex items-center gap-2.5 text-purple-600 dark:text-purple-400 font-bold text-sm">
-              <Sparkles className="w-5 h-5" /> Socratic AI Orchestrator
+              <Bot className="w-5 h-5" /> AI-Powered Learning Assistant
             </div>
             <p className="text-xs text-gray-600 dark:text-gray-300 leading-relaxed font-normal">
-              Cascades through Gemini, Groq (Llama-3), local Ollama, and rule-based template engine for resilient zero-cost inference.
+              Combines available AI providers, including Gemini, Groq, and local Ollama when configured, with a rule-based fallback to provide personalized explanations, study guidance, and learning recommendations.
             </p>
           </div>
         </div>
@@ -253,8 +257,13 @@ export const LandingPage = () => {
       </main>
 
       {/* Footer */}
-      <footer className="border-t border-gray-200 dark:border-gray-800 py-6 text-center text-xs text-gray-500 dark:text-gray-400 relative z-10">
-        <p>EduPulse Academic &amp; Research Platform &bull; Built with Spring Boot 3, React 18, MySQL &amp; Scikit-Learn</p>
+      <footer className="border-t border-gray-200 dark:border-gray-800 py-6 text-center text-xs text-gray-500 dark:text-gray-400 relative z-10 space-y-1">
+        <p className="font-semibold text-gray-700 dark:text-gray-300">
+          EduPulse — Adaptive Learning and Student Performance Analytics Platform
+        </p>
+        <p>
+          Technology stack: React, Spring Boot, MySQL, and Python-based Machine Learning.
+        </p>
       </footer>
     </div>
   );
