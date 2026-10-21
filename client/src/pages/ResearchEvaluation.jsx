@@ -152,7 +152,7 @@ export const ResearchEvaluation = () => {
         <div className="flex items-center gap-3">
           <button
             onClick={handleDownloadBenchmarkCsv}
-            className="inline-flex items-center gap-2 px-4 py-2.5 bg-white/95 dark:bg-gray-900 backdrop-blur-xl border border-slate-300 hover:bg-gray-50 dark:hover:bg-slate-800/60 dark:bg-gray-950/ text-gray-700 dark:text-gray-300 rounded-xl text-sm font-semibold shadow-sm transition-all"
+            className="inline-flex items-center gap-2 px-4 py-2.5 bg-white/95 dark:bg-gray-900 backdrop-blur-xl border border-slate-300 hover:bg-gray-50 dark:hover:bg-slate-800/60 dark:bg-slate-800/60 text-gray-700 dark:text-gray-300 rounded-xl text-sm font-semibold shadow-sm transition-all"
           >
             <Download className="w-4 h-4 text-indigo-600 dark:text-indigo-400" />
             Download IEEE Benchmark CSV
@@ -223,7 +223,7 @@ export const ResearchEvaluation = () => {
           {/* Table */}
           <div className="overflow-x-auto border border-gray-200 dark:border-gray-800 rounded-xl">
             <table className="w-full text-left text-sm">
-              <thead className="bg-gray-50 dark:bg-gray-950/ text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase border-b border-gray-200 dark:border-gray-800">
+              <thead className="bg-gray-50 dark:bg-slate-800/60 text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase border-b border-gray-200 dark:border-gray-800">
                 <tr>
                   <th className="px-4 py-3">Classifier Model</th>
                   <th className="px-4 py-3">Accuracy</th>
@@ -385,7 +385,7 @@ export const ResearchEvaluation = () => {
           </ResponsiveContainer>
         </div>
 
-        <p className="text-xs text-gray-600 dark:text-gray-400 bg-gray-50 dark:bg-gray-950/ p-3 rounded-xl border border-gray-200 dark:border-gray-800 leading-relaxed">
+        <p className="text-xs text-gray-600 dark:text-gray-400 bg-gray-50 dark:bg-slate-800/60 p-3 rounded-xl border border-gray-200 dark:border-gray-800 leading-relaxed">
           <strong>Pedagogical Insight:</strong> Because EduPulse sequences practice according to the Bayesian Knowledge Tracing prerequisite DAG (P(L0)=0.30, P(T)=0.20), remediation is triggered immediately when topic mastery is below 60%. This prevents students from stalling on advanced topics, achieving mastery in <strong>48.2% fewer practice steps</strong>.
         </p>
       </div>
@@ -400,7 +400,7 @@ export const ResearchEvaluation = () => {
 
           <div className="overflow-x-auto border border-gray-200 dark:border-gray-800 rounded-xl">
             <table className="w-full text-left text-sm">
-              <thead className="bg-gray-50 dark:bg-gray-950/ text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase border-b border-gray-200 dark:border-gray-800">
+              <thead className="bg-gray-50 dark:bg-slate-800/60 text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase border-b border-gray-200 dark:border-gray-800">
                 <tr>
                   <th className="px-4 py-3">Evaluation Metric</th>
                   <th className="px-4 py-3 text-indigo-700 dark:text-indigo-300">EduPulse BKT</th>
@@ -477,7 +477,7 @@ export const ResearchEvaluation = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
           {surveyChartData.map((item) => (
-            <div key={item.category} className="p-4 rounded-xl border border-gray-200 dark:border-gray-800 bg-gray-50 text-center">
+            <div key={item.category} className="p-4 rounded-xl border border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-slate-800/60 text-center">
               <p className="text-xs font-semibold text-gray-600 dark:text-gray-400">{item.category}</p>
               <div className="flex items-center justify-center gap-1 mt-2 text-indigo-600 dark:text-indigo-400">
                 <Star className="w-5 h-5 fill-indigo-600 text-indigo-600 dark:text-indigo-400" />

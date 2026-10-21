@@ -135,7 +135,7 @@ export const QuizResult = () => {
                   const wasChosen = q.chosenIndex === optIdx;
                   const isRightOption = q.correctIndex === optIdx;
 
-                  let optClass = 'bg-gray-50 dark:bg-gray-950/ border-gray-200 dark:border-gray-800 text-gray-700 dark:text-gray-300';
+                  let optClass = 'bg-gray-50 dark:bg-slate-800/60 border-gray-200 dark:border-gray-800 text-gray-700 dark:text-gray-300';
                   if (isRightOption) {
                     optClass = 'bg-emerald-50 dark:bg-emerald-950/50 border-emerald-300 text-emerald-900 font-semibold';
                   } else if (wasChosen && !isRightOption) {
@@ -144,7 +144,7 @@ export const QuizResult = () => {
 
                   return (
                     <div key={optIdx} className={`p-3 rounded-xl border flex items-center gap-2.5 ${optClass}`}>
-                      <span className="w-5 h-5 rounded-md bg-white/80 border text-[10px] font-bold flex items-center justify-center shrink-0">
+                      <span className="w-5 h-5 rounded-md bg-white/80 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-200 text-[10px] font-bold flex items-center justify-center shrink-0">
                         {String.fromCharCode(65 + optIdx)}
                       </span>
                       <span>{opt}</span>
@@ -154,7 +154,7 @@ export const QuizResult = () => {
               </div>
 
               {/* Pedagogical Explanation */}
-              <div className="bg-gray-50 rounded-2xl p-4 border border-gray-200 text-xs text-gray-600 dark:text-gray-400 space-y-1">
+              <div className="bg-slate-50 dark:bg-slate-800/60 rounded-2xl p-4 border border-slate-200 dark:border-slate-800 text-xs text-slate-700 dark:text-slate-300 space-y-1">
                 <span className="font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider text-[10px] block">
                   Why this answer?
                 </span>

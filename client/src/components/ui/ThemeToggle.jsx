@@ -3,30 +3,30 @@ import { Sun, Moon } from 'lucide-react';
 import { useTheme } from '../../context/ThemeContext';
 
 export const ThemeToggle = ({ className = '' }) => {
-  const { cycleTheme, resolvedTheme } = useTheme();
-  const isDark = resolvedTheme === 'dark';
+  const { toggleTheme, theme } = useTheme();
+  const isDark = theme === 'dark';
 
   return (
     <button
-      onClick={cycleTheme}
+      onClick={toggleTheme}
       type="button"
-      className={`group relative inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border text-xs font-bold transition-all duration-200 cursor-pointer focus:outline-none focus:ring-2 focus:ring-indigo-500/50 active:scale-95 ${
+      className={`group relative inline-flex items-center gap-2 px-3 py-1.5 rounded-xl border text-xs font-semibold transition-all duration-200 cursor-pointer focus:outline-none focus:ring-2 focus:ring-indigo-500/50 select-none ${
         isDark
-          ? 'bg-gray-800 hover:bg-gray-700 text-amber-300 border-gray-700 shadow-sm'
-          : 'bg-white hover:bg-gray-50 text-gray-700 border-gray-200 shadow-xs'
+          ? 'bg-slate-800 hover:bg-slate-700/80 text-slate-100 border-slate-700 shadow-xs'
+          : 'bg-white hover:bg-slate-100 text-slate-800 border-slate-200 shadow-xs'
       } ${className}`}
-      title={`Switch to ${isDark ? 'Light' : 'Dark'} Mode`}
+      title={isDark ? "Dark theme active (click for Light mode)" : "Light theme active (click for Dark mode)"}
       aria-label="Toggle color theme"
     >
       {isDark ? (
         <>
-          <Sun className="w-4 h-4 text-amber-400 group-hover:rotate-45 transition-transform duration-300" />
-          <span className="hidden sm:inline text-gray-200">Light</span>
+          <Moon className="w-4 h-4 text-indigo-400 fill-indigo-400/20" />
+          <span className="text-slate-200 font-medium">Dark</span>
         </>
       ) : (
         <>
-          <Moon className="w-4 h-4 text-indigo-600 group-hover:-rotate-12 transition-transform duration-300" />
-          <span className="hidden sm:inline text-gray-700">Dark</span>
+          <Sun className="w-4 h-4 text-amber-500 fill-amber-500/20" />
+          <span className="text-slate-800 font-medium">Light</span>
         </>
       )}
     </button>

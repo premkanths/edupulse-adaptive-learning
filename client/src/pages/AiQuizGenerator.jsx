@@ -108,7 +108,7 @@ export const AiQuizGenerator = () => {
                 value={subjectId}
                 onChange={(e) => setSubjectId(e.target.value)}
                 required
-                className="w-full py-2.5 px-3.5 bg-gray-50 dark:bg-gray-950/ border border-gray-200 dark:border-gray-800 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                className="w-full py-2.5 px-3.5 bg-gray-50 dark:bg-slate-800/60 border border-gray-200 dark:border-gray-800 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-indigo-500"
               >
                 {subjects.map((s) => (
                   <option key={s.id} value={s.id}>{s.name}</option>
@@ -124,7 +124,7 @@ export const AiQuizGenerator = () => {
                 value={topicId}
                 onChange={(e) => setTopicId(e.target.value)}
                 required
-                className="w-full py-2.5 px-3.5 bg-gray-50 dark:bg-gray-950/ border border-gray-200 dark:border-gray-800 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                className="w-full py-2.5 px-3.5 bg-gray-50 dark:bg-slate-800/60 border border-gray-200 dark:border-gray-800 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-indigo-500"
               >
                 {topics.map((t) => (
                   <option key={t.id} value={t.id}>{t.name}</option>
@@ -141,7 +141,7 @@ export const AiQuizGenerator = () => {
               <select
                 value={questionCount}
                 onChange={(e) => setQuestionCount(e.target.value)}
-                className="w-full py-2.5 px-3.5 bg-gray-50 dark:bg-gray-950/ border border-gray-200 dark:border-gray-800 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                className="w-full py-2.5 px-3.5 bg-gray-50 dark:bg-slate-800/60 border border-gray-200 dark:border-gray-800 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-indigo-500"
               >
                 <option value={3}>3 Questions (Fast Quick Quiz)</option>
                 <option value={5}>5 Questions (Standard Diagnostic)</option>
@@ -157,7 +157,7 @@ export const AiQuizGenerator = () => {
               <select
                 value={difficulty}
                 onChange={(e) => setDifficulty(e.target.value)}
-                className="w-full py-2.5 px-3.5 bg-gray-50 dark:bg-gray-950/ border border-gray-200 dark:border-gray-800 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                className="w-full py-2.5 px-3.5 bg-gray-50 dark:bg-slate-800/60 border border-gray-200 dark:border-gray-800 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-indigo-500"
               >
                 <option value="EASY">Easy (Foundational Definitions)</option>
                 <option value="MEDIUM">Medium (Conceptual Application)</option>

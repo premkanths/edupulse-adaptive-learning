@@ -10,27 +10,28 @@ export default {
       colors: {
         academic: {
           navy: '#0F172A',
-          blue: '#4F46E5', // Option A Indigo Accent
-          indigo: '#4F46E5',
-          violet: '#8B5CF6',
+          blue: '#2563EB',         // Crisp Royal Academic Blue
+          indigo: '#4F46E5',       // Deep Intelligence Indigo
+          violet: '#7C3AED',
           cyan: '#06B6D4',
           teal: '#0D9488',
           emerald: '#10B981',
           amber: '#F59E0B',
           rose: '#F43F5E',
-          lightBg: '#F9FAFB',     // Option A Clean Slate Canvas
-          lightCard: '#FFFFFF',   // Option A Clean White Card
-          lightBorder: '#E5E7EB', // Option A Clean Border
-          lightText: '#111827',
-          lightSecondary: '#4B5563',
-          darkBg: '#030712',      // Option A Midnight Obsidian Canvas
-          darkCard: '#111827',    // Option A Elevated Slate Card
-          darkCardSubtle: '#0B0F19', // Recessed Sub-Card / Inner Well
-          darkBorder: '#1F2937',  // Option A Slate Border
-          darkBorderSubtle: '#111827',
-          darkText: '#F9FAFB',
-          darkSecondary: '#9CA3AF',
-          secondary: '#4B5563',
+          lightBg: '#F8FAFC',       // Clean Porcelain Slate Canvas
+          lightCard: '#FFFFFF',     // Pure White Card Surface
+          lightCardSubtle: '#F1F5F9', // Recessed Well (Slate 100)
+          lightBorder: '#E2E8F0',   // Hairline Border (Slate 200)
+          lightText: '#0F172A',     // Charcoal Heading Text (Slate 900)
+          lightSecondary: '#475569',// Body Text (Slate 600)
+          darkBg: '#0B0F19',        // Deep Midnight Obsidian Canvas
+          darkCard: '#111827',      // Elevated Deep Slate Card
+          darkCardSubtle: '#1E293B',// Recessed Sub-Card / Inner Well (Slate 800)
+          darkBorder: '#1E293B',    // Hairline Dark Border
+          darkBorderSubtle: '#334155', // Highlighted Border (Slate 700)
+          darkText: '#F8FAFC',      // Luminous High-Contrast Text (Slate 50)
+          darkSecondary: '#94A3B8', // Luminous Muted Secondary Text (Slate 400)
+          secondary: '#475569',
         },
         brand: {
           50: '#eef2ff',
@@ -47,11 +48,10 @@ export default {
         }
       },
       boxShadow: {
-        'glow-indigo': '0 0 30px -5px rgba(79, 70, 229, 0.3)',
-        'glow-teal': '0 0 30px -5px rgba(13, 148, 136, 0.3)',
-        'glow-purple': '0 0 30px -5px rgba(139, 92, 246, 0.3)',
-        'luxe': '0 1px 3px 0 rgba(0, 0, 0, 0.05), 0 1px 2px -1px rgba(0, 0, 0, 0.05)',
-        'luxe-dark': '0 4px 20px -2px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(31, 41, 55, 0.6)',
+        'glow-indigo': '0 0 30px -5px rgba(79, 70, 229, 0.25)',
+        'glow-teal': '0 0 30px -5px rgba(13, 148, 136, 0.25)',
+        'luxe': '0 1px 3px 0 rgba(15, 23, 42, 0.05), 0 1px 2px -1px rgba(15, 23, 42, 0.05)',
+        'luxe-dark': '0 4px 20px -2px rgba(0, 0, 0, 0.45), 0 0 0 1px rgba(30, 41, 59, 0.8)',
       }
     },
   },

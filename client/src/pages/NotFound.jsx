@@ -17,7 +17,7 @@ export const NotFound = () => {
         </p>
         <Link
           to="/"
-          className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl text-sm font-bold text-white bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 shadow-md shadow-indigo-500/25 transition-all hover:-translate-y-0.5"
+          className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl text-sm font-bold text-white bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 shadow-md shadow-indigo-500/25 transition-all hover:-translate-y-0.5"
         >
           <ArrowLeft className="w-4 h-4" /> Go to Home
         </Link>

@@ -4,21 +4,32 @@
 
 @layer base {
   :root {
-    --bg-main: #F9FAFB;
+    --bg-main: #F8FAFC;
     --bg-card: #FFFFFF;
-    --border-color: #E5E7EB;
-    --text-primary: #111827;
-    --text-secondary: #4B5563;
+    --bg-card-subtle: #F1F5F9;
+    --border-color: #E2E8F0;
+    --border-subtle: #CBD5E1;
+    --text-primary: #0F172A;
+    --text-secondary: #475569;
+    --text-muted: #64748B;
+    --accent-primary: #2563EB;
     --accent-indigo: #4F46E5;
+    --accent-teal: #0D9488;
+    color-scheme: light;
   }
 
   .dark {
-    --bg-main: #030712;
+    --bg-main: #0B0F19;
     --bg-card: #111827;
-    --border-color: #1F2937;
-    --text-primary: #F9FAFB;
-    --text-secondary: #9CA3AF;
+    --bg-card-subtle: #1E293B;
+    --border-color: #1E293B;
+    --border-subtle: #334155;
+    --text-primary: #F8FAFC;
+    --text-secondary: #94A3B8;
+    --text-muted: #64748B;
+    --accent-primary: #3B82F6;
     --accent-indigo: #6366F1;
+    --accent-teal: #14B8A6;
     color-scheme: dark;
   }
 
@@ -37,26 +48,26 @@
 /* Crisp Section Cards with defined depth */
 .luxe-card {
   position: relative;
-  background-color: #FFFFFF;
-  border: 1px solid #E5E7EB;
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
   border-radius: 1rem;
-  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05);
+  box-shadow: 0 1px 3px 0 rgba(15, 23, 42, 0.05);
   transition: all 0.2s ease;
 }
 
 .luxe-card:hover {
-  border-color: #D1D5DB;
-  box-shadow: 0 4px 12px -2px rgba(0, 0, 0, 0.08);
+  border-color: var(--border-subtle);
+  box-shadow: 0 4px 12px -2px rgba(15, 23, 42, 0.08);
 }
 
 .dark .luxe-card {
-  background-color: #111827;
-  border: 1px solid #1F2937;
-  box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.5);
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.45);
 }
 
 .dark .luxe-card:hover {
-  border-color: #374151;
+  border-color: var(--border-subtle);
   box-shadow: 0 8px 25px -4px rgba(0, 0, 0, 0.6);
 }
 
@@ -71,18 +82,18 @@
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #d1d5db;
+  background: #cbd5e1;
   border-radius: 9999px;
 }
 
 .dark ::-webkit-scrollbar-thumb {
-  background: #374151;
+  background: #334155;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #9ca3af;
+  background: #94a3b8;
 }
 
 .dark ::-webkit-scrollbar-thumb:hover {
-  background: #4b5563;
+  background: #475569;
 }

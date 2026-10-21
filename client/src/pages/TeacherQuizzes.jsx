@@ -115,7 +115,7 @@ export const TeacherQuizzes = () => {
         {quizzes.map((quiz) => (
           <div
             key={quiz.id}
-            className="bg-white/95 dark:bg-gray-900 backdrop-blur-xl rounded-3xl p-6 border border-gray-200 shadow-sm flex flex-col justify-between"
+            className="bg-white/95 dark:bg-gray-900 backdrop-blur-xl rounded-3xl p-6 border border-gray-200 dark:border-gray-800 shadow-sm flex flex-col justify-between"
           >
             <div className="space-y-4">
               <div className="flex items-start justify-between gap-3">
@@ -160,7 +160,7 @@ export const TeacherQuizzes = () => {
 
               <button
                 onClick={() => handleOpenAssign(quiz)}
-                className="flex-1 py-2 px-3 bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white shadow-md shadow-indigo-500/25 rounded-xl text-xs font-semibold transition-colors flex items-center justify-center gap-1.5 cursor-pointer shadow-sm"
+                className="flex-1 py-2 px-3 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white shadow-md shadow-indigo-500/25 rounded-xl text-xs font-semibold transition-colors flex items-center justify-center gap-1.5 cursor-pointer shadow-sm"
               >
                 <Users className="w-3.5 h-3.5" /> Assign to Class
               </button>
@@ -183,7 +183,7 @@ export const TeacherQuizzes = () => {
                   value={selectedClassId}
                   onChange={(e) => setSelectedClassId(e.target.value)}
                   required
-                  className="w-full py-2 px-3 border border-gray-200 dark:border-gray-800 rounded-xl bg-gray-50 dark:bg-gray-950/ focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  className="w-full py-2 px-3 border border-gray-200 dark:border-gray-800 rounded-xl bg-gray-50 dark:bg-slate-800/60 focus:outline-none focus:ring-2 focus:ring-indigo-500"
                 >
                   {classes.map((c) => (
                     <option key={c.id} value={c.id}>{c.name}</option>
@@ -202,7 +202,7 @@ export const TeacherQuizzes = () => {
                 <button
                   type="submit"
                   disabled={saving}
-                  className="px-5 py-2 bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white shadow-md shadow-indigo-500/25 font-semibold rounded-xl transition-colors shadow-sm cursor-pointer"
+                  className="px-5 py-2 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white shadow-md shadow-indigo-500/25 font-semibold rounded-xl transition-colors shadow-sm cursor-pointer"
                 >
                   {saving ? 'Assigning...' : 'Confirm Assignment'}
                 </button>

@@ -245,7 +245,7 @@ export const QuizTaking = () => {
             <button
               onClick={handlePrev}
               disabled={currentIndex === 0}
-              className="py-2.5 px-4 rounded-xl text-sm font-semibold border border-gray-200 dark:border-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-slate-800/60 dark:bg-gray-950/ transition-colors disabled:opacity-40 flex items-center gap-1.5 cursor-pointer"
+              className="py-2.5 px-4 rounded-xl text-sm font-semibold border border-gray-200 dark:border-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-slate-800/60 dark:bg-slate-800/60 transition-colors disabled:opacity-40 flex items-center gap-1.5 cursor-pointer"
             >
               <ArrowLeft className="w-4 h-4" /> Previous
             </button>

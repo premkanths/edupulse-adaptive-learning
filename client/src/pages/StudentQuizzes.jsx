@@ -73,7 +73,7 @@ export const StudentQuizzes = () => {
             >
               <div className="space-y-4">
                 <div className="flex items-start justify-between gap-3">
-                  <div className="p-3 bg-gradient-to-br from-indigo-500 to-violet-600 text-white rounded-2xl shrink-0 shadow-md shadow-indigo-500/20">
+                  <div className="p-3 bg-gradient-to-br from-blue-600 to-indigo-600 text-white rounded-2xl shrink-0 shadow-md shadow-indigo-500/20">
                     <HelpCircle className="w-6 h-6" />
                   </div>
                   <span className="text-xs font-bold px-2.5 py-1 rounded-full bg-emerald-50 dark:bg-emerald-950/50 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800 shadow-xs">
@@ -109,7 +109,7 @@ export const StudentQuizzes = () => {
               <div className="pt-5">
                 <button
                   onClick={() => handleStart(quiz.quizId)}
-                  className="w-full py-3 px-4 rounded-xl text-sm font-bold text-white bg-gradient-to-r from-indigo-600 via-indigo-500 to-violet-600 hover:from-indigo-500 hover:to-violet-500 transition-all flex items-center justify-center gap-2 cursor-pointer shadow-md shadow-indigo-500/25 hover:shadow-indigo-500/40 hover:-translate-y-0.5 active:translate-y-0"
+                  className="w-full py-3 px-4 rounded-xl text-sm font-bold text-white bg-gradient-to-r from-blue-600 via-indigo-600 to-indigo-700 hover:from-blue-500 hover:to-indigo-600 transition-all flex items-center justify-center gap-2 cursor-pointer shadow-md shadow-indigo-500/25 hover:shadow-indigo-500/40 hover:-translate-y-0.5 active:translate-y-0"
                 >
                   Start Quiz Attempt <ArrowRight className="w-4 h-4" />
                 </button>

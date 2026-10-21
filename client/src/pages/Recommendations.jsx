@@ -98,7 +98,7 @@ export const Recommendations = () => {
                   </p>
                 </div>
 
-                <div className="p-3.5 bg-gray-50 dark:bg-gray-950/ rounded-2xl border border-gray-200 dark:border-gray-800 text-xs text-gray-600 dark:text-gray-300">
+                <div className="p-3.5 bg-gray-50 dark:bg-slate-800/60 rounded-2xl border border-gray-200 dark:border-gray-800 text-xs text-gray-600 dark:text-gray-300">
                   <strong className="text-slate-800 dark:text-gray-200 block mb-1">Empirical Evidence:</strong>
                   {rec.supportingEvidence}
                 </div>
@@ -107,7 +107,7 @@ export const Recommendations = () => {
               <div className="pt-5 border-t border-gray-100 dark:border-gray-800 mt-5">
                 <Link
                   to="/student/quizzes"
-                  className="w-full py-2.5 px-4 rounded-xl text-xs font-bold text-white bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 transition-all flex items-center justify-center gap-2 shadow-md shadow-indigo-500/25 hover:shadow-indigo-500/40 cursor-pointer"
+                  className="w-full py-2.5 px-4 rounded-xl text-xs font-bold text-white bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 transition-all flex items-center justify-center gap-2 shadow-xs cursor-pointer"
                 >
                   {cfg.actionText} <ArrowRight className="w-3.5 h-3.5" />
                 </Link>
@@ -139,7 +139,7 @@ export const Recommendations = () => {
               </button>
             </div>
 
-            <div className="space-y-3.5 text-xs text-gray-600 dark:text-gray-300 bg-gray-50 dark:bg-gray-950/ p-4 rounded-2xl border border-gray-200 dark:border-gray-800">
+            <div className="space-y-3.5 text-xs text-gray-600 dark:text-gray-300 bg-gray-50 dark:bg-slate-800/60 p-4 rounded-2xl border border-gray-200 dark:border-gray-800">
               <div>
                 <span className="font-bold text-slate-800 dark:text-gray-200 uppercase tracking-wider text-[10px] block">Topic</span>
                 <p className="text-sm font-bold text-indigo-600 dark:text-indigo-400 mt-0.5">{selectedWhyThis.topic?.name}</p>
@@ -152,7 +152,7 @@ export const Recommendations = () => {
 
               <div>
                 <span className="font-bold text-slate-800 dark:text-gray-200 uppercase tracking-wider text-[10px] block">Supporting Telemetry Evidence</span>
-                <p className="mt-1 font-mono text-[11px] bg-white dark:bg-gray-900 p-2.5 rounded-xl border border-gray-200 dark:border-gray-800 leading-relaxed text-indigo-900 dark:text-indigo-300">
+                <p className="mt-1 font-mono text-[11px] bg-slate-100 dark:bg-slate-800/80 p-2.5 rounded-xl border border-slate-200 dark:border-slate-700 leading-relaxed text-slate-800 dark:text-slate-200">
                   {selectedWhyThis.supportingEvidence}
                 </p>
               </div>
@@ -168,7 +168,7 @@ export const Recommendations = () => {
             <div className="flex justify-end pt-2">
               <button
                 onClick={() => setSelectedWhyThis(null)}
-                className="px-5 py-2 text-xs font-bold text-white bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 rounded-xl transition-all shadow-md shadow-indigo-500/25 cursor-pointer"
+                className="px-5 py-2 text-xs font-bold text-white bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 rounded-xl transition-all shadow-xs cursor-pointer"
               >
                 Close Explanation
               </button>

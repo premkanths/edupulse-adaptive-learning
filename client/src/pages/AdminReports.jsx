@@ -63,7 +63,7 @@ export const AdminReports = () => {
         </div>
         <button
           onClick={fetchReportData}
-          className="inline-flex items-center gap-1.5 px-3.5 py-2 border border-gray-200 dark:border-gray-800 rounded-xl text-xs font-semibold text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-slate-800/60 dark:bg-gray-950/"
+          className="inline-flex items-center gap-1.5 px-3.5 py-2 border border-gray-200 dark:border-gray-800 rounded-xl text-xs font-semibold text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-slate-800/60 dark:bg-slate-800/60"
         >
           <RefreshCw className={`w-3.5 h-3.5 ${loading ? 'animate-spin' : ''}`} />
           Refresh Metrics
@@ -111,7 +111,7 @@ export const AdminReports = () => {
         </p>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-2">
-          <div className="p-4 rounded-xl border border-gray-200 dark:border-gray-800 bg-gray-50 space-y-3">
+          <div className="p-4 rounded-xl border border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-slate-800/60 space-y-3">
             <div className="flex items-center gap-2">
               <Users className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
               <h3 className="text-sm font-bold text-gray-900 dark:text-gray-50">Student Performance Report</h3>
@@ -122,14 +122,14 @@ export const AdminReports = () => {
             <button
               onClick={() => handleDownloadCsv('/admin/reports/export/students', 'students_performance_report.csv')}
               disabled={downloading === 'students_performance_report.csv'}
-              className="w-full py-2 bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white shadow-md shadow-indigo-500/25 rounded-xl text-xs font-semibold flex items-center justify-center gap-2 shadow-sm transition-all"
+              className="w-full py-2 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white shadow-xs rounded-xl text-xs font-semibold flex items-center justify-center gap-2 shadow-sm transition-all"
             >
               {downloading === 'students_performance_report.csv' ? <RefreshCw className="w-3.5 h-3.5 animate-spin" /> : <Download className="w-3.5 h-3.5" />}
               Download Students CSV
             </button>
           </div>
 
-          <div className="p-4 rounded-xl border border-gray-200 dark:border-gray-800 bg-gray-50 space-y-3">
+          <div className="p-4 rounded-xl border border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-slate-800/60 space-y-3">
             <div className="flex items-center gap-2">
               <ShieldAlert className="w-5 h-5 text-rose-600" />
               <h3 className="text-sm font-bold text-gray-900 dark:text-gray-50">At-Risk Interventions Roster</h3>
@@ -147,7 +147,7 @@ export const AdminReports = () => {
             </button>
           </div>
 
-          <div className="p-4 rounded-xl border border-gray-200 dark:border-gray-800 bg-gray-50 space-y-3">
+          <div className="p-4 rounded-xl border border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-slate-800/60 space-y-3">
             <div className="flex items-center gap-2">
               <Award className="w-5 h-5 text-emerald-600" />
               <h3 className="text-sm font-bold text-gray-900 dark:text-gray-50">Topic Mastery Matrix</h3>
@@ -172,7 +172,7 @@ export const AdminReports = () => {
         <h2 className="text-base font-bold text-gray-900 dark:text-gray-50">Enrolled Student Roster ({students.length})</h2>
         <div className="overflow-x-auto border border-gray-200 dark:border-gray-800 rounded-xl">
           <table className="w-full text-left text-sm">
-            <thead className="bg-gray-50 dark:bg-gray-950/ text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase border-b border-gray-200 dark:border-gray-800">
+            <thead className="bg-gray-50 dark:bg-slate-800/60 text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase border-b border-gray-200 dark:border-gray-800">
               <tr>
                 <th className="px-4 py-3">Student ID</th>
                 <th className="px-4 py-3">Name</th>

@@ -16,7 +16,7 @@ export const Button = ({
   const baseStyles = 'inline-flex items-center justify-center font-semibold rounded-xl transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed select-none cursor-pointer';
 
   const variantStyles = {
-    primary: 'bg-gradient-to-r from-indigo-600 via-indigo-500 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white shadow-md shadow-indigo-500/25 hover:shadow-lg hover:shadow-indigo-500/40 hover:-translate-y-0.5 active:translate-y-0 active:scale-[0.99] focus:ring-indigo-500',
+    primary: 'bg-gradient-to-r from-blue-600 via-indigo-600 to-indigo-700 hover:from-blue-500 hover:via-indigo-500 hover:to-indigo-600 text-white shadow-xs hover:shadow-md hover:-translate-y-0.5 active:translate-y-0 active:scale-[0.99] focus:ring-indigo-500',
     secondary: 'bg-white/90 dark:bg-gray-800/80 hover:bg-gray-100 dark:hover:bg-slate-700 text-slate-800 dark:text-gray-50 border border-gray-200 dark:border-gray-700/80 shadow-sm hover:shadow hover:-translate-y-0.5 active:translate-y-0 focus:ring-indigo-400',
     outline: 'border border-indigo-200 dark:border-indigo-800/80 bg-transparent hover:bg-indigo-50/60 dark:hover:bg-indigo-950/40 text-indigo-700 dark:text-indigo-300 focus:ring-indigo-400',
     destructive: 'bg-gradient-to-r from-rose-600 to-red-600 hover:from-rose-500 hover:to-red-500 text-white shadow-md shadow-rose-500/25 hover:shadow-lg hover:shadow-rose-500/40 hover:-translate-y-0.5 active:translate-y-0 focus:ring-rose-500',

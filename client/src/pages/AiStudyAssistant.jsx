@@ -218,7 +218,7 @@ export const AiStudyAssistant = () => {
           <div className="space-y-3">
             <button
               onClick={handleCreateSession}
-              className="w-full py-2.5 px-3.5 rounded-xl text-xs font-bold text-white bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 transition-all flex items-center justify-center gap-2 cursor-pointer shadow-md shadow-indigo-500/25"
+              className="w-full py-2.5 px-3.5 rounded-xl text-xs font-bold text-white bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 transition-all flex items-center justify-center gap-2 cursor-pointer shadow-md shadow-indigo-500/25"
             >
               <Plus className="w-4 h-4" /> New Study Chat
             </button>
@@ -306,7 +306,7 @@ export const AiStudyAssistant = () => {
                     <div
                       className={`w-8 h-8 rounded-xl flex items-center justify-center shrink-0 text-xs font-bold ${
                         isUser
-                          ? 'bg-gradient-to-br from-indigo-600 to-violet-600 text-white shadow-xs'
+                          ? 'bg-gradient-to-br from-blue-600 to-indigo-600 text-white shadow-xs'
                           : 'bg-indigo-100 dark:bg-indigo-950/80 text-indigo-700 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-800'
                       }`}
                     >
@@ -316,7 +316,7 @@ export const AiStudyAssistant = () => {
                     <div
                       className={`max-w-[80%] p-4 rounded-2xl text-xs leading-relaxed space-y-2 ${
                         isUser
-                          ? 'bg-gradient-to-r from-indigo-600 to-violet-600 text-white rounded-tr-none shadow-md shadow-indigo-500/20 whitespace-pre-wrap'
+                          ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-tr-none shadow-md shadow-indigo-500/20 whitespace-pre-wrap'
                           : 'bg-gray-50 dark:bg-gray-950/70 border border-gray-200 dark:border-gray-800 text-slate-800 dark:text-gray-200 rounded-tl-none shadow-xs'
                       }`}
                     >
@@ -361,7 +361,7 @@ export const AiStudyAssistant = () => {
             <button
               type="submit"
               disabled={sending || !inputText.trim()}
-              className="p-2.5 bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white rounded-xl transition-all disabled:opacity-40 cursor-pointer shadow-md shadow-indigo-500/25"
+              className="p-2.5 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white rounded-xl transition-all disabled:opacity-40 cursor-pointer shadow-md shadow-indigo-500/25"
             >
               <Send className="w-4 h-4" />
             </button>

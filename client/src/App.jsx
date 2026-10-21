@@ -86,8 +86,9 @@ export default function App() {
       <AuthProvider>
         <BrowserRouter>
           <Routes>
-            {/* Public Entry Point */}
-            <Route path="/" element={<RootRoute />} />
+            {/* Public Frontpage / Entry Point */}
+            <Route path="/" element={<LandingPage />} />
+            <Route path="/home" element={<LandingPage />} />
             <Route path="/login" element={<><Navbar /><Login /></>} />
             <Route path="/register" element={<><Navbar /><Register /></>} />
             <Route path="/unauthorized" element={<><Navbar /><Unauthorized /></>} />

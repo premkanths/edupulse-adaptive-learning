@@ -270,7 +270,7 @@ export const StudentProfilePrivacy = () => {
             ) : (
               <div className="overflow-x-auto border border-gray-200 dark:border-gray-800 rounded-xl">
                 <table className="w-full text-left text-sm">
-                  <thead className="bg-gray-50 dark:bg-gray-950/ text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase border-b border-gray-200 dark:border-gray-800">
+                  <thead className="bg-gray-50 dark:bg-slate-800/60 text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase border-b border-gray-200 dark:border-gray-800">
                     <tr>
                       <th className="px-4 py-3">Subject</th>
                       <th className="px-4 py-3">Assessment</th>
@@ -382,7 +382,7 @@ export const StudentProfilePrivacy = () => {
                 const snap = p ? parseSnapshot(p.snapshotJson) : null;
                 if (!snap) return null;
                 return (
-                  <div className="p-3 bg-gray-50 dark:bg-gray-950/ rounded-xl border border-gray-200 dark:border-gray-800 text-xs space-y-1.5 text-gray-700 dark:text-gray-300">
+                  <div className="p-3 bg-gray-50 dark:bg-slate-800/60 rounded-xl border border-gray-200 dark:border-gray-800 text-xs space-y-1.5 text-gray-700 dark:text-gray-300">
                     <p><strong>Public Repos:</strong> {snap.publicRepos}</p>
                     <p><strong>Followers:</strong> {snap.followers}</p>
                     {snap.topLanguages && <p><strong>Languages:</strong> {snap.topLanguages.join(', ')}</p>}
@@ -553,7 +553,7 @@ export const StudentProfilePrivacy = () => {
             <button
               type="submit"
               disabled={submittingSurvey}
-              className="px-6 py-2.5 bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white shadow-md shadow-indigo-500/25 rounded-xl text-xs font-semibold shadow-sm transition-all flex items-center gap-2"
+              className="px-6 py-2.5 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white shadow-md shadow-indigo-500/25 rounded-xl text-xs font-semibold shadow-sm transition-all flex items-center gap-2"
             >
               {submittingSurvey ? <RefreshCw className="w-4 h-4 animate-spin" /> : <CheckCircle className="w-4 h-4" />}
               {survey ? 'Update Research Survey Submission' : 'Submit Survey Feedback'}
@@ -647,7 +647,7 @@ export const StudentProfilePrivacy = () => {
             <div className="flex justify-end gap-3 pt-2">
               <button
                 onClick={() => setShowDeleteModal(false)}
-                className="px-4 py-2 border border-gray-200 dark:border-gray-800 rounded-xl text-xs font-semibold text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-slate-800/60 dark:bg-gray-950/"
+                className="px-4 py-2 border border-gray-200 dark:border-gray-800 rounded-xl text-xs font-semibold text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-slate-800/60 dark:bg-slate-800/60"
               >
                 Cancel
               </button>
