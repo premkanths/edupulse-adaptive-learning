@@ -62,6 +62,7 @@ export const studentApi = {
   getAttemptReview: (attemptId) => apiRequest(`/student/attempts/${attemptId}/review`),
   getRecommendations: () => apiRequest('/student/recommendations'),
   getPerformance: () => apiRequest('/student/performance'),
+  getAcademicRecords: () => apiRequest('/student/academic-records'),
 
   // AI Assistant Chat APIs
   getChatSessions: () => apiRequest('/student/chat/sessions'),

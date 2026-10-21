@@ -104,7 +104,7 @@ public class StudentController {
     }
 
     @GetMapping("/subjects")
-    @Operation(summary = "Get enrolled subjects and topics with BKT mastery estimates")
+    @Operation(summary = "Get enrolled subjects and topics with AKT mastery estimates")
     public ResponseEntity<ApiResponse<List<Map<String, Object>>>> getSubjects(
             @AuthenticationPrincipal UserPrincipal userPrincipal) {
         List<Subject> subjects = subjectRepository.findAll();
@@ -207,7 +207,7 @@ public class StudentController {
     }
 
     @GetMapping("/performance")
-    @Operation(summary = "Get learning performance history and BKT topic mastery analytics")
+    @Operation(summary = "Get learning performance history and AKT topic mastery analytics")
     public ResponseEntity<ApiResponse<Map<String, Object>>> getPerformanceAnalytics(
             @AuthenticationPrincipal UserPrincipal userPrincipal) {
         Long studentId = userPrincipal.getId();

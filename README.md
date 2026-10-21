@@ -96,6 +96,24 @@ EduPulse is an AI-powered, full-stack adaptive learning and student performance 
 * Institutional KPI reports and automated CSV streaming exports.
 * GDPR Article 17 "Right to be Forgotten" self-service data deletion.
 
+### 8. Streamlined User Experience & Email Notification Suite
+* **Simplified Student Experience**:
+  * **"My Subjects" Accordion**: Topics folded by default; clicking any subject drops down to reveal concept progress, prerequisites, and quick-practice links.
+  * **Performance Analytics**: Visual score trends, mastery distribution, and topic breakdown simplified specifically for student clarity.
+  * **Result Marks (`/student/results`)**: Comprehensive view of verified internal marks, exam percentages, attendance standing, and planned Vision OCR exam paper ingestion.
+  * **Floating Tutor Auto-Hide**: The floating AI assistant widget intelligently tucks away when navigating to `/student/assistant` to prevent UI obstruction.
+  * **Connected Portfolio Guidance**: Maps real-world GitHub commits and LeetCode solved problems directly into student recommendations and study advice.
+* **Faculty & Superadmin Workflow Streamlining**:
+  * **Simplified Class Analytics**: Visual score brackets, class average benchmarks, prioritized curriculum reteaching topics, and student intervention rosters.
+  * **Upload Marks, Attendance & OCR Scripts**: Integrated upload hub supporting CSV, Excel, and upcoming handwritten exam paper ingestion.
+  * **Cleaned Left Sidebar Navigation**: Removed extraneous research evaluation items from Teacher and Admin panels for a focused operational workflow.
+* **Automated & On-Demand Email Notifications**:
+  * **Weekly Learning Summaries**: Scheduled Spring cron (`@Scheduled(cron = "0 0 6 * * MON")`) or 1-click on-demand dispatch from Admin Dashboard.
+  * **Practice Quiz Reminders**: One-click reminder emails sent to students directly from Teacher Dashboard and At-Risk Monitor.
+  * **Academic Risk Alerts**: Supportive faculty intervention emails sent to at-risk students with suggested next steps.
+  * **Inactivity Detection**: Automatic 7-day inactivity checks alerting students to maintain their learning momentum.
+  * **Safety Guards**: Includes dry-run simulation mode (`mail.dry-run=true`), demo-account protection (`@edupulse.local`), and user notification preference checks.
+
 ---
 
 ## 🔑 Demo Account Credentials

@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import { Bot, X, MessageSquare, Sparkles, Send } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { studentApi } from '../api/client';
 
 export const FloatingChatWidget = () => {
   const { role } = useAuth();
+  const location = useLocation();
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState([
     {
@@ -17,8 +19,8 @@ export const FloatingChatWidget = () => {
   const [loading, setLoading] = useState(false);
   const [sessionId, setSessionId] = useState(null);
 
-  // Only render for students
-  if (role !== 'STUDENT') return null;
+  // Hide widget if not a student, or if currently viewing the dedicated full-screen AI study assistant page
+  if (role !== 'STUDENT' || location.pathname === '/student/assistant') return null;
 
   const handleSend = async (e) => {
     e.preventDefault();

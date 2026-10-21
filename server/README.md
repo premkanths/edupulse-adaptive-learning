@@ -91,6 +91,9 @@ server/src/main/java/com/edupulse/
 | `GET` | `/api/teacher/students/{id}/risk` | Detailed risk diagnostic and feature contributions | Teacher |
 | `POST` | `/api/teacher/quizzes` | Create custom or AI-generated diagnostic quizzes | Teacher |
 | `POST` | `/api/teacher/materials/upload` | Upload PDF/DOCX course materials for RAG ingestion | Teacher |
+| `POST` | `/api/teacher/notifications/send-quiz-reminder` | Dispatch email reminder to student for pending quizzes | Teacher |
+| `POST` | `/api/teacher/notifications/send-risk-alert` | Dispatch academic support alert to at-risk student | Teacher |
+| `POST` | `/api/teacher/notifications/send-weekly-summary` | Trigger on-demand weekly summary email to student | Teacher |
 
 ### Academic Ingestion & Institutional Data (`/api/academic-import`)
 | Method | Endpoint | Description | Access |

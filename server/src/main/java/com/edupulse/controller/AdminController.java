@@ -246,4 +246,11 @@ public class AdminController {
         int count = weeklySummaryService.generateAllWeeklySummaries().size();
         return ResponseEntity.ok(ApiResponse.success("Generated and dispatched " + count + " student weekly summaries."));
     }
+
+    @PostMapping("/summaries/inactivity-alerts")
+    @Operation(summary = "Manually trigger inactivity check and dispatch reminder emails to inactive students")
+    public ResponseEntity<ApiResponse<String>> triggerInactivityAlerts() {
+        int count = weeklySummaryService.checkAndAlertInactiveStudents();
+        return ResponseEntity.ok(ApiResponse.success("Dispatched " + count + " inactivity alert reminders."));
+    }
 }

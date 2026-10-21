@@ -40,6 +40,8 @@ public class TeacherController {
     private final QuizRepository quizRepository;
     private final RiskPredictionService riskPredictionService;
     private final AktService aktService;
+    private final EmailService emailService;
+    private final WeeklySummaryService weeklySummaryService;
 
     public TeacherController(DashboardService dashboardService,
                              UserService userService,
@@ -54,7 +56,9 @@ public class TeacherController {
                              AttemptRepository attemptRepository,
                              QuizRepository quizRepository,
                              RiskPredictionService riskPredictionService,
-                             AktService aktService) {
+                             AktService aktService,
+                             EmailService emailService,
+                             WeeklySummaryService weeklySummaryService) {
         this.dashboardService = dashboardService;
         this.userService = userService;
         this.questionService = questionService;
@@ -69,6 +73,8 @@ public class TeacherController {
         this.quizRepository = quizRepository;
         this.riskPredictionService = riskPredictionService;
         this.aktService = aktService;
+        this.emailService = emailService;
+        this.weeklySummaryService = weeklySummaryService;
     }
 
     private User getTeacherUser(UserPrincipal principal) {
@@ -278,5 +284,84 @@ public class TeacherController {
             @PathVariable Long studentId) {
         RiskPrediction prediction = riskPredictionService.evaluateStudentRisk(studentId);
         return ResponseEntity.ok(ApiResponse.success("Risk recalculated successfully", prediction));
+    }
+
+    // === EMAIL NOTIFICATIONS: QUIZ REMINDERS & RISK ALERTS ===
+
+    @PostMapping("/notifications/send-quiz-reminder")
+    @Operation(summary = "Send an email reminder to a student to complete pending practice quizzes")
+    public ResponseEntity<ApiResponse<String>> sendQuizReminder(
+            @RequestBody Map<String, Object> payload) {
+        Long studentId = payload.get("studentId") != null ? Long.valueOf(payload.get("studentId").toString()) : null;
+        if (studentId == null) {
+            throw new BadRequestException("studentId is required");
+        }
+
+        User student = userRepository.findById(studentId)
+                .orElseThrow(() -> new ResourceNotFoundException("Student not found with ID: " + studentId));
+
+        String customMsg = (String) payload.getOrDefault("message", "Your instructor recommends completing an adaptive practice quiz on EduPulse to consolidate your course topics.");
+        String htmlBody = "<html><body style='font-family: sans-serif; color: #1e293b;'>" +
+                "<div style='max-width: 560px; margin: auto; padding: 24px; border: 1px solid #e2e8f0; border-radius: 16px;'>" +
+                "<h2 style='color: #4f46e5; margin-top: 0;'>EduPulse Practice Quiz Reminder</h2>" +
+                "<p>Hello <strong>" + student.getName() + "</strong>,</p>" +
+                "<p>" + customMsg + "</p>" +
+                "<p>Taking 5-10 minutes for targeted practice directly updates your Attentive Knowledge Tracing (AKT) mastery score and prepares you for upcoming assessments.</p>" +
+                "<div style='margin-top: 24px;'><a href='http://localhost:5173/student/quizzes' style='background-color: #4f46e5; color: white; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-weight: bold;'>Start Practice Quiz</a></div>" +
+                "<p style='color: #64748b; font-size: 12px; margin-top: 24px;'>EduPulse Multi-Modal Adaptive Learning Platform</p>" +
+                "</div></body></html>";
+
+        emailService.sendEmail(student, "QUIZ_REMINDER", "Upcoming Practice Quiz Reminder - EduPulse", htmlBody);
+        return ResponseEntity.ok(ApiResponse.success("Quiz reminder email sent to " + student.getName()));
+    }
+
+    @PostMapping("/notifications/send-risk-alert")
+    @Operation(summary = "Send an academic support alert email to an at-risk student")
+    public ResponseEntity<ApiResponse<String>> sendRiskAlert(
+            @RequestBody Map<String, Object> payload) {
+        Long studentId = payload.get("studentId") != null ? Long.valueOf(payload.get("studentId").toString()) : null;
+        if (studentId == null) {
+            throw new BadRequestException("studentId is required");
+        }
+
+        User student = userRepository.findById(studentId)
+                .orElseThrow(() -> new ResourceNotFoundException("Student not found with ID: " + studentId));
+
+        String reason = (String) payload.getOrDefault("reason", "Low engagement or recent prerequisite topic gaps");
+        String htmlBody = "<html><body style='font-family: sans-serif; color: #1e293b;'>" +
+                "<div style='max-width: 560px; margin: auto; padding: 24px; border: 1px solid #fed7aa; border-radius: 16px; background-color: #fffaf5;'>" +
+                "<h2 style='color: #ea580c; margin-top: 0;'>Academic Support &amp; Learning Notice</h2>" +
+                "<p>Dear <strong>" + student.getName() + "</strong>,</p>" +
+                "<p>Your course faculty noticed that you may benefit from dedicated attention in foundational concepts (Flag: <em>" + reason + "</em>).</p>" +
+                "<p>To stay on track for your examinations:</p>" +
+                "<ul>" +
+                "<li>Review teacher lecture notes in <strong>Course Materials</strong></li>" +
+                "<li>Attempt the prerequisite quizzes recommended on your student dashboard</li>" +
+                "<li>Consult with your instructor during scheduled office hours</li>" +
+                "</ul>" +
+                "<div style='margin-top: 24px;'><a href='http://localhost:5173/student/recommendations' style='background-color: #ea580c; color: white; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-weight: bold;'>View Recommended Learning Path</a></div>" +
+                "<p style='color: #64748b; font-size: 12px; margin-top: 24px;'>EduPulse Faculty Intervention Service</p>" +
+                "</div></body></html>";
+
+        emailService.sendEmail(student, "RISK_ALERT", "Important: Academic Support & Learning Notice - EduPulse", htmlBody);
+        return ResponseEntity.ok(ApiResponse.success("Risk alert email successfully sent to " + student.getName()));
+    }
+
+    @PostMapping("/notifications/send-weekly-summary")
+    @Operation(summary = "Trigger a weekly learning summary email for a specific student")
+    public ResponseEntity<ApiResponse<String>> sendWeeklySummaryForStudent(
+            @RequestBody Map<String, Object> payload) {
+        Long studentId = payload.get("studentId") != null ? Long.valueOf(payload.get("studentId").toString()) : null;
+        if (studentId == null) {
+            throw new BadRequestException("studentId is required");
+        }
+
+        User student = userRepository.findById(studentId)
+                .orElseThrow(() -> new ResourceNotFoundException("Student not found with ID: " + studentId));
+
+        java.time.LocalDate weekStart = java.time.LocalDate.now().with(java.time.temporal.TemporalAdjusters.previousOrSame(java.time.DayOfWeek.MONDAY));
+        weeklySummaryService.generateSummaryForStudent(student, weekStart);
+
+        return ResponseEntity.ok(ApiResponse.success("Weekly summary email dispatched to " + student.getName()));
     }
 }

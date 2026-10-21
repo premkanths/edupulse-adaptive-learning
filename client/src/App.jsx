@@ -29,6 +29,7 @@ import { QuizResult } from './pages/QuizResult';
 import { Recommendations } from './pages/Recommendations';
 import { PerformanceHistory } from './pages/PerformanceHistory';
 import { AiStudyAssistant } from './pages/AiStudyAssistant';
+import { StudentResultMarks } from './pages/StudentResultMarks';
 
 import { QuestionBank } from './pages/QuestionBank';
 import { TeacherQuizzes } from './pages/TeacherQuizzes';
@@ -175,6 +176,22 @@ export default function App() {
               element={
                 <ProtectedRoute allowedRoles={['STUDENT']}>
                   <Layout><PerformanceHistory /></Layout>
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/student/results"
+              element={
+                <ProtectedRoute allowedRoles={['STUDENT']}>
+                  <Layout><StudentResultMarks /></Layout>
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/student/marks"
+              element={
+                <ProtectedRoute allowedRoles={['STUDENT']}>
+                  <Layout><StudentResultMarks /></Layout>
                 </ProtectedRoute>
               }
             />

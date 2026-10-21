@@ -35,7 +35,6 @@ export const Sidebar = () => {
           { name: 'Class Cohorts', path: '/admin/classes', icon: Layers },
           { name: 'Academic Records Import', path: '/admin/import', icon: UploadCloud },
           { name: 'Institutional Reports', path: '/admin/reports', icon: FileText },
-          { name: 'Research Evaluation', path: '/admin/research', icon: Award },
           { name: 'Platform Settings', path: '/admin/settings', icon: Settings },
           { name: 'Security Audit Logs', path: '/admin/audit-logs', icon: History },
         ];
@@ -48,22 +47,21 @@ export const Sidebar = () => {
           { name: 'Course Materials (RAG)', path: '/teacher/materials', icon: FileText },
           { name: 'Class Analytics', path: '/teacher/analytics', icon: TrendingUp },
           { name: 'At-Risk Student Monitor', path: '/teacher/at-risk', icon: ShieldAlert },
-          { name: 'Academic Records Import', path: '/teacher/import', icon: UploadCloud },
-          { name: 'Research Evaluation', path: '/teacher/research', icon: Award },
+          { name: 'Upload Marks & Attendance', path: '/teacher/import', icon: UploadCloud },
         ];
       case 'STUDENT':
       default:
         return [
           { name: 'Student Dashboard', path: '/student/dashboard', icon: LayoutDashboard },
           { name: 'AI Student Summary', path: '/student/ai-summary', icon: Sparkles },
-          { name: 'My Subjects & Topics', path: '/student/subjects', icon: BookOpen },
+          { name: 'My Subjects', path: '/student/subjects', icon: BookOpen },
+          { name: 'Result Marks', path: '/student/results', icon: GraduationCap },
           { name: 'Course Materials', path: '/student/materials', icon: FileText },
           { name: 'Assigned Quizzes', path: '/student/quizzes', icon: HelpCircle },
           { name: 'Adaptive Recommendations', path: '/student/recommendations', icon: Lightbulb },
           { name: 'Performance Analytics', path: '/student/performance', icon: TrendingUp },
           { name: 'AI Study Assistant', path: '/student/assistant', icon: Bot },
           { name: 'Connected Portfolios', path: '/student/connected-accounts', icon: Code2 },
-          { name: 'Academic Hub & Privacy', path: '/student/profile', icon: ShieldCheck },
         ];
     }
   };

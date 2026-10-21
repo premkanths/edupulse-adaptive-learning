@@ -20,7 +20,11 @@ import {
   Activity,
   CheckCircle2,
   AlertTriangle,
+  Mail,
+  Send,
+  Sparkles
 } from 'lucide-react';
+import api from '../services/api';
 import { Card } from '../components/ui/Card';
 import { Badge } from '../components/ui/Badge';
 import { Button } from '../components/ui/Button';
@@ -29,6 +33,34 @@ export const AdminDashboard = () => {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [dispatchStatus, setDispatchStatus] = useState(null);
+  const [dispatching, setDispatching] = useState(false);
+
+  const handleDispatchWeeklySummaries = async () => {
+    try {
+      setDispatching(true);
+      setDispatchStatus(null);
+      const res = await api.post('/admin/summaries/generate-all');
+      setDispatchStatus({ type: 'success', message: res.data?.message || 'Dispatched weekly summaries to all active students!' });
+    } catch (err) {
+      setDispatchStatus({ type: 'error', message: err.response?.data?.message || 'Failed to dispatch weekly summaries.' });
+    } finally {
+      setDispatching(false);
+    }
+  };
+
+  const handleDispatchInactivityAlerts = async () => {
+    try {
+      setDispatching(true);
+      setDispatchStatus(null);
+      const res = await api.post('/admin/summaries/inactivity-alerts');
+      setDispatchStatus({ type: 'success', message: res.data?.message || 'Inactivity check completed & reminder emails dispatched.' });
+    } catch (err) {
+      setDispatchStatus({ type: 'error', message: err.response?.data?.message || 'Failed to check inactivity.' });
+    } finally {
+      setDispatching(false);
+    }
+  };
 
   useEffect(() => {
     const fetchDashboard = async () => {
@@ -263,6 +295,54 @@ export const AdminDashboard = () => {
           </Card>
         </Link>
       </div>
+
+      {/* Student Email Notifications & Summary Dispatch */}
+      <Card className="space-y-4">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-gray-100 dark:border-gray-800 pb-4">
+          <div className="flex items-center gap-3">
+            <div className="p-3 bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400 rounded-2xl">
+              <Mail className="w-5 h-5" />
+            </div>
+            <div>
+              <h3 className="text-base font-bold text-gray-900 dark:text-gray-50">
+                Student Email Notifications &amp; Weekly Summary System
+              </h3>
+              <p className="text-xs text-gray-600 dark:text-gray-400 mt-0.5">
+                Dispatch personalized weekly study summaries, quiz call-to-actions, and student inactivity reminders.
+              </p>
+            </div>
+          </div>
+
+          <div className="flex flex-wrap items-center gap-2.5">
+            <button
+              onClick={handleDispatchWeeklySummaries}
+              disabled={dispatching}
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold bg-indigo-600 hover:bg-indigo-700 text-white shadow-xs transition cursor-pointer disabled:opacity-50"
+            >
+              <Send className="w-3.5 h-3.5" />
+              <span>{dispatching ? 'Dispatching...' : 'Dispatch Weekly Summaries'}</span>
+            </button>
+
+            <button
+              onClick={handleDispatchInactivityAlerts}
+              disabled={dispatching}
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-200 transition cursor-pointer disabled:opacity-50"
+            >
+              <AlertTriangle className="w-3.5 h-3.5 text-amber-500" />
+              <span>Check 7-Day Inactivity</span>
+            </button>
+          </div>
+        </div>
+
+        {dispatchStatus && (
+          <div className={`p-3.5 rounded-xl text-xs font-semibold flex items-center gap-2 ${
+            dispatchStatus.type === 'success' ? 'bg-emerald-50 text-emerald-800 dark:bg-emerald-950/60 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800' : 'bg-rose-50 text-rose-800 dark:bg-rose-950/60 dark:text-rose-300 border border-rose-200 dark:border-rose-800'
+          }`}>
+            {dispatchStatus.type === 'success' ? <CheckCircle2 className="w-4 h-4 text-emerald-600" /> : <AlertTriangle className="w-4 h-4 text-rose-600" />}
+            <span>{dispatchStatus.message}</span>
+          </div>
+        )}
+      </Card>
 
       {/* Recent Users Table */}
       <Card padding="p-0" className="overflow-hidden">

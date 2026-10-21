@@ -8,13 +8,18 @@ The web frontend for **EduPulse — Adaptive Learning & Student Performance Anal
 
 * **Student Experience**:
   * **Student Dashboard**: Goal-oriented layout presenting overall progress, active subjects, strengths, topics to practise, recent quiz results, and the prominent *"Your Next Learning Goal"* card.
-  * **Adaptive Recommendations**: *"What Should You Learn Next?"* featuring a prominent priority focus card and a structured 4-step learning path.
+  * **My Subjects**: Collapsible subject accordion where individual topics, prerequisites, and mastery probabilities remain hidden until clicked.
+  * **Adaptive Recommendations**: *"What Should You Learn Next?"* featuring a prominent priority focus card, structured 4-step learning path, and connected GitHub/LeetCode study guidance.
+  * **Performance & Learning Analytics**: Human-friendly mastery metrics, test accuracy progress charts, and topic filters.
+  * **Result Marks (`/student/results`)**: Continuous assessment marks ledger, attendance percentage standing, and planned Vision OCR exam paper ingestion.
   * **Student AI Summary**: Comprehensive academic and extracurricular portfolio with on-demand AI synthesis generation.
-  * **AI Study Assistant (J.A.R.V.I.S.)**: Interactive chat with explanatory and Socratic tutoring modes grounded in teacher course materials.
+  * **AI Study Assistant (J.A.R.V.I.S.)**: Interactive chat with explanatory and Socratic tutoring modes grounded in teacher course materials (floating widget auto-hides when in tutor view).
   * **Course Materials**: Student access to teacher-uploaded notes and slides with inline study guides.
 * **Faculty & Administrator Experience**:
-  * **Teacher Dashboard**: Question bank management, quiz creation, AI quiz generation, at-risk student monitoring, and cohort analytics.
-  * **Admin Dashboard**: Class cohorts management, user lifecycle controls, audit logs, and institutional CSV streaming reports.
+  * **Teacher Dashboard**: Question bank management, quiz creation, AI quiz generation, at-risk student monitoring with 1-click email reminders, and simplified class analytics.
+  * **Class Performance Analytics**: Visual score brackets, class average benchmarks, prioritized curriculum reteaching topics, and student intervention rosters.
+  * **Upload Marks & Attendance**: Integrated upload hub supporting CSV, Excel, and planned handwritten exam paper OCR ingestion.
+  * **Admin Dashboard**: Class cohorts management, user lifecycle controls, audit logs, 1-click student email notifications, and institutional CSV streaming reports.
 * **Theme Suite**:
   * ☀️ **Light**: Clean high-contrast academic slate.
   * 👑 **Premium**: Luxury light theme with warm alabaster canvas (`#FBF9F4`), champagne gold accents (`#D97706`), diffused warm shady elevation (`rgba(180, 140, 90, 0.08)`), and warm espresso typography.

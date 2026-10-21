@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { AlertTriangle, ShieldAlert, CheckCircle, RefreshCw, Sparkles, Filter, ChevronRight, User } from 'lucide-react';
+import { AlertTriangle, ShieldAlert, CheckCircle, RefreshCw, Sparkles, Filter, ChevronRight, User, Mail, Send } from 'lucide-react';
 import api from '../services/api';
 
 export const AtRiskStudents = () => {
@@ -8,6 +8,32 @@ export const AtRiskStudents = () => {
   const [filter, setFilter] = useState('ALL');
   const [recalculatingId, setRecalculatingId] = useState(null);
   const [notification, setNotification] = useState(null);
+  const [emailStatusMap, setEmailStatusMap] = useState({});
+
+  const handleSendReminder = async (studentId, studentName) => {
+    try {
+      setEmailStatusMap((prev) => ({ ...prev, [`reminder_${studentId}`]: 'sending' }));
+      const res = await api.post('/teacher/notifications/send-quiz-reminder', { studentId });
+      setNotification({ type: 'success', message: `Quiz reminder sent to ${studentName}.` });
+      setEmailStatusMap((prev) => ({ ...prev, [`reminder_${studentId}`]: 'sent' }));
+    } catch (err) {
+      setNotification({ type: 'error', message: 'Failed to dispatch quiz reminder.' });
+      setEmailStatusMap((prev) => ({ ...prev, [`reminder_${studentId}`]: 'failed' }));
+    }
+  };
+
+  const handleSendRiskAlert = async (studentId, studentName, reasons) => {
+    try {
+      setEmailStatusMap((prev) => ({ ...prev, [`alert_${studentId}`]: 'sending' }));
+      const reasonStr = reasons && reasons.length > 0 ? reasons.join(', ') : 'Prerequisite concept gaps';
+      const res = await api.post('/teacher/notifications/send-risk-alert', { studentId, reason: reasonStr });
+      setNotification({ type: 'success', message: `Academic support alert sent to ${studentName}.` });
+      setEmailStatusMap((prev) => ({ ...prev, [`alert_${studentId}`]: 'sent' }));
+    } catch (err) {
+      setNotification({ type: 'error', message: 'Failed to dispatch risk alert.' });
+      setEmailStatusMap((prev) => ({ ...prev, [`alert_${studentId}`]: 'failed' }));
+    }
+  };
 
   useEffect(() => {
     fetchAtRiskStudents();
@@ -205,14 +231,48 @@ export const AtRiskStudents = () => {
                     <p className="text-xs text-gray-700 dark:text-gray-300 leading-relaxed font-medium">
                       {s.recommendedIntervention}
                     </p>
-                    <div className="mt-3 flex justify-end">
+
+                    {/* Email Action Buttons */}
+                    <div className="mt-3 pt-2.5 border-t border-gray-200/80 dark:border-gray-700/80 flex flex-wrap items-center gap-2">
+                      <button
+                        onClick={() => handleSendReminder(s.studentId, s.studentName)}
+                        disabled={emailStatusMap[`reminder_${s.studentId}`] === 'sending'}
+                        className="px-2.5 py-1 text-[11px] font-bold rounded-lg bg-indigo-50 hover:bg-indigo-100 dark:bg-indigo-950/70 text-indigo-700 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-800 transition inline-flex items-center gap-1 cursor-pointer"
+                      >
+                        <Mail className="w-3 h-3" />
+                        <span>
+                          {emailStatusMap[`reminder_${s.studentId}`] === 'sent'
+                            ? 'Reminder Sent ✓'
+                            : emailStatusMap[`reminder_${s.studentId}`] === 'sending'
+                            ? 'Sending...'
+                            : 'Email Quiz Reminder'}
+                        </span>
+                      </button>
+
+                      <button
+                        onClick={() => handleSendRiskAlert(s.studentId, s.studentName, s.reasons)}
+                        disabled={emailStatusMap[`alert_${s.studentId}`] === 'sending'}
+                        className="px-2.5 py-1 text-[11px] font-bold rounded-lg bg-rose-50 hover:bg-rose-100 dark:bg-rose-950/70 text-rose-700 dark:text-rose-300 border border-rose-200 dark:border-rose-800 transition inline-flex items-center gap-1 cursor-pointer"
+                      >
+                        <AlertTriangle className="w-3 h-3" />
+                        <span>
+                          {emailStatusMap[`alert_${s.studentId}`] === 'sent'
+                            ? 'Alert Sent ✓'
+                            : emailStatusMap[`alert_${s.studentId}`] === 'sending'
+                            ? 'Sending...'
+                            : 'Send Risk Alert'}
+                        </span>
+                      </button>
+                    </div>
+
+                    <div className="mt-2.5 flex justify-end">
                       <button
                         onClick={() => handleRecalculate(s.studentId)}
                         disabled={recalculatingId === s.studentId}
-                        className="text-xs text-indigo-600 dark:text-indigo-400 hover:text-indigo-800 dark:text-indigo-300 font-semibold inline-flex items-center gap-1"
+                        className="text-xs text-indigo-600 dark:text-indigo-400 hover:text-indigo-800 dark:text-indigo-300 font-semibold inline-flex items-center gap-1 cursor-pointer"
                       >
                         <RefreshCw className={`w-3 h-3 ${recalculatingId === s.studentId ? 'animate-spin' : ''}`} />
-                        Recalculate
+                        Recalculate Risk
                       </button>
                     </div>
                   </div>

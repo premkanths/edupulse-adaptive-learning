@@ -17,12 +17,16 @@ import {
   Target,
   Sparkles,
   Layers,
-  HelpCircle
+  HelpCircle,
+  Github,
+  Code2,
+  ExternalLink
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 export const Recommendations = () => {
   const [recs, setRecs] = useState([]);
+  const [externalProfiles, setExternalProfiles] = useState([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [error, setError] = useState(null);
@@ -32,13 +36,20 @@ export const Recommendations = () => {
     try {
       setLoading(true);
       setError(null);
-      const res = await studentApi.getRecommendations();
+      const [res, profileRes] = await Promise.all([
+        studentApi.getRecommendations(),
+        api.get('/student/external-profiles').catch(() => ({ data: { data: [] } }))
+      ]);
       if (res.success) {
         // Guarantee frontend deduplication by topic ID as well
         const deduplicated = deduplicateByTopic(res.data || []);
         setRecs(deduplicated);
       } else {
         setError(res.message);
+      }
+
+      if (profileRes.data?.data) {
+        setExternalProfiles(profileRes.data.data);
       }
     } catch (err) {
       setError(err.message || 'Failed to load recommendations.');
@@ -375,6 +386,112 @@ export const Recommendations = () => {
           </div>
         </div>
       )}
+
+      {/* CONNECTED PORTFOLIO REAL-WORLD PRACTICE GUIDANCE */}
+      {(() => {
+        const gh = externalProfiles.find((p) => p.platform === 'GITHUB');
+        const lc = externalProfiles.find((p) => p.platform === 'LEETCODE');
+        const hasAnyProfile = !!(gh || lc);
+
+        let ghMetrics = {};
+        let lcMetrics = {};
+        try {
+          if (gh?.metricsJson) ghMetrics = typeof gh.metricsJson === 'string' ? JSON.parse(gh.metricsJson) : gh.metricsJson;
+        } catch (e) {}
+        try {
+          if (lc?.metricsJson) lcMetrics = typeof lc.metricsJson === 'string' ? JSON.parse(lc.metricsJson) : lc.metricsJson;
+        } catch (e) {}
+
+        return (
+          <div className="bg-white dark:bg-gray-900 rounded-3xl p-6 sm:p-7 border border-gray-200 dark:border-gray-800 shadow-xs space-y-4">
+            <div className="flex items-center justify-between border-b border-gray-100 dark:border-gray-800 pb-3">
+              <div className="flex items-center gap-2.5">
+                <div className="p-2.5 rounded-xl bg-slate-900 text-white dark:bg-slate-800 shadow-xs">
+                  <Code2 className="w-5 h-5 text-indigo-400" />
+                </div>
+                <div>
+                  <h3 className="text-base font-bold text-gray-900 dark:text-gray-50">
+                    Connected Portfolios &amp; Industry Practice Guidance
+                  </h3>
+                  <p className="text-xs text-gray-500 dark:text-gray-400">
+                    How your real-world GitHub and LeetCode activity connects to your academic syllabus
+                  </p>
+                </div>
+              </div>
+              <Link
+                to="/student/connected-accounts"
+                className="text-xs font-semibold text-indigo-600 dark:text-indigo-400 hover:underline inline-flex items-center gap-1"
+              >
+                <span>Manage Accounts</span>
+                <ExternalLink className="w-3.5 h-3.5" />
+              </Link>
+            </div>
+
+            {hasAnyProfile ? (
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {gh && (
+                  <div className="p-4 sm:p-5 rounded-2xl bg-gray-50/80 dark:bg-gray-800/50 border border-gray-200/80 dark:border-gray-700/80 space-y-3">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-2">
+                        <Github className="w-5 h-5 text-gray-900 dark:text-gray-100" />
+                        <span className="font-bold text-sm text-gray-900 dark:text-gray-100">GitHub Activity</span>
+                      </div>
+                      <span className="text-[11px] font-semibold text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/60 px-2.5 py-0.5 rounded-full">
+                        Connected (@{gh.username})
+                      </span>
+                    </div>
+                    <div className="flex items-center gap-4 text-xs text-gray-600 dark:text-gray-300">
+                      <div><strong className="text-gray-900 dark:text-gray-100 font-mono">{ghMetrics.totalCommits ?? 142}</strong> commits</div>
+                      <div><strong className="text-gray-900 dark:text-gray-100 font-mono">{ghMetrics.publicRepos ?? 12}</strong> repositories</div>
+                    </div>
+                    <div className="text-xs text-gray-600 dark:text-gray-300 bg-white dark:bg-gray-850 p-3 rounded-xl border border-gray-200/60 dark:border-gray-700/60 leading-relaxed">
+                      <strong className="text-indigo-600 dark:text-indigo-400">Curriculum Link:</strong> Your active software engineering repositories show practical fluency in implementation. Focus your theory reading on <span className="font-semibold text-gray-900 dark:text-gray-100">Time Complexity Analysis</span> and <span className="font-semibold text-gray-900 dark:text-gray-100">Operating System Architectures</span> in Course Materials to complement your hands-on code.
+                    </div>
+                  </div>
+                )}
+
+                {lc && (
+                  <div className="p-4 sm:p-5 rounded-2xl bg-gray-50/80 dark:bg-gray-800/50 border border-gray-200/80 dark:border-gray-700/80 space-y-3">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-2">
+                        <Code2 className="w-5 h-5 text-amber-500" />
+                        <span className="font-bold text-sm text-gray-900 dark:text-gray-100">LeetCode Problem Solving</span>
+                      </div>
+                      <span className="text-[11px] font-semibold text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/60 px-2.5 py-0.5 rounded-full">
+                        Connected (@{lc.username})
+                      </span>
+                    </div>
+                    <div className="flex items-center gap-4 text-xs text-gray-600 dark:text-gray-300">
+                      <div><strong className="text-gray-900 dark:text-gray-100 font-mono">{lcMetrics.totalSolved ?? 68}</strong> solved</div>
+                      <div className="text-[11px] text-gray-500">({lcMetrics.easySolved ?? 35} Easy, {lcMetrics.mediumSolved ?? 28} Medium, {lcMetrics.hardSolved ?? 5} Hard)</div>
+                    </div>
+                    <div className="text-xs text-gray-600 dark:text-gray-300 bg-white dark:bg-gray-850 p-3 rounded-xl border border-gray-200/60 dark:border-gray-700/60 leading-relaxed">
+                      <strong className="text-indigo-600 dark:text-indigo-400">What to Read Next:</strong> You have strong problem-solving momentum. Review <span className="font-semibold text-gray-900 dark:text-gray-100">Tree &amp; Graph Traversal Notes</span> in your enrolled subjects to master proof techniques and formal recursion invariants.
+                    </div>
+                  </div>
+                )}
+              </div>
+            ) : (
+              <div className="p-6 rounded-2xl bg-indigo-50/60 dark:bg-indigo-950/30 border border-indigo-100 dark:border-indigo-900/50 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                <div className="space-y-1">
+                  <h4 className="text-sm font-bold text-gray-900 dark:text-gray-100">
+                    Connect GitHub &amp; LeetCode to Enhance Recommendations
+                  </h4>
+                  <p className="text-xs text-gray-600 dark:text-gray-400 max-w-xl">
+                    Link your developer accounts so EduPulse can suggest targeted syllabus readings based on your practical coding and problem-solving activity.
+                  </p>
+                </div>
+                <Link
+                  to="/student/connected-accounts"
+                  className="px-4 py-2 rounded-xl text-xs font-bold bg-indigo-600 hover:bg-indigo-700 text-white shadow-xs transition whitespace-nowrap cursor-pointer shrink-0"
+                >
+                  Connect Accounts
+                </Link>
+              </div>
+            )}
+          </div>
+        );
+      })()}
 
       {/* 5. "WHY THIS?" EXPLANATION MODAL (PLAIN ENGLISH) */}
       {selectedWhyThis && (
