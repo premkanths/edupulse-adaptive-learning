@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { UploadCloud, Download, CheckCircle2, AlertTriangle, RefreshCw, FileText, Check, AlertCircle } from 'lucide-react';
+import { UploadCloud, Download, CheckCircle2, AlertTriangle, RefreshCw, FileText, Check, AlertCircle, FileSpreadsheet } from 'lucide-react';
 import api from '../services/api';
 
 export const AcademicImport = () => {
@@ -46,13 +46,55 @@ export const AcademicImport = () => {
     }
   };
 
-  const handleFileUpload = (e) => {
+  const handleFileUpload = async (e) => {
     const file = e.target.files[0];
-    if (file) {
-      setFileName(file.name);
+    if (!file) return;
+
+    setFileName(file.name);
+    const lowerName = file.name.toLowerCase();
+
+    if (lowerName.endsWith('.xlsx') || lowerName.endsWith('.xls')) {
+      // Excel File -> Send directly to backend upload endpoint for native POI parsing
+      try {
+        setLoadingPreview(true);
+        setNotification(null);
+        const formData = new FormData();
+        formData.append('file', file);
+        formData.append('type', importType);
+
+        const res = await api.post('/admin/import/upload', formData, {
+          headers: { 'Content-Type': 'multipart/form-data' },
+        });
+        if (res.data?.success) {
+          setPreview(res.data.data);
+          setNotification({ type: 'success', message: `Parsed ${file.name} successfully.` });
+        }
+      } catch (err) {
+        setNotification({ type: 'error', message: err.response?.data?.message || 'Failed to parse Excel file.' });
+      } finally {
+        setLoadingPreview(false);
+      }
+    } else {
+      // CSV File -> read text and preview
       const reader = new FileReader();
-      reader.onload = (event) => {
-        setCsvContent(event.target.result);
+      reader.onload = async (event) => {
+        const content = event.target.result;
+        setCsvContent(content);
+        try {
+          setLoadingPreview(true);
+          const res = await api.post('/admin/import/preview', {
+            type: importType,
+            csvContent: content,
+            fileName: file.name
+          });
+          if (res.data?.success) {
+            setPreview(res.data.data);
+          }
+        } catch (err) {
+          setNotification({ type: 'error', message: err.response?.data?.message || 'Failed to preview CSV' });
+        } finally {
+          setLoadingPreview(false);
+        }
       };
       reader.readAsText(file);
     }
@@ -60,7 +102,7 @@ export const AcademicImport = () => {
 
   const handlePreview = async () => {
     if (!csvContent.trim()) {
-      setNotification({ type: 'error', message: 'Please paste or upload CSV content first.' });
+      setNotification({ type: 'error', message: 'Please paste or upload CSV/Excel content first.' });
       return;
     }
     try {
@@ -75,7 +117,7 @@ export const AcademicImport = () => {
         setPreview(res.data.data);
       }
     } catch (err) {
-      setNotification({ type: 'error', message: err.response?.data?.message || 'Failed to generate CSV preview' });
+      setNotification({ type: 'error', message: err.response?.data?.message || 'Failed to generate preview' });
     } finally {
       setLoadingPreview(false);
     }
@@ -100,7 +142,7 @@ export const AcademicImport = () => {
         fetchBatches();
       }
     } catch (err) {
-      setNotification({ type: 'error', message: err.response?.data?.message || 'Commit failed.' });
+      setNotification({ type: 'error', message: err.response?.data?.message || 'Failed to commit import batch' });
     } finally {
       setCommitting(false);
     }
@@ -110,10 +152,9 @@ export const AcademicImport = () => {
     if (importType === 'MARKS') {
       setCsvContent(
 `student_email,subject_name,assessment_type,marks_obtained,max_marks,semester,academic_year
-student1@edupulse.local,Data Structures and Algorithms,MIDTERM,86.5,100,Fall,2025-2026
-student2@edupulse.local,Database Management Systems,QUIZ_1,17.5,20,Fall,2025-2026
-student3@edupulse.local,Web Technologies,ASSIGNMENT,48.0,50,Fall,2025-2026
-invalid.student@edupulse.local,Web Technologies,MIDTERM,70.0,100,Fall,2025-2026`
+student1@edupulse.local,Data Structures and Algorithms,MIDTERM,85.5,100,Fall,2025-2026
+student2@edupulse.local,Database Management Systems,QUIZ_1,18.0,20,Fall,2025-2026
+student3@edupulse.local,Web Technologies,ASSIGNMENT,45.0,50,Fall,2025-2026`
       );
     } else {
       setCsvContent(
@@ -131,7 +172,7 @@ student3@edupulse.local,Web Technologies,2025-10-15,EXCUSED`
       <div>
         <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-50 tracking-tight">Academic Records & Attendance Import</h1>
         <p className="text-gray-500 dark:text-gray-400 text-sm mt-1">
-          Import institutional academic marks and attendance records via validated CSV batches.
+          Import institutional academic marks and attendance records via validated CSV and Excel (.xlsx) batches.
         </p>
       </div>
 
@@ -153,8 +194,8 @@ student3@edupulse.local,Web Technologies,2025-10-15,EXCUSED`
               <button
                 type="button"
                 onClick={() => { setImportType('MARKS'); setPreview(null); }}
-                className={`px-4 py-1.5 rounded-lg text-sm font-medium transition-all ${
-                  importType === 'MARKS' ? 'bg-white/95 dark:bg-gray-900 backdrop-blur-xl text-indigo-700 dark:text-indigo-300 shadow-sm font-semibold' : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-50 dark:text-gray-50'
+                className={`px-4 py-1.5 rounded-lg text-sm font-medium transition-all cursor-pointer ${
+                  importType === 'MARKS' ? 'bg-white dark:bg-gray-900 text-indigo-700 dark:text-indigo-300 shadow-sm font-semibold' : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-50'
                 }`}
               >
                 Assessment Marks
@@ -162,8 +203,8 @@ student3@edupulse.local,Web Technologies,2025-10-15,EXCUSED`
               <button
                 type="button"
                 onClick={() => { setImportType('ATTENDANCE'); setPreview(null); }}
-                className={`px-4 py-1.5 rounded-lg text-sm font-medium transition-all ${
-                  importType === 'ATTENDANCE' ? 'bg-white/95 dark:bg-gray-900 backdrop-blur-xl text-indigo-700 dark:text-indigo-300 shadow-sm font-semibold' : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-50 dark:text-gray-50'
+                className={`px-4 py-1.5 rounded-lg text-sm font-medium transition-all cursor-pointer ${
+                  importType === 'ATTENDANCE' ? 'bg-white dark:bg-gray-900 text-indigo-700 dark:text-indigo-300 shadow-sm font-semibold' : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-50'
                 }`}
               >
                 Attendance Records
@@ -174,14 +215,14 @@ student3@edupulse.local,Web Technologies,2025-10-15,EXCUSED`
           <div className="flex items-center gap-3">
             <button
               onClick={handleDownloadTemplate}
-              className="inline-flex items-center gap-2 px-3.5 py-2 border border-gray-200 dark:border-gray-800 rounded-xl text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-slate-800/60 dark:bg-gray-950/70/70 transition-colors"
+              className="inline-flex items-center gap-2 px-3.5 py-2 border border-gray-200 dark:border-gray-800 rounded-xl text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-slate-800 transition-colors cursor-pointer"
             >
               <Download className="w-4 h-4 text-gray-500 dark:text-gray-400" />
               Download {importType} Template (.csv)
             </button>
             <button
               onClick={loadSampleData}
-              className="inline-flex items-center gap-2 px-3.5 py-2 bg-indigo-50 dark:bg-indigo-950/60 border border-indigo-100 dark:border-indigo-900/50 rounded-xl text-sm font-medium text-indigo-700 dark:text-indigo-300 hover:bg-indigo-100 transition-colors"
+              className="inline-flex items-center gap-2 px-3.5 py-2 bg-indigo-50 dark:bg-indigo-950/60 border border-indigo-100 dark:border-indigo-900/50 rounded-xl text-sm font-medium text-indigo-700 dark:text-indigo-300 hover:bg-indigo-100 transition-colors cursor-pointer"
             >
               <FileText className="w-4 h-4 text-indigo-600 dark:text-indigo-400" />
               Load Sample Data
@@ -192,61 +233,64 @@ student3@edupulse.local,Web Technologies,2025-10-15,EXCUSED`
         {/* Input Area */}
         <div className="space-y-4">
           <div className="flex items-center justify-between">
-            <label className="text-sm font-medium text-gray-700 dark:text-gray-300">CSV Content</label>
-            <label className="cursor-pointer text-sm font-medium text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:text-indigo-300">
-              <span>Choose CSV File</span>
-              <input type="file" accept=".csv" onChange={handleFileUpload} className="hidden" />
+            <label className="text-sm font-medium text-gray-700 dark:text-gray-300">File Upload (.csv or .xlsx)</label>
+            <label className="cursor-pointer inline-flex items-center gap-1.5 text-sm font-medium text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:text-indigo-300 bg-indigo-50 dark:bg-indigo-950/60 px-3 py-1.5 rounded-lg border border-indigo-200 dark:border-indigo-800">
+              <FileSpreadsheet className="w-4 h-4" />
+              <span>Choose CSV or Excel File</span>
+              <input type="file" accept=".csv,.xlsx,.xls,.tsv" onChange={handleFileUpload} className="hidden" />
             </label>
           </div>
 
           <textarea
-            rows={6}
+            rows={5}
             value={csvContent}
             onChange={(e) => setCsvContent(e.target.value)}
-            placeholder="Paste CSV rows here or upload a file..."
-            className="w-full font-mono text-xs p-3.5 border border-gray-200 dark:border-gray-800 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none"
+            placeholder="Paste CSV rows here or upload a CSV / Excel spreadsheet above..."
+            className="w-full font-mono text-xs p-3.5 border border-gray-200 dark:border-gray-800 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100"
           />
 
           <div className="flex justify-end">
             <button
               onClick={handlePreview}
               disabled={loadingPreview || !csvContent.trim()}
-              className="inline-flex items-center gap-2 px-5 py-2.5 bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50 text-white rounded-xl text-sm font-semibold shadow-sm transition-all"
+              className="inline-flex items-center gap-2 px-5 py-2.5 bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50 text-white rounded-xl text-sm font-semibold shadow-sm transition-all cursor-pointer"
             >
               {loadingPreview ? <RefreshCw className="w-4 h-4 animate-spin" /> : <UploadCloud className="w-4 h-4" />}
-              Validate & Preview CSV
+              Validate & Preview
             </button>
           </div>
         </div>
       </div>
 
-      {/* Preview Section */}
+      {/* Preview Table */}
       {preview && (
-        <div className="bg-white/95 dark:bg-gray-900 backdrop-blur-xl rounded-2xl border border-gray-200 dark:border-gray-800 p-6 shadow-sm space-y-6">
-          <div className="flex flex-wrap items-center justify-between gap-4 border-b border-gray-100 dark:border-gray-800 pb-5">
+        <div className="bg-white/95 dark:bg-gray-900 backdrop-blur-xl rounded-2xl border border-gray-200 dark:border-gray-800 p-6 shadow-sm space-y-4">
+          <div className="flex flex-wrap items-center justify-between gap-4">
             <div>
-              <h2 className="text-lg font-bold text-gray-900 dark:text-gray-50">Batch Preview & Pre-Commit Validation</h2>
-              <p className="text-sm text-gray-500 dark:text-gray-400 mt-0.5">
-                Total Rows: <span className="font-semibold text-slate-800 dark:text-gray-200">{preview.totalRows}</span> | Valid: <span className="font-semibold text-emerald-600">{preview.validRows}</span> | Invalid: <span className="font-semibold text-rose-600">{preview.invalidRows}</span>
-              </p>
+              <h2 className="text-lg font-bold text-gray-900 dark:text-gray-50">Pre-Commit Validation Preview</h2>
+              <div className="flex items-center gap-4 text-xs font-semibold mt-1">
+                <span className="text-gray-500 dark:text-gray-400">Total: {preview.totalRows}</span>
+                <span className="text-emerald-600">Valid: {preview.validRows}</span>
+                <span className="text-rose-600">Errors/Duplicates: {preview.invalidRows}</span>
+              </div>
             </div>
 
             <button
               onClick={handleCommit}
               disabled={committing || preview.validRows === 0}
-              className="inline-flex items-center gap-2 px-6 py-2.5 bg-emerald-600 hover:bg-emerald-700 disabled:opacity-50 text-white rounded-xl text-sm font-semibold shadow-sm transition-all"
+              className="inline-flex items-center gap-2 px-5 py-2.5 bg-emerald-600 hover:bg-emerald-700 disabled:opacity-50 text-white rounded-xl text-sm font-semibold shadow-sm transition-all cursor-pointer"
             >
               {committing ? <RefreshCw className="w-4 h-4 animate-spin" /> : <Check className="w-4 h-4" />}
-              Commit Valid Rows ({preview.validRows})
+              Commit {preview.validRows} Valid Records
             </button>
           </div>
 
           <div className="overflow-x-auto border border-gray-200 dark:border-gray-800 rounded-xl">
             <table className="w-full text-left text-sm">
-              <thead className="bg-gray-50 dark:bg-gray-950/70/70 text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase border-b border-gray-200 dark:border-gray-800">
+              <thead className="bg-gray-50 dark:bg-gray-950 text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase border-b border-gray-200 dark:border-gray-800">
                 <tr>
-                  <th className="px-4 py-3">Row #</th>
-                  <th className="px-4 py-3">Status</th>
+                  <th className="px-4 py-3">Row</th>
+                  <th className="px-4 py-3">Validation Status</th>
                   <th className="px-4 py-3">Student Email</th>
                   <th className="px-4 py-3">Subject</th>
                   {importType === 'MARKS' ? (
@@ -258,20 +302,24 @@ student3@edupulse.local,Web Technologies,2025-10-15,EXCUSED`
                   ) : (
                     <>
                       <th className="px-4 py-3">Date</th>
-                      <th className="px-4 py-3">Attendance</th>
+                      <th className="px-4 py-3">Status</th>
                     </>
                   )}
-                  <th className="px-4 py-3">Validation Message</th>
+                  <th className="px-4 py-3">Audit Details & Warnings</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-100">
+              <tbody className="divide-y divide-gray-200 dark:divide-gray-800">
                 {preview.rows.map((row) => (
-                  <tr key={row.rowNumber} className={row.valid ? 'hover:bg-gray-50 dark:hover:bg-slate-800/60/60' : 'bg-rose-50/40'}>
+                  <tr key={row.rowNumber} className="hover:bg-gray-50 dark:hover:bg-slate-800/50">
                     <td className="px-4 py-3 font-mono text-xs text-gray-500 dark:text-gray-400">{row.rowNumber}</td>
                     <td className="px-4 py-3">
                       {row.valid ? (
                         <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-emerald-50 dark:bg-emerald-950/50 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800/80">
                           <CheckCircle2 className="w-3.5 h-3.5" /> Valid
+                        </span>
+                      ) : row.duplicate ? (
+                        <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-amber-50 dark:bg-amber-950/50 text-amber-700 dark:text-amber-300 border border-amber-200 dark:border-amber-800/80">
+                          <AlertTriangle className="w-3.5 h-3.5" /> Duplicate
                         </span>
                       ) : (
                         <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-rose-50 dark:bg-rose-950/50 text-rose-700 dark:text-rose-300 border border-rose-200 dark:border-rose-800/80">
@@ -304,9 +352,13 @@ student3@edupulse.local,Web Technologies,2025-10-15,EXCUSED`
                     )}
                     <td className="px-4 py-3 text-xs">
                       {row.valid ? (
-                        <span className="text-emerald-600 font-medium">Ready for commit</span>
+                        row.warning ? (
+                          <span className="text-amber-600 dark:text-amber-400 font-medium">{row.warning}</span>
+                        ) : (
+                          <span className="text-emerald-600 dark:text-emerald-400 font-medium">Ready for commit</span>
+                        )
                       ) : (
-                        <span className="text-rose-600 font-medium">{row.error}</span>
+                        <span className="text-rose-600 dark:text-rose-400 font-medium">{row.error}</span>
                       )}
                     </td>
                   </tr>
@@ -323,7 +375,7 @@ student3@edupulse.local,Web Technologies,2025-10-15,EXCUSED`
           <h2 className="text-lg font-bold text-gray-900 dark:text-gray-50">Import Batch Audit History</h2>
           <button
             onClick={fetchBatches}
-            className="p-1.5 text-gray-400 hover:text-gray-600 dark:text-gray-400 rounded-lg hover:bg-gray-100 dark:hover:bg-slate-800/80 dark:bg-gray-800/80 transition-colors"
+            className="p-1.5 text-gray-400 hover:text-gray-600 dark:text-gray-400 rounded-lg hover:bg-gray-100 dark:hover:bg-slate-800 transition-colors cursor-pointer"
           >
             <RefreshCw className={`w-4 h-4 ${loadingBatches ? 'animate-spin' : ''}`} />
           </button>
@@ -336,7 +388,7 @@ student3@edupulse.local,Web Technologies,2025-10-15,EXCUSED`
         ) : (
           <div className="overflow-x-auto border border-gray-200 dark:border-gray-800 rounded-xl">
             <table className="w-full text-left text-sm">
-              <thead className="bg-gray-50 dark:bg-gray-950/70/70 text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase border-b border-gray-200 dark:border-gray-800">
+              <thead className="bg-gray-50 dark:bg-gray-950 text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase border-b border-gray-200 dark:border-gray-800">
                 <tr>
                   <th className="px-4 py-3">Batch ID</th>
                   <th className="px-4 py-3">File Name</th>
@@ -347,9 +399,9 @@ student3@edupulse.local,Web Technologies,2025-10-15,EXCUSED`
                   <th className="px-4 py-3">Uploaded At</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-100">
+              <tbody className="divide-y divide-gray-200 dark:divide-gray-800">
                 {batches.map((b) => (
-                  <tr key={b.id} className="hover:bg-gray-50 dark:hover:bg-slate-800/60/60">
+                  <tr key={b.id} className="hover:bg-gray-50 dark:hover:bg-slate-800/50">
                     <td className="px-4 py-3 font-mono text-xs font-semibold text-gray-700 dark:text-gray-300">#{b.id}</td>
                     <td className="px-4 py-3 text-slate-800 dark:text-gray-200 font-medium">{b.fileName}</td>
                     <td className="px-4 py-3">
@@ -361,8 +413,8 @@ student3@edupulse.local,Web Technologies,2025-10-15,EXCUSED`
                       </span>
                     </td>
                     <td className="px-4 py-3 text-gray-600 dark:text-gray-400">{b.totalRows}</td>
-                    <td className="px-4 py-3 font-medium text-emerald-600">{b.successfulRows}</td>
-                    <td className="px-4 py-3 font-medium text-rose-600">{b.failedRows}</td>
+                    <td className="px-4 py-3 font-semibold text-emerald-600 dark:text-emerald-400">{b.successfulRows}</td>
+                    <td className="px-4 py-3 font-semibold text-rose-600 dark:text-rose-400">{b.failedRows}</td>
                     <td className="px-4 py-3 text-gray-500 dark:text-gray-400 text-xs">
                       {new Date(b.createdAt).toLocaleString()}
                     </td>

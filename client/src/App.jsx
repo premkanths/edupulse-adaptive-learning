@@ -35,6 +35,7 @@ import { ClassAnalytics } from './pages/ClassAnalytics';
 
 // Phases 6 to 10 Pages
 import { AcademicImport } from './pages/AcademicImport';
+import { CourseMaterials } from './pages/CourseMaterials';
 import { AtRiskStudents } from './pages/AtRiskStudents';
 import { ResearchEvaluation } from './pages/ResearchEvaluation';
 import { StudentProfilePrivacy } from './pages/StudentProfilePrivacy';
@@ -213,6 +214,14 @@ export default function App() {
               element={
                 <ProtectedRoute allowedRoles={['TEACHER']}>
                   <Layout><AiQuizGenerator /></Layout>
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/teacher/materials"
+              element={
+                <ProtectedRoute allowedRoles={['TEACHER', 'ADMIN']}>
+                  <Layout><CourseMaterials /></Layout>
                 </ProtectedRoute>
               }
             />

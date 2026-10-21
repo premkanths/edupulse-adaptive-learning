@@ -4,16 +4,25 @@ import com.edupulse.dto.ImportDto.*;
 import com.edupulse.entity.*;
 import com.edupulse.repository.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.poi.ss.usermodel.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.StringReader;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.util.*;
 
 @Service
 public class AcademicImportService {
+
+    private static final Logger log = LoggerFactory.getLogger(AcademicImportService.class);
 
     private final UserRepository userRepository;
     private final SubjectRepository subjectRepository;
@@ -49,14 +58,41 @@ public class AcademicImportService {
                "student3@edupulse.local,Web Technologies,ASSIGNMENT,45.0,50,Fall,2025-2026\n";
     }
 
+    public ImportPreviewResponse previewFile(MultipartFile file, String type) {
+        ImportPreviewResponse response = new ImportPreviewResponse();
+        response.setType(type);
+        String fileName = file.getOriginalFilename() != null ? file.getOriginalFilename() : "import_file";
+        response.setFileName(fileName);
+
+        List<ImportRowResult> rows = new ArrayList<>();
+        String lowerName = fileName.toLowerCase();
+
+        try {
+            if (lowerName.endsWith(".xlsx") || lowerName.endsWith(".xls")) {
+                rows = parseExcelFile(file.getInputStream(), type);
+            } else {
+                rows = parseCsvStream(file.getInputStream(), type);
+            }
+        } catch (Exception e) {
+            log.error("Failed to parse uploaded import file {}: {}", fileName, e.getMessage());
+            ImportRowResult errRow = new ImportRowResult();
+            errRow.setRowNumber(0);
+            errRow.setValid(false);
+            errRow.setError("File parsing error: " + e.getMessage());
+            rows.add(errRow);
+        }
+
+        applyDuplicateAndDatabaseChecks(rows, type);
+        finalizePreviewStats(response, rows);
+        return response;
+    }
+
     public ImportPreviewResponse previewCsv(ImportPreviewRequest request) {
         ImportPreviewResponse response = new ImportPreviewResponse();
         response.setType(request.getType());
         response.setFileName(request.getFileName() != null ? request.getFileName() : "import.csv");
 
         List<ImportRowResult> rows = new ArrayList<>();
-        int validCount = 0;
-        int invalidCount = 0;
 
         try (BufferedReader reader = new BufferedReader(new StringReader(request.getCsvContent()))) {
             String line;
@@ -65,7 +101,7 @@ public class AcademicImportService {
                 lineNum++;
                 line = line.trim();
                 if (line.isEmpty() || lineNum == 1) {
-                    continue; // Skip header
+                    continue; // Skip empty lines & header
                 }
 
                 String[] cols = line.split(",", -1);
@@ -77,12 +113,6 @@ public class AcademicImportService {
                 } else {
                     parseMarksRow(cols, row);
                 }
-
-                if (row.isValid()) {
-                    validCount++;
-                } else {
-                    invalidCount++;
-                }
                 rows.add(row);
             }
         } catch (Exception e) {
@@ -91,14 +121,132 @@ public class AcademicImportService {
             errRow.setValid(false);
             errRow.setError("CSV parsing error: " + e.getMessage());
             rows.add(errRow);
-            invalidCount++;
         }
 
+        applyDuplicateAndDatabaseChecks(rows, request.getType());
+        finalizePreviewStats(response, rows);
+        return response;
+    }
+
+    private List<ImportRowResult> parseCsvStream(InputStream is, String type) throws Exception {
+        List<ImportRowResult> rows = new ArrayList<>();
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8))) {
+            String line;
+            int lineNum = 0;
+            while ((line = reader.readLine()) != null) {
+                lineNum++;
+                line = line.trim();
+                if (line.isEmpty() || lineNum == 1) {
+                    continue;
+                }
+                String[] cols = line.split(",", -1);
+                ImportRowResult row = new ImportRowResult();
+                row.setRowNumber(lineNum);
+                if ("ATTENDANCE".equalsIgnoreCase(type)) {
+                    parseAttendanceRow(cols, row);
+                } else {
+                    parseMarksRow(cols, row);
+                }
+                rows.add(row);
+            }
+        }
+        return rows;
+    }
+
+    private List<ImportRowResult> parseExcelFile(InputStream is, String type) throws Exception {
+        List<ImportRowResult> rows = new ArrayList<>();
+        try (Workbook workbook = WorkbookFactory.create(is)) {
+            Sheet sheet = workbook.getSheetAt(0);
+            DataFormatter formatter = new DataFormatter();
+
+            int lineNum = 0;
+            for (Row poiRow : sheet) {
+                lineNum++;
+                if (lineNum == 1) continue; // Skip header
+
+                List<String> colList = new ArrayList<>();
+                for (int c = 0; c < poiRow.getLastCellNum(); c++) {
+                    Cell cell = poiRow.getCell(c, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK);
+                    colList.add(formatter.formatCellValue(cell).trim());
+                }
+
+                if (colList.stream().allMatch(String::isEmpty)) continue;
+
+                String[] cols = colList.toArray(new String[0]);
+                ImportRowResult row = new ImportRowResult();
+                row.setRowNumber(lineNum);
+
+                if ("ATTENDANCE".equalsIgnoreCase(type)) {
+                    parseAttendanceRow(cols, row);
+                } else {
+                    parseMarksRow(cols, row);
+                }
+                rows.add(row);
+            }
+        }
+        return rows;
+    }
+
+    private void applyDuplicateAndDatabaseChecks(List<ImportRowResult> rows, String type) {
+        Set<String> seenKeys = new HashSet<>();
+        boolean isAttendance = "ATTENDANCE".equalsIgnoreCase(type);
+
+        for (ImportRowResult row : rows) {
+            if (!row.isValid()) continue;
+
+            String studentEmail = row.getStudentEmail() != null ? row.getStudentEmail().toLowerCase() : "";
+            String subjectName = row.getSubjectName() != null ? row.getSubjectName().toLowerCase() : "";
+
+            // 1. In-batch Duplicate Detection
+            String batchKey = isAttendance
+                    ? studentEmail + "|" + subjectName + "|" + row.getAttendanceDate()
+                    : studentEmail + "|" + subjectName + "|" + (row.getAssessmentType() != null ? row.getAssessmentType().toLowerCase() : "");
+
+            if (!seenKeys.add(batchKey)) {
+                row.setValid(false);
+                row.setDuplicate(true);
+                row.setError("Duplicate record within upload batch: Already defined in an earlier row.");
+                continue;
+            }
+
+            // 2. Database Duplicate Warning
+            try {
+                User student = userRepository.findByEmail(row.getStudentEmail()).orElse(null);
+                Subject subject = findSubjectForgiving(row.getSubjectName()).orElse(null);
+                if (student != null && subject != null) {
+                    if (isAttendance && row.getAttendanceDate() != null) {
+                        LocalDate date = LocalDate.parse(row.getAttendanceDate());
+                        List<AttendanceRecord> existing = attendanceRecordRepository.findByStudentId(student.getId());
+                        boolean dbDuplicate = existing.stream().anyMatch(a ->
+                                a.getSubject().getId().equals(subject.getId()) && a.getAttendanceDate().equals(date));
+                        if (dbDuplicate) {
+                            row.setWarning("Record for date " + date + " already exists in system (will record additional session).");
+                        }
+                    } else if (!isAttendance && row.getAssessmentType() != null) {
+                        List<AcademicRecord> existing = academicRecordRepository.findByStudentId(student.getId());
+                        boolean dbDuplicate = existing.stream().anyMatch(a ->
+                                a.getSubject().getId().equals(subject.getId()) &&
+                                a.getAssessmentName().equalsIgnoreCase(row.getAssessmentType()));
+                        if (dbDuplicate) {
+                            row.setWarning("Assessment '" + row.getAssessmentType() + "' already exists in database for this student.");
+                        }
+                    }
+                }
+            } catch (Exception ignored) {}
+        }
+    }
+
+    private void finalizePreviewStats(ImportPreviewResponse response, List<ImportRowResult> rows) {
+        int validCount = 0;
+        int invalidCount = 0;
+        for (ImportRowResult r : rows) {
+            if (r.isValid()) validCount++;
+            else invalidCount++;
+        }
         response.setTotalRows(rows.size());
         response.setValidRows(validCount);
         response.setInvalidRows(invalidCount);
         response.setRows(rows);
-        return response;
     }
 
     private void parseMarksRow(String[] cols, ImportRowResult row) {

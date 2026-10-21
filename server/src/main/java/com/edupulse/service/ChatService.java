@@ -5,6 +5,8 @@ import com.edupulse.exception.BadRequestException;
 import com.edupulse.exception.ResourceNotFoundException;
 import com.edupulse.exception.UnauthorizedException;
 import com.edupulse.repository.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,25 +17,30 @@ import java.util.stream.Collectors;
 @Service
 public class ChatService {
 
+    private static final Logger log = LoggerFactory.getLogger(ChatService.class);
+
     private final ChatSessionRepository chatSessionRepository;
     private final ChatMessageRepository chatMessageRepository;
     private final TopicMasteryRepository topicMasteryRepository;
     private final SubjectRepository subjectRepository;
     private final AttemptRepository attemptRepository;
     private final AiClientService aiClientService;
+    private final CourseMaterialService courseMaterialService;
 
     public ChatService(ChatSessionRepository chatSessionRepository,
                        ChatMessageRepository chatMessageRepository,
                        TopicMasteryRepository topicMasteryRepository,
                        SubjectRepository subjectRepository,
                        AttemptRepository attemptRepository,
-                       AiClientService aiClientService) {
+                       AiClientService aiClientService,
+                       CourseMaterialService courseMaterialService) {
         this.chatSessionRepository = chatSessionRepository;
         this.chatMessageRepository = chatMessageRepository;
         this.topicMasteryRepository = topicMasteryRepository;
         this.subjectRepository = subjectRepository;
         this.attemptRepository = attemptRepository;
         this.aiClientService = aiClientService;
+        this.courseMaterialService = courseMaterialService;
     }
 
     @Transactional
@@ -74,6 +81,11 @@ public class ChatService {
 
     @Transactional
     public ChatMessage sendMessage(Long sessionId, User student, String userMessage) {
+        return sendMessage(sessionId, student, userMessage, "EXPLANATORY", null);
+    }
+
+    @Transactional
+    public ChatMessage sendMessage(Long sessionId, User student, String userMessage, String tutoringMode, Long subjectId) {
         if (userMessage == null || userMessage.trim().isEmpty()) {
             throw new BadRequestException("Message content cannot be empty.");
         }
@@ -85,6 +97,13 @@ public class ChatService {
             throw new UnauthorizedException("You are not authorized to interact with this chat session.");
         }
 
+        // Rate limiting: max 60 queries in the last hour
+        LocalDateTime oneHourAgo = LocalDateTime.now().minusHours(1);
+        long recentCount = chatMessageRepository.countBySessionStudentIdAndCreatedAtAfter(student.getId(), oneHourAgo);
+        if (recentCount >= 60) {
+            throw new BadRequestException("Hourly rate limit reached (60 messages/hr). Please review your current notes and retry shortly.");
+        }
+
         // 1. Save Student Message
         ChatMessage userMsg = new ChatMessage(session, ChatMessage.Role.USER, userMessage.trim());
         chatMessageRepository.save(userMsg);
@@ -92,7 +111,42 @@ public class ChatService {
         // 2. Prepare Authorized Personalized Student Context
         String personalizedContext = buildStudentContext(student);
 
-        // 3. Build Bounded Conversation History (last 8 messages)
+        // 3. RAG Passage Retrieval from Authorized Teacher Course Materials
+        List<Long> targetSubjectIds = new ArrayList<>();
+        if (subjectId != null) {
+            targetSubjectIds.add(subjectId);
+        } else {
+            List<TopicMastery> masteries = topicMasteryRepository.findByStudentId(student.getId());
+            targetSubjectIds = masteries.stream()
+                    .map(m -> m.getTopic().getSubject().getId())
+                    .distinct()
+                    .collect(Collectors.toList());
+        }
+
+        List<Map<String, Object>> retrievedChunks = Collections.emptyList();
+        try {
+            retrievedChunks = courseMaterialService.retrieveRelevantPassages(userMessage, targetSubjectIds, 3);
+        } catch (Exception ex) {
+            log.warn("RAG passage retrieval encountered non-fatal error: {}", ex.getMessage());
+        }
+
+        StringBuilder ragContext = new StringBuilder();
+        StringBuilder citationsFooter = new StringBuilder();
+        if (!retrievedChunks.isEmpty()) {
+            ragContext.append("\nOFFICIAL COURSE MATERIALS (UPLOADED BY INSTRUCTORS):\n");
+            citationsFooter.append("\n\n---\n**Referenced Course Notes:**\n");
+            for (Map<String, Object> chunk : retrievedChunks) {
+                String title = (String) chunk.get("materialTitle");
+                String subjectName = (String) chunk.get("subjectName");
+                int chunkIdx = (int) chunk.get("chunkIndex");
+                String snippet = (String) chunk.get("snippet");
+
+                ragContext.append(String.format("- [%s - %s (Section %d)]: %s\n\n", subjectName, title, chunkIdx, snippet));
+                citationsFooter.append(String.format("- 📄 *%s* (%s, Section %d)\n", title, subjectName, chunkIdx));
+            }
+        }
+
+        // 4. Build Bounded Conversation History (last 8 messages)
         List<ChatMessage> previousMessages = chatMessageRepository.findBySessionIdOrderByCreatedAtAsc(sessionId);
         StringBuilder conversationHistory = new StringBuilder();
         int startIndex = Math.max(0, previousMessages.size() - 8);
@@ -101,23 +155,35 @@ public class ChatService {
             conversationHistory.append(m.getRole().name()).append(": ").append(m.getContent()).append("\n");
         }
 
+        boolean isSocratic = "SOCRATIC".equalsIgnoreCase(tutoringMode);
+
         String systemPrompt = "You are EduPulse's AI Study Assistant, a dedicated academic tutor.\n" +
                 "You are helping " + student.getName() + ".\n\n" +
                 "STUDENT'S LIVE LEARNING CONTEXT:\n" +
                 personalizedContext + "\n\n" +
-                "TUTORING INSTRUCTIONS:\n" +
-                "1. Address student questions with pedagogical clarity, encouraging tone, and clear conceptual explanations.\n" +
-                "2. When discussing their performance, cite their actual mastery and weak topics from the context above.\n" +
-                "3. Never fabricate quiz scores or invent topics that are not in their profile.\n" +
-                "4. Suggest practical study steps and practice strategies for their weak areas.\n" +
-                "5. Keep responses concise, structured with Markdown headings and bullet points where helpful.";
+                (ragContext.length() > 0 ? ragContext.toString() + "\n" : "") +
+                "TUTORING MODE: " + (isSocratic ? "SOCRATIC GUIDED LEARNING" : "EXPLANATORY ACADEMIC TUTORING") + "\n\n" +
+                "INSTRUCTIONS:\n" +
+                (isSocratic
+                        ? "1. SOCRATIC METHOD: Do NOT give the direct final answer immediately. Ask 1-2 targeted thought-provoking questions or give subtle conceptual hints to help the student derive the answer.\n" +
+                          "2. Encourage reasoning through the prerequisite principles.\n"
+                        : "1. EXPLANATORY METHOD: Provide clear, structured, step-by-step conceptual explanations with illustrative examples.\n") +
+                "2. When relevant course materials are provided above, ground your answers in them and cite the lecture title.\n" +
+                "3. Cite weak/strong topics from their learning profile when advising what to practice.\n" +
+                "4. Never fabricate quiz scores or invent topics outside their syllabus.\n" +
+                "5. Keep responses concise, formatted in clean Markdown with bullet points where helpful.";
 
         String fullPrompt = "Previous Conversation:\n" + conversationHistory + "\nStudent: " + userMessage;
 
-        // 4. Execute AI Generation (Gemini -> Groq -> Ollama -> Offline Fallback)
+        // 5. Execute AI Generation (Gemini -> Groq -> Ollama -> Offline Fallback)
         String aiReply = aiClientService.executePrompt(systemPrompt, fullPrompt);
 
-        // 5. Save Assistant Message
+        // Append citations footer if relevant materials were retrieved and not already in text
+        if (citationsFooter.length() > 0 && !aiReply.contains("Referenced Course Notes")) {
+            aiReply += citationsFooter.toString();
+        }
+
+        // 6. Save Assistant Message
         ChatMessage assistantMsg = new ChatMessage(session, ChatMessage.Role.ASSISTANT, aiReply);
         ChatMessage savedReply = chatMessageRepository.save(assistantMsg);
 

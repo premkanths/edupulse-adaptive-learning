@@ -15,7 +15,7 @@ export const TeacherQuizzes = () => {
   const [showAssignModal, setShowAssignModal] = useState(false);
   const [selectedQuiz, setSelectedQuiz] = useState(null);
 
-  // Form states
+// Form states
   const [title, setTitle] = useState('');
   const [subjectId, setSubjectId] = useState('');
   const [timeLimitMinutes, setTimeLimitMinutes] = useState(20);
@@ -183,7 +183,7 @@ export const TeacherQuizzes = () => {
                   value={selectedClassId}
                   onChange={(e) => setSelectedClassId(e.target.value)}
                   required
-                  className="w-full py-2 px-3 border border-gray-200 dark:border-gray-800 rounded-xl bg-gray-50 dark:bg-gray-950/70/70 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  className="w-full py-2 px-3 border border-gray-200 dark:border-gray-800 rounded-xl bg-gray-50 dark:bg-gray-950/ focus:outline-none focus:ring-2 focus:ring-indigo-500"
                 >
                   {classes.map((c) => (
                     <option key={c.id} value={c.id}>{c.name}</option>

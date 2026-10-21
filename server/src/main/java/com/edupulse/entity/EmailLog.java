@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 public class EmailLog {
 
     public enum Status {
-        SENT, DRY_RUN, FAILED
+        SENT, DRY_RUN, FAILED, SKIPPED_PREFERENCE
     }
 
     @Id

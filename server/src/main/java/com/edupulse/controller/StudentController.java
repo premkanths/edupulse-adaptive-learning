@@ -251,14 +251,22 @@ public class StudentController {
     }
 
     @PostMapping("/chat/sessions/{sessionId}/messages")
-    @Operation(summary = "Send question to AI study assistant with personalized learning context")
+    @Operation(summary = "Send question to AI study assistant with personalized learning context, RAG grounding, and Socratic mode")
     public ResponseEntity<ApiResponse<ChatMessage>> sendChatMessage(
             @PathVariable Long sessionId,
             @RequestBody Map<String, String> payload,
             @AuthenticationPrincipal UserPrincipal userPrincipal) {
         User student = getStudentUser(userPrincipal);
         String message = payload.get("message");
-        ChatMessage reply = chatService.sendMessage(sessionId, student, message);
+        String tutoringMode = payload.getOrDefault("tutoringMode", "EXPLANATORY");
+        Long subjectId = null;
+        if (payload.containsKey("subjectId") && payload.get("subjectId") != null && !payload.get("subjectId").trim().isEmpty()) {
+            try {
+                subjectId = Long.parseLong(payload.get("subjectId").trim());
+            } catch (NumberFormatException ignored) {}
+        }
+
+        ChatMessage reply = chatService.sendMessage(sessionId, student, message, tutoringMode, subjectId);
         return ResponseEntity.ok(ApiResponse.success("Assistant reply received", reply));
     }
 
@@ -388,6 +396,25 @@ public class StudentController {
         UserConsent.ConsentStatus status = UserConsent.ConsentStatus.valueOf(statusStr.toUpperCase());
         UserConsent consent = privacyConsentService.updateConsent(userPrincipal.getId(), status);
         return ResponseEntity.ok(ApiResponse.success("Consent preferences updated", consent));
+    }
+
+    @GetMapping("/export-my-data")
+    @Operation(summary = "Export complete student academic, attempt, mastery, and profile data (GDPR/FERPA Data Portability)")
+    public ResponseEntity<ApiResponse<Map<String, Object>>> exportMyData(
+            @AuthenticationPrincipal UserPrincipal userPrincipal) {
+        Long studentId = userPrincipal.getId();
+        Map<String, Object> exportPackage = new LinkedHashMap<>();
+        exportPackage.put("exportedAt", java.time.LocalDateTime.now().toString());
+        exportPackage.put("compliance", "GDPR Article 20 / FERPA Data Portability Archive");
+        exportPackage.put("profile", userService.getUserById(studentId));
+        exportPackage.put("consent", privacyConsentService.getConsent(studentId));
+        exportPackage.put("academicOverview", academicImportService.getStudentAcademicOverview(studentId));
+        exportPackage.put("topicMasteries", topicMasteryService.getStudentMastery(studentId));
+        exportPackage.put("quizAttempts", attemptService.getStudentAttempts(studentId));
+        exportPackage.put("externalProfiles", externalProfileService.getStudentProfiles(studentId));
+        exportPackage.put("weeklySummaries", weeklySummaryService.getStudentSummaries(studentId));
+
+        return ResponseEntity.ok(ApiResponse.success("Student data export package generated successfully", exportPackage));
     }
 
     @PostMapping("/delete-my-data")

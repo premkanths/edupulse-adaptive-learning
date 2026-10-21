@@ -63,7 +63,7 @@ export const AdminReports = () => {
         </div>
         <button
           onClick={fetchReportData}
-          className="inline-flex items-center gap-1.5 px-3.5 py-2 border border-gray-200 dark:border-gray-800 rounded-xl text-xs font-semibold text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-slate-800/60 dark:bg-gray-950/70/70"
+          className="inline-flex items-center gap-1.5 px-3.5 py-2 border border-gray-200 dark:border-gray-800 rounded-xl text-xs font-semibold text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-slate-800/60 dark:bg-gray-950/"
         >
           <RefreshCw className={`w-3.5 h-3.5 ${loading ? 'animate-spin' : ''}`} />
           Refresh Metrics
@@ -172,7 +172,7 @@ export const AdminReports = () => {
         <h2 className="text-base font-bold text-gray-900 dark:text-gray-50">Enrolled Student Roster ({students.length})</h2>
         <div className="overflow-x-auto border border-gray-200 dark:border-gray-800 rounded-xl">
           <table className="w-full text-left text-sm">
-            <thead className="bg-gray-50 dark:bg-gray-950/70/70 text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase border-b border-gray-200 dark:border-gray-800">
+            <thead className="bg-gray-50 dark:bg-gray-950/ text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase border-b border-gray-200 dark:border-gray-800">
               <tr>
                 <th className="px-4 py-3">Student ID</th>
                 <th className="px-4 py-3">Name</th>
@@ -183,7 +183,7 @@ export const AdminReports = () => {
             </thead>
             <tbody className="divide-y divide-slate-100">
               {students.map((s) => (
-                <tr key={s.id} className="hover:bg-gray-50 dark:hover:bg-slate-800/60/60">
+                <tr key={s.id} className="hover:bg-gray-50 dark:hover:bg-slate-800/">
                   <td className="px-4 py-3 font-mono text-xs font-bold text-gray-600 dark:text-gray-400">#{s.id}</td>
                   <td className="px-4 py-3 font-medium text-gray-900 dark:text-gray-50 text-xs">{s.name}</td>
                   <td className="px-4 py-3 text-xs text-gray-600 dark:text-gray-400">{s.email}</td>

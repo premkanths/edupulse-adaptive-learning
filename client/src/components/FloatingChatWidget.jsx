@@ -17,7 +17,7 @@ export const FloatingChatWidget = () => {
   const [loading, setLoading] = useState(false);
   const [sessionId, setSessionId] = useState(null);
 
-  // Only render for students
+// Only render for students
   if (role !== 'STUDENT') return null;
 
   const handleSend = async (e) => {

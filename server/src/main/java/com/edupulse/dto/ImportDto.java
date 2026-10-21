@@ -32,6 +32,8 @@ public class ImportDto {
         private String academicYear;
         private String attendanceDate;
         private String attendanceStatus;
+        private boolean duplicate;
+        private String warning;
 
         public int getRowNumber() { return rowNumber; }
         public void setRowNumber(int rowNumber) { this.rowNumber = rowNumber; }
@@ -39,6 +41,10 @@ public class ImportDto {
         public void setValid(boolean valid) { this.valid = valid; }
         public String getError() { return error; }
         public void setError(String error) { this.error = error; }
+        public boolean isDuplicate() { return duplicate; }
+        public void setDuplicate(boolean duplicate) { this.duplicate = duplicate; }
+        public String getWarning() { return warning; }
+        public void setWarning(String warning) { this.warning = warning; }
         public String getStudentEmail() { return studentEmail; }
         public void setStudentEmail(String studentEmail) { this.studentEmail = studentEmail; }
         public String getStudentName() { return studentName; }

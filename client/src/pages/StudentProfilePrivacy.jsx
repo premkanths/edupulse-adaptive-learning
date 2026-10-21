@@ -13,16 +13,17 @@ import {
   Trash2,
   Star,
   ExternalLink,
-  Award
+  Award,
+  Download
 } from 'lucide-react';
 import api from '../services/api';
 import { useAuth } from '../context/AuthContext';
 
 export const StudentProfilePrivacy = () => {
   const { user, logout } = useAuth();
-  const [activeTab, setActiveTab] = useState('ACADEMIC'); // ACADEMIC, WEEKLY, EXTERNAL, SURVEY, PRIVACY
+  const [activeTab, setActiveTab] = useState('ACADEMIC') // ACADEMIC, WEEKLY, EXTERNAL, SURVEY, PRIVACY
 
-  // Data states
+// Data states
   const [academicData, setAcademicData] = useState(null);
   const [weeklySummaries, setWeeklySummaries] = useState([]);
   const [externalProfiles, setExternalProfiles] = useState([]);
@@ -30,7 +31,7 @@ export const StudentProfilePrivacy = () => {
   const [consent, setConsent] = useState(null);
   const [survey, setSurvey] = useState(null);
 
-  // Form states
+// Form states
   const [githubUser, setGithubUser] = useState('');
   const [leetcodeUser, setLeetcodeUser] = useState('');
   const [hackerrankUser, setHackerrankUser] = useState('');
@@ -141,6 +142,27 @@ export const StudentProfilePrivacy = () => {
     }
   };
 
+  const handleExportMyData = async () => {
+    try {
+      setNotification(null);
+      const res = await api.get('/student/export-my-data');
+      if (res.data?.success) {
+        const jsonStr = JSON.stringify(res.data.data, null, 2);
+        const blob = new Blob([jsonStr], { type: 'application/json' });
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `edupulse_data_archive_${user?.id || 'student'}.json`;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        setNotification({ type: 'success', message: 'Personal data archive downloaded successfully (GDPR Article 20 / FERPA Data Portability).' });
+      }
+    } catch (err) {
+      setNotification({ type: 'error', message: 'Failed to export personal data archive.' });
+    }
+  };
+
   const handleDeleteMyData = async () => {
     try {
       await api.post('/student/delete-my-data');
@@ -248,7 +270,7 @@ export const StudentProfilePrivacy = () => {
             ) : (
               <div className="overflow-x-auto border border-gray-200 dark:border-gray-800 rounded-xl">
                 <table className="w-full text-left text-sm">
-                  <thead className="bg-gray-50 dark:bg-gray-950/70/70 text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase border-b border-gray-200 dark:border-gray-800">
+                  <thead className="bg-gray-50 dark:bg-gray-950/ text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase border-b border-gray-200 dark:border-gray-800">
                     <tr>
                       <th className="px-4 py-3">Subject</th>
                       <th className="px-4 py-3">Assessment</th>
@@ -261,7 +283,7 @@ export const StudentProfilePrivacy = () => {
                   </thead>
                   <tbody className="divide-y divide-slate-100">
                     {academicData?.marksRecords?.map((m) => (
-                      <tr key={m.id} className="hover:bg-gray-50 dark:hover:bg-slate-800/60/60">
+                      <tr key={m.id} className="hover:bg-gray-50 dark:hover:bg-slate-800/">
                         <td className="px-4 py-3 font-medium text-gray-900 dark:text-gray-50">{m.subject?.name}</td>
                         <td className="px-4 py-3 font-mono text-xs text-gray-700 dark:text-gray-300">{m.assessmentName}</td>
                         <td className="px-4 py-3 font-semibold text-indigo-700 dark:text-indigo-300">{m.marksObtained}</td>
@@ -360,7 +382,7 @@ export const StudentProfilePrivacy = () => {
                 const snap = p ? parseSnapshot(p.snapshotJson) : null;
                 if (!snap) return null;
                 return (
-                  <div className="p-3 bg-gray-50 dark:bg-gray-950/70/70 rounded-xl border border-gray-200 dark:border-gray-800 text-xs space-y-1.5 text-gray-700 dark:text-gray-300">
+                  <div className="p-3 bg-gray-50 dark:bg-gray-950/ rounded-xl border border-gray-200 dark:border-gray-800 text-xs space-y-1.5 text-gray-700 dark:text-gray-300">
                     <p><strong>Public Repos:</strong> {snap.publicRepos}</p>
                     <p><strong>Followers:</strong> {snap.followers}</p>
                     {snap.topLanguages && <p><strong>Languages:</strong> {snap.topLanguages.join(', ')}</p>}
@@ -567,6 +589,28 @@ export const StudentProfilePrivacy = () => {
             </p>
           </div>
 
+          {/* GDPR / FERPA Data Portability Export Card */}
+          <div className="bg-white/95 dark:bg-gray-900 backdrop-blur-xl rounded-2xl border border-gray-200 dark:border-gray-800 p-6 shadow-sm space-y-4">
+            <div className="flex items-start justify-between gap-4">
+              <div className="flex items-start gap-3">
+                <FileText className="w-5 h-5 text-indigo-600 dark:text-indigo-400 shrink-0 mt-0.5" />
+                <div>
+                  <h3 className="text-base font-bold text-gray-900 dark:text-gray-50">Data Portability Archive (GDPR Article 20 / FERPA)</h3>
+                  <p className="text-xs text-gray-600 dark:text-gray-400 mt-1 leading-relaxed">
+                    Download an authentic, structured JSON export archive containing your complete learning history: user profile, academic marks, attendance records, topic mastery levels, quiz attempts, and privacy preferences.
+                  </p>
+                </div>
+              </div>
+              <button
+                onClick={handleExportMyData}
+                className="px-4 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-semibold shadow-sm transition-all flex items-center gap-1.5 shrink-0 cursor-pointer"
+              >
+                <Download className="w-4 h-4" />
+                Export My Data Archive (.json)
+              </button>
+            </div>
+          </div>
+
           {/* Right to be Forgotten (Data Deletion) */}
           <div className="bg-rose-50/40 rounded-2xl border border-rose-200 dark:border-rose-800/80 p-6 shadow-sm space-y-4">
             <div className="flex items-start gap-3">
@@ -603,7 +647,7 @@ export const StudentProfilePrivacy = () => {
             <div className="flex justify-end gap-3 pt-2">
               <button
                 onClick={() => setShowDeleteModal(false)}
-                className="px-4 py-2 border border-gray-200 dark:border-gray-800 rounded-xl text-xs font-semibold text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-slate-800/60 dark:bg-gray-950/70/70"
+                className="px-4 py-2 border border-gray-200 dark:border-gray-800 rounded-xl text-xs font-semibold text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-slate-800/60 dark:bg-gray-950/"
               >
                 Cancel
               </button>

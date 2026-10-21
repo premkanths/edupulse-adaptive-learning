@@ -15,7 +15,7 @@ export const Login = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  // Read role context from query params: /login?role=STUDENT | TEACHER | ADMIN
+// Read role context from query params: /login?role=STUDENT | TEACHER | ADMIN
   const searchParams = new URLSearchParams(location.search);
   const requestedRole = (searchParams.get('role') || 'STUDENT').toUpperCase();
 

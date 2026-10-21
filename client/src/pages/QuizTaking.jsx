@@ -12,15 +12,15 @@ export const QuizTaking = () => {
   const [quizData, setQuizData] = useState(location.state?.quizData || null);
   const [loading, setLoading] = useState(!location.state?.quizData);
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [answers, setAnswers] = useState({}); // qId -> chosenIndex
-  const [timeTaken, setTimeTaken] = useState({}); // qId -> seconds
+  const [answers, setAnswers] = useState({}) // qId -> chosenIndex
+  const [timeTaken, setTimeTaken] = useState({}) // qId -> seconds
   const [timeLeft, setTimeLeft] = useState(null);
   const [submitting, setSubmitting] = useState(false);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
 
   const questionStartTime = useRef(Date.now());
 
-  // Load quiz attempt data if not passed in state
+// Load quiz attempt data if not passed in state
   useEffect(() => {
     if (!quizData) {
       studentApi.startQuizAttempt(quizId)
@@ -40,7 +40,7 @@ export const QuizTaking = () => {
     }
   }, [quizId]);
 
-  // Countdown Timer
+// Countdown Timer
   useEffect(() => {
     if (timeLeft === null || timeLeft <= 0) return;
 
@@ -219,7 +219,7 @@ export const QuizTaking = () => {
                   className={`w-full text-left p-4 rounded-2xl border transition-all flex items-center justify-between cursor-pointer ${
                     isSelected
                       ? 'border-indigo-600 bg-indigo-50/70 text-indigo-900 dark:text-indigo-200 font-semibold shadow-sm'
-                      : 'border-gray-200 dark:border-gray-800 hover:border-slate-300 bg-white/95 dark:bg-gray-900 backdrop-blur-xl text-slate-800 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-slate-800/60/60'
+                      : 'border-gray-200 dark:border-gray-800 hover:border-slate-300 bg-white/95 dark:bg-gray-900 backdrop-blur-xl text-slate-800 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-slate-800/'
                   }`}
                 >
                   <div className="flex items-center gap-3">
@@ -245,7 +245,7 @@ export const QuizTaking = () => {
             <button
               onClick={handlePrev}
               disabled={currentIndex === 0}
-              className="py-2.5 px-4 rounded-xl text-sm font-semibold border border-gray-200 dark:border-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-slate-800/60 dark:bg-gray-950/70/70 transition-colors disabled:opacity-40 flex items-center gap-1.5 cursor-pointer"
+              className="py-2.5 px-4 rounded-xl text-sm font-semibold border border-gray-200 dark:border-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-slate-800/60 dark:bg-gray-950/ transition-colors disabled:opacity-40 flex items-center gap-1.5 cursor-pointer"
             >
               <ArrowLeft className="w-4 h-4" /> Previous
             </button>

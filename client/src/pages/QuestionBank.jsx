@@ -12,7 +12,7 @@ export const QuestionBank = () => {
   const [error, setError] = useState(null);
   const [showAddModal, setShowAddModal] = useState(false);
 
-  // Form state
+// Form state
   const [text, setText] = useState('');
   const [topicId, setTopicId] = useState('');
   const [options, setOptions] = useState(['', '', '', '']);
@@ -108,7 +108,7 @@ export const QuestionBank = () => {
         <select
           value={selectedTopicId}
           onChange={(e) => setSelectedTopicId(e.target.value)}
-          className="text-xs py-1.5 px-3 bg-gray-50 dark:bg-gray-950/70/70 border border-gray-200 dark:border-gray-800 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+          className="text-xs py-1.5 px-3 bg-gray-50 dark:bg-gray-950/ border border-gray-200 dark:border-gray-800 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
         >
           <option value="">All Topics ({questions.length} items)</option>
           {topics.map((t) => (
@@ -152,7 +152,7 @@ export const QuestionBank = () => {
                     className={`p-2.5 rounded-xl border flex items-center gap-2 ${
                       idx === q.correctIndex
                         ? 'border-emerald-300 bg-emerald-50 dark:bg-emerald-950/50 text-emerald-900 font-semibold'
-                        : 'border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-950/70/70 text-gray-700 dark:text-gray-300'
+                        : 'border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-950/ text-gray-700 dark:text-gray-300'
                     }`}
                   >
                     <span className="w-5 h-5 rounded-md bg-white/95 dark:bg-gray-900 backdrop-blur-xl border text-[10px] font-bold flex items-center justify-center shrink-0">
@@ -163,7 +163,7 @@ export const QuestionBank = () => {
                 ))}
               </div>
 
-              <div className="p-3 bg-gray-50 dark:bg-gray-950/70/70 rounded-xl text-xs text-gray-600 dark:text-gray-400 border border-gray-100 dark:border-gray-800">
+              <div className="p-3 bg-gray-50 dark:bg-gray-950/ rounded-xl text-xs text-gray-600 dark:text-gray-400 border border-gray-100 dark:border-gray-800">
                 <strong className="text-gray-700 dark:text-gray-300">Explanation: </strong>
                 {q.explanation}
               </div>
@@ -185,7 +185,7 @@ export const QuestionBank = () => {
                   value={topicId}
                   onChange={(e) => setTopicId(e.target.value)}
                   required
-                  className="w-full py-2 px-3 border border-gray-200 dark:border-gray-800 rounded-xl bg-gray-50 dark:bg-gray-950/70/70 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  className="w-full py-2 px-3 border border-gray-200 dark:border-gray-800 rounded-xl bg-gray-50 dark:bg-gray-950/ focus:outline-none focus:ring-2 focus:ring-indigo-500"
                 >
                   {topics.map((t) => (
                     <option key={t.id} value={t.id}>{t.name} ({t.subject?.name})</option>
@@ -201,7 +201,7 @@ export const QuestionBank = () => {
                   onChange={(e) => setText(e.target.value)}
                   placeholder="Enter the question text..."
                   required
-                  className="w-full py-2 px-3 border border-gray-200 dark:border-gray-800 rounded-xl bg-gray-50 dark:bg-gray-950/70/70 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  className="w-full py-2 px-3 border border-gray-200 dark:border-gray-800 rounded-xl bg-gray-50 dark:bg-gray-950/ focus:outline-none focus:ring-2 focus:ring-indigo-500"
                 />
               </div>
 
@@ -218,7 +218,7 @@ export const QuestionBank = () => {
                       onChange={(e) => handleOptionChange(idx, e.target.value)}
                       placeholder={`Option ${String.fromCharCode(65 + idx)}`}
                       required
-                      className="flex-1 py-1.5 px-3 border border-gray-200 dark:border-gray-800 rounded-xl bg-gray-50 dark:bg-gray-950/70/70 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                      className="flex-1 py-1.5 px-3 border border-gray-200 dark:border-gray-800 rounded-xl bg-gray-50 dark:bg-gray-950/ focus:outline-none focus:ring-2 focus:ring-indigo-500"
                     />
                   </div>
                 ))}
@@ -230,7 +230,7 @@ export const QuestionBank = () => {
                   <select
                     value={correctIndex}
                     onChange={(e) => setCorrectIndex(e.target.value)}
-                    className="w-full py-2 px-3 border border-gray-200 dark:border-gray-800 rounded-xl bg-gray-50 dark:bg-gray-950/70/70 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                    className="w-full py-2 px-3 border border-gray-200 dark:border-gray-800 rounded-xl bg-gray-50 dark:bg-gray-950/ focus:outline-none focus:ring-2 focus:ring-indigo-500"
                   >
                     <option value={0}>Option A</option>
                     <option value={1}>Option B</option>
@@ -244,7 +244,7 @@ export const QuestionBank = () => {
                   <select
                     value={difficulty}
                     onChange={(e) => setDifficulty(e.target.value)}
-                    className="w-full py-2 px-3 border border-gray-200 dark:border-gray-800 rounded-xl bg-gray-50 dark:bg-gray-950/70/70 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                    className="w-full py-2 px-3 border border-gray-200 dark:border-gray-800 rounded-xl bg-gray-50 dark:bg-gray-950/ focus:outline-none focus:ring-2 focus:ring-indigo-500"
                   >
                     <option value="EASY">Easy</option>
                     <option value="MEDIUM">Medium</option>
@@ -261,7 +261,7 @@ export const QuestionBank = () => {
                   onChange={(e) => setExplanation(e.target.value)}
                   placeholder="Explain why the correct answer is right for student feedback..."
                   required
-                  className="w-full py-2 px-3 border border-gray-200 dark:border-gray-800 rounded-xl bg-gray-50 dark:bg-gray-950/70/70 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  className="w-full py-2 px-3 border border-gray-200 dark:border-gray-800 rounded-xl bg-gray-50 dark:bg-gray-950/ focus:outline-none focus:ring-2 focus:ring-indigo-500"
                 />
               </div>
 

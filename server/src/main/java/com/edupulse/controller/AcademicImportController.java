@@ -42,6 +42,14 @@ public class AcademicImportController {
         return ResponseEntity.ok(ApiResponse.success("CSV preview generated successfully", preview));
     }
 
+    @PostMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<ApiResponse<ImportPreviewResponse>> uploadAndPreview(
+            @RequestParam("file") org.springframework.web.multipart.MultipartFile file,
+            @RequestParam(value = "type", defaultValue = "MARKS") String type) {
+        ImportPreviewResponse preview = importService.previewFile(file, type);
+        return ResponseEntity.ok(ApiResponse.success("File parsed and validated successfully (CSV/Excel)", preview));
+    }
+
     @PostMapping("/commit")
     public ResponseEntity<ApiResponse<ImportBatch>> commitImport(
             @RequestBody ImportCommitRequest request,

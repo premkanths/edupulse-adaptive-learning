@@ -25,6 +25,9 @@ public class EmailService {
     @Value("${mail.dry-run:true}")
     private boolean dryRun;
 
+    @Value("${mail.allow-demo-accounts:false}")
+    private boolean allowDemoAccounts;
+
     public EmailService(EmailLogRepository emailLogRepository, ObjectProvider<JavaMailSender> mailSenderProvider) {
         this.emailLogRepository = emailLogRepository;
         this.mailSenderProvider = mailSenderProvider;
@@ -37,6 +40,27 @@ public class EmailService {
         emailLog.setSubject(subject);
         emailLog.setSentAt(LocalDateTime.now());
 
+        if (user == null || user.getEmail() == null) {
+            log.warn("Cannot send email: recipient user or email is null");
+            emailLog.setStatus(EmailLog.Status.FAILED);
+            return emailLogRepository.save(emailLog);
+        }
+
+        // 1. Check user notification preference
+        if (!user.isEmailNotifications()) {
+            log.info("[EMAIL SKIPPED] User {} has disabled email notifications.", user.getEmail());
+            emailLog.setStatus(EmailLog.Status.SKIPPED_PREFERENCE);
+            return emailLogRepository.save(emailLog);
+        }
+
+        // 2. Demo accounts safety guard (do not email demo accounts unless explicitly enabled)
+        if (user.getEmail().toLowerCase().endsWith("@edupulse.local") && !allowDemoAccounts) {
+            log.info("[EMAIL DEMO GUARD] Simulated to: {} | Type: {} | Subject: {}", user.getEmail(), type, subject);
+            emailLog.setStatus(EmailLog.Status.DRY_RUN);
+            return emailLogRepository.save(emailLog);
+        }
+
+        // 3. Dry-run mode check
         if (dryRun) {
             log.info("[EMAIL DRY-RUN] To: {} | Type: {} | Subject: {}", user.getEmail(), type, subject);
             emailLog.setStatus(EmailLog.Status.DRY_RUN);
@@ -59,7 +83,7 @@ public class EmailService {
             mailSender.send(message);
 
             emailLog.setStatus(EmailLog.Status.SENT);
-            log.info("Email successfully sent to: {}", user.getEmail());
+            log.info("Email successfully dispatched to: {}", user.getEmail());
         } catch (Exception ex) {
             log.error("Failed to send email to {}: {}", user.getEmail(), ex.getMessage());
             emailLog.setStatus(EmailLog.Status.FAILED);

@@ -46,6 +46,7 @@ export const Sidebar = () => {
           { name: 'Question Bank', path: '/teacher/questions', icon: HelpCircle },
           { name: 'Quizzes & Assignments', path: '/teacher/quizzes', icon: BookOpen },
           { name: 'AI Quiz Generator', path: '/teacher/quizzes/ai-generate', icon: Sparkles },
+          { name: 'Course Materials (RAG)', path: '/teacher/materials', icon: FileText },
           { name: 'Class Analytics', path: '/teacher/analytics', icon: TrendingUp },
           { name: 'At-Risk Student Monitor', path: '/teacher/at-risk', icon: ShieldAlert },
           { name: 'Academic Records Import', path: '/teacher/import', icon: UploadCloud },

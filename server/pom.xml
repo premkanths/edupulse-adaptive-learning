@@ -89,6 +89,20 @@
             <version>${springdoc.version}</version>
         </dependency>
 
+        <!-- Excel & Office Document Parsing for Academic Import & RAG -->
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi-ooxml</artifactId>
+            <version>5.3.0</version>
+        </dependency>
+
+        <!-- PDF Text Extraction for Course Notes RAG -->
+        <dependency>
+            <groupId>org.apache.pdfbox</groupId>
+            <artifactId>pdfbox</artifactId>
+            <version>3.0.3</version>
+        </dependency>
+
         <!-- Testing -->
         <dependency>
             <groupId>org.springframework.boot</groupId>

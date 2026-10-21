@@ -67,12 +67,19 @@ export const studentApi = {
   getChatSessions: () => apiRequest('/student/chat/sessions'),
   createChatSession: (title) => apiRequest('/student/chat/sessions', { method: 'POST', body: JSON.stringify({ title }) }),
   getSessionMessages: (sessionId) => apiRequest(`/student/chat/sessions/${sessionId}/messages`),
-  sendChatMessage: (sessionId, message) =>
+  sendChatMessage: (sessionId, message, tutoringMode = 'EXPLANATORY', subjectId = null) =>
     apiRequest(`/student/chat/sessions/${sessionId}/messages`, {
       method: 'POST',
-      body: JSON.stringify({ message }),
+      body: JSON.stringify({ message, tutoringMode, subjectId: subjectId ? String(subjectId) : null }),
     }),
   deleteChatSession: (sessionId) => apiRequest(`/student/chat/sessions/${sessionId}`, { method: 'DELETE' }),
+  exportMyData: () => apiRequest('/student/export-my-data'),
+  getAvailableMaterials: () => apiRequest('/student/materials'),
+  retrieveCoursePassages: (query, subjectIds, topK = 3) =>
+    apiRequest('/student/materials/retrieve', {
+      method: 'POST',
+      body: JSON.stringify({ query, subjectIds, topK }),
+    }),
 };
 
 export const teacherApi = {
@@ -91,6 +98,8 @@ export const teacherApi = {
   generateAiQuiz: (data) => apiRequest('/teacher/quizzes/ai-generate', { method: 'POST', body: JSON.stringify(data) }),
   getClasses: () => apiRequest('/teacher/classes'),
   getClassAnalytics: () => apiRequest('/teacher/analytics'),
+  getCourseMaterials: () => apiRequest('/teacher/materials'),
+  deleteCourseMaterial: (id) => apiRequest(`/teacher/materials/${id}`, { method: 'DELETE' }),
 };
 
 export const adminApi = {

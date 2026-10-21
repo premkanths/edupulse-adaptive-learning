@@ -63,7 +63,7 @@ export const AtRiskStudents = () => {
         </div>
         <button
           onClick={fetchAtRiskStudents}
-          className="inline-flex items-center gap-2 px-4 py-2 border border-gray-200 dark:border-gray-800 rounded-xl text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-slate-800/60 dark:bg-gray-950/70/70 transition-colors"
+          className="inline-flex items-center gap-2 px-4 py-2 border border-gray-200 dark:border-gray-800 rounded-xl text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-slate-800/60 dark:bg-gray-950/ transition-colors"
         >
           <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />
           Refresh Predictions
@@ -200,7 +200,7 @@ export const AtRiskStudents = () => {
                   </div>
 
                   {/* Recommended Pedagogical Intervention */}
-                  <div className="lg:max-w-xs bg-gray-50 dark:bg-gray-950/70/70 p-3.5 rounded-xl border border-gray-200 dark:border-gray-800">
+                  <div className="lg:max-w-xs bg-gray-50 dark:bg-gray-950/ p-3.5 rounded-xl border border-gray-200 dark:border-gray-800">
                     <p className="text-[11px] font-bold text-gray-600 dark:text-gray-400 uppercase tracking-wider mb-1">Recommended Action:</p>
                     <p className="text-xs text-gray-700 dark:text-gray-300 leading-relaxed font-medium">
                       {s.recommendedIntervention}

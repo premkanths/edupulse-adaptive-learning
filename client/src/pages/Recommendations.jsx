@@ -98,7 +98,7 @@ export const Recommendations = () => {
                   </p>
                 </div>
 
-                <div className="p-3.5 bg-gray-50 dark:bg-gray-950/70/70 rounded-2xl border border-gray-200 dark:border-gray-800 text-xs text-gray-600 dark:text-gray-300">
+                <div className="p-3.5 bg-gray-50 dark:bg-gray-950/ rounded-2xl border border-gray-200 dark:border-gray-800 text-xs text-gray-600 dark:text-gray-300">
                   <strong className="text-slate-800 dark:text-gray-200 block mb-1">Empirical Evidence:</strong>
                   {rec.supportingEvidence}
                 </div>
@@ -139,7 +139,7 @@ export const Recommendations = () => {
               </button>
             </div>
 
-            <div className="space-y-3.5 text-xs text-gray-600 dark:text-gray-300 bg-gray-50 dark:bg-gray-950/70/70 p-4 rounded-2xl border border-gray-200 dark:border-gray-800">
+            <div className="space-y-3.5 text-xs text-gray-600 dark:text-gray-300 bg-gray-50 dark:bg-gray-950/ p-4 rounded-2xl border border-gray-200 dark:border-gray-800">
               <div>
                 <span className="font-bold text-slate-800 dark:text-gray-200 uppercase tracking-wider text-[10px] block">Topic</span>
                 <p className="text-sm font-bold text-indigo-600 dark:text-indigo-400 mt-0.5">{selectedWhyThis.topic?.name}</p>

@@ -1,13 +1,14 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { studentApi } from '../api/client';
 import { LoadingSpinner } from '../components/LoadingSpinner';
-import { Bot, User, Send, Plus, Trash2, Sparkles, Shield, AlertCircle } from 'lucide-react';
+import { Bot, User, Send, Plus, Trash2, Sparkles, Shield, BookOpen, HelpCircle, Compass, CheckCircle } from 'lucide-react';
 
 export const AiStudyAssistant = () => {
   const [sessions, setSessions] = useState([]);
   const [activeSessionId, setActiveSessionId] = useState(null);
   const [messages, setMessages] = useState([]);
   const [inputText, setInputText] = useState('');
+  const [tutoringMode, setTutoringMode] = useState('EXPLANATORY'); // 'EXPLANATORY' | 'SOCRATIC'
   const [loadingSessions, setLoadingSessions] = useState(true);
   const [loadingMessages, setLoadingMessages] = useState(false);
   const [sending, setSending] = useState(false);
@@ -128,7 +129,7 @@ export const AiStudyAssistant = () => {
     setSending(true);
 
     try {
-      const res = await studentApi.sendChatMessage(currentSessionId, userMessage);
+      const res = await studentApi.sendChatMessage(currentSessionId, userMessage, tutoringMode);
       if (res.success) {
         setMessages((prev) => [...prev, res.data]);
       } else {
@@ -145,21 +146,75 @@ export const AiStudyAssistant = () => {
     setInputText(prompt);
   };
 
+  // Render message with parsed source citations
+  const renderMessageContent = (content) => {
+    if (!content) return null;
+
+    const notesSplit = content.split(/---+\s*\*\*Referenced Course Notes:\*\*/i);
+    const mainBody = notesSplit[0];
+    const notesFooter = notesSplit.length > 1 ? notesSplit[1] : null;
+
+    return (
+      <div className="space-y-3">
+        <div className="whitespace-pre-wrap">{mainBody.trim()}</div>
+        {notesFooter && (
+          <div className="mt-3 pt-3 border-t border-gray-200 dark:border-gray-800 bg-indigo-50/50 dark:bg-indigo-950/30 rounded-xl p-3 text-xs">
+            <div className="flex items-center gap-1.5 font-bold text-indigo-700 dark:text-indigo-300 mb-1">
+              <BookOpen className="w-3.5 h-3.5" />
+              <span>Grounded in Official Course Materials:</span>
+            </div>
+            <div className="text-gray-600 dark:text-gray-300 whitespace-pre-line">
+              {notesFooter.trim()}
+            </div>
+          </div>
+        )}
+      </div>
+    );
+  };
+
   return (
     <div className="space-y-6">
-      {/* Privacy Notice */}
-      <div className="bg-indigo-50/70 dark:bg-indigo-950/40 border border-indigo-200/80 dark:border-indigo-800/80 rounded-2xl p-4 flex items-center justify-between text-xs text-indigo-900 dark:text-indigo-200 shadow-xs">
-        <div className="flex items-center gap-2.5">
+      {/* Top Controls: Privacy Notice & Tutoring Mode Selector */}
+      <div className="flex flex-col sm:flex-row items-center justify-between gap-3 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-2xl p-3 shadow-xs">
+        <div className="flex items-center gap-2.5 text-xs text-gray-700 dark:text-gray-300">
           <Shield className="w-4 h-4 text-indigo-600 dark:text-indigo-400 shrink-0" />
           <span>
-            <strong>Personalized Context Active:</strong> The assistant reviews your live topic mastery (<code className="font-mono bg-white dark:bg-gray-950/70 px-1 py-0.5 rounded text-indigo-700 dark:text-indigo-300">pKnown</code>) and quiz attempts to customize explanations. Chats are private to your student ID.
+            <strong>Course-Material RAG & BKT Active:</strong> Answers are grounded in teacher notes & your real mastery profile.
           </span>
+        </div>
+
+        {/* Tutoring Mode Selector */}
+        <div className="flex items-center gap-1.5 bg-gray-100 dark:bg-gray-800 p-1 rounded-xl text-xs">
+          <button
+            type="button"
+            onClick={() => setTutoringMode('EXPLANATORY')}
+            className={`px-3 py-1.5 rounded-lg font-medium transition-all flex items-center gap-1.5 cursor-pointer ${
+              tutoringMode === 'EXPLANATORY'
+                ? 'bg-white dark:bg-gray-900 text-indigo-600 dark:text-indigo-400 font-bold shadow-xs'
+                : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200'
+            }`}
+          >
+            <Compass className="w-3.5 h-3.5" />
+            Explanatory Mode
+          </button>
+          <button
+            type="button"
+            onClick={() => setTutoringMode('SOCRATIC')}
+            className={`px-3 py-1.5 rounded-lg font-medium transition-all flex items-center gap-1.5 cursor-pointer ${
+              tutoringMode === 'SOCRATIC'
+                ? 'bg-white dark:bg-gray-900 text-teal-600 dark:text-teal-400 font-bold shadow-xs'
+                : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200'
+            }`}
+          >
+            <HelpCircle className="w-3.5 h-3.5" />
+            Socratic Mode
+          </button>
         </div>
       </div>
 
       <div className="bg-white/95 dark:bg-gray-900 backdrop-blur-xl rounded-3xl border border-gray-200 dark:border-gray-800 shadow-2xl overflow-hidden flex h-[680px]">
         {/* Left Sidebar: Saved Sessions */}
-        <div className="w-72 border-r border-gray-200 dark:border-gray-800 p-4 flex flex-col justify-between shrink-0 bg-gray-50 dark:bg-gray-950/70/70">
+        <div className="w-72 border-r border-gray-200 dark:border-gray-800 p-4 flex flex-col justify-between shrink-0 bg-gray-50 dark:bg-gray-950">
           <div className="space-y-3">
             <button
               onClick={handleCreateSession}
@@ -215,7 +270,9 @@ export const AiStudyAssistant = () => {
                 <div>
                   <h3 className="text-base font-bold text-gray-900 dark:text-gray-50">How can I help you study today?</h3>
                   <p className="text-xs text-gray-500 dark:text-gray-400 max-w-sm mt-1">
-                    Ask me to explain difficult algorithms, clarify misconceptions from your recent quizzes, or break down foundational prerequisites.
+                    {tutoringMode === 'SOCRATIC'
+                      ? 'In Socratic mode, I will guide your inquiry through targeted questions and conceptual steps.'
+                      : 'Ask me to explain difficult algorithms, clarify quiz misconceptions, or walk through course notes.'}
                   </p>
                 </div>
 
@@ -223,19 +280,19 @@ export const AiStudyAssistant = () => {
                 <div className="flex flex-wrap gap-2 justify-center max-w-md pt-2">
                   <button
                     onClick={() => handleSuggestedPrompt('Why is search in an unbalanced BST O(n)?')}
-                    className="text-xs bg-gray-50 dark:bg-gray-950/70/70 hover:bg-indigo-50 dark:hover:bg-indigo-950/60 border border-gray-200 dark:border-gray-800 text-gray-700 dark:text-gray-300 px-3 py-1.5 rounded-full transition-colors cursor-pointer"
+                    className="text-xs bg-gray-50 dark:bg-gray-950 hover:bg-indigo-50 dark:hover:bg-indigo-950/60 border border-gray-200 dark:border-gray-800 text-gray-700 dark:text-gray-300 px-3 py-1.5 rounded-full transition-colors cursor-pointer"
                   >
                     🌲 Why is search in an unbalanced BST O(n)?
                   </button>
                   <button
                     onClick={() => handleSuggestedPrompt('What are my identified weak topics and how should I practice?')}
-                    className="text-xs bg-gray-50 dark:bg-gray-950/70/70 hover:bg-indigo-50 dark:hover:bg-indigo-950/60 border border-gray-200 dark:border-gray-800 text-gray-700 dark:text-gray-300 px-3 py-1.5 rounded-full transition-colors cursor-pointer"
+                    className="text-xs bg-gray-50 dark:bg-gray-950 hover:bg-indigo-50 dark:hover:bg-indigo-950/60 border border-gray-200 dark:border-gray-800 text-gray-700 dark:text-gray-300 px-3 py-1.5 rounded-full transition-colors cursor-pointer"
                   >
                     🎯 What are my current weak topics?
                   </button>
                   <button
                     onClick={() => handleSuggestedPrompt('Explain 3NF database normalization with a clear college example.')}
-                    className="text-xs bg-gray-50 dark:bg-gray-950/70/70 hover:bg-indigo-50 dark:hover:bg-indigo-950/60 border border-gray-200 dark:border-gray-800 text-gray-700 dark:text-gray-300 px-3 py-1.5 rounded-full transition-colors cursor-pointer"
+                    className="text-xs bg-gray-50 dark:bg-gray-950 hover:bg-indigo-50 dark:hover:bg-indigo-950/60 border border-gray-200 dark:border-gray-800 text-gray-700 dark:text-gray-300 px-3 py-1.5 rounded-full transition-colors cursor-pointer"
                   >
                     🗄️ Explain 3NF database normalization
                   </button>
@@ -257,13 +314,13 @@ export const AiStudyAssistant = () => {
                     </div>
 
                     <div
-                      className={`max-w-[75%] p-4 rounded-2xl text-xs leading-relaxed space-y-2 whitespace-pre-wrap ${
+                      className={`max-w-[80%] p-4 rounded-2xl text-xs leading-relaxed space-y-2 ${
                         isUser
-                          ? 'bg-gradient-to-r from-indigo-600 to-violet-600 text-white rounded-tr-none shadow-md shadow-indigo-500/20'
+                          ? 'bg-gradient-to-r from-indigo-600 to-violet-600 text-white rounded-tr-none shadow-md shadow-indigo-500/20 whitespace-pre-wrap'
                           : 'bg-gray-50 dark:bg-gray-950/70 border border-gray-200 dark:border-gray-800 text-slate-800 dark:text-gray-200 rounded-tl-none shadow-xs'
                       }`}
                     >
-                      {m.content}
+                      {isUser ? m.content : renderMessageContent(m.content)}
                     </div>
                   </div>
                 );
@@ -277,7 +334,11 @@ export const AiStudyAssistant = () => {
                 </div>
                 <div className="bg-gray-50 dark:bg-gray-950/70 border border-gray-200 dark:border-gray-800 rounded-2xl p-3 text-xs text-gray-500 dark:text-gray-400 flex items-center gap-2">
                   <Sparkles className="w-3.5 h-3.5 text-indigo-600 animate-spin" />
-                  <span>Synthesizing pedagogical explanation...</span>
+                  <span>
+                    {tutoringMode === 'SOCRATIC'
+                      ? 'Formulating Socratic guiding questions...'
+                      : 'Searching course notes & synthesizing explanation...'}
+                  </span>
                 </div>
               </div>
             )}
@@ -285,12 +346,16 @@ export const AiStudyAssistant = () => {
           </div>
 
           {/* Chat Input Bar */}
-          <form onSubmit={handleSendMessage} className="p-4 border-t border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-950/70/70 flex items-center gap-2">
+          <form onSubmit={handleSendMessage} className="p-4 border-t border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-950 flex items-center gap-2">
             <input
               type="text"
               value={inputText}
               onChange={(e) => setInputText(e.target.value)}
-              placeholder="Ask a question about your courses, topics, or quiz errors..."
+              placeholder={
+                tutoringMode === 'SOCRATIC'
+                  ? 'Ask a question or explain your reasoning for Socratic guidance...'
+                  : 'Ask a question about your courses, topics, or quiz errors...'
+              }
               className="flex-1 py-2.5 px-4 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-xl text-xs text-gray-900 dark:text-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all shadow-xs"
             />
             <button

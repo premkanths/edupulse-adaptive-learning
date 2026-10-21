@@ -98,7 +98,7 @@ export const PerformanceHistory = () => {
                   if (active && payload && payload.length) {
                     const d = payload[0].payload;
                     return (
-                      <div className="bg-slate-900/95 dark:bg-gray-950/70/95 border border-slate-700 dark:border-gray-800 text-white p-3.5 rounded-xl text-xs space-y-1 shadow-2xl backdrop-blur-md">
+                      <div className="bg-slate-900/95 dark:bg-gray-950/ border border-slate-700 dark:border-gray-800 text-white p-3.5 rounded-xl text-xs space-y-1 shadow-2xl backdrop-blur-md">
                         <p className="font-bold text-gray-50">{d.fullName}</p>
                         <p className="text-indigo-300 font-semibold">pKnown Mastery: {d.mastery}%</p>
                         <p className="text-emerald-300 font-semibold">Historical Accuracy: {d.accuracy}%</p>

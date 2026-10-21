@@ -135,7 +135,7 @@ export const QuizResult = () => {
                   const wasChosen = q.chosenIndex === optIdx;
                   const isRightOption = q.correctIndex === optIdx;
 
-                  let optClass = 'bg-gray-50 dark:bg-gray-950/70/70 border-gray-200 dark:border-gray-800 text-gray-700 dark:text-gray-300';
+                  let optClass = 'bg-gray-50 dark:bg-gray-950/ border-gray-200 dark:border-gray-800 text-gray-700 dark:text-gray-300';
                   if (isRightOption) {
                     optClass = 'bg-emerald-50 dark:bg-emerald-950/50 border-emerald-300 text-emerald-900 font-semibold';
                   } else if (wasChosen && !isRightOption) {

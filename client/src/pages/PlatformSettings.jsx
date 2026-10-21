@@ -87,7 +87,7 @@ export const PlatformSettings = () => {
           <button
             type="button"
             onClick={handleResetDefaults}
-            className="inline-flex items-center gap-1.5 px-3.5 py-2 border border-gray-200 dark:border-gray-800 rounded-xl text-xs font-semibold text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-slate-800/60 dark:bg-gray-950/70/70 transition-colors"
+            className="inline-flex items-center gap-1.5 px-3.5 py-2 border border-gray-200 dark:border-gray-800 rounded-xl text-xs font-semibold text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-slate-800/60 dark:bg-gray-950/ transition-colors"
           >
             <RotateCcw className="w-3.5 h-3.5" />
             Reset Defaults

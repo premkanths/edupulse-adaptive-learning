@@ -11,13 +11,13 @@ export const ConnectedAccounts = () => {
   const [actionLoading, setActionLoading] = useState({});
   const [notification, setNotification] = useState(null);
 
-  // Connection input states
+// Connection input states
   const [githubUsername, setGithubUsername] = useState('');
   const [leetcodeUsername, setLeetcodeUsername] = useState('');
   const [hackerrankUsername, setHackerrankUsername] = useState('');
 
-  // Manual entry modal state
-  const [manualModal, setManualModal] = useState(null); // 'GITHUB' | 'LEETCODE' | 'HACKERRANK' | null
+  // Manual entry modal state ('GITHUB' | 'LEETCODE' | 'HACKERRANK' | null)
+  const [manualModal, setManualModal] = useState(null);
   const [manualForm, setManualForm] = useState({});
 
   useEffect(() => {
@@ -243,7 +243,7 @@ export const ConnectedAccounts = () => {
                   <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2">
                     <span className="font-bold text-gray-900 dark:text-gray-50">{ghProfile.username}</span>
                     <a
-                      href={ghStats.profileUrl || `https://github.com/${ghProfile.username}`}
+                      href={ghStats.profileUrl || `https:/github.com/${ghProfile.username}`}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="text-xs text-academic-blue hover:underline inline-flex items-center gap-0.5"
@@ -387,7 +387,7 @@ export const ConnectedAccounts = () => {
                   <div className="flex items-center justify-center sm:justify-start gap-2">
                     <span className="font-bold text-gray-900 dark:text-gray-50">{lcProfile.username}</span>
                     <a
-                      href={lcStats.profileUrl || `https://leetcode.com/${lcProfile.username}`}
+                      href={lcStats.profileUrl || `https:/leetcode.com/${lcProfile.username}`}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="text-xs text-academic-blue hover:underline inline-flex items-center gap-0.5"
@@ -531,7 +531,7 @@ export const ConnectedAccounts = () => {
                   <div className="flex items-center justify-center sm:justify-start gap-2">
                     <span className="font-bold text-gray-900 dark:text-gray-50">{hrProfile.username}</span>
                     <a
-                      href={hrStats.profileUrl || `https://www.hackerrank.com/${hrProfile.username}`}
+                      href={hrStats.profileUrl || `https:/www.hackerrank.com/${hrProfile.username}`}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="text-xs text-academic-blue hover:underline inline-flex items-center gap-0.5"

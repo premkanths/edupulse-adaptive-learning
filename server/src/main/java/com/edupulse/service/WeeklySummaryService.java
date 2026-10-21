@@ -46,6 +46,39 @@ public class WeeklySummaryService {
         generateAllWeeklySummaries();
     }
 
+    @Scheduled(cron = "${edupulse.inactivity.cron:0 0 7 * * *}")
+    public void scheduledInactivityCheck() {
+        log.info("Starting daily scheduled inactivity check for students inactive >7 days...");
+        checkAndAlertInactiveStudents();
+    }
+
+    @Transactional
+    public int checkAndAlertInactiveStudents() {
+        LocalDateTime sevenDaysAgo = LocalDateTime.now().minusDays(7);
+        List<User> students = userRepository.findByRoleAndIsActiveTrue(Role.STUDENT);
+        int alertsSent = 0;
+
+        for (User student : students) {
+            List<Attempt> recentAttempts = attemptRepository.findByStudentIdAndSubmittedAtAfter(student.getId(), sevenDaysAgo);
+            if (recentAttempts.isEmpty()) {
+                try {
+                    String html = "<html><body>" +
+                            "<h3>We Miss You at EduPulse!</h3>" +
+                            "<p>Hello " + student.getName() + ",</p>" +
+                            "<p>We noticed you haven't taken any practice quizzes in the past 7 days. Consistency is key to knowledge retention!</p>" +
+                            "<p>Dedicate just 5-10 minutes today to review your weak topics and keep your mastery scores high.</p>" +
+                            "<p><a href=\"http://localhost:5173\">Jump back into EduPulse</a></p>" +
+                            "</body></html>";
+                    emailService.sendEmail(student, "INACTIVITY_ALERT", "Keep your learning momentum going with EduPulse!", html);
+                    alertsSent++;
+                } catch (Exception ex) {
+                    log.warn("Failed to dispatch inactivity alert to {}: {}", student.getEmail(), ex.getMessage());
+                }
+            }
+        }
+        return alertsSent;
+    }
+
     @Transactional
     public List<WeeklySummary> generateAllWeeklySummaries() {
         List<User> students = userRepository.findByRoleAndIsActiveTrue(Role.STUDENT);

@@ -22,6 +22,7 @@ public class QuizService {
     private final QuestionRepository questionRepository;
     private final ClassRepository classRepository;
     private final UserRepository userRepository;
+    private final EmailService emailService;
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     public QuizService(QuizRepository quizRepository,
@@ -30,7 +31,8 @@ public class QuizService {
                        SubjectRepository subjectRepository,
                        QuestionRepository questionRepository,
                        ClassRepository classRepository,
-                       UserRepository userRepository) {
+                       UserRepository userRepository,
+                       EmailService emailService) {
         this.quizRepository = quizRepository;
         this.quizQuestionRepository = quizQuestionRepository;
         this.quizAssignmentRepository = quizAssignmentRepository;
@@ -38,6 +40,7 @@ public class QuizService {
         this.questionRepository = questionRepository;
         this.classRepository = classRepository;
         this.userRepository = userRepository;
+        this.emailService = emailService;
     }
 
     @Transactional(readOnly = true)
@@ -95,7 +98,26 @@ public class QuizService {
                 .orElseThrow(() -> new ResourceNotFoundException("Class not found: " + classId));
 
         QuizAssignment assignment = new QuizAssignment(quiz, targetClass, null);
-        return quizAssignmentRepository.save(assignment);
+        QuizAssignment saved = quizAssignmentRepository.save(assignment);
+
+        // Notify enrolled students via EmailService (non-blocking)
+        if (targetClass.getStudents() != null) {
+            for (User student : targetClass.getStudents()) {
+                try {
+                    String html = "<html><body>" +
+                            "<h3>New Assessment Assigned: " + quiz.getTitle() + "</h3>" +
+                            "<p>Hello " + student.getName() + ",</p>" +
+                            "<p>Your instructor has assigned a new quiz: <strong>" + quiz.getTitle() + "</strong> in class <strong>" + targetClass.getName() + "</strong>.</p>" +
+                            "<p>Log in to <a href=\"http://localhost:5173\">EduPulse</a> to take your quiz and update your topic mastery.</p>" +
+                            "</body></html>";
+                    emailService.sendEmail(student, "QUIZ_ASSIGNMENT", "New Assessment Assigned: " + quiz.getTitle(), html);
+                } catch (Exception ex) {
+                    // Safe error capture
+                }
+            }
+        }
+
+        return saved;
     }
 
     @Transactional(readOnly = true)

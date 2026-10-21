@@ -15,7 +15,7 @@ export const UserProfile = () => {
   const [notification, setNotification] = useState(null);
   const [passwordNotification, setPasswordNotification] = useState(null);
 
-  // Form states
+// Form states
   const [name, setName] = useState('');
   const [avatarUrl, setAvatarUrl] = useState('');
   const [bio, setBio] = useState('');
@@ -26,7 +26,7 @@ export const UserProfile = () => {
   const [websiteUrl, setWebsiteUrl] = useState('');
   const [emailNotifications, setEmailNotifications] = useState(true);
 
-  // Password state
+// Password state
   const [currentPassword, setCurrentPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -125,10 +125,10 @@ export const UserProfile = () => {
   };
 
   const defaultAvatars = [
-    'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80',
-    'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&auto=format&fit=crop&q=80',
-    'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&auto=format&fit=crop&q=80',
-    'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&auto=format&fit=crop&q=80',
+    'https:/images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80',
+    'https:/images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&auto=format&fit=crop&q=80',
+    'https:/images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&auto=format&fit=crop&q=80',
+    'https:/images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&auto=format&fit=crop&q=80',
   ];
 
   if (loading) {
@@ -295,7 +295,7 @@ export const UserProfile = () => {
                 type="url"
                 value={avatarUrl}
                 onChange={(e) => setAvatarUrl(e.target.value)}
-                placeholder="https://example.com/photo.jpg"
+                placeholder="https:/example.com/photo.jpg"
                 className="w-full px-4 py-2.5 bg-gray-50 dark:bg-gray-950 border border-gray-200 dark:border-gray-800 rounded-xl text-sm text-gray-900 dark:text-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all"
               />
             </div>
@@ -326,7 +326,7 @@ export const UserProfile = () => {
                   type="url"
                   value={githubUrl}
                   onChange={(e) => setGithubUrl(e.target.value)}
-                  placeholder="https://github.com/..."
+                  placeholder="https:/github.com/..."
                   className="w-full pl-10 pr-4 py-2 bg-gray-50 dark:bg-gray-950 border border-gray-200 dark:border-gray-800 rounded-xl text-xs text-gray-900 dark:text-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500"
                 />
               </div>
@@ -337,7 +337,7 @@ export const UserProfile = () => {
                   type="url"
                   value={linkedinUrl}
                   onChange={(e) => setLinkedinUrl(e.target.value)}
-                  placeholder="https://linkedin.com/in/..."
+                  placeholder="https:/linkedin.com/in/..."
                   className="w-full pl-10 pr-4 py-2 bg-gray-50 dark:bg-gray-950 border border-gray-200 dark:border-gray-800 rounded-xl text-xs text-gray-900 dark:text-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500"
                 />
               </div>
@@ -348,7 +348,7 @@ export const UserProfile = () => {
                   type="url"
                   value={websiteUrl}
                   onChange={(e) => setWebsiteUrl(e.target.value)}
-                  placeholder="https://yourportfolio.dev"
+                  placeholder="https:/yourportfolio.dev"
                   className="w-full pl-10 pr-4 py-2 bg-gray-50 dark:bg-gray-950 border border-gray-200 dark:border-gray-800 rounded-xl text-xs text-gray-900 dark:text-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500"
                 />
               </div>

@@ -171,7 +171,7 @@ export const ClassManagement = () => {
                   className={`p-4 rounded-xl border cursor-pointer transition-all ${
                     selectedClass?.id === c.id
                       ? 'border-indigo-600 bg-indigo-50/40 shadow-sm'
-                      : 'border-gray-200 dark:border-gray-800 hover:border-slate-300 hover:bg-gray-50 dark:hover:bg-slate-800/60 dark:bg-gray-950/70/70'
+                      : 'border-gray-200 dark:border-gray-800 hover:border-slate-300 hover:bg-gray-50 dark:hover:bg-slate-800/60 dark:bg-gray-950/'
                   }`}
                 >
                   <div className="flex items-center justify-between">
@@ -232,7 +232,7 @@ export const ClassManagement = () => {
                 ) : (
                   <div className="overflow-x-auto border border-gray-200 dark:border-gray-800 rounded-xl">
                     <table className="w-full text-left text-sm">
-                      <thead className="bg-gray-50 dark:bg-gray-950/70/70 text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase border-b border-gray-200 dark:border-gray-800">
+                      <thead className="bg-gray-50 dark:bg-gray-950/ text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase border-b border-gray-200 dark:border-gray-800">
                         <tr>
                           <th className="px-4 py-3">Student Name</th>
                           <th className="px-4 py-3">Email Address</th>
@@ -242,7 +242,7 @@ export const ClassManagement = () => {
                       </thead>
                       <tbody className="divide-y divide-slate-100">
                         {classDetails.students.map((s) => (
-                          <tr key={s.id} className="hover:bg-gray-50 dark:hover:bg-slate-800/60/60">
+                          <tr key={s.id} className="hover:bg-gray-50 dark:hover:bg-slate-800/">
                             <td className="px-4 py-3 font-medium text-gray-900 dark:text-gray-50 text-xs">{s.name}</td>
                             <td className="px-4 py-3 text-xs text-gray-600 dark:text-gray-400">{s.email}</td>
                             <td className="px-4 py-3">
@@ -319,7 +319,7 @@ export const ClassManagement = () => {
                 <button
                   type="button"
                   onClick={() => setShowCreateModal(false)}
-                  className="px-4 py-2 border border-gray-200 dark:border-gray-800 rounded-xl text-xs font-semibold text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-slate-800/60 dark:bg-gray-950/70/70"
+                  className="px-4 py-2 border border-gray-200 dark:border-gray-800 rounded-xl text-xs font-semibold text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-slate-800/60 dark:bg-gray-950/"
                 >
                   Cancel
                 </button>
@@ -365,7 +365,7 @@ export const ClassManagement = () => {
                 <button
                   type="button"
                   onClick={() => setShowEnrollModal(false)}
-                  className="px-4 py-2 border border-gray-200 dark:border-gray-800 rounded-xl text-xs font-semibold text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-slate-800/60 dark:bg-gray-950/70/70"
+                  className="px-4 py-2 border border-gray-200 dark:border-gray-800 rounded-xl text-xs font-semibold text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-slate-800/60 dark:bg-gray-950/"
                 >
                   Cancel
                 </button>

@@ -23,6 +23,7 @@ public class AttemptService {
     private final QuestionRepository questionRepository;
     private final TopicMasteryService topicMasteryService;
     private final RecommendationService recommendationService;
+    private final EmailService emailService;
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     public AttemptService(AttemptRepository attemptRepository,
@@ -31,7 +32,8 @@ public class AttemptService {
                           QuizQuestionRepository quizQuestionRepository,
                           QuestionRepository questionRepository,
                           TopicMasteryService topicMasteryService,
-                          RecommendationService recommendationService) {
+                          RecommendationService recommendationService,
+                          EmailService emailService) {
         this.attemptRepository = attemptRepository;
         this.attemptAnswerRepository = attemptAnswerRepository;
         this.quizRepository = quizRepository;
@@ -39,6 +41,7 @@ public class AttemptService {
         this.questionRepository = questionRepository;
         this.topicMasteryService = topicMasteryService;
         this.recommendationService = recommendationService;
+        this.emailService = emailService;
     }
 
     @Transactional
@@ -138,6 +141,22 @@ public class AttemptService {
         // Refresh recommendations immediately
         recommendationService.generateRecommendationsForStudent(student.getId());
 
+        // Low-score advisory alert (< 50%)
+        if (scorePercentage < 50.0) {
+            try {
+                String html = "<html><body>" +
+                        "<h3>EduPulse Academic Support Advisory</h3>" +
+                        "<p>Hello " + student.getName() + ",</p>" +
+                        "<p>You completed <strong>" + attempt.getQuiz().getTitle() + "</strong> with a score of <strong>" + scorePercentage + "%</strong>.</p>" +
+                        "<p>Don't be discouraged! EduPulse has generated personalized adaptive recommendations and prerequisites to help you strengthen these concepts.</p>" +
+                        "<p>Review your tailored study path at <a href=\"http://localhost:5173\">EduPulse</a>.</p>" +
+                        "</body></html>";
+                emailService.sendEmail(student, "LOW_SCORE_ALERT", "Academic Advisory: Support for " + attempt.getQuiz().getTitle(), html);
+            } catch (Exception ex) {
+                // Non-blocking
+            }
+        }
+
         Map<String, Object> response = new HashMap<>();
         response.put("attemptId", attempt.getId());
         response.put("quizTitle", attempt.getQuiz().getTitle());
@@ -193,5 +212,10 @@ public class AttemptService {
         result.put("answers", answerList);
 
         return result;
+    }
+
+    @Transactional(readOnly = true)
+    public List<Attempt> getStudentAttempts(Long studentId) {
+        return attemptRepository.findByStudentIdOrderByStartedAtDesc(studentId);
     }
 }
