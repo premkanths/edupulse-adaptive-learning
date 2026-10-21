@@ -4,8 +4,19 @@ import { adminApi } from '../api/client';
 import { StatCard } from '../components/StatCard';
 import { LoadingSpinner } from '../components/LoadingSpinner';
 import { Alert } from '../components/Alert';
-import { Users, GraduationCap, UserCheck, ShieldCheck, Layers, BookOpen, Shield, Settings, FileText, History, ArrowRight } from 'lucide-react';
-import { Card, CardHeader } from '../components/ui/Card';
+import {
+  Users,
+  Layers,
+  FileText,
+  History,
+  ShieldCheck,
+  UserCheck,
+  GraduationCap,
+  BookOpen,
+  ArrowRight,
+  Settings,
+} from 'lucide-react';
+import { Card } from '../components/ui/Card';
 import { Badge } from '../components/ui/Badge';
 import { Button } from '../components/ui/Button';
 
@@ -25,7 +36,7 @@ export const AdminDashboard = () => {
           setError(res.message);
         }
       } catch (err) {
-        setError(err.message || 'Failed to load admin metrics.');
+        setError(err.message || 'Failed to load administrator metrics.');
       } finally {
         setLoading(false);
       }
@@ -35,7 +46,7 @@ export const AdminDashboard = () => {
   }, []);
 
   if (loading) {
-    return <LoadingSpinner size="lg" text="Loading platform administration data from MySQL..." />;
+    return <LoadingSpinner size="lg" text="Loading institutional metrics..." />;
   }
 
   if (error) {
@@ -61,18 +72,18 @@ export const AdminDashboard = () => {
   return (
     <div className="space-y-8">
       {/* Header */}
-      <div className="bg-gradient-to-br from-[#1A0B16] via-[#1F1020] to-[#0D0811] text-white rounded-3xl p-8 sm:p-10 shadow-xl flex flex-col md:flex-row items-start md:items-center justify-between gap-6 border border-rose-500/25 relative overflow-hidden">
+      <div className="bg-gradient-to-r from-rose-800 via-rose-700 to-indigo-900 dark:from-[#131C2E] dark:via-[#241724] dark:to-[#0D1524] text-white rounded-3xl p-8 sm:p-10 shadow-lg border border-rose-200/20 dark:border-rose-500/30 flex flex-col md:flex-row items-start md:items-center justify-between gap-6 relative overflow-hidden">
         {/* Ambient top right glow */}
-        <div className="absolute top-0 right-0 -mr-16 -mt-16 w-80 h-80 bg-gradient-to-br from-rose-500/20 via-red-500/15 to-transparent rounded-full blur-2xl pointer-events-none"></div>
+        <div className="absolute top-0 right-0 -mr-16 -mt-16 w-80 h-80 bg-white/10 dark:bg-rose-500/15 rounded-full blur-2xl pointer-events-none"></div>
 
         <div className="space-y-2.5 relative z-10">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-rose-500/20 text-rose-300 border border-rose-400/30 shadow-xs">
-            <ShieldCheck className="w-3.5 h-3.5 text-rose-400 animate-pulse" /> Platform Superadmin Portal
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-white/15 dark:bg-rose-500/20 text-white dark:text-rose-200 border border-white/20 dark:border-rose-400/30 shadow-xs">
+            <ShieldCheck className="w-3.5 h-3.5 text-rose-300 animate-pulse" /> Platform Superadmin Portal
           </div>
-          <h1 className="text-3xl sm:text-4xl font-black tracking-tight bg-gradient-to-r from-white via-rose-100 to-sky-200 bg-clip-text text-transparent">
+          <h1 className="text-3xl sm:text-4xl font-black tracking-tight text-white">
             EduPulse System Administration
           </h1>
-          <p className="text-slate-300 text-sm max-w-xl leading-relaxed">
+          <p className="text-rose-100 dark:text-slate-300 text-sm max-w-xl leading-relaxed">
             Manage users, class cohorts, oversee institutional CSV exports, audit security trails, and configure global BKT hyperparameters.
           </p>
         </div>
@@ -142,12 +153,12 @@ export const AdminDashboard = () => {
         <Link to="/admin/classes" className="block">
           <Card hover={true} className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="p-3 rounded-xl bg-blue-50 dark:bg-blue-950/60 text-academic-blue">
+              <div className="p-3 rounded-xl bg-blue-50 dark:bg-blue-950/60 text-blue-600 dark:text-blue-400">
                 <Layers className="w-5 h-5" />
               </div>
               <div>
-                <h4 className="text-sm font-bold text-slate-900 dark:text-slate-100">Class Cohorts &amp; Rosters</h4>
-                <p className="text-xs text-slate-500 dark:text-slate-400">Enroll students &amp; assign faculty</p>
+                <h4 className="text-sm font-bold text-slate-900 dark:text-white">Class Cohorts &amp; Rosters</h4>
+                <p className="text-xs text-slate-600 dark:text-slate-400">Enroll students &amp; assign faculty</p>
               </div>
             </div>
             <ArrowRight className="w-4 h-4 text-slate-400" />
@@ -157,12 +168,12 @@ export const AdminDashboard = () => {
         <Link to="/admin/reports" className="block">
           <Card hover={true} className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="p-3 rounded-xl bg-teal-50 dark:bg-teal-950/60 text-academic-teal">
+              <div className="p-3 rounded-xl bg-teal-50 dark:bg-teal-950/60 text-teal-600 dark:text-teal-400">
                 <FileText className="w-5 h-5" />
               </div>
               <div>
-                <h4 className="text-sm font-bold text-slate-900 dark:text-slate-100">Institutional CSV Exports</h4>
-                <p className="text-xs text-slate-500 dark:text-slate-400">1-click audit &amp; at-risk rosters</p>
+                <h4 className="text-sm font-bold text-slate-900 dark:text-white">Institutional CSV Exports</h4>
+                <p className="text-xs text-slate-600 dark:text-slate-400">1-click audit &amp; at-risk rosters</p>
               </div>
             </div>
             <ArrowRight className="w-4 h-4 text-slate-400" />
@@ -172,12 +183,12 @@ export const AdminDashboard = () => {
         <Link to="/admin/audit-logs" className="block">
           <Card hover={true} className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="p-3 rounded-xl bg-rose-50 dark:bg-rose-950/60 text-rose-600">
+              <div className="p-3 rounded-xl bg-rose-50 dark:bg-rose-950/60 text-rose-600 dark:text-rose-400">
                 <History className="w-5 h-5" />
               </div>
               <div>
-                <h4 className="text-sm font-bold text-slate-900 dark:text-slate-100">Security Audit Trail</h4>
-                <p className="text-xs text-slate-500 dark:text-slate-400">Immutable ledger of admin actions</p>
+                <h4 className="text-sm font-bold text-slate-900 dark:text-white">Security Audit Trail</h4>
+                <p className="text-xs text-slate-600 dark:text-slate-400">Immutable ledger of admin actions</p>
               </div>
             </div>
             <ArrowRight className="w-4 h-4 text-slate-400" />
@@ -187,10 +198,10 @@ export const AdminDashboard = () => {
 
       {/* Recent Users Table */}
       <Card padding="p-0" className="overflow-hidden">
-        <div className="p-6 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between">
+        <div className="p-6 border-b border-slate-100 dark:border-[#23324D] flex items-center justify-between">
           <div>
-            <h3 className="text-base font-bold text-slate-900 dark:text-slate-100">Platform User Directory</h3>
-            <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Showing seeded and active platform accounts from MySQL</p>
+            <h3 className="text-base font-bold text-slate-900 dark:text-white">Platform User Directory</h3>
+            <p className="text-xs text-slate-600 dark:text-slate-400 mt-0.5">Showing seeded and active platform accounts from MySQL</p>
           </div>
           <Badge variant="default">
             {data?.recentUsers?.length || 0} Accounts Loaded
@@ -199,7 +210,7 @@ export const AdminDashboard = () => {
 
         <div className="overflow-x-auto">
           <table className="w-full text-left text-sm">
-            <thead className="bg-slate-50 dark:bg-slate-900/60 border-b border-slate-200 dark:border-slate-800 text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
+            <thead className="bg-slate-50 dark:bg-[#0D1424] border-b border-slate-200 dark:border-[#23324D] text-xs font-bold text-slate-600 dark:text-slate-400 uppercase tracking-wider">
               <tr>
                 <th className="px-6 py-3.5">User</th>
                 <th className="px-6 py-3.5">Email</th>
@@ -208,23 +219,23 @@ export const AdminDashboard = () => {
                 <th className="px-6 py-3.5">Created At</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-100 dark:divide-slate-800 font-medium text-slate-700 dark:text-slate-300">
+            <tbody className="divide-y divide-slate-100 dark:divide-[#23324D] font-medium text-slate-700 dark:text-slate-300">
               {data?.recentUsers?.map((u) => (
-                <tr key={u.id} className="hover:bg-slate-50/50 dark:hover:bg-slate-900/40 transition-colors">
+                <tr key={u.id} className="hover:bg-slate-50 dark:hover:bg-[#162136] transition-colors">
                   <td className="px-6 py-4 flex items-center gap-3">
-                    <div className="w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-bold text-xs flex items-center justify-center">
+                    <div className="w-8 h-8 rounded-full bg-slate-100 dark:bg-[#1A263B] text-slate-700 dark:text-slate-300 font-bold text-xs flex items-center justify-center">
                       {u.name?.charAt(0)}
                     </div>
-                    <span className="font-semibold text-slate-900 dark:text-slate-100">{u.name}</span>
+                    <span className="font-semibold text-slate-900 dark:text-white">{u.name}</span>
                   </td>
-                  <td className="px-6 py-4 text-slate-500 dark:text-slate-400 font-mono text-xs">{u.email}</td>
+                  <td className="px-6 py-4 text-slate-600 dark:text-slate-400 font-mono text-xs">{u.email}</td>
                   <td className="px-6 py-4">{roleBadge(u.role)}</td>
                   <td className="px-6 py-4">
                     <Badge variant={u.active ? 'success' : 'danger'}>
                       {u.active ? 'Active' : 'Disabled'}
                     </Badge>
                   </td>
-                  <td className="px-6 py-4 text-xs text-slate-500 dark:text-slate-400">
+                  <td className="px-6 py-4 text-xs text-slate-600 dark:text-slate-400">
                     {u.createdAt ? new Date(u.createdAt).toLocaleDateString() : 'Initial Seed'}
                   </td>
                 </tr>

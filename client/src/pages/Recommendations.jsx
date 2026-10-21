@@ -76,7 +76,7 @@ export const Recommendations = () => {
           return (
             <div
               key={rec.id}
-              className="bg-white/95 dark:bg-[#0F1626]/95 backdrop-blur-xl rounded-3xl p-6 sm:p-7 border border-slate-200/90 dark:border-slate-800/90 shadow-sm flex flex-col justify-between hover:shadow-xl hover:shadow-indigo-500/5 hover:-translate-y-0.5 transition-all duration-300"
+              className="bg-white/95 dark:bg-[#131C2E]/95 backdrop-blur-xl rounded-3xl p-6 sm:p-7 border border-slate-200/90 dark:border-slate-800/90 shadow-sm flex flex-col justify-between hover:shadow-xl hover:shadow-indigo-500/5 hover:-translate-y-0.5 transition-all duration-300"
             >
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
@@ -98,7 +98,7 @@ export const Recommendations = () => {
                   </p>
                 </div>
 
-                <div className="p-3.5 bg-slate-50 dark:bg-[#080B11]/70 rounded-2xl border border-slate-200/60 dark:border-slate-800 text-xs text-slate-600 dark:text-slate-300">
+                <div className="p-3.5 bg-slate-50 dark:bg-[#0D1424]/70 rounded-2xl border border-slate-200/60 dark:border-slate-800 text-xs text-slate-600 dark:text-slate-300">
                   <strong className="text-slate-800 dark:text-slate-200 block mb-1">Empirical Evidence:</strong>
                   {rec.supportingEvidence}
                 </div>
@@ -120,7 +120,7 @@ export const Recommendations = () => {
       {/* "Why This?" Explanation Modal */}
       {selectedWhyThis && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 dark:bg-black/80 backdrop-blur-sm p-4">
-          <div className="bg-white/95 dark:bg-[#0F1626]/95 backdrop-blur-xl rounded-3xl p-6 md:p-7 max-w-lg w-full border border-slate-200/90 dark:border-slate-800/90 shadow-2xl space-y-5">
+          <div className="bg-white/95 dark:bg-[#131C2E]/95 backdrop-blur-xl rounded-3xl p-6 md:p-7 max-w-lg w-full border border-slate-200/90 dark:border-slate-800/90 shadow-2xl space-y-5">
             <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-800/80 pb-4">
               <div className="flex items-center gap-3">
                 <div className="p-3 bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400 border border-indigo-200 dark:border-indigo-800 rounded-2xl shadow-xs">
@@ -139,7 +139,7 @@ export const Recommendations = () => {
               </button>
             </div>
 
-            <div className="space-y-3.5 text-xs text-slate-600 dark:text-slate-300 bg-slate-50 dark:bg-[#080B11]/70 p-4 rounded-2xl border border-slate-200/80 dark:border-slate-800">
+            <div className="space-y-3.5 text-xs text-slate-600 dark:text-slate-300 bg-slate-50 dark:bg-[#0D1424]/70 p-4 rounded-2xl border border-slate-200/80 dark:border-slate-800">
               <div>
                 <span className="font-bold text-slate-800 dark:text-slate-200 uppercase tracking-wider text-[10px] block">Topic</span>
                 <p className="text-sm font-bold text-indigo-600 dark:text-indigo-400 mt-0.5">{selectedWhyThis.topic?.name}</p>
@@ -152,7 +152,7 @@ export const Recommendations = () => {
 
               <div>
                 <span className="font-bold text-slate-800 dark:text-slate-200 uppercase tracking-wider text-[10px] block">Supporting Telemetry Evidence</span>
-                <p className="mt-1 font-mono text-[11px] bg-white dark:bg-[#0F1626] p-2.5 rounded-xl border border-slate-200/60 dark:border-slate-800 leading-relaxed text-indigo-900 dark:text-indigo-300">
+                <p className="mt-1 font-mono text-[11px] bg-white dark:bg-[#131C2E] p-2.5 rounded-xl border border-slate-200/60 dark:border-slate-800 leading-relaxed text-indigo-900 dark:text-indigo-300">
                   {selectedWhyThis.supportingEvidence}
                 </p>
               </div>

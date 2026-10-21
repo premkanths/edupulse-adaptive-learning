@@ -152,7 +152,7 @@ export const ClassManagement = () => {
       {/* Grid Layout: Classes List + Selected Class Detail */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Classes List */}
-        <div className="lg:col-span-1 bg-white/95 dark:bg-[#0F1626]/95 backdrop-blur-xl rounded-2xl border border-slate-200/90 dark:border-slate-800/90 p-6 shadow-sm space-y-4">
+        <div className="lg:col-span-1 bg-white/95 dark:bg-[#131C2E]/95 backdrop-blur-xl rounded-2xl border border-slate-200/90 dark:border-slate-800/90 p-6 shadow-sm space-y-4">
           <div className="flex items-center justify-between">
             <h2 className="text-base font-bold text-slate-900 dark:text-slate-100">Active Classes ({classes.length})</h2>
             <button onClick={fetchInitialData} className="p-1.5 text-slate-400 hover:text-slate-600 dark:text-slate-400 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800/80 dark:bg-slate-800/80">
@@ -171,7 +171,7 @@ export const ClassManagement = () => {
                   className={`p-4 rounded-xl border cursor-pointer transition-all ${
                     selectedClass?.id === c.id
                       ? 'border-indigo-600 bg-indigo-50/40 shadow-sm'
-                      : 'border-slate-200/90 dark:border-slate-800/90 hover:border-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800/60 dark:bg-[#080B11]/70'
+                      : 'border-slate-200/90 dark:border-slate-800/90 hover:border-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800/60 dark:bg-[#0D1424]/70'
                   }`}
                 >
                   <div className="flex items-center justify-between">
@@ -197,7 +197,7 @@ export const ClassManagement = () => {
         </div>
 
         {/* Selected Class Detail */}
-        <div className="lg:col-span-2 bg-white/95 dark:bg-[#0F1626]/95 backdrop-blur-xl rounded-2xl border border-slate-200/90 dark:border-slate-800/90 p-6 shadow-sm space-y-6">
+        <div className="lg:col-span-2 bg-white/95 dark:bg-[#131C2E]/95 backdrop-blur-xl rounded-2xl border border-slate-200/90 dark:border-slate-800/90 p-6 shadow-sm space-y-6">
           {classDetails ? (
             <>
               <div className="flex flex-wrap items-center justify-between gap-4 border-b border-slate-100 dark:border-slate-800/80 pb-5">
@@ -232,7 +232,7 @@ export const ClassManagement = () => {
                 ) : (
                   <div className="overflow-x-auto border border-slate-200/90 dark:border-slate-800/90 rounded-xl">
                     <table className="w-full text-left text-sm">
-                      <thead className="bg-slate-50 dark:bg-[#080B11]/70 text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase border-b border-slate-200/90 dark:border-slate-800/90">
+                      <thead className="bg-slate-50 dark:bg-[#0D1424]/70 text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase border-b border-slate-200/90 dark:border-slate-800/90">
                         <tr>
                           <th className="px-4 py-3">Student Name</th>
                           <th className="px-4 py-3">Email Address</th>
@@ -280,7 +280,7 @@ export const ClassManagement = () => {
       {/* Modal: Create Class */}
       {showCreateModal && (
         <div className="fixed inset-0 z-50 bg-slate-900/50 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="bg-white/95 dark:bg-[#0F1626]/95 backdrop-blur-xl rounded-2xl max-w-md w-full p-6 shadow-2xl border border-slate-200/90 dark:border-slate-800/90 space-y-4">
+          <div className="bg-white/95 dark:bg-[#131C2E]/95 backdrop-blur-xl rounded-2xl max-w-md w-full p-6 shadow-2xl border border-slate-200/90 dark:border-slate-800/90 space-y-4">
             <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-800/80 pb-3">
               <h3 className="text-base font-bold text-slate-900 dark:text-slate-100">Create New Class Cohort</h3>
               <button onClick={() => setShowCreateModal(false)} className="text-slate-400 hover:text-slate-600 dark:text-slate-400">
@@ -319,7 +319,7 @@ export const ClassManagement = () => {
                 <button
                   type="button"
                   onClick={() => setShowCreateModal(false)}
-                  className="px-4 py-2 border border-slate-200/90 dark:border-slate-800/90 rounded-xl text-xs font-semibold text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800/60 dark:bg-[#080B11]/70"
+                  className="px-4 py-2 border border-slate-200/90 dark:border-slate-800/90 rounded-xl text-xs font-semibold text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800/60 dark:bg-[#0D1424]/70"
                 >
                   Cancel
                 </button>
@@ -338,7 +338,7 @@ export const ClassManagement = () => {
       {/* Modal: Enroll Student */}
       {showEnrollModal && (
         <div className="fixed inset-0 z-50 bg-slate-900/50 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="bg-white/95 dark:bg-[#0F1626]/95 backdrop-blur-xl rounded-2xl max-w-md w-full p-6 shadow-2xl border border-slate-200/90 dark:border-slate-800/90 space-y-4">
+          <div className="bg-white/95 dark:bg-[#131C2E]/95 backdrop-blur-xl rounded-2xl max-w-md w-full p-6 shadow-2xl border border-slate-200/90 dark:border-slate-800/90 space-y-4">
             <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-800/80 pb-3">
               <h3 className="text-base font-bold text-slate-900 dark:text-slate-100">Enroll Student into {selectedClass?.name}</h3>
               <button onClick={() => setShowEnrollModal(false)} className="text-slate-400 hover:text-slate-600 dark:text-slate-400">
@@ -365,7 +365,7 @@ export const ClassManagement = () => {
                 <button
                   type="button"
                   onClick={() => setShowEnrollModal(false)}
-                  className="px-4 py-2 border border-slate-200/90 dark:border-slate-800/90 rounded-xl text-xs font-semibold text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800/60 dark:bg-[#080B11]/70"
+                  className="px-4 py-2 border border-slate-200/90 dark:border-slate-800/90 rounded-xl text-xs font-semibold text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800/60 dark:bg-[#0D1424]/70"
                 >
                   Cancel
                 </button>

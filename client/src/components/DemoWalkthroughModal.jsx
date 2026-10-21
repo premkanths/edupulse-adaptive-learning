@@ -139,7 +139,7 @@ export const DemoWalkthroughModal = ({ isOpen, onClose }) => {
 
   return (
     <div className="fixed inset-0 z-50 bg-slate-900/60 dark:bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
-      <div className="bg-white/95 dark:bg-[#0F1626]/95 backdrop-blur-xl rounded-3xl max-w-2xl w-full p-6 md:p-8 shadow-2xl border border-slate-200/90 dark:border-slate-800/90 space-y-6">
+      <div className="bg-white/95 dark:bg-[#131C2E]/95 backdrop-blur-xl rounded-3xl max-w-2xl w-full p-6 md:p-8 shadow-2xl border border-slate-200/90 dark:border-slate-800/90 space-y-6">
         {/* Header */}
         <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-800/80 pb-4">
           <div className="flex items-center gap-3">
@@ -162,7 +162,7 @@ export const DemoWalkthroughModal = ({ isOpen, onClose }) => {
             {step.description}
           </p>
 
-          <div className="bg-slate-50 dark:bg-[#080B11]/80 p-4 rounded-2xl border border-slate-200/80 dark:border-slate-800 space-y-2">
+          <div className="bg-slate-50 dark:bg-[#0D1424]/80 p-4 rounded-2xl border border-slate-200/80 dark:border-slate-800 space-y-2">
             <p className="text-[11px] font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider">Key Technical Highlights:</p>
             <ul className="space-y-1.5">
               {step.keyPoints.map((point, idx) => (

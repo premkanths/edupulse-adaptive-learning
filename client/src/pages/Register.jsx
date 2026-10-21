@@ -49,7 +49,7 @@ export const Register = () => {
   };
 
   return (
-    <div className="min-h-[calc(100vh-4rem)] flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 bg-slate-50 dark:bg-[#080B11] transition-colors relative overflow-hidden">
+    <div className="min-h-[calc(100vh-4rem)] flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 bg-slate-50 dark:bg-[#0D1424] transition-colors relative overflow-hidden">
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-indigo-500/10 dark:bg-indigo-500/15 rounded-full blur-3xl pointer-events-none"></div>
 
       <div className="max-w-md w-full space-y-6 relative z-10">
@@ -68,7 +68,7 @@ export const Register = () => {
         {error && <Alert type="error" message={error} />}
         {success && <Alert type="success" message={success} />}
 
-        <div className="bg-white/95 dark:bg-[#0F1626]/95 backdrop-blur-xl p-8 rounded-3xl border border-slate-200/90 dark:border-slate-800/90 shadow-2xl space-y-6">
+        <div className="bg-white/95 dark:bg-[#131C2E]/95 backdrop-blur-xl p-8 rounded-3xl border border-slate-200/90 dark:border-slate-800/90 shadow-2xl space-y-6">
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
               <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-2">
@@ -84,7 +84,7 @@ export const Register = () => {
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   placeholder="e.g. John Doe"
-                  className="w-full pl-10 pr-4 py-2.5 bg-slate-50/80 dark:bg-[#080B11]/80 border border-slate-200 dark:border-slate-700 rounded-xl text-sm text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 focus:bg-white dark:focus:bg-[#080B11] transition-all"
+                  className="w-full pl-10 pr-4 py-2.5 bg-slate-50/80 dark:bg-[#0D1424]/80 border border-slate-200 dark:border-slate-700 rounded-xl text-sm text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 focus:bg-white dark:focus:bg-[#0D1424] transition-all"
                 />
               </div>
             </div>
@@ -103,7 +103,7 @@ export const Register = () => {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="student@college.edu"
-                  className="w-full pl-10 pr-4 py-2.5 bg-slate-50/80 dark:bg-[#080B11]/80 border border-slate-200 dark:border-slate-700 rounded-xl text-sm text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 focus:bg-white dark:focus:bg-[#080B11] transition-all"
+                  className="w-full pl-10 pr-4 py-2.5 bg-slate-50/80 dark:bg-[#0D1424]/80 border border-slate-200 dark:border-slate-700 rounded-xl text-sm text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 focus:bg-white dark:focus:bg-[#0D1424] transition-all"
                 />
               </div>
             </div>
@@ -122,7 +122,7 @@ export const Register = () => {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="Minimum 6 characters"
-                  className="w-full pl-10 pr-4 py-2.5 bg-slate-50/80 dark:bg-[#080B11]/80 border border-slate-200 dark:border-slate-700 rounded-xl text-sm text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 focus:bg-white dark:focus:bg-[#080B11] transition-all"
+                  className="w-full pl-10 pr-4 py-2.5 bg-slate-50/80 dark:bg-[#0D1424]/80 border border-slate-200 dark:border-slate-700 rounded-xl text-sm text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 focus:bg-white dark:focus:bg-[#0D1424] transition-all"
                 />
               </div>
             </div>
@@ -141,7 +141,7 @@ export const Register = () => {
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
                   placeholder="Re-enter password"
-                  className="w-full pl-10 pr-4 py-2.5 bg-slate-50/80 dark:bg-[#080B11]/80 border border-slate-200 dark:border-slate-700 rounded-xl text-sm text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 focus:bg-white dark:focus:bg-[#080B11] transition-all"
+                  className="w-full pl-10 pr-4 py-2.5 bg-slate-50/80 dark:bg-[#0D1424]/80 border border-slate-200 dark:border-slate-700 rounded-xl text-sm text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 focus:bg-white dark:focus:bg-[#0D1424] transition-all"
                 />
               </div>
             </div>

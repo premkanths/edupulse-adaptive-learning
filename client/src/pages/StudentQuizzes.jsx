@@ -59,7 +59,7 @@ export const StudentQuizzes = () => {
       </div>
 
       {quizzes.length === 0 ? (
-        <div className="bg-white/95 dark:bg-[#0F1626]/95 backdrop-blur-xl rounded-3xl p-12 text-center border border-slate-200/90 dark:border-slate-800/90 shadow-sm">
+        <div className="bg-white/95 dark:bg-[#131C2E]/95 backdrop-blur-xl rounded-3xl p-12 text-center border border-slate-200/90 dark:border-slate-800/90 shadow-sm">
           <CheckCircle2 className="w-12 h-12 text-emerald-500 mx-auto mb-3" />
           <h2 className="text-lg font-bold text-slate-800 dark:text-slate-200">You're all caught up!</h2>
           <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">No pending quizzes assigned to your cohort right now.</p>
@@ -69,7 +69,7 @@ export const StudentQuizzes = () => {
           {quizzes.map((quiz) => (
             <div
               key={quiz.quizId}
-              className="bg-white/95 dark:bg-[#0F1626]/95 backdrop-blur-xl rounded-3xl p-6 sm:p-7 border border-slate-200/90 dark:border-slate-800/90 shadow-sm hover:shadow-xl hover:shadow-indigo-500/5 hover:-translate-y-0.5 transition-all duration-300 flex flex-col justify-between"
+              className="bg-white/95 dark:bg-[#131C2E]/95 backdrop-blur-xl rounded-3xl p-6 sm:p-7 border border-slate-200/90 dark:border-slate-800/90 shadow-sm hover:shadow-xl hover:shadow-indigo-500/5 hover:-translate-y-0.5 transition-all duration-300 flex flex-col justify-between"
             >
               <div className="space-y-4">
                 <div className="flex items-start justify-between gap-3">

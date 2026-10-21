@@ -134,7 +134,7 @@ export const QuizTaking = () => {
   return (
     <div className="max-w-4xl mx-auto space-y-6 pb-12">
       {/* Top Header with Timer */}
-      <div className="bg-white/95 dark:bg-[#0F1626]/95 backdrop-blur-xl rounded-3xl p-6 border border-slate-200/90 dark:border-slate-800/90 shadow-sm flex items-center justify-between">
+      <div className="bg-white/95 dark:bg-[#131C2E]/95 backdrop-blur-xl rounded-3xl p-6 border border-slate-200/90 dark:border-slate-800/90 shadow-sm flex items-center justify-between">
         <div>
           <span className="text-xs font-bold text-indigo-600 dark:text-indigo-400 uppercase tracking-wider">
             {quizData.subjectName}
@@ -167,7 +167,7 @@ export const QuizTaking = () => {
       </div>
 
       {/* Question Navigator Pills */}
-      <div className="bg-white/95 dark:bg-[#0F1626]/95 backdrop-blur-xl p-4 rounded-2xl border border-slate-200/90 dark:border-slate-800/90 shadow-sm flex items-center gap-2 overflow-x-auto">
+      <div className="bg-white/95 dark:bg-[#131C2E]/95 backdrop-blur-xl p-4 rounded-2xl border border-slate-200/90 dark:border-slate-800/90 shadow-sm flex items-center gap-2 overflow-x-auto">
         <span className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase mr-2 shrink-0">Questions:</span>
         {questions.map((q, idx) => (
           <button
@@ -191,7 +191,7 @@ export const QuizTaking = () => {
 
       {/* Active Question Card */}
       {currentQ && (
-        <div className="bg-white/95 dark:bg-[#0F1626]/95 backdrop-blur-xl rounded-3xl p-8 border border-slate-200/90 dark:border-slate-800/90 shadow-sm space-y-6">
+        <div className="bg-white/95 dark:bg-[#131C2E]/95 backdrop-blur-xl rounded-3xl p-8 border border-slate-200/90 dark:border-slate-800/90 shadow-sm space-y-6">
           <div className="flex items-center justify-between text-xs text-slate-500 dark:text-slate-400 border-b border-slate-100 dark:border-slate-800/80 pb-3">
             <span>Question {currentIndex + 1} of {questions.length}</span>
             <div className="flex items-center gap-2">
@@ -219,7 +219,7 @@ export const QuizTaking = () => {
                   className={`w-full text-left p-4 rounded-2xl border transition-all flex items-center justify-between cursor-pointer ${
                     isSelected
                       ? 'border-indigo-600 bg-indigo-50/70 text-indigo-900 dark:text-indigo-200 font-semibold shadow-sm'
-                      : 'border-slate-200/90 dark:border-slate-800/90 hover:border-slate-300 bg-white/95 dark:bg-[#0F1626]/95 backdrop-blur-xl text-slate-800 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800/60/60'
+                      : 'border-slate-200/90 dark:border-slate-800/90 hover:border-slate-300 bg-white/95 dark:bg-[#131C2E]/95 backdrop-blur-xl text-slate-800 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800/60/60'
                   }`}
                 >
                   <div className="flex items-center gap-3">
@@ -245,7 +245,7 @@ export const QuizTaking = () => {
             <button
               onClick={handlePrev}
               disabled={currentIndex === 0}
-              className="py-2.5 px-4 rounded-xl text-sm font-semibold border border-slate-200/90 dark:border-slate-800/90 text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800/60 dark:bg-[#080B11]/70 transition-colors disabled:opacity-40 flex items-center gap-1.5 cursor-pointer"
+              className="py-2.5 px-4 rounded-xl text-sm font-semibold border border-slate-200/90 dark:border-slate-800/90 text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800/60 dark:bg-[#0D1424]/70 transition-colors disabled:opacity-40 flex items-center gap-1.5 cursor-pointer"
             >
               <ArrowLeft className="w-4 h-4" /> Previous
             </button>
@@ -272,7 +272,7 @@ export const QuizTaking = () => {
       {/* Confirmation Modal */}
       {showConfirmModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/40 backdrop-blur-sm p-4">
-          <div className="bg-white/95 dark:bg-[#0F1626]/95 backdrop-blur-xl rounded-3xl p-6 max-w-md w-full border border-slate-200/90 dark:border-slate-800/90 shadow-xl space-y-4">
+          <div className="bg-white/95 dark:bg-[#131C2E]/95 backdrop-blur-xl rounded-3xl p-6 max-w-md w-full border border-slate-200/90 dark:border-slate-800/90 shadow-xl space-y-4">
             <div className="flex items-center gap-3">
               <div className="p-3 bg-amber-50 dark:bg-amber-950/50 text-amber-600 rounded-2xl">
                 <AlertCircle className="w-6 h-6" />

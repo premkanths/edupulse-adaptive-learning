@@ -97,7 +97,7 @@ export const AiQuizGenerator = () => {
       {error && <Alert type="error" message={error} />}
 
       {/* Configuration Form */}
-      <div className="bg-white/95 dark:bg-[#0F1626]/95 backdrop-blur-xl rounded-3xl p-6 border border-slate-200/90 dark:border-slate-800/90 shadow-sm space-y-6">
+      <div className="bg-white/95 dark:bg-[#131C2E]/95 backdrop-blur-xl rounded-3xl p-6 border border-slate-200/90 dark:border-slate-800/90 shadow-sm space-y-6">
         <form onSubmit={handleGenerate} className="space-y-5">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
@@ -108,7 +108,7 @@ export const AiQuizGenerator = () => {
                 value={subjectId}
                 onChange={(e) => setSubjectId(e.target.value)}
                 required
-                className="w-full py-2.5 px-3.5 bg-slate-50 dark:bg-[#080B11]/70 border border-slate-200/90 dark:border-slate-800/90 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                className="w-full py-2.5 px-3.5 bg-slate-50 dark:bg-[#0D1424]/70 border border-slate-200/90 dark:border-slate-800/90 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-indigo-500"
               >
                 {subjects.map((s) => (
                   <option key={s.id} value={s.id}>{s.name}</option>
@@ -124,7 +124,7 @@ export const AiQuizGenerator = () => {
                 value={topicId}
                 onChange={(e) => setTopicId(e.target.value)}
                 required
-                className="w-full py-2.5 px-3.5 bg-slate-50 dark:bg-[#080B11]/70 border border-slate-200/90 dark:border-slate-800/90 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                className="w-full py-2.5 px-3.5 bg-slate-50 dark:bg-[#0D1424]/70 border border-slate-200/90 dark:border-slate-800/90 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-indigo-500"
               >
                 {topics.map((t) => (
                   <option key={t.id} value={t.id}>{t.name}</option>
@@ -141,7 +141,7 @@ export const AiQuizGenerator = () => {
               <select
                 value={questionCount}
                 onChange={(e) => setQuestionCount(e.target.value)}
-                className="w-full py-2.5 px-3.5 bg-slate-50 dark:bg-[#080B11]/70 border border-slate-200/90 dark:border-slate-800/90 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                className="w-full py-2.5 px-3.5 bg-slate-50 dark:bg-[#0D1424]/70 border border-slate-200/90 dark:border-slate-800/90 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-indigo-500"
               >
                 <option value={3}>3 Questions (Fast Quick Quiz)</option>
                 <option value={5}>5 Questions (Standard Diagnostic)</option>
@@ -157,7 +157,7 @@ export const AiQuizGenerator = () => {
               <select
                 value={difficulty}
                 onChange={(e) => setDifficulty(e.target.value)}
-                className="w-full py-2.5 px-3.5 bg-slate-50 dark:bg-[#080B11]/70 border border-slate-200/90 dark:border-slate-800/90 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                className="w-full py-2.5 px-3.5 bg-slate-50 dark:bg-[#0D1424]/70 border border-slate-200/90 dark:border-slate-800/90 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-indigo-500"
               >
                 <option value="EASY">Easy (Foundational Definitions)</option>
                 <option value="MEDIUM">Medium (Conceptual Application)</option>

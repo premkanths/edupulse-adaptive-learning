@@ -4,10 +4,20 @@ import { teacherApi } from '../api/client';
 import { StatCard } from '../components/StatCard';
 import { LoadingSpinner } from '../components/LoadingSpinner';
 import { Alert } from '../components/Alert';
-import { Users, BookOpen, HelpCircle, TrendingUp, Layers, CheckCircle2, Sparkles, ShieldAlert, UploadCloud, ArrowRight } from 'lucide-react';
+import {
+  Users,
+  BookOpen,
+  HelpCircle,
+  TrendingUp,
+  Layers,
+  Sparkles,
+  ShieldAlert,
+  ArrowRight,
+  UploadCloud,
+  CheckCircle2,
+} from 'lucide-react';
 import { Card, CardHeader } from '../components/ui/Card';
 import { Button } from '../components/ui/Button';
-import { Badge } from '../components/ui/Badge';
 
 export const TeacherDashboard = () => {
   const [data, setData] = useState(null);
@@ -35,7 +45,7 @@ export const TeacherDashboard = () => {
   }, []);
 
   if (loading) {
-    return <LoadingSpinner size="lg" text="Loading teacher dashboard data from MySQL..." />;
+    return <LoadingSpinner size="lg" text="Loading faculty metrics..." />;
   }
 
   if (error) {
@@ -49,18 +59,18 @@ export const TeacherDashboard = () => {
   return (
     <div className="space-y-8">
       {/* Welcome Header */}
-      <div className="bg-gradient-to-br from-[#0B1522] via-[#0F1E2E] to-[#080E16] text-white rounded-3xl p-8 sm:p-10 shadow-xl flex flex-col md:flex-row items-start md:items-center justify-between gap-6 border border-teal-500/25 relative overflow-hidden">
+      <div className="bg-gradient-to-r from-teal-700 via-emerald-700 to-teal-900 dark:from-[#131C2E] dark:via-[#162736] dark:to-[#0D1524] text-white rounded-3xl p-8 sm:p-10 shadow-lg border border-teal-200/20 dark:border-teal-500/30 flex flex-col md:flex-row items-start md:items-center justify-between gap-6 relative overflow-hidden">
         {/* Ambient top right glow */}
-        <div className="absolute top-0 right-0 -mr-16 -mt-16 w-80 h-80 bg-gradient-to-br from-teal-500/20 via-emerald-500/15 to-transparent rounded-full blur-2xl pointer-events-none"></div>
+        <div className="absolute top-0 right-0 -mr-16 -mt-16 w-80 h-80 bg-white/10 dark:bg-teal-500/15 rounded-full blur-2xl pointer-events-none"></div>
 
         <div className="space-y-2.5 relative z-10">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-teal-500/20 text-teal-300 border border-teal-500/30 shadow-xs">
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-white/15 dark:bg-teal-500/20 text-white dark:text-teal-200 border border-white/20 dark:border-teal-500/30 shadow-xs">
             Faculty Instructor Portal &amp; Academic Cohorts
           </div>
-          <h1 className="text-3xl sm:text-4xl font-black tracking-tight bg-gradient-to-r from-white via-teal-100 to-sky-200 bg-clip-text text-transparent">
+          <h1 className="text-3xl sm:text-4xl font-black tracking-tight text-white">
             Welcome, {data?.teacherName}!
           </h1>
-          <p className="text-slate-300 text-sm max-w-xl leading-relaxed">
+          <p className="text-teal-100 dark:text-slate-300 text-sm max-w-xl leading-relaxed">
             Monitor class performance, assign formative assessments, inspect curriculum bottlenecks, and review AI-generated questions.
           </p>
         </div>
@@ -114,54 +124,54 @@ export const TeacherDashboard = () => {
       {/* Quick Action Navigation Bar */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
         <Link to="/teacher/questions" className="block">
-          <div className="p-4 rounded-2xl bg-white dark:bg-academic-darkCard border border-slate-200 dark:border-academic-darkBorder hover:border-academic-blue dark:hover:border-academic-blue transition-all group shadow-sm">
+          <div className="p-4 rounded-2xl bg-white dark:bg-[#131C2E] border border-slate-200 dark:border-[#23324D] hover:border-blue-500 dark:hover:border-blue-400 transition-all group shadow-xs">
             <div className="flex items-center justify-between mb-2">
-              <div className="p-2 rounded-xl bg-blue-50 dark:bg-blue-950/60 text-academic-blue">
+              <div className="p-2 rounded-xl bg-blue-50 dark:bg-blue-950/60 text-blue-600 dark:text-blue-400">
                 <HelpCircle className="w-5 h-5" />
               </div>
               <ArrowRight className="w-4 h-4 text-slate-400 group-hover:translate-x-1 transition-transform" />
             </div>
-            <h4 className="text-sm font-bold text-slate-900 dark:text-slate-100">Question Bank</h4>
-            <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Author &amp; weight questions</p>
+            <h4 className="text-sm font-bold text-slate-900 dark:text-white">Question Bank</h4>
+            <p className="text-xs text-slate-600 dark:text-slate-400 mt-0.5">Author &amp; weight questions</p>
           </div>
         </Link>
 
         <Link to="/teacher/quizzes" className="block">
-          <div className="p-4 rounded-2xl bg-white dark:bg-academic-darkCard border border-slate-200 dark:border-academic-darkBorder hover:border-academic-teal dark:hover:border-academic-teal transition-all group shadow-sm">
+          <div className="p-4 rounded-2xl bg-white dark:bg-[#131C2E] border border-slate-200 dark:border-[#23324D] hover:border-teal-500 dark:hover:border-teal-400 transition-all group shadow-xs">
             <div className="flex items-center justify-between mb-2">
-              <div className="p-2 rounded-xl bg-teal-50 dark:bg-teal-950/60 text-academic-teal">
+              <div className="p-2 rounded-xl bg-teal-50 dark:bg-teal-950/60 text-teal-600 dark:text-teal-400">
                 <BookOpen className="w-5 h-5" />
               </div>
               <ArrowRight className="w-4 h-4 text-slate-400 group-hover:translate-x-1 transition-transform" />
             </div>
-            <h4 className="text-sm font-bold text-slate-900 dark:text-slate-100">Quizzes &amp; Tests</h4>
-            <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Publish &amp; assign evaluations</p>
+            <h4 className="text-sm font-bold text-slate-900 dark:text-white">Quizzes &amp; Tests</h4>
+            <p className="text-xs text-slate-600 dark:text-slate-400 mt-0.5">Publish &amp; assign evaluations</p>
           </div>
         </Link>
 
         <Link to="/teacher/import" className="block">
-          <div className="p-4 rounded-2xl bg-white dark:bg-academic-darkCard border border-slate-200 dark:border-academic-darkBorder hover:border-indigo-500 dark:hover:border-indigo-500 transition-all group shadow-sm">
+          <div className="p-4 rounded-2xl bg-white dark:bg-[#131C2E] border border-slate-200 dark:border-[#23324D] hover:border-indigo-500 dark:hover:border-indigo-400 transition-all group shadow-xs">
             <div className="flex items-center justify-between mb-2">
-              <div className="p-2 rounded-xl bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600">
+              <div className="p-2 rounded-xl bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400">
                 <UploadCloud className="w-5 h-5" />
               </div>
               <ArrowRight className="w-4 h-4 text-slate-400 group-hover:translate-x-1 transition-transform" />
             </div>
-            <h4 className="text-sm font-bold text-slate-900 dark:text-slate-100">CSV Data Import</h4>
-            <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Bulk upload marks &amp; attendance</p>
+            <h4 className="text-sm font-bold text-slate-900 dark:text-white">CSV Data Import</h4>
+            <p className="text-xs text-slate-600 dark:text-slate-400 mt-0.5">Bulk upload marks &amp; attendance</p>
           </div>
         </Link>
 
         <Link to="/teacher/at-risk" className="block">
-          <div className="p-4 rounded-2xl bg-white dark:bg-academic-darkCard border border-slate-200 dark:border-academic-darkBorder hover:border-rose-500 dark:hover:border-rose-500 transition-all group shadow-sm">
+          <div className="p-4 rounded-2xl bg-white dark:bg-[#131C2E] border border-slate-200 dark:border-[#23324D] hover:border-rose-500 dark:hover:border-rose-400 transition-all group shadow-xs">
             <div className="flex items-center justify-between mb-2">
-              <div className="p-2 rounded-xl bg-rose-50 dark:bg-rose-950/60 text-rose-600">
+              <div className="p-2 rounded-xl bg-rose-50 dark:bg-rose-950/60 text-rose-600 dark:text-rose-400">
                 <ShieldAlert className="w-5 h-5" />
               </div>
               <ArrowRight className="w-4 h-4 text-slate-400 group-hover:translate-x-1 transition-transform" />
             </div>
-            <h4 className="text-sm font-bold text-slate-900 dark:text-slate-100">At-Risk Early Warning</h4>
-            <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Machine learning intervention</p>
+            <h4 className="text-sm font-bold text-slate-900 dark:text-white">At-Risk Early Warning</h4>
+            <p className="text-xs text-slate-600 dark:text-slate-400 mt-0.5">Machine learning intervention</p>
           </div>
         </Link>
       </div>
@@ -175,7 +185,7 @@ export const TeacherDashboard = () => {
             subtitle="Sections linked to your faculty account"
             action={
               <Link to="/teacher/analytics">
-                <span className="text-xs font-semibold text-academic-blue hover:underline">
+                <span className="text-xs font-semibold text-blue-600 dark:text-blue-400 hover:underline">
                   Full Analytics &rarr;
                 </span>
               </Link>
@@ -187,11 +197,11 @@ export const TeacherDashboard = () => {
               data.managedClasses.map((cls, idx) => (
                 <div
                   key={idx}
-                  className="p-4 rounded-2xl border border-slate-200 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-900/40 flex items-center justify-between hover:bg-slate-50 dark:hover:bg-slate-900/80 transition-colors"
+                  className="p-4 rounded-2xl border border-slate-200 dark:border-[#23324D] bg-slate-50 dark:bg-[#0D1424] flex items-center justify-between hover:bg-slate-100/80 dark:hover:bg-[#162136] transition-colors"
                 >
                   <div>
-                    <h4 className="text-sm font-bold text-slate-900 dark:text-slate-100">{cls.name}</h4>
-                    <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">{cls.studentCount} enrolled students</p>
+                    <h4 className="text-sm font-bold text-slate-900 dark:text-white">{cls.name}</h4>
+                    <p className="text-xs text-slate-600 dark:text-slate-400 mt-0.5">{cls.studentCount} enrolled students</p>
                   </div>
                   <Link to="/teacher/analytics">
                     <Button variant="secondary" size="sm">
@@ -201,7 +211,7 @@ export const TeacherDashboard = () => {
                 </div>
               ))
             ) : (
-              <p className="text-xs text-slate-500 py-4 text-center">No assigned classes found.</p>
+              <p className="text-xs text-slate-500 dark:text-slate-400 py-4 text-center">No assigned classes found.</p>
             )}
           </div>
         </Card>
@@ -218,20 +228,20 @@ export const TeacherDashboard = () => {
               data.recentActivities.map((act, idx) => (
                 <div
                   key={idx}
-                  className="p-4 rounded-2xl border border-slate-200 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-900/40 flex items-start gap-3"
+                  className="p-4 rounded-2xl border border-slate-200 dark:border-[#23324D] bg-slate-50 dark:bg-[#0D1424] flex items-start gap-3"
                 >
-                  <div className="p-2 bg-emerald-50 dark:bg-emerald-950/60 text-emerald-600 rounded-xl mt-0.5">
+                  <div className="p-2 bg-emerald-50 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 rounded-xl mt-0.5">
                     <CheckCircle2 className="w-4 h-4" />
                   </div>
                   <div>
-                    <h4 className="text-sm font-semibold text-slate-900 dark:text-slate-100">{act.title}</h4>
-                    <p className="text-xs text-slate-600 dark:text-slate-400 mt-0.5">{act.description}</p>
-                    <span className="text-[11px] text-slate-400 mt-1 block">{act.timestamp}</span>
+                    <h4 className="text-sm font-semibold text-slate-900 dark:text-white">{act.title}</h4>
+                    <p className="text-xs text-slate-700 dark:text-slate-300 mt-0.5">{act.description}</p>
+                    <span className="text-[11px] text-slate-500 dark:text-slate-400 mt-1 block">{act.timestamp}</span>
                   </div>
                 </div>
               ))
             ) : (
-              <p className="text-xs text-slate-500 py-4 text-center">No student activity logged in the past 24 hours.</p>
+              <p className="text-xs text-slate-500 dark:text-slate-400 py-4 text-center">No student activity logged in the past 24 hours.</p>
             )}
           </div>
         </Card>

@@ -210,21 +210,21 @@ export const StudentProfilePrivacy = () => {
       {activeTab === 'ACADEMIC' && (
         <div className="space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-            <div className="bg-white/95 dark:bg-[#0F1626]/95 backdrop-blur-xl p-5 rounded-2xl border border-slate-200/90 dark:border-slate-800/90 shadow-sm">
+            <div className="bg-white/95 dark:bg-[#131C2E]/95 backdrop-blur-xl p-5 rounded-2xl border border-slate-200/90 dark:border-slate-800/90 shadow-sm">
               <p className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Attendance Rate</p>
               <p className="text-3xl font-black text-indigo-600 dark:text-indigo-400 mt-2">
                 {academicData?.attendancePercentage != null ? `${academicData.attendancePercentage}%` : '100%'}
               </p>
               <p className="text-xs text-slate-400 mt-1">Based on {academicData?.totalAttendanceClasses || 0} class sessions</p>
             </div>
-            <div className="bg-white/95 dark:bg-[#0F1626]/95 backdrop-blur-xl p-5 rounded-2xl border border-slate-200/90 dark:border-slate-800/90 shadow-sm">
+            <div className="bg-white/95 dark:bg-[#131C2E]/95 backdrop-blur-xl p-5 rounded-2xl border border-slate-200/90 dark:border-slate-800/90 shadow-sm">
               <p className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Institutional Marks Avg</p>
               <p className="text-3xl font-black text-emerald-600 mt-2">
                 {academicData?.averageMarksPercentage != null ? `${academicData.averageMarksPercentage}%` : '85%'}
               </p>
               <p className="text-xs text-slate-400 mt-1">Across {academicData?.totalAssessments || 0} formal assessments</p>
             </div>
-            <div className="bg-white/95 dark:bg-[#0F1626]/95 backdrop-blur-xl p-5 rounded-2xl border border-slate-200/90 dark:border-slate-800/90 shadow-sm">
+            <div className="bg-white/95 dark:bg-[#131C2E]/95 backdrop-blur-xl p-5 rounded-2xl border border-slate-200/90 dark:border-slate-800/90 shadow-sm">
               <p className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Academic Risk Level</p>
               <p className={`text-xl font-black mt-2 ${
                 riskStatus?.riskLevel === 'HIGH' ? 'text-rose-600' : riskStatus?.riskLevel === 'MODERATE' ? 'text-amber-600' : 'text-emerald-600'
@@ -233,7 +233,7 @@ export const StudentProfilePrivacy = () => {
               </p>
               <p className="text-xs text-slate-400 mt-1">Continuous self-monitoring</p>
             </div>
-            <div className="bg-white/95 dark:bg-[#0F1626]/95 backdrop-blur-xl p-5 rounded-2xl border border-slate-200/90 dark:border-slate-800/90 shadow-sm">
+            <div className="bg-white/95 dark:bg-[#131C2E]/95 backdrop-blur-xl p-5 rounded-2xl border border-slate-200/90 dark:border-slate-800/90 shadow-sm">
               <p className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Status</p>
               <p className="text-xl font-bold text-slate-800 dark:text-slate-200 mt-2">Active Enrolled</p>
               <p className="text-xs text-slate-400 mt-1">Academic Year 2025-2026</p>
@@ -241,14 +241,14 @@ export const StudentProfilePrivacy = () => {
           </div>
 
           {/* Marks Table */}
-          <div className="bg-white/95 dark:bg-[#0F1626]/95 backdrop-blur-xl rounded-2xl border border-slate-200/90 dark:border-slate-800/90 p-6 shadow-sm space-y-4">
+          <div className="bg-white/95 dark:bg-[#131C2E]/95 backdrop-blur-xl rounded-2xl border border-slate-200/90 dark:border-slate-800/90 p-6 shadow-sm space-y-4">
             <h3 className="text-base font-bold text-slate-900 dark:text-slate-100">Institutional Examination & Assessment Records</h3>
             {academicData?.marksRecords?.length === 0 ? (
               <p className="text-sm text-slate-500 dark:text-slate-400 py-4">No examination marks imported yet.</p>
             ) : (
               <div className="overflow-x-auto border border-slate-200/90 dark:border-slate-800/90 rounded-xl">
                 <table className="w-full text-left text-sm">
-                  <thead className="bg-slate-50 dark:bg-[#080B11]/70 text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase border-b border-slate-200/90 dark:border-slate-800/90">
+                  <thead className="bg-slate-50 dark:bg-[#0D1424]/70 text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase border-b border-slate-200/90 dark:border-slate-800/90">
                     <tr>
                       <th className="px-4 py-3">Subject</th>
                       <th className="px-4 py-3">Assessment</th>
@@ -294,12 +294,12 @@ export const StudentProfilePrivacy = () => {
           </div>
 
           {weeklySummaries.length === 0 ? (
-            <div className="bg-white/95 dark:bg-[#0F1626]/95 backdrop-blur-xl rounded-2xl border border-slate-200/90 dark:border-slate-800/90 p-8 text-center text-slate-500 dark:text-slate-400">
+            <div className="bg-white/95 dark:bg-[#131C2E]/95 backdrop-blur-xl rounded-2xl border border-slate-200/90 dark:border-slate-800/90 p-8 text-center text-slate-500 dark:text-slate-400">
               No weekly summaries generated yet. Complete quizzes to receive your Monday progress report!
             </div>
           ) : (
             weeklySummaries.map((summary) => (
-              <div key={summary.id} className="bg-white/95 dark:bg-[#0F1626]/95 backdrop-blur-xl rounded-2xl border border-slate-200/90 dark:border-slate-800/90 p-6 shadow-sm space-y-4">
+              <div key={summary.id} className="bg-white/95 dark:bg-[#131C2E]/95 backdrop-blur-xl rounded-2xl border border-slate-200/90 dark:border-slate-800/90 p-6 shadow-sm space-y-4">
                 <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-800/80 pb-3">
                   <div className="flex items-center gap-2">
                     <Calendar className="w-4 h-4 text-indigo-600 dark:text-indigo-400" />
@@ -325,7 +325,7 @@ export const StudentProfilePrivacy = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {/* GitHub Card */}
-            <div className="bg-white/95 dark:bg-[#0F1626]/95 backdrop-blur-xl rounded-2xl border border-slate-200/90 dark:border-slate-800/90 p-6 shadow-sm space-y-4">
+            <div className="bg-white/95 dark:bg-[#131C2E]/95 backdrop-blur-xl rounded-2xl border border-slate-200/90 dark:border-slate-800/90 p-6 shadow-sm space-y-4">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2 text-slate-900 dark:text-slate-100 font-bold">
                   <Github className="w-5 h-5" /> GitHub
@@ -360,7 +360,7 @@ export const StudentProfilePrivacy = () => {
                 const snap = p ? parseSnapshot(p.snapshotJson) : null;
                 if (!snap) return null;
                 return (
-                  <div className="p-3 bg-slate-50 dark:bg-[#080B11]/70 rounded-xl border border-slate-200/90 dark:border-slate-800/90 text-xs space-y-1.5 text-slate-700 dark:text-slate-300">
+                  <div className="p-3 bg-slate-50 dark:bg-[#0D1424]/70 rounded-xl border border-slate-200/90 dark:border-slate-800/90 text-xs space-y-1.5 text-slate-700 dark:text-slate-300">
                     <p><strong>Public Repos:</strong> {snap.publicRepos}</p>
                     <p><strong>Followers:</strong> {snap.followers}</p>
                     {snap.topLanguages && <p><strong>Languages:</strong> {snap.topLanguages.join(', ')}</p>}
@@ -373,7 +373,7 @@ export const StudentProfilePrivacy = () => {
             </div>
 
             {/* LeetCode Card */}
-            <div className="bg-white/95 dark:bg-[#0F1626]/95 backdrop-blur-xl rounded-2xl border border-slate-200/90 dark:border-slate-800/90 p-6 shadow-sm space-y-4">
+            <div className="bg-white/95 dark:bg-[#131C2E]/95 backdrop-blur-xl rounded-2xl border border-slate-200/90 dark:border-slate-800/90 p-6 shadow-sm space-y-4">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2 text-slate-900 dark:text-slate-100 font-bold">
                   <Code2 className="w-5 h-5 text-amber-500" /> LeetCode
@@ -421,7 +421,7 @@ export const StudentProfilePrivacy = () => {
             </div>
 
             {/* HackerRank Card */}
-            <div className="bg-white/95 dark:bg-[#0F1626]/95 backdrop-blur-xl rounded-2xl border border-slate-200/90 dark:border-slate-800/90 p-6 shadow-sm space-y-4">
+            <div className="bg-white/95 dark:bg-[#131C2E]/95 backdrop-blur-xl rounded-2xl border border-slate-200/90 dark:border-slate-800/90 p-6 shadow-sm space-y-4">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2 text-slate-900 dark:text-slate-100 font-bold">
                   <Award className="w-5 h-5 text-emerald-600" /> HackerRank
@@ -474,7 +474,7 @@ export const StudentProfilePrivacy = () => {
 
       {/* TAB 4: RESEARCH FEEDBACK SURVEY */}
       {activeTab === 'SURVEY' && (
-        <div className="bg-white/95 dark:bg-[#0F1626]/95 backdrop-blur-xl rounded-2xl border border-slate-200/90 dark:border-slate-800/90 p-6 shadow-sm space-y-6">
+        <div className="bg-white/95 dark:bg-[#131C2E]/95 backdrop-blur-xl rounded-2xl border border-slate-200/90 dark:border-slate-800/90 p-6 shadow-sm space-y-6">
           <div className="border-b border-slate-100 dark:border-slate-800/80 pb-4">
             <h2 className="text-lg font-bold text-slate-900 dark:text-slate-100">EduPulse Platform Research Feedback Survey</h2>
             <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
@@ -544,7 +544,7 @@ export const StudentProfilePrivacy = () => {
       {activeTab === 'PRIVACY' && (
         <div className="space-y-6">
           {/* Consent Setting Card */}
-          <div className="bg-white/95 dark:bg-[#0F1626]/95 backdrop-blur-xl rounded-2xl border border-slate-200/90 dark:border-slate-800/90 p-6 shadow-sm space-y-4">
+          <div className="bg-white/95 dark:bg-[#131C2E]/95 backdrop-blur-xl rounded-2xl border border-slate-200/90 dark:border-slate-800/90 p-6 shadow-sm space-y-4">
             <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-800/80 pb-4">
               <div>
                 <h3 className="text-base font-bold text-slate-900 dark:text-slate-100">Privacy & Research Data Sharing Consent</h3>
@@ -595,7 +595,7 @@ export const StudentProfilePrivacy = () => {
       {/* Confirmation Modal */}
       {showDeleteModal && (
         <div className="fixed inset-0 z-50 bg-slate-900/50 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="bg-white/95 dark:bg-[#0F1626]/95 backdrop-blur-xl rounded-2xl max-w-md w-full p-6 shadow-2xl border border-slate-200/90 dark:border-slate-800/90 space-y-4">
+          <div className="bg-white/95 dark:bg-[#131C2E]/95 backdrop-blur-xl rounded-2xl max-w-md w-full p-6 shadow-2xl border border-slate-200/90 dark:border-slate-800/90 space-y-4">
             <h3 className="text-lg font-bold text-slate-900 dark:text-slate-100">Confirm Data Erasure</h3>
             <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
               Are you sure you want to permanently purge your private AI chat history and anonymize your account? This action cannot be undone.
@@ -603,7 +603,7 @@ export const StudentProfilePrivacy = () => {
             <div className="flex justify-end gap-3 pt-2">
               <button
                 onClick={() => setShowDeleteModal(false)}
-                className="px-4 py-2 border border-slate-200/90 dark:border-slate-800/90 rounded-xl text-xs font-semibold text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800/60 dark:bg-[#080B11]/70"
+                className="px-4 py-2 border border-slate-200/90 dark:border-slate-800/90 rounded-xl text-xs font-semibold text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800/60 dark:bg-[#0D1424]/70"
               >
                 Cancel
               </button>

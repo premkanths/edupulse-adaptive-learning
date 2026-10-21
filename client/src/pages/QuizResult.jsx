@@ -63,7 +63,7 @@ export const QuizResult = () => {
       </div>
 
       {/* Action Next Steps */}
-      <div className="bg-white/95 dark:bg-[#0F1626]/95 backdrop-blur-xl rounded-3xl p-6 border border-slate-200/90 dark:border-slate-800/90 shadow-sm flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+      <div className="bg-white/95 dark:bg-[#131C2E]/95 backdrop-blur-xl rounded-3xl p-6 border border-slate-200/90 dark:border-slate-800/90 shadow-sm flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div className="flex items-center gap-3">
           <div className="p-3 bg-amber-50 dark:bg-amber-950/50 text-amber-600 rounded-2xl">
             <Lightbulb className="w-6 h-6" />
@@ -94,7 +94,7 @@ export const QuizResult = () => {
           return (
             <div
               key={idx}
-              className={`bg-white/95 dark:bg-[#0F1626]/95 backdrop-blur-xl rounded-3xl p-6 border shadow-sm space-y-4 ${
+              className={`bg-white/95 dark:bg-[#131C2E]/95 backdrop-blur-xl rounded-3xl p-6 border shadow-sm space-y-4 ${
                 isCorrect ? 'border-emerald-200/80' : 'border-rose-200/80'
               }`}
             >
@@ -135,7 +135,7 @@ export const QuizResult = () => {
                   const wasChosen = q.chosenIndex === optIdx;
                   const isRightOption = q.correctIndex === optIdx;
 
-                  let optClass = 'bg-slate-50 dark:bg-[#080B11]/70 border-slate-200/90 dark:border-slate-800/90 text-slate-700 dark:text-slate-300';
+                  let optClass = 'bg-slate-50 dark:bg-[#0D1424]/70 border-slate-200/90 dark:border-slate-800/90 text-slate-700 dark:text-slate-300';
                   if (isRightOption) {
                     optClass = 'bg-emerald-50 dark:bg-emerald-950/50 border-emerald-300 text-emerald-900 font-semibold';
                   } else if (wasChosen && !isRightOption) {

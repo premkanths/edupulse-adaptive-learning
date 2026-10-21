@@ -19,10 +19,10 @@ export const Unauthorized = () => {
   };
 
   return (
-    <div className="min-h-[calc(100vh-4rem)] flex items-center justify-center p-6 bg-slate-50 dark:bg-[#080B11] transition-colors relative overflow-hidden">
+    <div className="min-h-[calc(100vh-4rem)] flex items-center justify-center p-6 bg-slate-50 dark:bg-[#0D1424] transition-colors relative overflow-hidden">
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-rose-500/10 dark:bg-rose-500/15 rounded-full blur-3xl pointer-events-none"></div>
 
-      <div className="max-w-md w-full bg-white/95 dark:bg-[#0F1626]/95 backdrop-blur-xl rounded-3xl p-8 border border-slate-200/90 dark:border-slate-800/90 text-center space-y-5 shadow-2xl relative z-10">
+      <div className="max-w-md w-full bg-white/95 dark:bg-[#131C2E]/95 backdrop-blur-xl rounded-3xl p-8 border border-slate-200/90 dark:border-slate-800/90 text-center space-y-5 shadow-2xl relative z-10">
         <div className="w-16 h-16 bg-rose-50 dark:bg-rose-950/50 text-rose-600 dark:text-rose-400 border border-rose-200 dark:border-rose-800 rounded-2xl flex items-center justify-center mx-auto shadow-md shadow-rose-500/20">
           <ShieldAlert className="w-8 h-8" />
         </div>

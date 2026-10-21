@@ -115,7 +115,7 @@ export const TeacherQuizzes = () => {
         {quizzes.map((quiz) => (
           <div
             key={quiz.id}
-            className="bg-white/95 dark:bg-[#0F1626]/95 backdrop-blur-xl rounded-3xl p-6 border border-slate-200/80 shadow-sm flex flex-col justify-between"
+            className="bg-white/95 dark:bg-[#131C2E]/95 backdrop-blur-xl rounded-3xl p-6 border border-slate-200/80 shadow-sm flex flex-col justify-between"
           >
             <div className="space-y-4">
               <div className="flex items-start justify-between gap-3">
@@ -172,7 +172,7 @@ export const TeacherQuizzes = () => {
       {/* Assign Modal */}
       {showAssignModal && selectedQuiz && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/40 backdrop-blur-sm p-4">
-          <div className="bg-white/95 dark:bg-[#0F1626]/95 backdrop-blur-xl rounded-3xl p-6 max-w-md w-full border border-slate-200/90 dark:border-slate-800/90 shadow-2xl space-y-4">
+          <div className="bg-white/95 dark:bg-[#131C2E]/95 backdrop-blur-xl rounded-3xl p-6 max-w-md w-full border border-slate-200/90 dark:border-slate-800/90 shadow-2xl space-y-4">
             <h2 className="text-lg font-bold text-slate-900 dark:text-slate-100">Assign Quiz to Class</h2>
             <p className="text-xs text-slate-500 dark:text-slate-400">Assigning: <strong>{selectedQuiz.title}</strong></p>
 
@@ -183,7 +183,7 @@ export const TeacherQuizzes = () => {
                   value={selectedClassId}
                   onChange={(e) => setSelectedClassId(e.target.value)}
                   required
-                  className="w-full py-2 px-3 border border-slate-200/90 dark:border-slate-800/90 rounded-xl bg-slate-50 dark:bg-[#080B11]/70 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  className="w-full py-2 px-3 border border-slate-200/90 dark:border-slate-800/90 rounded-xl bg-slate-50 dark:bg-[#0D1424]/70 focus:outline-none focus:ring-2 focus:ring-indigo-500"
                 >
                   {classes.map((c) => (
                     <option key={c.id} value={c.id}>{c.name}</option>

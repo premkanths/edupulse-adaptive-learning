@@ -98,24 +98,27 @@ export const UserProfile = () => {
       return;
     }
     if (newPassword !== confirmPassword) {
-      setPasswordNotification({ type: 'error', message: 'New passwords do not match.' });
+      setPasswordNotification({ type: 'error', message: 'New password and confirmation do not match.' });
       return;
     }
 
     try {
       setChangingPassword(true);
-      const res = await api.put('/user/change-password', {
+      const res = await api.post('/user/change-password', {
         currentPassword,
         newPassword,
       });
       if (res.data?.success) {
-        setPasswordNotification({ type: 'success', message: 'Password changed successfully!' });
+        setPasswordNotification({ type: 'success', message: 'Password updated successfully!' });
         setCurrentPassword('');
         setNewPassword('');
         setConfirmPassword('');
       }
     } catch (err) {
-      setPasswordNotification({ type: 'error', message: err.response?.data?.message || 'Failed to change password.' });
+      setPasswordNotification({
+        type: 'error',
+        message: err.response?.data?.message || 'Failed to update password. Verify your current password.',
+      });
     } finally {
       setChangingPassword(false);
     }
@@ -131,7 +134,7 @@ export const UserProfile = () => {
   if (loading) {
     return (
       <div className="text-center py-24">
-        <RefreshCw className="w-10 h-10 text-academic-blue animate-spin mx-auto mb-4" />
+        <RefreshCw className="w-10 h-10 text-indigo-600 animate-spin mx-auto mb-4" />
         <p className="text-slate-600 dark:text-slate-400 font-medium">Loading profile...</p>
       </div>
     );
@@ -145,8 +148,8 @@ export const UserProfile = () => {
     <div className="space-y-8 max-w-4xl mx-auto">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold text-slate-900 dark:text-slate-100 tracking-tight">Account &amp; Profile Settings</h1>
-        <p className="text-slate-500 dark:text-slate-400 text-sm mt-1">
+        <h1 className="text-2xl font-black text-slate-900 dark:text-white tracking-tight">Account &amp; Profile Settings</h1>
+        <p className="text-slate-600 dark:text-slate-400 text-sm mt-1">
           Manage your personal details, academic affiliations, contact preferences, and security credentials.
         </p>
       </div>
@@ -155,8 +158,8 @@ export const UserProfile = () => {
         <div
           className={`p-4 rounded-xl flex items-center gap-3 text-sm font-medium border ${
             notification.type === 'success'
-              ? 'bg-emerald-50 dark:bg-emerald-950/50 text-emerald-800 dark:text-emerald-300 border-emerald-200 dark:border-emerald-800'
-              : 'bg-rose-50 dark:bg-rose-950/50 text-rose-800 dark:text-rose-300 border-rose-200 dark:border-rose-800'
+              ? 'bg-emerald-50 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-200 border-emerald-200 dark:border-emerald-800'
+              : 'bg-rose-50 dark:bg-rose-950/60 text-rose-800 dark:text-rose-200 border-rose-200 dark:border-rose-800'
           }`}
         >
           {notification.type === 'success' ? <CheckCircle className="w-5 h-5 text-emerald-600" /> : <AlertCircle className="w-5 h-5 text-rose-600" />}
@@ -173,17 +176,17 @@ export const UserProfile = () => {
 
         <form onSubmit={handleSaveProfile} className="space-y-6">
           {/* Avatar Section */}
-          <div className="flex flex-col sm:flex-row items-center gap-6 p-4 rounded-2xl bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800">
+          <div className="flex flex-col sm:flex-row items-center gap-6 p-4 rounded-2xl bg-slate-50 dark:bg-[#0D1424] border border-slate-200 dark:border-[#23324D]">
             <div className="relative">
               {avatarUrl ? (
                 <img
                   src={avatarUrl}
                   alt={name}
-                  className="w-20 h-20 rounded-2xl object-cover border-2 border-academic-blue shadow-sm"
+                  className="w-20 h-20 rounded-2xl object-cover border-2 border-indigo-600 shadow-sm"
                   onError={() => setAvatarUrl('')}
                 />
               ) : (
-                <div className="w-20 h-20 rounded-2xl bg-academic-blue text-white flex items-center justify-center font-bold text-2xl shadow-sm">
+                <div className="w-20 h-20 rounded-2xl bg-indigo-600 text-white flex items-center justify-center font-bold text-2xl shadow-sm">
                   {name ? name.charAt(0).toUpperCase() : 'U'}
                 </div>
               )}
@@ -191,14 +194,14 @@ export const UserProfile = () => {
 
             <div className="flex-1 space-y-2 text-center sm:text-left">
               <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2">
-                <span className="font-bold text-slate-900 dark:text-slate-100">{name || 'User'}</span>
+                <span className="font-bold text-slate-900 dark:text-white">{name || 'User'}</span>
                 <Badge variant={isStudent ? 'info' : isTeacher ? 'teal' : 'default'}>
                   {role}
                 </Badge>
                 <Badge variant="success">Active Account</Badge>
               </div>
 
-              <p className="text-xs text-slate-500 dark:text-slate-400">
+              <p className="text-xs text-slate-600 dark:text-slate-400">
                 Choose a preset avatar or paste a custom image URL below:
               </p>
 
@@ -209,7 +212,7 @@ export const UserProfile = () => {
                     type="button"
                     onClick={() => setAvatarUrl(url)}
                     className={`w-8 h-8 rounded-lg overflow-hidden border-2 transition-all ${
-                      avatarUrl === url ? 'border-academic-blue scale-110' : 'border-transparent hover:opacity-80'
+                      avatarUrl === url ? 'border-indigo-600 scale-110' : 'border-transparent hover:opacity-80'
                     }`}
                   >
                     <img src={url} alt={`avatar-${i}`} className="w-full h-full object-cover" />
@@ -231,7 +234,7 @@ export const UserProfile = () => {
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 placeholder="Your Full Name"
-                className="w-full px-4 py-2.5 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl text-sm text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-academic-blue transition-all"
+                className="w-full px-4 py-2.5 bg-slate-50 dark:bg-[#0D1424] border border-slate-200 dark:border-[#23324D] rounded-xl text-sm text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all"
               />
             </div>
 
@@ -244,7 +247,7 @@ export const UserProfile = () => {
                   type="email"
                   disabled
                   value={profile?.email || ''}
-                  className="w-full px-4 py-2.5 bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm text-slate-500 dark:text-slate-400 cursor-not-allowed"
+                  className="w-full px-4 py-2.5 bg-slate-100 dark:bg-[#1A263B] border border-slate-200 dark:border-[#23324D] rounded-xl text-sm text-slate-600 dark:text-slate-400 cursor-not-allowed"
                 />
                 <span className="absolute right-3 top-2.5 text-xs text-emerald-600 font-semibold flex items-center gap-1">
                   <CheckCircle className="w-3.5 h-3.5" /> Institutional
@@ -263,7 +266,7 @@ export const UserProfile = () => {
                   value={department}
                   onChange={(e) => setDepartment(e.target.value)}
                   placeholder="e.g. Computer Science & Engineering"
-                  className="w-full pl-10 pr-4 py-2.5 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl text-sm text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-academic-blue transition-all"
+                  className="w-full pl-10 pr-4 py-2.5 bg-slate-50 dark:bg-[#0D1424] border border-slate-200 dark:border-[#23324D] rounded-xl text-sm text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all"
                 />
               </div>
             </div>
@@ -279,7 +282,7 @@ export const UserProfile = () => {
                   value={academicInfo}
                   onChange={(e) => setAcademicInfo(e.target.value)}
                   placeholder={isStudent ? 'e.g. B.Tech Year 4, Section B' : 'e.g. Associate Professor'}
-                  className="w-full pl-10 pr-4 py-2.5 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl text-sm text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-academic-blue transition-all"
+                  className="w-full pl-10 pr-4 py-2.5 bg-slate-50 dark:bg-[#0D1424] border border-slate-200 dark:border-[#23324D] rounded-xl text-sm text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all"
                 />
               </div>
             </div>
@@ -293,7 +296,7 @@ export const UserProfile = () => {
                 value={avatarUrl}
                 onChange={(e) => setAvatarUrl(e.target.value)}
                 placeholder="https://example.com/photo.jpg"
-                className="w-full px-4 py-2.5 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl text-sm text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-academic-blue transition-all"
+                className="w-full px-4 py-2.5 bg-slate-50 dark:bg-[#0D1424] border border-slate-200 dark:border-[#23324D] rounded-xl text-sm text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all"
               />
             </div>
 
@@ -306,14 +309,14 @@ export const UserProfile = () => {
                 value={bio}
                 onChange={(e) => setBio(e.target.value)}
                 placeholder="Briefly describe your academic background, research interests, or learning goals..."
-                className="w-full px-4 py-2.5 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl text-sm text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-academic-blue transition-all"
+                className="w-full px-4 py-2.5 bg-slate-50 dark:bg-[#0D1424] border border-slate-200 dark:border-[#23324D] rounded-xl text-sm text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all"
               />
             </div>
           </div>
 
           {/* Social Links */}
-          <div className="border-t border-slate-100 dark:border-slate-800 pt-5 space-y-4">
-            <h4 className="text-sm font-bold text-slate-900 dark:text-slate-100">
+          <div className="border-t border-slate-100 dark:border-[#23324D] pt-5 space-y-4">
+            <h4 className="text-sm font-bold text-slate-900 dark:text-white">
               Public Portfolio &amp; Social Links
             </h4>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -324,7 +327,7 @@ export const UserProfile = () => {
                   value={githubUrl}
                   onChange={(e) => setGithubUrl(e.target.value)}
                   placeholder="https://github.com/..."
-                  className="w-full pl-10 pr-4 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl text-xs text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-academic-blue"
+                  className="w-full pl-10 pr-4 py-2 bg-slate-50 dark:bg-[#0D1424] border border-slate-200 dark:border-[#23324D] rounded-xl text-xs text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
                 />
               </div>
 
@@ -335,7 +338,7 @@ export const UserProfile = () => {
                   value={linkedinUrl}
                   onChange={(e) => setLinkedinUrl(e.target.value)}
                   placeholder="https://linkedin.com/in/..."
-                  className="w-full pl-10 pr-4 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl text-xs text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-academic-blue"
+                  className="w-full pl-10 pr-4 py-2 bg-slate-50 dark:bg-[#0D1424] border border-slate-200 dark:border-[#23324D] rounded-xl text-xs text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
                 />
               </div>
 
@@ -346,19 +349,19 @@ export const UserProfile = () => {
                   value={websiteUrl}
                   onChange={(e) => setWebsiteUrl(e.target.value)}
                   placeholder="https://yourportfolio.dev"
-                  className="w-full pl-10 pr-4 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl text-xs text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-academic-blue"
+                  className="w-full pl-10 pr-4 py-2 bg-slate-50 dark:bg-[#0D1424] border border-slate-200 dark:border-[#23324D] rounded-xl text-xs text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
                 />
               </div>
             </div>
           </div>
 
           {/* Email Notifications */}
-          <div className="border-t border-slate-100 dark:border-slate-800 pt-5 flex items-center justify-between">
+          <div className="border-t border-slate-100 dark:border-[#23324D] pt-5 flex items-center justify-between">
             <div className="space-y-0.5">
-              <label className="text-sm font-bold text-slate-900 dark:text-slate-100 flex items-center gap-2">
-                <Bell className="w-4 h-4 text-academic-blue" /> Email Notifications
+              <label className="text-sm font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                <Bell className="w-4 h-4 text-indigo-600 dark:text-indigo-400" /> Email Notifications
               </label>
-              <p className="text-xs text-slate-500 dark:text-slate-400">
+              <p className="text-xs text-slate-600 dark:text-slate-400">
                 Receive weekly progress summaries, mastery milestone updates, and quiz assignments.
               </p>
             </div>
@@ -366,12 +369,12 @@ export const UserProfile = () => {
               type="checkbox"
               checked={emailNotifications}
               onChange={(e) => setEmailNotifications(e.target.checked)}
-              className="w-5 h-5 text-academic-blue rounded border-slate-300 focus:ring-academic-blue cursor-pointer"
+              className="w-5 h-5 text-indigo-600 rounded border-slate-300 focus:ring-indigo-500 cursor-pointer"
             />
           </div>
 
           {/* Actions */}
-          <div className="border-t border-slate-100 dark:border-slate-800 pt-5 flex justify-end gap-3">
+          <div className="border-t border-slate-100 dark:border-[#23324D] pt-5 flex justify-end gap-3">
             <Button
               variant="outline"
               onClick={fetchProfile}
@@ -402,8 +405,8 @@ export const UserProfile = () => {
           <div
             className={`p-4 rounded-xl flex items-center gap-3 text-sm font-medium border mb-4 ${
               passwordNotification.type === 'success'
-                ? 'bg-emerald-50 dark:bg-emerald-950/50 text-emerald-800 dark:text-emerald-300 border-emerald-200 dark:border-emerald-800'
-                : 'bg-rose-50 dark:bg-rose-950/50 text-rose-800 dark:text-rose-300 border-rose-200 dark:border-rose-800'
+                ? 'bg-emerald-50 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-200 border-emerald-200 dark:border-emerald-800'
+                : 'bg-rose-50 dark:bg-rose-950/60 text-rose-800 dark:text-rose-200 border-rose-200 dark:border-rose-800'
             }`}
           >
             {passwordNotification.type === 'success' ? (
@@ -429,7 +432,7 @@ export const UserProfile = () => {
                   value={currentPassword}
                   onChange={(e) => setCurrentPassword(e.target.value)}
                   placeholder="••••••••"
-                  className="w-full pl-10 pr-4 py-2.5 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl text-sm text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-academic-blue"
+                  className="w-full pl-10 pr-4 py-2.5 bg-slate-50 dark:bg-[#0D1424] border border-slate-200 dark:border-[#23324D] rounded-xl text-sm text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
                 />
               </div>
             </div>
@@ -446,7 +449,7 @@ export const UserProfile = () => {
                   value={newPassword}
                   onChange={(e) => setNewPassword(e.target.value)}
                   placeholder="Min. 6 characters"
-                  className="w-full pl-10 pr-4 py-2.5 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl text-sm text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-academic-blue"
+                  className="w-full pl-10 pr-4 py-2.5 bg-slate-50 dark:bg-[#0D1424] border border-slate-200 dark:border-[#23324D] rounded-xl text-sm text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
                 />
               </div>
             </div>
@@ -463,7 +466,7 @@ export const UserProfile = () => {
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
                   placeholder="••••••••"
-                  className="w-full pl-10 pr-4 py-2.5 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl text-sm text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-academic-blue"
+                  className="w-full pl-10 pr-4 py-2.5 bg-slate-50 dark:bg-[#0D1424] border border-slate-200 dark:border-[#23324D] rounded-xl text-sm text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
                 />
               </div>
             </div>

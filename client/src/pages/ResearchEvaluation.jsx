@@ -152,7 +152,7 @@ export const ResearchEvaluation = () => {
         <div className="flex items-center gap-3">
           <button
             onClick={handleDownloadBenchmarkCsv}
-            className="inline-flex items-center gap-2 px-4 py-2.5 bg-white/95 dark:bg-[#0F1626]/95 backdrop-blur-xl border border-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800/60 dark:bg-[#080B11]/70 text-slate-700 dark:text-slate-300 rounded-xl text-sm font-semibold shadow-sm transition-all"
+            className="inline-flex items-center gap-2 px-4 py-2.5 bg-white/95 dark:bg-[#131C2E]/95 backdrop-blur-xl border border-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800/60 dark:bg-[#0D1424]/70 text-slate-700 dark:text-slate-300 rounded-xl text-sm font-semibold shadow-sm transition-all"
           >
             <Download className="w-4 h-4 text-indigo-600 dark:text-indigo-400" />
             Download IEEE Benchmark CSV
@@ -178,22 +178,22 @@ export const ResearchEvaluation = () => {
 
       {/* 1. Key Research Findings Callout Cards */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-        <div className="bg-white/95 dark:bg-[#0F1626]/95 backdrop-blur-xl p-5 rounded-2xl border border-indigo-200 dark:border-indigo-800/80 shadow-sm bg-gradient-to-br from-indigo-50/50 to-white">
+        <div className="bg-white/95 dark:bg-[#131C2E]/95 backdrop-blur-xl p-5 rounded-2xl border border-indigo-200 dark:border-indigo-800/80 shadow-sm bg-gradient-to-br from-indigo-50/50 to-white">
           <p className="text-xs font-bold text-indigo-700 dark:text-indigo-300 uppercase tracking-wider">Normalized Learning Gain (g)</p>
           <p className="text-3xl font-black text-indigo-900 dark:text-indigo-200 mt-2">g = {learningGainAnalysis?.adaptiveGain_g || 0.682}</p>
           <p className="text-xs text-slate-600 dark:text-slate-400 mt-1">High Gain (g ≥ 0.70) vs. Control g = {learningGainAnalysis?.controlGain_g || 0.347} (+96.5% advantage)</p>
         </div>
-        <div className="bg-white/95 dark:bg-[#0F1626]/95 backdrop-blur-xl p-5 rounded-2xl border border-emerald-200 dark:border-emerald-800/80 shadow-sm bg-gradient-to-br from-emerald-50/50 to-white">
+        <div className="bg-white/95 dark:bg-[#131C2E]/95 backdrop-blur-xl p-5 rounded-2xl border border-emerald-200 dark:border-emerald-800/80 shadow-sm bg-gradient-to-br from-emerald-50/50 to-white">
           <p className="text-xs font-bold text-emerald-700 dark:text-emerald-300 uppercase tracking-wider">Cohen's d Effect Size</p>
           <p className="text-3xl font-black text-emerald-900 mt-2">d = {learningGainAnalysis?.cohensD || 1.79}</p>
           <p className="text-xs text-slate-600 dark:text-slate-400 mt-1">Large effect size (d &gt; 0.80), p &lt; 0.0001 (t = 8.94, df = 58)</p>
         </div>
-        <div className="bg-white/95 dark:bg-[#0F1626]/95 backdrop-blur-xl p-5 rounded-2xl border border-violet-200 shadow-sm bg-gradient-to-br from-violet-50/50 to-white">
+        <div className="bg-white/95 dark:bg-[#131C2E]/95 backdrop-blur-xl p-5 rounded-2xl border border-violet-200 shadow-sm bg-gradient-to-br from-violet-50/50 to-white">
           <p className="text-xs font-bold text-violet-700 uppercase tracking-wider">ML Ensemble ROC-AUC</p>
           <p className="text-3xl font-black text-violet-900 mt-2">0.9951</p>
           <p className="text-xs text-slate-600 dark:text-slate-400 mt-1">Gradient Boosting (0.995) &amp; Random Forest (0.988) across 1,500 samples</p>
         </div>
-        <div className="bg-white/95 dark:bg-[#0F1626]/95 backdrop-blur-xl p-5 rounded-2xl border border-amber-200 dark:border-amber-800/80 shadow-sm bg-gradient-to-br from-amber-50/50 to-white">
+        <div className="bg-white/95 dark:bg-[#131C2E]/95 backdrop-blur-xl p-5 rounded-2xl border border-amber-200 dark:border-amber-800/80 shadow-sm bg-gradient-to-br from-amber-50/50 to-white">
           <p className="text-xs font-bold text-amber-700 dark:text-amber-300 uppercase tracking-wider">Practice Question Efficiency</p>
           <p className="text-3xl font-black text-amber-900 mt-2">+{pathEfficiency.efficiencyImprovementPercent}%</p>
           <p className="text-xs text-slate-600 dark:text-slate-400 mt-1">5.8 questions to 85% mastery vs. 11.2 in fixed curriculum</p>
@@ -201,7 +201,7 @@ export const ResearchEvaluation = () => {
       </div>
 
       {/* 2. Phase 16: Multi-Model Machine Learning Comparative Table & Visualizer */}
-      <div className="bg-white/95 dark:bg-[#0F1626]/95 backdrop-blur-xl rounded-2xl border border-slate-200/90 dark:border-slate-800/90 p-6 shadow-sm space-y-4">
+      <div className="bg-white/95 dark:bg-[#131C2E]/95 backdrop-blur-xl rounded-2xl border border-slate-200/90 dark:border-slate-800/90 p-6 shadow-sm space-y-4">
         <div className="flex flex-wrap items-center justify-between gap-4 border-b border-slate-100 dark:border-slate-800/80 pb-4">
           <div>
             <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-bold bg-violet-50 text-violet-700 border border-violet-200 mb-1">
@@ -223,7 +223,7 @@ export const ResearchEvaluation = () => {
           {/* Table */}
           <div className="overflow-x-auto border border-slate-200/90 dark:border-slate-800/90 rounded-xl">
             <table className="w-full text-left text-sm">
-              <thead className="bg-slate-50 dark:bg-[#080B11]/70 text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase border-b border-slate-200/90 dark:border-slate-800/90">
+              <thead className="bg-slate-50 dark:bg-[#0D1424]/70 text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase border-b border-slate-200/90 dark:border-slate-800/90">
                 <tr>
                   <th className="px-4 py-3">Classifier Model</th>
                   <th className="px-4 py-3">Accuracy</th>
@@ -273,7 +273,7 @@ export const ResearchEvaluation = () => {
       </div>
 
       {/* 3. Phase 17: Psychometric Normalized Learning Gain & Cohen's d Effect Size */}
-      <div className="bg-white/95 dark:bg-[#0F1626]/95 backdrop-blur-xl rounded-2xl border border-slate-200/90 dark:border-slate-800/90 p-6 shadow-sm space-y-4">
+      <div className="bg-white/95 dark:bg-[#131C2E]/95 backdrop-blur-xl rounded-2xl border border-slate-200/90 dark:border-slate-800/90 p-6 shadow-sm space-y-4">
         <div className="flex flex-wrap items-center justify-between gap-4 border-b border-slate-100 dark:border-slate-800/80 pb-4">
           <div>
             <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-50 dark:bg-emerald-950/50 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800/80 mb-1">
@@ -311,7 +311,7 @@ export const ResearchEvaluation = () => {
 
           {/* Metric Breakdown Cards */}
           <div className="space-y-3">
-            <div className="p-3.5 rounded-xl border border-slate-200/90 dark:border-slate-800/90 bg-slate-50 dark:bg-[#080B11]/70">
+            <div className="p-3.5 rounded-xl border border-slate-200/90 dark:border-slate-800/90 bg-slate-50 dark:bg-[#0D1424]/70">
               <p className="text-xs font-bold text-slate-700 dark:text-slate-300">Formula: Normalized Gain (g)</p>
               <p className="text-xs font-mono text-indigo-700 dark:text-indigo-300 mt-0.5">g = (Post - Pre) / (100 - Pre)</p>
               <div className="flex justify-between items-center mt-2 text-xs">
@@ -324,7 +324,7 @@ export const ResearchEvaluation = () => {
               </div>
             </div>
 
-            <div className="p-3.5 rounded-xl border border-slate-200/90 dark:border-slate-800/90 bg-slate-50 dark:bg-[#080B11]/70">
+            <div className="p-3.5 rounded-xl border border-slate-200/90 dark:border-slate-800/90 bg-slate-50 dark:bg-[#0D1424]/70">
               <p className="text-xs font-bold text-slate-700 dark:text-slate-300">Formula: Cohen's d Effect Size</p>
               <p className="text-xs font-mono text-emerald-700 dark:text-emerald-300 mt-0.5">d = (Mean_1 - Mean_2) / s_pooled</p>
               <div className="flex justify-between items-center mt-2 text-xs">
@@ -340,7 +340,7 @@ export const ResearchEvaluation = () => {
       </div>
 
       {/* 4. Interactive Learning Curves Chart */}
-      <div className="bg-white/95 dark:bg-[#0F1626]/95 backdrop-blur-xl rounded-2xl border border-slate-200/90 dark:border-slate-800/90 p-6 shadow-sm space-y-4">
+      <div className="bg-white/95 dark:bg-[#131C2E]/95 backdrop-blur-xl rounded-2xl border border-slate-200/90 dark:border-slate-800/90 p-6 shadow-sm space-y-4">
         <div className="flex flex-wrap items-center justify-between gap-4 border-b border-slate-100 dark:border-slate-800/80 pb-4">
           <div>
             <h2 className="text-lg font-bold text-slate-900 dark:text-slate-100">Learning Curve Comparison: Adaptive (BKT) vs. Fixed Path</h2>
@@ -385,14 +385,14 @@ export const ResearchEvaluation = () => {
           </ResponsiveContainer>
         </div>
 
-        <p className="text-xs text-slate-600 dark:text-slate-400 bg-slate-50 dark:bg-[#080B11]/70 p-3 rounded-xl border border-slate-200/90 dark:border-slate-800/90 leading-relaxed">
+        <p className="text-xs text-slate-600 dark:text-slate-400 bg-slate-50 dark:bg-[#0D1424]/70 p-3 rounded-xl border border-slate-200/90 dark:border-slate-800/90 leading-relaxed">
           <strong>Pedagogical Insight:</strong> Because EduPulse sequences practice according to the Bayesian Knowledge Tracing prerequisite DAG (P(L0)=0.30, P(T)=0.20), remediation is triggered immediately when topic mastery is below 60%. This prevents students from stalling on advanced topics, achieving mastery in <strong>48.2% fewer practice steps</strong>.
         </p>
       </div>
 
       {/* 5. Feature Importance & BKT vs Baseline */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <div className="bg-white/95 dark:bg-[#0F1626]/95 backdrop-blur-xl rounded-2xl border border-slate-200/90 dark:border-slate-800/90 p-6 shadow-sm space-y-4">
+        <div className="bg-white/95 dark:bg-[#131C2E]/95 backdrop-blur-xl rounded-2xl border border-slate-200/90 dark:border-slate-800/90 p-6 shadow-sm space-y-4">
           <h2 className="text-lg font-bold text-slate-900 dark:text-slate-100">Student Knowledge Tracing Predictive Benchmarks</h2>
           <p className="text-xs text-slate-500 dark:text-slate-400">
             Comparing Bayesian Knowledge Tracing with standard Moving Average on next-question performance prediction.
@@ -400,7 +400,7 @@ export const ResearchEvaluation = () => {
 
           <div className="overflow-x-auto border border-slate-200/90 dark:border-slate-800/90 rounded-xl">
             <table className="w-full text-left text-sm">
-              <thead className="bg-slate-50 dark:bg-[#080B11]/70 text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase border-b border-slate-200/90 dark:border-slate-800/90">
+              <thead className="bg-slate-50 dark:bg-[#0D1424]/70 text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase border-b border-slate-200/90 dark:border-slate-800/90">
                 <tr>
                   <th className="px-4 py-3">Evaluation Metric</th>
                   <th className="px-4 py-3 text-indigo-700 dark:text-indigo-300">EduPulse BKT</th>
@@ -439,7 +439,7 @@ export const ResearchEvaluation = () => {
         </div>
 
         {/* Feature Importances */}
-        <div className="bg-white/95 dark:bg-[#0F1626]/95 backdrop-blur-xl rounded-2xl border border-slate-200/90 dark:border-slate-800/90 p-6 shadow-sm space-y-4">
+        <div className="bg-white/95 dark:bg-[#131C2E]/95 backdrop-blur-xl rounded-2xl border border-slate-200/90 dark:border-slate-800/90 p-6 shadow-sm space-y-4">
           <h2 className="text-lg font-bold text-slate-900 dark:text-slate-100">Random Forest Feature Importances (Gini Impurity)</h2>
           <p className="text-xs text-slate-500 dark:text-slate-400">
             Relative predictive weight of each student telemetric feature in classifying academic attrition risk.
@@ -460,7 +460,7 @@ export const ResearchEvaluation = () => {
       </div>
 
       {/* 6. Feedback Survey Results (5-Point Likert) */}
-      <div className="bg-white/95 dark:bg-[#0F1626]/95 backdrop-blur-xl rounded-2xl border border-slate-200/90 dark:border-slate-800/90 p-6 shadow-sm space-y-4">
+      <div className="bg-white/95 dark:bg-[#131C2E]/95 backdrop-blur-xl rounded-2xl border border-slate-200/90 dark:border-slate-800/90 p-6 shadow-sm space-y-4">
         <div className="flex flex-wrap items-center justify-between gap-4 border-b border-slate-100 dark:border-slate-800/80 pb-4">
           <div>
             <h2 className="text-lg font-bold text-slate-900 dark:text-slate-100">Student Feedback Survey Evaluation (5-Point Likert Scale)</h2>

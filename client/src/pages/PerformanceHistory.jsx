@@ -79,7 +79,7 @@ export const PerformanceHistory = () => {
       </div>
 
       {/* Recharts Bar Chart */}
-      <div className="bg-white/95 dark:bg-[#0F1626]/95 backdrop-blur-xl rounded-3xl p-6 sm:p-8 border border-slate-200/90 dark:border-slate-800/90 shadow-sm space-y-4">
+      <div className="bg-white/95 dark:bg-[#131C2E]/95 backdrop-blur-xl rounded-3xl p-6 sm:p-8 border border-slate-200/90 dark:border-slate-800/90 shadow-sm space-y-4">
         <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-800/80 pb-4">
           <h2 className="text-base font-bold text-slate-900 dark:text-slate-100">Topic-Wise BKT Mastery Comparison (%)</h2>
           <span className="text-xs font-bold px-3 py-1 rounded-full bg-indigo-50 dark:bg-indigo-950/50 text-indigo-700 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-800 shadow-xs">
@@ -98,7 +98,7 @@ export const PerformanceHistory = () => {
                   if (active && payload && payload.length) {
                     const d = payload[0].payload;
                     return (
-                      <div className="bg-slate-900/95 dark:bg-[#080B11]/95 border border-slate-700 dark:border-slate-800 text-white p-3.5 rounded-xl text-xs space-y-1 shadow-2xl backdrop-blur-md">
+                      <div className="bg-slate-900/95 dark:bg-[#0D1424]/95 border border-slate-700 dark:border-slate-800 text-white p-3.5 rounded-xl text-xs space-y-1 shadow-2xl backdrop-blur-md">
                         <p className="font-bold text-slate-100">{d.fullName}</p>
                         <p className="text-indigo-300 font-semibold">pKnown Mastery: {d.mastery}%</p>
                         <p className="text-emerald-300 font-semibold">Historical Accuracy: {d.accuracy}%</p>

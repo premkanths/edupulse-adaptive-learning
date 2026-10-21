@@ -70,7 +70,7 @@ export const ClassAnalytics = () => {
       </div>
 
       {/* Score Distribution Chart */}
-      <div className="bg-white/95 dark:bg-[#0F1626]/95 backdrop-blur-xl rounded-3xl p-6 border border-slate-200/80 shadow-sm space-y-4">
+      <div className="bg-white/95 dark:bg-[#131C2E]/95 backdrop-blur-xl rounded-3xl p-6 border border-slate-200/80 shadow-sm space-y-4">
         <div className="flex items-center justify-between">
           <h2 className="text-base font-bold text-slate-900 dark:text-slate-100">Student Score Bracket Distribution</h2>
           <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-slate-100 dark:bg-slate-800/80 text-slate-600 dark:text-slate-400">

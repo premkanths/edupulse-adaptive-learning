@@ -4,61 +4,43 @@ const ThemeContext = createContext();
 
 export const ThemeProvider = ({ children }) => {
   const [theme, setTheme] = useState(() => {
-    return localStorage.getItem('edupulse-theme') || 'system';
+    const saved = localStorage.getItem('edupulse-theme');
+    if (saved === 'dark' || saved === 'light') return saved;
+    // Default to light for clean academic SaaS feel, or honor OS preference
+    if (typeof window !== 'undefined' && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      return 'dark';
+    }
+    return 'light';
   });
 
-  const [resolvedTheme, setResolvedTheme] = useState('light');
+  const [resolvedTheme, setResolvedTheme] = useState(theme);
 
   useEffect(() => {
     const root = document.documentElement;
+    const isDark = theme === 'dark';
 
-    const applyTheme = (targetTheme) => {
-      let isDark = false;
-      if (targetTheme === 'dark') {
-        isDark = true;
-      } else if (targetTheme === 'light') {
-        isDark = false;
-      } else {
-        // System preference
-        isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-      }
+    if (isDark) {
+      root.classList.add('dark');
+      setResolvedTheme('dark');
+    } else {
+      root.classList.remove('dark');
+      setResolvedTheme('light');
+    }
 
-      if (isDark) {
-        root.classList.add('dark');
-        setResolvedTheme('dark');
-      } else {
-        root.classList.remove('dark');
-        setResolvedTheme('light');
-      }
-    };
-
-    applyTheme(theme);
     localStorage.setItem('edupulse-theme', theme);
-
-    // Listen to OS theme changes if on system mode
-    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-    const handleSystemChange = (e) => {
-      if (theme === 'system') {
-        applyTheme('system');
-      }
-    };
-
-    mediaQuery.addEventListener('change', handleSystemChange);
-    return () => mediaQuery.removeEventListener('change', handleSystemChange);
   }, [theme]);
 
-  const toggleTheme = (newTheme) => {
-    setTheme(newTheme);
+  // Direct toggle between light and dark
+  const toggleTheme = () => {
+    setTheme((prev) => (prev === 'dark' ? 'light' : 'dark'));
   };
 
   const cycleTheme = () => {
-    if (theme === 'light') setTheme('dark');
-    else if (theme === 'dark') setTheme('system');
-    else setTheme('light');
+    setTheme((prev) => (prev === 'dark' ? 'light' : 'dark'));
   };
 
   return (
-    <ThemeContext.Provider value={{ theme, resolvedTheme, toggleTheme, cycleTheme }}>
+    <ThemeContext.Provider value={{ theme, resolvedTheme, toggleTheme, cycleTheme, setTheme }}>
       {children}
     </ThemeContext.Provider>
   );
