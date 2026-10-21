@@ -19,6 +19,7 @@ app.add_middleware(
 
 MODEL_PATH = os.path.join(os.path.dirname(__file__), "risk_model.joblib")
 METRICS_PATH = os.path.join(os.path.dirname(__file__), "metrics.json")
+BENCHMARK_PATH = os.path.join(os.path.dirname(__file__), "benchmark.json")
 
 model = None
 
@@ -69,6 +70,21 @@ def get_metrics():
         with open(METRICS_PATH, "r") as f:
             return json.load(f)
     return {"message": "Metrics not generated yet"}
+
+@app.get("/benchmark")
+def get_benchmark():
+    if os.path.exists(BENCHMARK_PATH):
+        with open(BENCHMARK_PATH, "r") as f:
+            return json.load(f)
+    return {"message": "Benchmark not generated yet"}
+
+@app.get("/feature-importance")
+def get_feature_importance():
+    if os.path.exists(METRICS_PATH):
+        with open(METRICS_PATH, "r") as f:
+            data = json.load(f)
+            return data.get("feature_importances", {})
+    return {}
 
 @app.post("/predict", response_model=RiskResponse)
 def predict_risk(data: RiskInput):

@@ -52,4 +52,14 @@ public class ResearchController {
     public ResponseEntity<ApiResponse<Map<String, Object>>> getSurveyResults() {
         return ResponseEntity.ok(ApiResponse.success(feedbackSurveyService.getSurveyResultsSummary()));
     }
+
+    @GetMapping("/export/benchmark-csv")
+    @Operation(summary = "Export multi-model IEEE benchmark metrics as CSV")
+    public ResponseEntity<String> exportBenchmarkCsv() {
+        String csv = evaluationService.exportIeeeBenchmarkCsv();
+        return ResponseEntity.ok()
+                .header(org.springframework.http.HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"ieee_multi_model_benchmark.csv\"")
+                .contentType(org.springframework.http.MediaType.parseMediaType("text/csv"))
+                .body(csv);
+    }
 }

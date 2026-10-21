@@ -1,0 +1,128 @@
+{
+  "dataset": {
+    "total_samples": 1500,
+    "train_samples": 1200,
+    "test_samples": 300,
+    "features": [
+      "quiz_average",
+      "attendance_pct",
+      "bkt_avg_mastery",
+      "days_inactive",
+      "assignments_missed"
+    ],
+    "target_classes": [
+      "LOW",
+      "MODERATE",
+      "HIGH"
+    ]
+  },
+  "models_comparison": {
+    "RandomForestClassifier": {
+      "model_name": "RandomForestClassifier",
+      "accuracy": 0.9433,
+      "precision": 0.946,
+      "recall": 0.9433,
+      "f1_score": 0.9434,
+      "roc_auc": 0.9878,
+      "confusion_matrix": [
+        [
+          77,
+          5,
+          0
+        ],
+        [
+          0,
+          135,
+          3
+        ],
+        [
+          0,
+          9,
+          71
+        ]
+      ]
+    },
+    "GradientBoostingClassifier": {
+      "model_name": "GradientBoostingClassifier",
+      "accuracy": 0.96,
+      "precision": 0.9602,
+      "recall": 0.96,
+      "f1_score": 0.9599,
+      "roc_auc": 0.9951,
+      "confusion_matrix": [
+        [
+          81,
+          1,
+          0
+        ],
+        [
+          0,
+          134,
+          4
+        ],
+        [
+          0,
+          7,
+          73
+        ]
+      ]
+    },
+    "DecisionTreeClassifier": {
+      "model_name": "DecisionTreeClassifier",
+      "accuracy": 0.8967,
+      "precision": 0.8999,
+      "recall": 0.8967,
+      "f1_score": 0.8961,
+      "roc_auc": 0.9627,
+      "confusion_matrix": [
+        [
+          81,
+          1,
+          0
+        ],
+        [
+          14,
+          120,
+          4
+        ],
+        [
+          0,
+          12,
+          68
+        ]
+      ]
+    },
+    "LogisticRegression": {
+      "model_name": "LogisticRegression",
+      "accuracy": 0.8067,
+      "precision": 0.8077,
+      "recall": 0.8067,
+      "f1_score": 0.8068,
+      "roc_auc": 0.9285,
+      "confusion_matrix": [
+        [
+          64,
+          18,
+          0
+        ],
+        [
+          14,
+          112,
+          12
+        ],
+        [
+          0,
+          14,
+          66
+        ]
+      ]
+    }
+  },
+  "feature_importances": {
+    "quiz_average": 0.2753,
+    "attendance_pct": 0.297,
+    "bkt_avg_mastery": 0.1763,
+    "days_inactive": 0.178,
+    "assignments_missed": 0.0734
+  }
+}
