@@ -88,8 +88,8 @@ export const AiQuizGenerator = () => {
         <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-indigo-50 dark:bg-indigo-950/60 text-indigo-700 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-800/80 mb-2">
           <Sparkles className="w-3.5 h-3.5" /> Provider Fallback: Gemini → Groq → Ollama
         </span>
-        <h1 className="text-2xl font-bold text-slate-900 dark:text-slate-100">AI-Powered Quiz Generator</h1>
-        <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">
+        <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-50">AI-Powered Quiz Generator</h1>
+        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
           Draft structured, pedagogically validated question sets with automated duplicate detection and teacher review before publication.
         </p>
       </div>
@@ -97,18 +97,18 @@ export const AiQuizGenerator = () => {
       {error && <Alert type="error" message={error} />}
 
       {/* Configuration Form */}
-      <div className="bg-white/95 dark:bg-[#131C2E]/95 backdrop-blur-xl rounded-3xl p-6 border border-slate-200/90 dark:border-slate-800/90 shadow-sm space-y-6">
+      <div className="bg-white/95 dark:bg-gray-900 backdrop-blur-xl rounded-3xl p-6 border border-gray-200 dark:border-gray-800 shadow-sm space-y-6">
         <form onSubmit={handleGenerate} className="space-y-5">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-2">
+              <label className="block text-xs font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider mb-2">
                 Curriculum Subject
               </label>
               <select
                 value={subjectId}
                 onChange={(e) => setSubjectId(e.target.value)}
                 required
-                className="w-full py-2.5 px-3.5 bg-slate-50 dark:bg-[#0D1424]/70 border border-slate-200/90 dark:border-slate-800/90 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                className="w-full py-2.5 px-3.5 bg-gray-50 dark:bg-gray-950/70/70 border border-gray-200 dark:border-gray-800 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-indigo-500"
               >
                 {subjects.map((s) => (
                   <option key={s.id} value={s.id}>{s.name}</option>
@@ -117,14 +117,14 @@ export const AiQuizGenerator = () => {
             </div>
 
             <div>
-              <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-2">
+              <label className="block text-xs font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider mb-2">
                 Target Topic
               </label>
               <select
                 value={topicId}
                 onChange={(e) => setTopicId(e.target.value)}
                 required
-                className="w-full py-2.5 px-3.5 bg-slate-50 dark:bg-[#0D1424]/70 border border-slate-200/90 dark:border-slate-800/90 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                className="w-full py-2.5 px-3.5 bg-gray-50 dark:bg-gray-950/70/70 border border-gray-200 dark:border-gray-800 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-indigo-500"
               >
                 {topics.map((t) => (
                   <option key={t.id} value={t.id}>{t.name}</option>
@@ -135,13 +135,13 @@ export const AiQuizGenerator = () => {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-2">
+              <label className="block text-xs font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider mb-2">
                 Question Count
               </label>
               <select
                 value={questionCount}
                 onChange={(e) => setQuestionCount(e.target.value)}
-                className="w-full py-2.5 px-3.5 bg-slate-50 dark:bg-[#0D1424]/70 border border-slate-200/90 dark:border-slate-800/90 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                className="w-full py-2.5 px-3.5 bg-gray-50 dark:bg-gray-950/70/70 border border-gray-200 dark:border-gray-800 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-indigo-500"
               >
                 <option value={3}>3 Questions (Fast Quick Quiz)</option>
                 <option value={5}>5 Questions (Standard Diagnostic)</option>
@@ -151,13 +151,13 @@ export const AiQuizGenerator = () => {
             </div>
 
             <div>
-              <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-2">
+              <label className="block text-xs font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider mb-2">
                 Cognitive Difficulty
               </label>
               <select
                 value={difficulty}
                 onChange={(e) => setDifficulty(e.target.value)}
-                className="w-full py-2.5 px-3.5 bg-slate-50 dark:bg-[#0D1424]/70 border border-slate-200/90 dark:border-slate-800/90 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                className="w-full py-2.5 px-3.5 bg-gray-50 dark:bg-gray-950/70/70 border border-gray-200 dark:border-gray-800 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-indigo-500"
               >
                 <option value="EASY">Easy (Foundational Definitions)</option>
                 <option value="MEDIUM">Medium (Conceptual Application)</option>

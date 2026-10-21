@@ -72,9 +72,9 @@ export const AdminDashboard = () => {
   return (
     <div className="space-y-8">
       {/* Header */}
-      <div className="bg-gradient-to-r from-rose-800 via-rose-700 to-indigo-900 dark:from-[#131C2E] dark:via-[#241724] dark:to-[#0D1524] text-white rounded-3xl p-8 sm:p-10 shadow-lg border border-rose-200/20 dark:border-rose-500/30 flex flex-col md:flex-row items-start md:items-center justify-between gap-6 relative overflow-hidden">
+      <div className="bg-gradient-to-r from-rose-800 via-rose-700 to-indigo-900 dark:from-gray-900 dark:via-gray-900 dark:to-rose-950/70 text-white rounded-3xl p-8 sm:p-10 shadow-lg border border-rose-200/20 dark:border-gray-800 flex flex-col md:flex-row items-start md:items-center justify-between gap-6 relative overflow-hidden">
         {/* Ambient top right glow */}
-        <div className="absolute top-0 right-0 -mr-16 -mt-16 w-80 h-80 bg-white/10 dark:bg-rose-500/15 rounded-full blur-2xl pointer-events-none"></div>
+        <div className="absolute top-0 right-0 -mr-16 -mt-16 w-80 h-80 bg-white/10 dark:bg-rose-500/10 rounded-full blur-2xl pointer-events-none"></div>
 
         <div className="space-y-2.5 relative z-10">
           <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-white/15 dark:bg-rose-500/20 text-white dark:text-rose-200 border border-white/20 dark:border-rose-400/30 shadow-xs">
@@ -83,7 +83,7 @@ export const AdminDashboard = () => {
           <h1 className="text-3xl sm:text-4xl font-black tracking-tight text-white">
             EduPulse System Administration
           </h1>
-          <p className="text-rose-100 dark:text-slate-300 text-sm max-w-xl leading-relaxed">
+          <p className="text-rose-100 dark:text-gray-300 text-sm max-w-xl leading-relaxed">
             Manage users, class cohorts, oversee institutional CSV exports, audit security trails, and configure global BKT hyperparameters.
           </p>
         </div>
@@ -157,11 +157,11 @@ export const AdminDashboard = () => {
                 <Layers className="w-5 h-5" />
               </div>
               <div>
-                <h4 className="text-sm font-bold text-slate-900 dark:text-white">Class Cohorts &amp; Rosters</h4>
-                <p className="text-xs text-slate-600 dark:text-slate-400">Enroll students &amp; assign faculty</p>
+                <h4 className="text-sm font-bold text-gray-900 dark:text-gray-50">Class Cohorts &amp; Rosters</h4>
+                <p className="text-xs text-gray-600 dark:text-gray-400">Enroll students &amp; assign faculty</p>
               </div>
             </div>
-            <ArrowRight className="w-4 h-4 text-slate-400" />
+            <ArrowRight className="w-4 h-4 text-gray-400" />
           </Card>
         </Link>
 
@@ -172,11 +172,11 @@ export const AdminDashboard = () => {
                 <FileText className="w-5 h-5" />
               </div>
               <div>
-                <h4 className="text-sm font-bold text-slate-900 dark:text-white">Institutional CSV Exports</h4>
-                <p className="text-xs text-slate-600 dark:text-slate-400">1-click audit &amp; at-risk rosters</p>
+                <h4 className="text-sm font-bold text-gray-900 dark:text-gray-50">Institutional CSV Exports</h4>
+                <p className="text-xs text-gray-600 dark:text-gray-400">1-click audit &amp; at-risk rosters</p>
               </div>
             </div>
-            <ArrowRight className="w-4 h-4 text-slate-400" />
+            <ArrowRight className="w-4 h-4 text-gray-400" />
           </Card>
         </Link>
 
@@ -187,21 +187,21 @@ export const AdminDashboard = () => {
                 <History className="w-5 h-5" />
               </div>
               <div>
-                <h4 className="text-sm font-bold text-slate-900 dark:text-white">Security Audit Trail</h4>
-                <p className="text-xs text-slate-600 dark:text-slate-400">Immutable ledger of admin actions</p>
+                <h4 className="text-sm font-bold text-gray-900 dark:text-gray-50">Security Audit Trail</h4>
+                <p className="text-xs text-gray-600 dark:text-gray-400">Immutable ledger of admin actions</p>
               </div>
             </div>
-            <ArrowRight className="w-4 h-4 text-slate-400" />
+            <ArrowRight className="w-4 h-4 text-gray-400" />
           </Card>
         </Link>
       </div>
 
       {/* Recent Users Table */}
       <Card padding="p-0" className="overflow-hidden">
-        <div className="p-6 border-b border-slate-100 dark:border-[#23324D] flex items-center justify-between">
+        <div className="p-6 border-b border-gray-100 dark:border-gray-800 flex items-center justify-between">
           <div>
-            <h3 className="text-base font-bold text-slate-900 dark:text-white">Platform User Directory</h3>
-            <p className="text-xs text-slate-600 dark:text-slate-400 mt-0.5">Showing seeded and active platform accounts from MySQL</p>
+            <h3 className="text-base font-bold text-gray-900 dark:text-gray-50">Platform User Directory</h3>
+            <p className="text-xs text-gray-600 dark:text-gray-400 mt-0.5">Showing seeded and active platform accounts from MySQL</p>
           </div>
           <Badge variant="default">
             {data?.recentUsers?.length || 0} Accounts Loaded
@@ -210,7 +210,7 @@ export const AdminDashboard = () => {
 
         <div className="overflow-x-auto">
           <table className="w-full text-left text-sm">
-            <thead className="bg-slate-50 dark:bg-[#0D1424] border-b border-slate-200 dark:border-[#23324D] text-xs font-bold text-slate-600 dark:text-slate-400 uppercase tracking-wider">
+            <thead className="bg-gray-50 dark:bg-gray-950/60 border-b border-gray-200 dark:border-gray-800 text-xs font-bold text-gray-600 dark:text-gray-400 uppercase tracking-wider">
               <tr>
                 <th className="px-6 py-3.5">User</th>
                 <th className="px-6 py-3.5">Email</th>
@@ -219,23 +219,23 @@ export const AdminDashboard = () => {
                 <th className="px-6 py-3.5">Created At</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-100 dark:divide-[#23324D] font-medium text-slate-700 dark:text-slate-300">
+            <tbody className="divide-y divide-gray-100 dark:divide-gray-800 font-medium text-gray-700 dark:text-gray-300">
               {data?.recentUsers?.map((u) => (
-                <tr key={u.id} className="hover:bg-slate-50 dark:hover:bg-[#162136] transition-colors">
+                <tr key={u.id} className="hover:bg-gray-50 dark:hover:bg-gray-800/60 transition-colors">
                   <td className="px-6 py-4 flex items-center gap-3">
-                    <div className="w-8 h-8 rounded-full bg-slate-100 dark:bg-[#1A263B] text-slate-700 dark:text-slate-300 font-bold text-xs flex items-center justify-center">
+                    <div className="w-8 h-8 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 font-bold text-xs flex items-center justify-center">
                       {u.name?.charAt(0)}
                     </div>
-                    <span className="font-semibold text-slate-900 dark:text-white">{u.name}</span>
+                    <span className="font-semibold text-gray-900 dark:text-gray-50">{u.name}</span>
                   </td>
-                  <td className="px-6 py-4 text-slate-600 dark:text-slate-400 font-mono text-xs">{u.email}</td>
+                  <td className="px-6 py-4 text-gray-600 dark:text-gray-400 font-mono text-xs">{u.email}</td>
                   <td className="px-6 py-4">{roleBadge(u.role)}</td>
                   <td className="px-6 py-4">
                     <Badge variant={u.active ? 'success' : 'danger'}>
                       {u.active ? 'Active' : 'Disabled'}
                     </Badge>
                   </td>
-                  <td className="px-6 py-4 text-xs text-slate-600 dark:text-slate-400">
+                  <td className="px-6 py-4 text-xs text-gray-600 dark:text-gray-400">
                     {u.createdAt ? new Date(u.createdAt).toLocaleDateString() : 'Initial Seed'}
                   </td>
                 </tr>

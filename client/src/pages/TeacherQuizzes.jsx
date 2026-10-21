@@ -93,8 +93,8 @@ export const TeacherQuizzes = () => {
     <div className="space-y-8">
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-slate-900 dark:text-slate-100">Quizzes & Assessment Orchestration</h1>
-          <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-50">Quizzes & Assessment Orchestration</h1>
+          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
             Create, assign, publish quizzes, or generate question sets with AI.
           </p>
         </div>
@@ -115,7 +115,7 @@ export const TeacherQuizzes = () => {
         {quizzes.map((quiz) => (
           <div
             key={quiz.id}
-            className="bg-white/95 dark:bg-[#131C2E]/95 backdrop-blur-xl rounded-3xl p-6 border border-slate-200/80 shadow-sm flex flex-col justify-between"
+            className="bg-white/95 dark:bg-gray-900 backdrop-blur-xl rounded-3xl p-6 border border-gray-200 shadow-sm flex flex-col justify-between"
           >
             <div className="space-y-4">
               <div className="flex items-start justify-between gap-3">
@@ -133,9 +133,9 @@ export const TeacherQuizzes = () => {
                 </span>
               </div>
 
-              <h2 className="text-lg font-bold text-slate-900 dark:text-slate-100">{quiz.title}</h2>
+              <h2 className="text-lg font-bold text-gray-900 dark:text-gray-50">{quiz.title}</h2>
 
-              <div className="flex items-center gap-4 text-xs text-slate-500 dark:text-slate-400 py-2 border-y border-slate-100 dark:border-slate-800/80">
+              <div className="flex items-center gap-4 text-xs text-gray-500 dark:text-gray-400 py-2 border-y border-gray-100 dark:border-gray-800">
                 <div className="flex items-center gap-1">
                   <Clock className="w-3.5 h-3.5" />
                   <span>{quiz.timeLimitMinutes} mins</span>
@@ -148,7 +148,7 @@ export const TeacherQuizzes = () => {
               </div>
             </div>
 
-            <div className="flex items-center gap-2 pt-4 border-t border-slate-100 dark:border-slate-800/80 mt-4">
+            <div className="flex items-center gap-2 pt-4 border-t border-gray-100 dark:border-gray-800 mt-4">
               {quiz.status === 'DRAFT' && (
                 <button
                   onClick={() => handlePublish(quiz.id)}
@@ -172,18 +172,18 @@ export const TeacherQuizzes = () => {
       {/* Assign Modal */}
       {showAssignModal && selectedQuiz && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/40 backdrop-blur-sm p-4">
-          <div className="bg-white/95 dark:bg-[#131C2E]/95 backdrop-blur-xl rounded-3xl p-6 max-w-md w-full border border-slate-200/90 dark:border-slate-800/90 shadow-2xl space-y-4">
-            <h2 className="text-lg font-bold text-slate-900 dark:text-slate-100">Assign Quiz to Class</h2>
-            <p className="text-xs text-slate-500 dark:text-slate-400">Assigning: <strong>{selectedQuiz.title}</strong></p>
+          <div className="bg-white/95 dark:bg-gray-900 backdrop-blur-xl rounded-3xl p-6 max-w-md w-full border border-gray-200 dark:border-gray-800 shadow-2xl space-y-4">
+            <h2 className="text-lg font-bold text-gray-900 dark:text-gray-50">Assign Quiz to Class</h2>
+            <p className="text-xs text-gray-500 dark:text-gray-400">Assigning: <strong>{selectedQuiz.title}</strong></p>
 
             <form onSubmit={handleAssignToClass} className="space-y-4 text-xs">
               <div>
-                <label className="block font-bold text-slate-700 dark:text-slate-300 uppercase mb-1">Target Class Cohort</label>
+                <label className="block font-bold text-gray-700 dark:text-gray-300 uppercase mb-1">Target Class Cohort</label>
                 <select
                   value={selectedClassId}
                   onChange={(e) => setSelectedClassId(e.target.value)}
                   required
-                  className="w-full py-2 px-3 border border-slate-200/90 dark:border-slate-800/90 rounded-xl bg-slate-50 dark:bg-[#0D1424]/70 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  className="w-full py-2 px-3 border border-gray-200 dark:border-gray-800 rounded-xl bg-gray-50 dark:bg-gray-950/70/70 focus:outline-none focus:ring-2 focus:ring-indigo-500"
                 >
                   {classes.map((c) => (
                     <option key={c.id} value={c.id}>{c.name}</option>
@@ -191,11 +191,11 @@ export const TeacherQuizzes = () => {
                 </select>
               </div>
 
-              <div className="flex justify-end gap-3 pt-3 border-t border-slate-100 dark:border-slate-800/80">
+              <div className="flex justify-end gap-3 pt-3 border-t border-gray-100 dark:border-gray-800">
                 <button
                   type="button"
                   onClick={() => setShowAssignModal(false)}
-                  className="px-4 py-2 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800/80 dark:bg-slate-800/80 rounded-xl font-semibold cursor-pointer"
+                  className="px-4 py-2 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-slate-800/80 dark:bg-gray-800/80 rounded-xl font-semibold cursor-pointer"
                 >
                   Cancel
                 </button>

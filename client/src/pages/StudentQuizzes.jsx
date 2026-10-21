@@ -52,24 +52,24 @@ export const StudentQuizzes = () => {
   return (
     <div className="space-y-8">
       <div>
-        <h1 className="text-2xl font-black text-slate-900 dark:text-slate-100 tracking-tight">Assigned Quizzes &amp; Diagnostic Tests</h1>
-        <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">
+        <h1 className="text-2xl font-black text-gray-900 dark:text-gray-50 tracking-tight">Assigned Quizzes &amp; Diagnostic Tests</h1>
+        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
           Take quizzes to test your understanding. Results update your topic mastery immediately and adapt future recommendations.
         </p>
       </div>
 
       {quizzes.length === 0 ? (
-        <div className="bg-white/95 dark:bg-[#131C2E]/95 backdrop-blur-xl rounded-3xl p-12 text-center border border-slate-200/90 dark:border-slate-800/90 shadow-sm">
+        <div className="bg-white/95 dark:bg-gray-900 backdrop-blur-xl rounded-3xl p-12 text-center border border-gray-200 dark:border-gray-800 shadow-sm">
           <CheckCircle2 className="w-12 h-12 text-emerald-500 mx-auto mb-3" />
-          <h2 className="text-lg font-bold text-slate-800 dark:text-slate-200">You're all caught up!</h2>
-          <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">No pending quizzes assigned to your cohort right now.</p>
+          <h2 className="text-lg font-bold text-slate-800 dark:text-gray-200">You're all caught up!</h2>
+          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">No pending quizzes assigned to your cohort right now.</p>
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {quizzes.map((quiz) => (
             <div
               key={quiz.quizId}
-              className="bg-white/95 dark:bg-[#131C2E]/95 backdrop-blur-xl rounded-3xl p-6 sm:p-7 border border-slate-200/90 dark:border-slate-800/90 shadow-sm hover:shadow-xl hover:shadow-indigo-500/5 hover:-translate-y-0.5 transition-all duration-300 flex flex-col justify-between"
+              className="bg-white/95 dark:bg-gray-900 backdrop-blur-xl rounded-3xl p-6 sm:p-7 border border-gray-200 dark:border-gray-800 shadow-sm hover:shadow-xl hover:shadow-indigo-500/5 hover:-translate-y-0.5 transition-all duration-300 flex flex-col justify-between"
             >
               <div className="space-y-4">
                 <div className="flex items-start justify-between gap-3">
@@ -85,21 +85,21 @@ export const StudentQuizzes = () => {
                   <span className="text-xs font-extrabold text-indigo-600 dark:text-indigo-400 uppercase tracking-wider block mb-1">
                     {quiz.subjectName}
                   </span>
-                  <h2 className="text-lg font-bold text-slate-900 dark:text-slate-100 tracking-tight">{quiz.title}</h2>
+                  <h2 className="text-lg font-bold text-gray-900 dark:text-gray-50 tracking-tight">{quiz.title}</h2>
                 </div>
 
-                <div className="grid grid-cols-2 gap-2 text-xs text-slate-600 dark:text-slate-400 py-3 border-y border-slate-100 dark:border-slate-800/80">
+                <div className="grid grid-cols-2 gap-2 text-xs text-gray-600 dark:text-gray-400 py-3 border-y border-gray-100 dark:border-gray-800">
                   <div className="flex items-center gap-1.5">
-                    <BookOpen className="w-4 h-4 text-slate-400 dark:text-slate-500" />
-                    <span><strong className="text-slate-800 dark:text-slate-200">{quiz.questionCount}</strong> Questions</span>
+                    <BookOpen className="w-4 h-4 text-gray-400 dark:text-gray-500" />
+                    <span><strong className="text-slate-800 dark:text-gray-200">{quiz.questionCount}</strong> Questions</span>
                   </div>
                   <div className="flex items-center gap-1.5">
-                    <Clock className="w-4 h-4 text-slate-400 dark:text-slate-500" />
-                    <span><strong className="text-slate-800 dark:text-slate-200">{quiz.timeLimitMinutes}</strong> Minutes</span>
+                    <Clock className="w-4 h-4 text-gray-400 dark:text-gray-500" />
+                    <span><strong className="text-slate-800 dark:text-gray-200">{quiz.timeLimitMinutes}</strong> Minutes</span>
                   </div>
                   {quiz.dueDate && (
-                    <div className="flex items-center gap-1.5 col-span-2 text-slate-500 dark:text-slate-400">
-                      <Calendar className="w-4 h-4 text-slate-400 dark:text-slate-500" />
+                    <div className="flex items-center gap-1.5 col-span-2 text-gray-500 dark:text-gray-400">
+                      <Calendar className="w-4 h-4 text-gray-400 dark:text-gray-500" />
                       <span>Due: {new Date(quiz.dueDate).toLocaleDateString()}</span>
                     </div>
                   )}

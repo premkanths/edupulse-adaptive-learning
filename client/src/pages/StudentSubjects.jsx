@@ -65,22 +65,22 @@ export const StudentSubjects = () => {
   return (
     <div className="space-y-8">
       <div>
-        <h1 className="text-2xl font-black text-slate-900 dark:text-white tracking-tight">Enrolled Subjects &amp; Topic Mastery</h1>
-        <p className="text-sm text-slate-600 dark:text-slate-400 mt-1">
-          Each topic is dynamically tracked using Bayesian Knowledge Tracing (BKT) to estimate your true probability of mastery (<code className="bg-slate-100 dark:bg-slate-800 px-1.5 py-0.5 rounded text-indigo-700 dark:text-indigo-300 font-mono text-xs border border-slate-200 dark:border-slate-700">pKnown</code>).
+        <h1 className="text-2xl font-black text-gray-900 dark:text-gray-50 tracking-tight">Enrolled Subjects &amp; Topic Mastery</h1>
+        <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
+          Each topic is dynamically tracked using Bayesian Knowledge Tracing (BKT) to estimate your true probability of mastery (<code className="bg-gray-100 dark:bg-gray-800 px-1.5 py-0.5 rounded text-indigo-700 dark:text-indigo-300 font-mono text-xs border border-gray-200 dark:border-gray-700">pKnown</code>).
         </p>
       </div>
 
       <div className="space-y-6">
         {subjects.map((subject) => (
-          <div key={subject.id} className="bg-white dark:bg-[#131C2E] rounded-3xl p-6 sm:p-8 border border-slate-200/90 dark:border-[#23324D] shadow-sm space-y-5">
-            <div className="flex items-center gap-3 border-b border-slate-100 dark:border-[#23324D] pb-4">
+          <div key={subject.id} className="bg-white dark:bg-gray-900 rounded-3xl p-6 sm:p-8 border border-gray-200 dark:border-gray-800 shadow-xs space-y-5">
+            <div className="flex items-center gap-3 border-b border-gray-100 dark:border-gray-800 pb-4">
               <div className="p-3 bg-indigo-600 text-white rounded-2xl shadow-xs">
                 <BookOpen className="w-6 h-6" />
               </div>
               <div>
-                <h2 className="text-lg font-bold text-slate-900 dark:text-white">{subject.name}</h2>
-                <p className="text-xs text-slate-600 dark:text-slate-400 mt-0.5">{subject.description}</p>
+                <h2 className="text-lg font-bold text-gray-900 dark:text-gray-50">{subject.name}</h2>
+                <p className="text-xs text-gray-600 dark:text-gray-400 mt-0.5">{subject.description}</p>
               </div>
             </div>
 
@@ -93,15 +93,15 @@ export const StudentSubjects = () => {
                 return (
                   <div
                     key={topic.id}
-                    className="p-4 sm:p-5 rounded-2xl border border-slate-200/80 dark:border-[#23324D] bg-slate-50 dark:bg-[#0D1424] hover:bg-slate-100/80 dark:hover:bg-[#162136] transition-all space-y-3.5 shadow-xs"
+                    className="p-4 sm:p-5 rounded-2xl border border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-950/60 hover:bg-gray-100 dark:hover:bg-gray-800/60 transition-all space-y-3.5 shadow-xs"
                   >
                     <div className="flex items-start justify-between gap-2">
                       <div>
-                        <h3 className="text-sm font-bold text-slate-900 dark:text-white">{topic.name}</h3>
+                        <h3 className="text-sm font-bold text-gray-900 dark:text-gray-50">{topic.name}</h3>
                         {topic.prerequisiteName && (
-                          <div className="flex items-center gap-1.5 text-[11px] font-medium text-slate-600 dark:text-slate-400 mt-0.5">
+                          <div className="flex items-center gap-1.5 text-[11px] font-medium text-gray-600 dark:text-gray-400 mt-0.5">
                             <GitBranch className="w-3 h-3 text-indigo-500 shrink-0" />
-                            <span>Prerequisite: <strong className="text-slate-800 dark:text-slate-200">{topic.prerequisiteName}</strong></span>
+                            <span>Prerequisite: <strong className="text-gray-800 dark:text-gray-200">{topic.prerequisiteName}</strong></span>
                           </div>
                         )}
                       </div>
@@ -112,11 +112,11 @@ export const StudentSubjects = () => {
 
                     {/* BKT Mastery Progress Bar */}
                     <div className="space-y-1.5">
-                      <div className="flex justify-between text-xs font-semibold text-slate-700 dark:text-slate-200">
+                      <div className="flex justify-between text-xs font-semibold text-gray-700 dark:text-gray-300">
                         <span>pKnown Mastery</span>
                         <span className="font-mono text-indigo-600 dark:text-indigo-400 font-bold">{percent}%</span>
                       </div>
-                      <div className="w-full h-2.5 bg-slate-200 dark:bg-slate-800 rounded-full overflow-hidden p-0.5">
+                      <div className="w-full h-2.5 bg-gray-200 dark:bg-gray-800 rounded-full overflow-hidden p-0.5">
                         <div
                           className={`h-full ${color.bar} transition-all duration-500 rounded-full`}
                           style={{ width: `${percent}%` }}
@@ -124,8 +124,8 @@ export const StudentSubjects = () => {
                       </div>
                     </div>
 
-                    <div className="flex items-center justify-between text-xs pt-2 border-t border-slate-200/60 dark:border-[#23324D] text-slate-600 dark:text-slate-400">
-                      <span>Historical Accuracy: <strong className="text-slate-900 dark:text-white">{topic.accuracy}%</strong> ({topic.attemptsCount} attempts)</span>
+                    <div className="flex items-center justify-between text-xs pt-2 border-t border-gray-100 dark:border-gray-800 text-gray-600 dark:text-gray-400">
+                      <span>Historical Accuracy: <strong className="text-gray-900 dark:text-gray-100">{topic.accuracy}%</strong> ({topic.attemptsCount} attempts)</span>
                       <Link
                         to="/student/quizzes"
                         className="inline-flex items-center gap-1 font-bold text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300 transition-colors"

@@ -71,7 +71,7 @@ export const Sidebar = () => {
   const links = getLinks();
 
   return (
-    <aside className="w-64 bg-white dark:bg-[#0D1524] border-r border-slate-200/90 dark:border-[#23324D] min-h-[calc(100vh-4rem)] p-4 hidden md:block transition-colors">
+    <aside className="w-64 bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-800 min-h-[calc(100vh-4rem)] p-4 hidden md:block transition-colors">
       <div className="space-y-1">
         {links.map((link) => {
           const Icon = link.icon;
@@ -83,7 +83,7 @@ export const Sidebar = () => {
                 `flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold transition-all ${
                   isActive
                     ? 'bg-indigo-50 dark:bg-indigo-950/60 text-indigo-700 dark:text-indigo-300 font-bold border-l-4 border-indigo-600 dark:border-indigo-400 shadow-xs'
-                    : 'text-slate-700 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-300 hover:bg-slate-100 dark:hover:bg-[#131C2E]'
+                    : 'text-gray-700 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-300 hover:bg-gray-100 dark:hover:bg-gray-800'
                 }`
               }
             >
@@ -94,7 +94,7 @@ export const Sidebar = () => {
         })}
       </div>
 
-      <div className="mt-8 p-4 bg-slate-50 dark:bg-[#131C2E] rounded-2xl border border-slate-200 dark:border-[#23324D] transition-colors">
+      <div className="mt-8 p-4 bg-gray-50 dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 transition-colors">
         <div className="flex items-center gap-2 mb-1.5">
           <div className="w-6 h-6 rounded-lg bg-indigo-600 text-white flex items-center justify-center shadow-xs">
             <GraduationCap className="w-3.5 h-3.5" />
@@ -103,7 +103,7 @@ export const Sidebar = () => {
             EduPulse Pro
           </span>
         </div>
-        <p className="text-[11px] text-slate-600 dark:text-slate-400 leading-relaxed">
+        <p className="text-[11px] text-gray-600 dark:text-gray-400 leading-relaxed">
           BKT adaptive mastery, ML risk prediction, research benchmarks &amp; IEEE publication suite live.
         </p>
       </div>

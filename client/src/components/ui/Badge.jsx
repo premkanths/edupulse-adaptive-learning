@@ -8,7 +8,7 @@ export const Badge = ({
   icon: Icon,
 }) => {
   const variantStyles = {
-    default: 'bg-slate-100 text-slate-700 dark:bg-slate-800/80 dark:text-slate-300 border-slate-200/80 dark:border-slate-700/80',
+    default: 'bg-gray-100 text-gray-700 dark:bg-gray-800/80 dark:text-gray-300 border-gray-200 dark:border-gray-700/80',
     success: 'bg-emerald-50 text-emerald-700 dark:bg-emerald-950/50 dark:text-emerald-300 border-emerald-200/80 dark:border-emerald-800/80 shadow-xs',
     warning: 'bg-amber-50 text-amber-700 dark:bg-amber-950/50 dark:text-amber-300 border-amber-200/80 dark:border-amber-800/80 shadow-xs',
     danger: 'bg-rose-50 text-rose-700 dark:bg-rose-950/50 dark:text-rose-300 border-rose-200/80 dark:border-rose-800/80 shadow-xs',

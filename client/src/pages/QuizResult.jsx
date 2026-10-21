@@ -63,14 +63,14 @@ export const QuizResult = () => {
       </div>
 
       {/* Action Next Steps */}
-      <div className="bg-white/95 dark:bg-[#131C2E]/95 backdrop-blur-xl rounded-3xl p-6 border border-slate-200/90 dark:border-slate-800/90 shadow-sm flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+      <div className="bg-white/95 dark:bg-gray-900 backdrop-blur-xl rounded-3xl p-6 border border-gray-200 dark:border-gray-800 shadow-sm flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div className="flex items-center gap-3">
           <div className="p-3 bg-amber-50 dark:bg-amber-950/50 text-amber-600 rounded-2xl">
             <Lightbulb className="w-6 h-6" />
           </div>
           <div>
-            <h2 className="text-base font-bold text-slate-900 dark:text-slate-100">Adaptive Recommendations Updated</h2>
-            <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+            <h2 className="text-base font-bold text-gray-900 dark:text-gray-50">Adaptive Recommendations Updated</h2>
+            <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
               Review your personalized study suggestions tailored to today's quiz errors.
             </p>
           </div>
@@ -86,7 +86,7 @@ export const QuizResult = () => {
 
       {/* Question Review List */}
       <div className="space-y-6">
-        <h2 className="text-xl font-bold text-slate-900 dark:text-slate-100">Question-by-Question Diagnostic Review</h2>
+        <h2 className="text-xl font-bold text-gray-900 dark:text-gray-50">Question-by-Question Diagnostic Review</h2>
 
         {questions.map((q, idx) => {
           const isCorrect = q.isCorrect;
@@ -94,7 +94,7 @@ export const QuizResult = () => {
           return (
             <div
               key={idx}
-              className={`bg-white/95 dark:bg-[#131C2E]/95 backdrop-blur-xl rounded-3xl p-6 border shadow-sm space-y-4 ${
+              className={`bg-white/95 dark:bg-gray-900 backdrop-blur-xl rounded-3xl p-6 border shadow-sm space-y-4 ${
                 isCorrect ? 'border-emerald-200/80' : 'border-rose-200/80'
               }`}
             >
@@ -107,8 +107,8 @@ export const QuizResult = () => {
                   >
                     {idx + 1}
                   </span>
-                  <span className="text-xs font-semibold text-slate-500 dark:text-slate-400">
-                    Topic: <strong className="text-slate-700 dark:text-slate-300">{q.topicName}</strong>
+                  <span className="text-xs font-semibold text-gray-500 dark:text-gray-400">
+                    Topic: <strong className="text-gray-700 dark:text-gray-300">{q.topicName}</strong>
                   </span>
                 </div>
 
@@ -125,7 +125,7 @@ export const QuizResult = () => {
                 </div>
               </div>
 
-              <p className="text-sm font-semibold text-slate-900 dark:text-slate-100 leading-relaxed">
+              <p className="text-sm font-semibold text-gray-900 dark:text-gray-50 leading-relaxed">
                 {q.text}
               </p>
 
@@ -135,7 +135,7 @@ export const QuizResult = () => {
                   const wasChosen = q.chosenIndex === optIdx;
                   const isRightOption = q.correctIndex === optIdx;
 
-                  let optClass = 'bg-slate-50 dark:bg-[#0D1424]/70 border-slate-200/90 dark:border-slate-800/90 text-slate-700 dark:text-slate-300';
+                  let optClass = 'bg-gray-50 dark:bg-gray-950/70/70 border-gray-200 dark:border-gray-800 text-gray-700 dark:text-gray-300';
                   if (isRightOption) {
                     optClass = 'bg-emerald-50 dark:bg-emerald-950/50 border-emerald-300 text-emerald-900 font-semibold';
                   } else if (wasChosen && !isRightOption) {
@@ -154,8 +154,8 @@ export const QuizResult = () => {
               </div>
 
               {/* Pedagogical Explanation */}
-              <div className="bg-slate-50/80 rounded-2xl p-4 border border-slate-200/60 text-xs text-slate-600 dark:text-slate-400 space-y-1">
-                <span className="font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider text-[10px] block">
+              <div className="bg-gray-50 rounded-2xl p-4 border border-gray-200 text-xs text-gray-600 dark:text-gray-400 space-y-1">
+                <span className="font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider text-[10px] block">
                   Why this answer?
                 </span>
                 <p className="leading-relaxed">{q.explanation}</p>

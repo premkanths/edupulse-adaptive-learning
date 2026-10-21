@@ -97,7 +97,7 @@ export const Login = () => {
   const PortalIcon = portal.icon;
 
   return (
-    <div className="min-h-[calc(100vh-4rem)] flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 bg-slate-50 dark:bg-[#090E17] transition-colors relative overflow-hidden">
+    <div className="min-h-[calc(100vh-4rem)] flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 bg-gray-50 dark:bg-gray-950 transition-colors relative overflow-hidden">
       <div className="max-w-md w-full space-y-6 relative z-10">
         <div className="text-center space-y-2">
           <div className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold border mb-1 transition-all ${portal.badgeColor}`}>
@@ -105,24 +105,24 @@ export const Login = () => {
             <span>{portal.badge}</span>
           </div>
 
-          <h2 className="text-3xl font-black text-slate-900 dark:text-white tracking-tight">
+          <h2 className="text-3xl font-black text-gray-900 dark:text-gray-50 tracking-tight">
             {portal.title}
           </h2>
-          <p className="text-sm text-slate-600 dark:text-slate-400">
+          <p className="text-sm text-gray-600 dark:text-gray-400">
             {portal.subtitle}
           </p>
         </div>
 
         {error && <Alert type="error" message={error} />}
 
-        <div className="bg-white dark:bg-[#131C2E] p-8 rounded-3xl border border-slate-200/90 dark:border-[#23324D] shadow-xl space-y-6">
+        <div className="bg-white dark:bg-gray-900 p-8 rounded-3xl border border-gray-200 dark:border-gray-800 shadow-xl space-y-6">
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-2">
+              <label className="block text-xs font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider mb-2">
                 Email Address
               </label>
               <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
+                <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-gray-400">
                   <Mail className="w-4 h-4" />
                 </div>
                 <input
@@ -131,17 +131,17 @@ export const Login = () => {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="name@edupulse.local"
-                  className="w-full pl-10 pr-4 py-2.5 bg-slate-50 dark:bg-[#0D1424] border border-slate-200 dark:border-[#23324D] rounded-xl text-sm text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all"
+                  className="w-full pl-10 pr-4 py-2.5 bg-gray-50 dark:bg-gray-950 border border-gray-200 dark:border-gray-800 rounded-xl text-sm text-gray-900 dark:text-gray-50 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 focus:bg-white dark:focus:bg-gray-900 transition-all"
                 />
               </div>
             </div>
 
             <div>
-              <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-2">
+              <label className="block text-xs font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider mb-2">
                 Password
               </label>
               <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
+                <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-gray-400">
                   <Lock className="w-4 h-4" />
                 </div>
                 <input
@@ -150,12 +150,12 @@ export const Login = () => {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="••••••••"
-                  className="w-full pl-10 pr-10 py-2.5 bg-slate-50 dark:bg-[#0D1424] border border-slate-200 dark:border-[#23324D] rounded-xl text-sm text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all"
+                  className="w-full pl-10 pr-10 py-2.5 bg-gray-50 dark:bg-gray-950 border border-gray-200 dark:border-gray-800 rounded-xl text-sm text-gray-900 dark:text-gray-50 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 focus:bg-white dark:focus:bg-gray-900 transition-all"
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute inset-y-0 right-0 pr-3.5 flex items-center text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 cursor-pointer"
+                  className="absolute inset-y-0 right-0 pr-3.5 flex items-center text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 cursor-pointer"
                   tabIndex={-1}
                 >
                   {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
@@ -166,7 +166,7 @@ export const Login = () => {
             <button
               type="submit"
               disabled={loading}
-              className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-xl text-sm font-bold text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 shadow-sm hover:-translate-y-0.5 active:translate-y-0 disabled:opacity-50 transition-all cursor-pointer"
+              className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-xl text-sm font-bold text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 shadow-xs hover:-translate-y-0.5 active:translate-y-0 disabled:opacity-50 transition-all cursor-pointer"
             >
               {loading ? 'Authenticating...' : 'Sign In'}
               <ArrowRight className="w-4 h-4" />
@@ -175,18 +175,18 @@ export const Login = () => {
 
           {/* Quick Demo Accounts */}
           <div className="relative flex py-1 items-center">
-            <div className="flex-grow border-t border-slate-200 dark:border-[#23324D]"></div>
-            <span className="flex-shrink mx-4 text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
+            <div className="flex-grow border-t border-gray-200 dark:border-gray-800"></div>
+            <span className="flex-shrink mx-4 text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider">
               1-Click Demo Accounts
             </span>
-            <div className="flex-grow border-t border-slate-200 dark:border-[#23324D]"></div>
+            <div className="flex-grow border-t border-gray-200 dark:border-gray-800"></div>
           </div>
 
           <div className="grid grid-cols-3 gap-2">
             <button
               type="button"
               onClick={() => quickLogin('student1@edupulse.local', 'Password@123')}
-              className="p-2.5 text-xs font-bold rounded-xl border border-indigo-200 dark:border-[#23324D] bg-indigo-50 dark:bg-[#0D1424] text-indigo-700 dark:text-indigo-300 hover:bg-indigo-100 dark:hover:bg-[#1A253A] hover:-translate-y-0.5 transition-all flex flex-col items-center gap-1.5 cursor-pointer shadow-xs"
+              className="p-2.5 text-xs font-bold rounded-xl border border-indigo-200 dark:border-gray-800 bg-indigo-50 dark:bg-gray-950 text-indigo-700 dark:text-indigo-300 hover:bg-indigo-100 dark:hover:bg-gray-800 hover:-translate-y-0.5 transition-all flex flex-col items-center gap-1.5 cursor-pointer shadow-xs"
             >
               <GraduationCap className="w-4 h-4 text-indigo-600 dark:text-indigo-400" />
               <span>Student</span>
@@ -195,7 +195,7 @@ export const Login = () => {
             <button
               type="button"
               onClick={() => quickLogin('teacher.sarah@edupulse.local', 'Password@123')}
-              className="p-2.5 text-xs font-bold rounded-xl border border-teal-200 dark:border-[#23324D] bg-teal-50 dark:bg-[#0D1424] text-teal-700 dark:text-teal-300 hover:bg-teal-100 dark:hover:bg-[#152B30] hover:-translate-y-0.5 transition-all flex flex-col items-center gap-1.5 cursor-pointer shadow-xs"
+              className="p-2.5 text-xs font-bold rounded-xl border border-teal-200 dark:border-gray-800 bg-teal-50 dark:bg-gray-950 text-teal-700 dark:text-teal-300 hover:bg-teal-100 dark:hover:bg-gray-800 hover:-translate-y-0.5 transition-all flex flex-col items-center gap-1.5 cursor-pointer shadow-xs"
             >
               <UserCheck className="w-4 h-4 text-teal-600 dark:text-teal-400" />
               <span>Teacher</span>
@@ -204,7 +204,7 @@ export const Login = () => {
             <button
               type="button"
               onClick={() => quickLogin('admin@edupulse.local', 'Password@123')}
-              className="p-2.5 text-xs font-bold rounded-xl border border-rose-200 dark:border-[#23324D] bg-rose-50 dark:bg-[#0D1424] text-rose-700 dark:text-rose-300 hover:bg-rose-100 dark:hover:bg-[#2D1B26] hover:-translate-y-0.5 transition-all flex flex-col items-center gap-1.5 cursor-pointer shadow-xs"
+              className="p-2.5 text-xs font-bold rounded-xl border border-rose-200 dark:border-gray-800 bg-rose-50 dark:bg-gray-950 text-rose-700 dark:text-rose-300 hover:bg-rose-100 dark:hover:bg-gray-800 hover:-translate-y-0.5 transition-all flex flex-col items-center gap-1.5 cursor-pointer shadow-xs"
             >
               <ShieldCheck className="w-4 h-4 text-rose-600 dark:text-rose-400" />
               <span>Admin</span>
@@ -213,13 +213,13 @@ export const Login = () => {
         </div>
 
         <div className="text-center space-y-1">
-          <p className="text-sm text-slate-600 dark:text-slate-400">
+          <p className="text-sm text-gray-600 dark:text-gray-400">
             New student?{' '}
             <Link to="/register" className="font-bold text-indigo-600 dark:text-indigo-400 hover:underline">
               Create an account
             </Link>
           </p>
-          <p className="text-xs text-slate-500 dark:text-slate-400">
+          <p className="text-xs text-gray-500 dark:text-gray-400">
             <Link to="/" className="hover:underline">
               &larr; Back to Portal Selection
             </Link>

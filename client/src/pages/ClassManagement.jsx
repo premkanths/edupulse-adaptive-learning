@@ -126,8 +126,8 @@ export const ClassManagement = () => {
       {/* Header */}
       <div className="flex flex-wrap items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-slate-900 dark:text-slate-100 tracking-tight">Class Cohorts & Student Enrollments</h1>
-          <p className="text-slate-500 dark:text-slate-400 text-sm mt-1">
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-50 tracking-tight">Class Cohorts & Student Enrollments</h1>
+          <p className="text-gray-500 dark:text-gray-400 text-sm mt-1">
             Manage academic batches, assign faculty supervisors, and organize student cohorts for quiz distribution.
           </p>
         </div>
@@ -152,16 +152,16 @@ export const ClassManagement = () => {
       {/* Grid Layout: Classes List + Selected Class Detail */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Classes List */}
-        <div className="lg:col-span-1 bg-white/95 dark:bg-[#131C2E]/95 backdrop-blur-xl rounded-2xl border border-slate-200/90 dark:border-slate-800/90 p-6 shadow-sm space-y-4">
+        <div className="lg:col-span-1 bg-white/95 dark:bg-gray-900 backdrop-blur-xl rounded-2xl border border-gray-200 dark:border-gray-800 p-6 shadow-sm space-y-4">
           <div className="flex items-center justify-between">
-            <h2 className="text-base font-bold text-slate-900 dark:text-slate-100">Active Classes ({classes.length})</h2>
-            <button onClick={fetchInitialData} className="p-1.5 text-slate-400 hover:text-slate-600 dark:text-slate-400 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800/80 dark:bg-slate-800/80">
+            <h2 className="text-base font-bold text-gray-900 dark:text-gray-50">Active Classes ({classes.length})</h2>
+            <button onClick={fetchInitialData} className="p-1.5 text-gray-400 hover:text-gray-600 dark:text-gray-400 rounded-lg hover:bg-gray-100 dark:hover:bg-slate-800/80 dark:bg-gray-800/80">
               <RefreshCw className={`w-3.5 h-3.5 ${loading ? 'animate-spin' : ''}`} />
             </button>
           </div>
 
           {classes.length === 0 ? (
-            <p className="text-xs text-slate-500 dark:text-slate-400 py-6 text-center">No class cohorts created yet.</p>
+            <p className="text-xs text-gray-500 dark:text-gray-400 py-6 text-center">No class cohorts created yet.</p>
           ) : (
             <div className="space-y-2">
               {classes.map((c) => (
@@ -171,24 +171,24 @@ export const ClassManagement = () => {
                   className={`p-4 rounded-xl border cursor-pointer transition-all ${
                     selectedClass?.id === c.id
                       ? 'border-indigo-600 bg-indigo-50/40 shadow-sm'
-                      : 'border-slate-200/90 dark:border-slate-800/90 hover:border-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800/60 dark:bg-[#0D1424]/70'
+                      : 'border-gray-200 dark:border-gray-800 hover:border-slate-300 hover:bg-gray-50 dark:hover:bg-slate-800/60 dark:bg-gray-950/70/70'
                   }`}
                 >
                   <div className="flex items-center justify-between">
-                    <h3 className="text-sm font-bold text-slate-900 dark:text-slate-100">{c.name}</h3>
+                    <h3 className="text-sm font-bold text-gray-900 dark:text-gray-50">{c.name}</h3>
                     <button
                       onClick={(e) => { e.stopPropagation(); handleDeleteClass(c.id); }}
-                      className="p-1 text-slate-400 hover:text-rose-600 rounded transition-colors"
+                      className="p-1 text-gray-400 hover:text-rose-600 rounded transition-colors"
                     >
                       <Trash2 className="w-3.5 h-3.5" />
                     </button>
                   </div>
-                  <p className="text-xs text-slate-600 dark:text-slate-400 mt-1">Teacher: {c.teacherName}</p>
-                  <div className="flex items-center justify-between mt-3 text-xs text-slate-500 dark:text-slate-400 font-medium">
+                  <p className="text-xs text-gray-600 dark:text-gray-400 mt-1">Teacher: {c.teacherName}</p>
+                  <div className="flex items-center justify-between mt-3 text-xs text-gray-500 dark:text-gray-400 font-medium">
                     <span className="flex items-center gap-1">
-                      <Users className="w-3.5 h-3.5 text-slate-400" /> {c.studentCount} Students
+                      <Users className="w-3.5 h-3.5 text-gray-400" /> {c.studentCount} Students
                     </span>
-                    <span className="text-[11px] text-slate-400">ID #{c.id}</span>
+                    <span className="text-[11px] text-gray-400">ID #{c.id}</span>
                   </div>
                 </div>
               ))}
@@ -197,19 +197,19 @@ export const ClassManagement = () => {
         </div>
 
         {/* Selected Class Detail */}
-        <div className="lg:col-span-2 bg-white/95 dark:bg-[#131C2E]/95 backdrop-blur-xl rounded-2xl border border-slate-200/90 dark:border-slate-800/90 p-6 shadow-sm space-y-6">
+        <div className="lg:col-span-2 bg-white/95 dark:bg-gray-900 backdrop-blur-xl rounded-2xl border border-gray-200 dark:border-gray-800 p-6 shadow-sm space-y-6">
           {classDetails ? (
             <>
-              <div className="flex flex-wrap items-center justify-between gap-4 border-b border-slate-100 dark:border-slate-800/80 pb-5">
+              <div className="flex flex-wrap items-center justify-between gap-4 border-b border-gray-100 dark:border-gray-800 pb-5">
                 <div>
                   <div className="flex items-center gap-3">
-                    <h2 className="text-xl font-bold text-slate-900 dark:text-slate-100">{classDetails.name}</h2>
+                    <h2 className="text-xl font-bold text-gray-900 dark:text-gray-50">{classDetails.name}</h2>
                     <span className="px-2.5 py-0.5 rounded-full text-xs font-bold bg-indigo-50 dark:bg-indigo-950/60 text-indigo-700 dark:text-indigo-300">
                       Cohort #{classDetails.id}
                     </span>
                   </div>
-                  <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
-                    Assigned Faculty: <span className="font-semibold text-slate-800 dark:text-slate-200">{classDetails.teacherName}</span> ({classDetails.teacherEmail})
+                  <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                    Assigned Faculty: <span className="font-semibold text-slate-800 dark:text-gray-200">{classDetails.teacherName}</span> ({classDetails.teacherEmail})
                   </p>
                 </div>
 
@@ -224,15 +224,15 @@ export const ClassManagement = () => {
 
               {/* Enrolled Students Table */}
               <div className="space-y-3">
-                <h3 className="text-sm font-bold text-slate-800 dark:text-slate-200">Enrolled Students ({classDetails.students?.length || 0})</h3>
+                <h3 className="text-sm font-bold text-slate-800 dark:text-gray-200">Enrolled Students ({classDetails.students?.length || 0})</h3>
                 {classDetails.students?.length === 0 ? (
-                  <p className="text-xs text-slate-500 dark:text-slate-400 py-6 text-center border border-dashed border-slate-200/90 dark:border-slate-800/90 rounded-xl">
+                  <p className="text-xs text-gray-500 dark:text-gray-400 py-6 text-center border border-dashed border-gray-200 dark:border-gray-800 rounded-xl">
                     No students enrolled in this cohort yet. Click "Enroll Student" to add members.
                   </p>
                 ) : (
-                  <div className="overflow-x-auto border border-slate-200/90 dark:border-slate-800/90 rounded-xl">
+                  <div className="overflow-x-auto border border-gray-200 dark:border-gray-800 rounded-xl">
                     <table className="w-full text-left text-sm">
-                      <thead className="bg-slate-50 dark:bg-[#0D1424]/70 text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase border-b border-slate-200/90 dark:border-slate-800/90">
+                      <thead className="bg-gray-50 dark:bg-gray-950/70/70 text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase border-b border-gray-200 dark:border-gray-800">
                         <tr>
                           <th className="px-4 py-3">Student Name</th>
                           <th className="px-4 py-3">Email Address</th>
@@ -242,12 +242,12 @@ export const ClassManagement = () => {
                       </thead>
                       <tbody className="divide-y divide-slate-100">
                         {classDetails.students.map((s) => (
-                          <tr key={s.id} className="hover:bg-slate-50 dark:hover:bg-slate-800/60/60">
-                            <td className="px-4 py-3 font-medium text-slate-900 dark:text-slate-100 text-xs">{s.name}</td>
-                            <td className="px-4 py-3 text-xs text-slate-600 dark:text-slate-400">{s.email}</td>
+                          <tr key={s.id} className="hover:bg-gray-50 dark:hover:bg-slate-800/60/60">
+                            <td className="px-4 py-3 font-medium text-gray-900 dark:text-gray-50 text-xs">{s.name}</td>
+                            <td className="px-4 py-3 text-xs text-gray-600 dark:text-gray-400">{s.email}</td>
                             <td className="px-4 py-3">
                               <span className={`px-2 py-0.5 rounded text-[11px] font-semibold ${
-                                s.isActive ? 'bg-emerald-100 text-emerald-800 dark:text-emerald-300' : 'bg-slate-100 dark:bg-slate-800/80 text-slate-600 dark:text-slate-400'
+                                s.isActive ? 'bg-emerald-100 text-emerald-800 dark:text-emerald-300' : 'bg-gray-100 dark:bg-gray-800/80 text-gray-600 dark:text-gray-400'
                               }`}>
                                 {s.isActive ? 'Active' : 'Inactive'}
                               </span>
@@ -269,8 +269,8 @@ export const ClassManagement = () => {
               </div>
             </>
           ) : (
-            <div className="text-center py-20 text-slate-400">
-              <Layers className="w-12 h-12 text-slate-300 mx-auto mb-3" />
+            <div className="text-center py-20 text-gray-400">
+              <Layers className="w-12 h-12 text-gray-300 mx-auto mb-3" />
               <p className="text-sm font-medium">Select a class cohort on the left to view students and details.</p>
             </div>
           )}
@@ -280,33 +280,33 @@ export const ClassManagement = () => {
       {/* Modal: Create Class */}
       {showCreateModal && (
         <div className="fixed inset-0 z-50 bg-slate-900/50 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="bg-white/95 dark:bg-[#131C2E]/95 backdrop-blur-xl rounded-2xl max-w-md w-full p-6 shadow-2xl border border-slate-200/90 dark:border-slate-800/90 space-y-4">
-            <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-800/80 pb-3">
-              <h3 className="text-base font-bold text-slate-900 dark:text-slate-100">Create New Class Cohort</h3>
-              <button onClick={() => setShowCreateModal(false)} className="text-slate-400 hover:text-slate-600 dark:text-slate-400">
+          <div className="bg-white/95 dark:bg-gray-900 backdrop-blur-xl rounded-2xl max-w-md w-full p-6 shadow-2xl border border-gray-200 dark:border-gray-800 space-y-4">
+            <div className="flex items-center justify-between border-b border-gray-100 dark:border-gray-800 pb-3">
+              <h3 className="text-base font-bold text-gray-900 dark:text-gray-50">Create New Class Cohort</h3>
+              <button onClick={() => setShowCreateModal(false)} className="text-gray-400 hover:text-gray-600 dark:text-gray-400">
                 <X className="w-5 h-5" />
               </button>
             </div>
             <form onSubmit={handleCreateClass} className="space-y-4">
               <div>
-                <label className="text-xs font-semibold text-slate-700 dark:text-slate-300 block mb-1">Class / Cohort Name</label>
+                <label className="text-xs font-semibold text-gray-700 dark:text-gray-300 block mb-1">Class / Cohort Name</label>
                 <input
                   type="text"
                   required
                   placeholder="e.g. CS2025-Section A"
                   value={newClassName}
                   onChange={(e) => setNewClassName(e.target.value)}
-                  className="w-full text-xs p-2.5 border border-slate-200/90 dark:border-slate-800/90 rounded-xl outline-none focus:ring-2 focus:ring-indigo-500"
+                  className="w-full text-xs p-2.5 border border-gray-200 dark:border-gray-800 rounded-xl outline-none focus:ring-2 focus:ring-indigo-500"
                 />
               </div>
 
               <div>
-                <label className="text-xs font-semibold text-slate-700 dark:text-slate-300 block mb-1">Assigned Teacher</label>
+                <label className="text-xs font-semibold text-gray-700 dark:text-gray-300 block mb-1">Assigned Teacher</label>
                 <select
                   required
                   value={selectedTeacherId}
                   onChange={(e) => setSelectedTeacherId(e.target.value)}
-                  className="w-full text-xs p-2.5 border border-slate-200/90 dark:border-slate-800/90 rounded-xl outline-none focus:ring-2 focus:ring-indigo-500"
+                  className="w-full text-xs p-2.5 border border-gray-200 dark:border-gray-800 rounded-xl outline-none focus:ring-2 focus:ring-indigo-500"
                 >
                   <option value="">Select faculty member...</option>
                   {teachers.map((t) => (
@@ -319,7 +319,7 @@ export const ClassManagement = () => {
                 <button
                   type="button"
                   onClick={() => setShowCreateModal(false)}
-                  className="px-4 py-2 border border-slate-200/90 dark:border-slate-800/90 rounded-xl text-xs font-semibold text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800/60 dark:bg-[#0D1424]/70"
+                  className="px-4 py-2 border border-gray-200 dark:border-gray-800 rounded-xl text-xs font-semibold text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-slate-800/60 dark:bg-gray-950/70/70"
                 >
                   Cancel
                 </button>
@@ -338,21 +338,21 @@ export const ClassManagement = () => {
       {/* Modal: Enroll Student */}
       {showEnrollModal && (
         <div className="fixed inset-0 z-50 bg-slate-900/50 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="bg-white/95 dark:bg-[#131C2E]/95 backdrop-blur-xl rounded-2xl max-w-md w-full p-6 shadow-2xl border border-slate-200/90 dark:border-slate-800/90 space-y-4">
-            <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-800/80 pb-3">
-              <h3 className="text-base font-bold text-slate-900 dark:text-slate-100">Enroll Student into {selectedClass?.name}</h3>
-              <button onClick={() => setShowEnrollModal(false)} className="text-slate-400 hover:text-slate-600 dark:text-slate-400">
+          <div className="bg-white/95 dark:bg-gray-900 backdrop-blur-xl rounded-2xl max-w-md w-full p-6 shadow-2xl border border-gray-200 dark:border-gray-800 space-y-4">
+            <div className="flex items-center justify-between border-b border-gray-100 dark:border-gray-800 pb-3">
+              <h3 className="text-base font-bold text-gray-900 dark:text-gray-50">Enroll Student into {selectedClass?.name}</h3>
+              <button onClick={() => setShowEnrollModal(false)} className="text-gray-400 hover:text-gray-600 dark:text-gray-400">
                 <X className="w-5 h-5" />
               </button>
             </div>
             <form onSubmit={handleEnrollStudent} className="space-y-4">
               <div>
-                <label className="text-xs font-semibold text-slate-700 dark:text-slate-300 block mb-1">Select Student</label>
+                <label className="text-xs font-semibold text-gray-700 dark:text-gray-300 block mb-1">Select Student</label>
                 <select
                   required
                   value={studentToEnrollId}
                   onChange={(e) => setStudentToEnrollId(e.target.value)}
-                  className="w-full text-xs p-2.5 border border-slate-200/90 dark:border-slate-800/90 rounded-xl outline-none focus:ring-2 focus:ring-indigo-500"
+                  className="w-full text-xs p-2.5 border border-gray-200 dark:border-gray-800 rounded-xl outline-none focus:ring-2 focus:ring-indigo-500"
                 >
                   <option value="">Choose student to enroll...</option>
                   {students.map((s) => (
@@ -365,7 +365,7 @@ export const ClassManagement = () => {
                 <button
                   type="button"
                   onClick={() => setShowEnrollModal(false)}
-                  className="px-4 py-2 border border-slate-200/90 dark:border-slate-800/90 rounded-xl text-xs font-semibold text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800/60 dark:bg-[#0D1424]/70"
+                  className="px-4 py-2 border border-gray-200 dark:border-gray-800 rounded-xl text-xs font-semibold text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-slate-800/60 dark:bg-gray-950/70/70"
                 >
                   Cancel
                 </button>

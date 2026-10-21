@@ -56,14 +56,14 @@ export const AtRiskStudents = () => {
       {/* Header */}
       <div className="flex flex-wrap items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-slate-900 dark:text-slate-100 tracking-tight">AI & Heuristic At-Risk Student Monitor</h1>
-          <p className="text-slate-500 dark:text-slate-400 text-sm mt-1">
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-50 tracking-tight">AI & Heuristic At-Risk Student Monitor</h1>
+          <p className="text-gray-500 dark:text-gray-400 text-sm mt-1">
             Predictive machine learning (Random Forest) & deterministic rule-based monitoring of academic risk factors.
           </p>
         </div>
         <button
           onClick={fetchAtRiskStudents}
-          className="inline-flex items-center gap-2 px-4 py-2 border border-slate-200/90 dark:border-slate-800/90 rounded-xl text-sm font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800/60 dark:bg-[#0D1424]/70 transition-colors"
+          className="inline-flex items-center gap-2 px-4 py-2 border border-gray-200 dark:border-gray-800 rounded-xl text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-slate-800/60 dark:bg-gray-950/70/70 transition-colors"
         >
           <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />
           Refresh Predictions
@@ -81,22 +81,22 @@ export const AtRiskStudents = () => {
 
       {/* Metric Cards */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-        <div className="bg-white/95 dark:bg-[#131C2E]/95 backdrop-blur-xl p-5 rounded-2xl border border-slate-200/90 dark:border-slate-800/90 shadow-sm">
-          <p className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Total Evaluated</p>
-          <p className="text-2xl font-black text-slate-900 dark:text-slate-100 mt-2">{students.length}</p>
-          <p className="text-xs text-slate-400 mt-1">All enrolled students</p>
+        <div className="bg-white/95 dark:bg-gray-900 backdrop-blur-xl p-5 rounded-2xl border border-gray-200 dark:border-gray-800 shadow-sm">
+          <p className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Total Evaluated</p>
+          <p className="text-2xl font-black text-gray-900 dark:text-gray-50 mt-2">{students.length}</p>
+          <p className="text-xs text-gray-400 mt-1">All enrolled students</p>
         </div>
-        <div className="bg-white/95 dark:bg-[#131C2E]/95 backdrop-blur-xl p-5 rounded-2xl border border-rose-200 dark:border-rose-800/80 shadow-sm bg-rose-50/20">
+        <div className="bg-white/95 dark:bg-gray-900 backdrop-blur-xl p-5 rounded-2xl border border-rose-200 dark:border-rose-800/80 shadow-sm bg-rose-50/20">
           <p className="text-xs font-semibold text-rose-600 uppercase tracking-wider">High Risk</p>
           <p className="text-2xl font-black text-rose-600 mt-2">{highRiskCount}</p>
           <p className="text-xs text-rose-500 mt-1">Urgent intervention needed</p>
         </div>
-        <div className="bg-white/95 dark:bg-[#131C2E]/95 backdrop-blur-xl p-5 rounded-2xl border border-amber-200 dark:border-amber-800/80 shadow-sm bg-amber-50/20">
+        <div className="bg-white/95 dark:bg-gray-900 backdrop-blur-xl p-5 rounded-2xl border border-amber-200 dark:border-amber-800/80 shadow-sm bg-amber-50/20">
           <p className="text-xs font-semibold text-amber-600 uppercase tracking-wider">Moderate Risk</p>
           <p className="text-2xl font-black text-amber-600 mt-2">{modRiskCount}</p>
           <p className="text-xs text-amber-500 mt-1">Targeted practice required</p>
         </div>
-        <div className="bg-white/95 dark:bg-[#131C2E]/95 backdrop-blur-xl p-5 rounded-2xl border border-emerald-200 dark:border-emerald-800/80 shadow-sm bg-emerald-50/20">
+        <div className="bg-white/95 dark:bg-gray-900 backdrop-blur-xl p-5 rounded-2xl border border-emerald-200 dark:border-emerald-800/80 shadow-sm bg-emerald-50/20">
           <p className="text-xs font-semibold text-emerald-600 uppercase tracking-wider">Low Risk / On Track</p>
           <p className="text-2xl font-black text-emerald-600 mt-2">{lowRiskCount}</p>
           <p className="text-xs text-emerald-500 mt-1">Meeting mastery targets</p>
@@ -104,7 +104,7 @@ export const AtRiskStudents = () => {
       </div>
 
       {/* Filter Tabs */}
-      <div className="flex items-center gap-2 border-b border-slate-200/90 dark:border-slate-800/90 pb-2">
+      <div className="flex items-center gap-2 border-b border-gray-200 dark:border-gray-800 pb-2">
         {['ALL', 'HIGH', 'MODERATE', 'LOW'].map((lvl) => (
           <button
             key={lvl}
@@ -112,7 +112,7 @@ export const AtRiskStudents = () => {
             className={`px-4 py-2 rounded-xl text-sm font-semibold transition-all ${
               filter === lvl
                 ? 'bg-slate-900 text-white shadow-sm'
-                : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 dark:text-slate-100 hover:bg-slate-100 dark:hover:bg-slate-800/80 dark:bg-slate-800/80'
+                : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-50 dark:text-gray-50 hover:bg-gray-100 dark:hover:bg-slate-800/80 dark:bg-gray-800/80'
             }`}
           >
             {lvl === 'ALL' ? 'All Students' : `${lvl.charAt(0) + lvl.slice(1).toLowerCase()} Risk`}
@@ -125,10 +125,10 @@ export const AtRiskStudents = () => {
         {loading ? (
           <div className="text-center py-12">
             <RefreshCw className="w-8 h-8 text-indigo-500 animate-spin mx-auto mb-3" />
-            <p className="text-sm text-slate-500 dark:text-slate-400">Evaluating student risk features...</p>
+            <p className="text-sm text-gray-500 dark:text-gray-400">Evaluating student risk features...</p>
           </div>
         ) : filteredStudents.length === 0 ? (
-          <div className="bg-white/95 dark:bg-[#131C2E]/95 backdrop-blur-xl rounded-2xl border border-slate-200/90 dark:border-slate-800/90 p-8 text-center text-slate-500 dark:text-slate-400">
+          <div className="bg-white/95 dark:bg-gray-900 backdrop-blur-xl rounded-2xl border border-gray-200 dark:border-gray-800 p-8 text-center text-gray-500 dark:text-gray-400">
             No students match the selected filter.
           </div>
         ) : (
@@ -138,8 +138,8 @@ export const AtRiskStudents = () => {
             return (
               <div
                 key={s.studentId}
-                className={`bg-white/95 dark:bg-[#131C2E]/95 backdrop-blur-xl rounded-2xl border p-6 shadow-sm transition-all hover:shadow-md ${
-                  isHigh ? 'border-rose-200 dark:border-rose-800/80 bg-rose-50/10' : isMod ? 'border-amber-200 dark:border-amber-800/80 bg-amber-50/10' : 'border-slate-200/90 dark:border-slate-800/90'
+                className={`bg-white/95 dark:bg-gray-900 backdrop-blur-xl rounded-2xl border p-6 shadow-sm transition-all hover:shadow-md ${
+                  isHigh ? 'border-rose-200 dark:border-rose-800/80 bg-rose-50/10' : isMod ? 'border-amber-200 dark:border-amber-800/80 bg-amber-50/10' : 'border-gray-200 dark:border-gray-800'
                 }`}
               >
                 <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
@@ -152,7 +152,7 @@ export const AtRiskStudents = () => {
                     </div>
                     <div>
                       <div className="flex items-center gap-3">
-                        <h3 className="text-base font-bold text-slate-900 dark:text-slate-100">{s.studentName}</h3>
+                        <h3 className="text-base font-bold text-gray-900 dark:text-gray-50">{s.studentName}</h3>
                         <span className={`px-2.5 py-0.5 rounded-full text-xs font-bold uppercase tracking-wider ${
                           isHigh ? 'bg-rose-100 text-rose-700 dark:text-rose-300 border border-rose-300' :
                           isMod ? 'bg-amber-100 text-amber-700 dark:text-amber-300 border border-amber-300' : 'bg-emerald-100 text-emerald-700 dark:text-emerald-300 border border-emerald-300'
@@ -160,7 +160,7 @@ export const AtRiskStudents = () => {
                           {s.riskLevel} RISK
                         </span>
                         {s.isFallback ? (
-                          <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-slate-100 dark:bg-slate-800/80 text-slate-600 dark:text-slate-400">
+                          <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-gray-100 dark:bg-gray-800/80 text-gray-600 dark:text-gray-400">
                             Heuristic Fallback
                           </span>
                         ) : (
@@ -169,11 +169,11 @@ export const AtRiskStudents = () => {
                           </span>
                         )}
                       </div>
-                      <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">{s.studentEmail}</p>
+                      <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">{s.studentEmail}</p>
 
                       {/* Risk Progress Bar */}
                       <div className="mt-3 flex items-center gap-3 w-64">
-                        <div className="flex-1 bg-slate-100 dark:bg-slate-800/80 rounded-full h-2 overflow-hidden">
+                        <div className="flex-1 bg-gray-100 dark:bg-gray-800/80 rounded-full h-2 overflow-hidden">
                           <div
                             className={`h-full rounded-full transition-all ${
                               isHigh ? 'bg-rose-500' : isMod ? 'bg-amber-500' : 'bg-emerald-500'
@@ -181,17 +181,17 @@ export const AtRiskStudents = () => {
                             style={{ width: `${s.riskScore}%` }}
                           />
                         </div>
-                        <span className="text-xs font-bold text-slate-700 dark:text-slate-300 font-mono">{s.riskScore}/100</span>
+                        <span className="text-xs font-bold text-gray-700 dark:text-gray-300 font-mono">{s.riskScore}/100</span>
                       </div>
                     </div>
                   </div>
 
                   {/* Reasons & Factors */}
                   <div className="flex-1 lg:max-w-md">
-                    <p className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1.5">Identified Risk Factors:</p>
+                    <p className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-1.5">Identified Risk Factors:</p>
                     <ul className="space-y-1">
                       {s.reasons.map((r, idx) => (
-                        <li key={idx} className="text-xs text-slate-700 dark:text-slate-300 flex items-start gap-1.5">
+                        <li key={idx} className="text-xs text-gray-700 dark:text-gray-300 flex items-start gap-1.5">
                           <span className="text-rose-500 font-bold shrink-0">•</span>
                           <span>{r}</span>
                         </li>
@@ -200,9 +200,9 @@ export const AtRiskStudents = () => {
                   </div>
 
                   {/* Recommended Pedagogical Intervention */}
-                  <div className="lg:max-w-xs bg-slate-50 dark:bg-[#0D1424]/70 p-3.5 rounded-xl border border-slate-200/90 dark:border-slate-800/90">
-                    <p className="text-[11px] font-bold text-slate-600 dark:text-slate-400 uppercase tracking-wider mb-1">Recommended Action:</p>
-                    <p className="text-xs text-slate-700 dark:text-slate-300 leading-relaxed font-medium">
+                  <div className="lg:max-w-xs bg-gray-50 dark:bg-gray-950/70/70 p-3.5 rounded-xl border border-gray-200 dark:border-gray-800">
+                    <p className="text-[11px] font-bold text-gray-600 dark:text-gray-400 uppercase tracking-wider mb-1">Recommended Action:</p>
+                    <p className="text-xs text-gray-700 dark:text-gray-300 leading-relaxed font-medium">
                       {s.recommendedIntervention}
                     </p>
                     <div className="mt-3 flex justify-end">

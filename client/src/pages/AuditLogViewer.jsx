@@ -56,14 +56,14 @@ export const AuditLogViewer = () => {
       {/* Header */}
       <div className="flex flex-wrap items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-slate-900 dark:text-slate-100 tracking-tight">Security Audit Event Trail</h1>
-          <p className="text-slate-500 dark:text-slate-400 text-sm mt-1">
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-50 tracking-tight">Security Audit Event Trail</h1>
+          <p className="text-gray-500 dark:text-gray-400 text-sm mt-1">
             Immutable system security log tracking administrative interventions, authentication attempts, and data purges.
           </p>
         </div>
         <button
           onClick={fetchAuditLogs}
-          className="inline-flex items-center gap-1.5 px-3.5 py-2 border border-slate-200/90 dark:border-slate-800/90 rounded-xl text-xs font-semibold text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800/60 dark:bg-[#0D1424]/70 transition-colors"
+          className="inline-flex items-center gap-1.5 px-3.5 py-2 border border-gray-200 dark:border-gray-800 rounded-xl text-xs font-semibold text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-slate-800/60 dark:bg-gray-950/70/70 transition-colors"
         >
           <RefreshCw className={`w-3.5 h-3.5 ${loading ? 'animate-spin' : ''}`} />
           Refresh Audit Trail
@@ -71,7 +71,7 @@ export const AuditLogViewer = () => {
       </div>
 
       {/* Filter and Search Bar */}
-      <div className="bg-white/95 dark:bg-[#131C2E]/95 backdrop-blur-xl rounded-2xl border border-slate-200/90 dark:border-slate-800/90 p-4 shadow-sm flex flex-wrap items-center justify-between gap-4">
+      <div className="bg-white/95 dark:bg-gray-900 backdrop-blur-xl rounded-2xl border border-gray-200 dark:border-gray-800 p-4 shadow-sm flex flex-wrap items-center justify-between gap-4">
         <div className="flex items-center gap-2">
           {['ALL', 'AUTH', 'CLASS', 'SETTING', 'USER'].map((f) => (
             <button
@@ -80,7 +80,7 @@ export const AuditLogViewer = () => {
               className={`px-3 py-1.5 rounded-xl text-xs font-semibold transition-all ${
                 filterAction === f
                   ? 'bg-slate-900 text-white shadow-sm'
-                  : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 dark:text-slate-100 hover:bg-slate-100 dark:hover:bg-slate-800/80 dark:bg-slate-800/80'
+                  : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-50 dark:text-gray-50 hover:bg-gray-100 dark:hover:bg-slate-800/80 dark:bg-gray-800/80'
               }`}
             >
               {f === 'ALL' ? 'All Events' : `${f.charAt(0) + f.slice(1).toLowerCase()} Logs`}
@@ -89,32 +89,32 @@ export const AuditLogViewer = () => {
         </div>
 
         <div className="relative w-72">
-          <Search className="w-4 h-4 text-slate-400 absolute left-3 top-2.5" />
+          <Search className="w-4 h-4 text-gray-400 absolute left-3 top-2.5" />
           <input
             type="text"
             placeholder="Search email, action, details..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full text-xs pl-9 pr-3 py-2 border border-slate-200/90 dark:border-slate-800/90 rounded-xl outline-none focus:ring-2 focus:ring-indigo-500"
+            className="w-full text-xs pl-9 pr-3 py-2 border border-gray-200 dark:border-gray-800 rounded-xl outline-none focus:ring-2 focus:ring-indigo-500"
           />
         </div>
       </div>
 
       {/* Logs Table */}
-      <div className="bg-white/95 dark:bg-[#131C2E]/95 backdrop-blur-xl rounded-2xl border border-slate-200/90 dark:border-slate-800/90 p-6 shadow-sm space-y-4">
+      <div className="bg-white/95 dark:bg-gray-900 backdrop-blur-xl rounded-2xl border border-gray-200 dark:border-gray-800 p-6 shadow-sm space-y-4">
         <div className="flex items-center justify-between">
-          <h2 className="text-base font-bold text-slate-900 dark:text-slate-100">Recorded Security Events ({filteredLogs.length})</h2>
-          <span className="text-xs text-slate-400">Latest 100 entries displayed</span>
+          <h2 className="text-base font-bold text-gray-900 dark:text-gray-50">Recorded Security Events ({filteredLogs.length})</h2>
+          <span className="text-xs text-gray-400">Latest 100 entries displayed</span>
         </div>
 
         {filteredLogs.length === 0 ? (
-          <div className="text-center py-12 text-slate-500 dark:text-slate-400 text-xs">
+          <div className="text-center py-12 text-gray-500 dark:text-gray-400 text-xs">
             No audit events found matching the criteria.
           </div>
         ) : (
-          <div className="overflow-x-auto border border-slate-200/90 dark:border-slate-800/90 rounded-xl">
+          <div className="overflow-x-auto border border-gray-200 dark:border-gray-800 rounded-xl">
             <table className="w-full text-left text-sm">
-              <thead className="bg-slate-50 dark:bg-[#0D1424]/70 text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase border-b border-slate-200/90 dark:border-slate-800/90">
+              <thead className="bg-gray-50 dark:bg-gray-950/70/70 text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase border-b border-gray-200 dark:border-gray-800">
                 <tr>
                   <th className="px-4 py-3">Timestamp</th>
                   <th className="px-4 py-3">User</th>
@@ -125,22 +125,22 @@ export const AuditLogViewer = () => {
               </thead>
               <tbody className="divide-y divide-slate-100 font-mono text-xs">
                 {filteredLogs.map((log) => (
-                  <tr key={log.id} className="hover:bg-slate-50 dark:hover:bg-slate-800/60/60 font-sans">
-                    <td className="px-4 py-3 text-slate-500 dark:text-slate-400 text-xs font-mono whitespace-nowrap">
+                  <tr key={log.id} className="hover:bg-gray-50 dark:hover:bg-slate-800/60/60 font-sans">
+                    <td className="px-4 py-3 text-gray-500 dark:text-gray-400 text-xs font-mono whitespace-nowrap">
                       {new Date(log.createdAt).toLocaleString()}
                     </td>
-                    <td className="px-4 py-3 text-slate-900 dark:text-slate-100 font-medium text-xs">
-                      {log.user ? log.user.email : <span className="text-slate-400 italic">SYSTEM</span>}
+                    <td className="px-4 py-3 text-gray-900 dark:text-gray-50 font-medium text-xs">
+                      {log.user ? log.user.email : <span className="text-gray-400 italic">SYSTEM</span>}
                     </td>
                     <td className="px-4 py-3">
                       <span className={`inline-block px-2.5 py-0.5 rounded-full text-[11px] font-bold font-mono border ${getActionBadge(log.action)}`}>
                         {log.action}
                       </span>
                     </td>
-                    <td className="px-4 py-3 text-slate-700 dark:text-slate-300 text-xs font-sans max-w-md truncate">
+                    <td className="px-4 py-3 text-gray-700 dark:text-gray-300 text-xs font-sans max-w-md truncate">
                       {log.details}
                     </td>
-                    <td className="px-4 py-3 font-mono text-[11px] text-slate-400">
+                    <td className="px-4 py-3 font-mono text-[11px] text-gray-400">
                       {log.ipAddress || '127.0.0.1'}
                     </td>
                   </tr>

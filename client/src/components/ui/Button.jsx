@@ -17,10 +17,10 @@ export const Button = ({
 
   const variantStyles = {
     primary: 'bg-gradient-to-r from-indigo-600 via-indigo-500 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white shadow-md shadow-indigo-500/25 hover:shadow-lg hover:shadow-indigo-500/40 hover:-translate-y-0.5 active:translate-y-0 active:scale-[0.99] focus:ring-indigo-500',
-    secondary: 'bg-white/90 dark:bg-slate-800/80 hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-100 border border-slate-200/80 dark:border-slate-700/80 shadow-sm hover:shadow hover:-translate-y-0.5 active:translate-y-0 focus:ring-indigo-400',
+    secondary: 'bg-white/90 dark:bg-gray-800/80 hover:bg-gray-100 dark:hover:bg-slate-700 text-slate-800 dark:text-gray-50 border border-gray-200 dark:border-gray-700/80 shadow-sm hover:shadow hover:-translate-y-0.5 active:translate-y-0 focus:ring-indigo-400',
     outline: 'border border-indigo-200 dark:border-indigo-800/80 bg-transparent hover:bg-indigo-50/60 dark:hover:bg-indigo-950/40 text-indigo-700 dark:text-indigo-300 focus:ring-indigo-400',
     destructive: 'bg-gradient-to-r from-rose-600 to-red-600 hover:from-rose-500 hover:to-red-500 text-white shadow-md shadow-rose-500/25 hover:shadow-lg hover:shadow-rose-500/40 hover:-translate-y-0.5 active:translate-y-0 focus:ring-rose-500',
-    ghost: 'bg-transparent hover:bg-slate-100 dark:hover:bg-slate-800/80 text-slate-600 dark:text-slate-300 focus:ring-indigo-400',
+    ghost: 'bg-transparent hover:bg-gray-100 dark:hover:bg-slate-800/80 text-gray-600 dark:text-gray-300 focus:ring-indigo-400',
     teal: 'bg-gradient-to-r from-teal-600 via-teal-500 to-emerald-600 hover:from-teal-500 hover:to-emerald-500 text-white shadow-md shadow-teal-500/25 hover:shadow-lg hover:shadow-teal-500/40 hover:-translate-y-0.5 active:translate-y-0 focus:ring-teal-500',
   };
 

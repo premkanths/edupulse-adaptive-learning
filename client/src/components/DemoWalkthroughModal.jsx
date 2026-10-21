@@ -139,34 +139,34 @@ export const DemoWalkthroughModal = ({ isOpen, onClose }) => {
 
   return (
     <div className="fixed inset-0 z-50 bg-slate-900/60 dark:bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
-      <div className="bg-white/95 dark:bg-[#131C2E]/95 backdrop-blur-xl rounded-3xl max-w-2xl w-full p-6 md:p-8 shadow-2xl border border-slate-200/90 dark:border-slate-800/90 space-y-6">
+      <div className="bg-white/95 dark:bg-gray-900 backdrop-blur-xl rounded-3xl max-w-2xl w-full p-6 md:p-8 shadow-2xl border border-gray-200 dark:border-gray-800 space-y-6">
         {/* Header */}
-        <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-800/80 pb-4">
+        <div className="flex items-center justify-between border-b border-gray-100 dark:border-gray-800 pb-4">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-2xl bg-indigo-50 dark:bg-indigo-950/50 border border-indigo-100 dark:border-indigo-800/60 flex items-center justify-center text-indigo-600 dark:text-indigo-400">
               <Icon className="w-5 h-5" />
             </div>
             <div>
               <span className="text-[11px] font-bold text-indigo-600 dark:text-indigo-400 uppercase tracking-wider">{step.badge}</span>
-              <h2 className="text-lg font-bold text-slate-900 dark:text-slate-100">{step.title}</h2>
+              <h2 className="text-lg font-bold text-gray-900 dark:text-gray-50">{step.title}</h2>
             </div>
           </div>
-          <button onClick={onClose} className="p-1.5 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 rounded-lg cursor-pointer">
+          <button onClick={onClose} className="p-1.5 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 rounded-lg cursor-pointer">
             <X className="w-5 h-5" />
           </button>
         </div>
 
         {/* Content */}
         <div className="space-y-4">
-          <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed font-medium">
+          <p className="text-xs text-gray-600 dark:text-gray-400 leading-relaxed font-medium">
             {step.description}
           </p>
 
-          <div className="bg-slate-50 dark:bg-[#0D1424]/80 p-4 rounded-2xl border border-slate-200/80 dark:border-slate-800 space-y-2">
-            <p className="text-[11px] font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider">Key Technical Highlights:</p>
+          <div className="bg-gray-50 dark:bg-gray-950/70 p-4 rounded-2xl border border-gray-200 dark:border-gray-800 space-y-2">
+            <p className="text-[11px] font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider">Key Technical Highlights:</p>
             <ul className="space-y-1.5">
               {step.keyPoints.map((point, idx) => (
-                <li key={idx} className="text-xs text-slate-700 dark:text-slate-300 flex items-start gap-2">
+                <li key={idx} className="text-xs text-gray-700 dark:text-gray-300 flex items-start gap-2">
                   <CheckCircle2 className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0 mt-0.5" />
                   <span>{point}</span>
                 </li>
@@ -176,8 +176,8 @@ export const DemoWalkthroughModal = ({ isOpen, onClose }) => {
         </div>
 
         {/* Navigation & Actions */}
-        <div className="flex flex-wrap items-center justify-between gap-4 pt-2 border-t border-slate-100 dark:border-slate-800/80">
-          <div className="flex items-center gap-1.5 text-xs text-slate-500 dark:text-slate-400 font-medium">
+        <div className="flex flex-wrap items-center justify-between gap-4 pt-2 border-t border-gray-100 dark:border-gray-800">
+          <div className="flex items-center gap-1.5 text-xs text-gray-500 dark:text-gray-400 font-medium">
             Step {currentStep + 1} of {steps.length}
           </div>
 
@@ -185,7 +185,7 @@ export const DemoWalkthroughModal = ({ isOpen, onClose }) => {
             <button
               onClick={() => setCurrentStep((prev) => Math.max(0, prev - 1))}
               disabled={currentStep === 0}
-              className="p-2 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 disabled:opacity-30 cursor-pointer"
+              className="p-2 border border-gray-200 dark:border-gray-700 rounded-xl text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-slate-800 disabled:opacity-30 cursor-pointer"
             >
               <ChevronLeft className="w-4 h-4" />
             </button>
@@ -193,7 +193,7 @@ export const DemoWalkthroughModal = ({ isOpen, onClose }) => {
             <button
               onClick={() => setCurrentStep((prev) => Math.min(steps.length - 1, prev + 1))}
               disabled={currentStep === steps.length - 1}
-              className="p-2 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 disabled:opacity-30 cursor-pointer"
+              className="p-2 border border-gray-200 dark:border-gray-700 rounded-xl text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-slate-800 disabled:opacity-30 cursor-pointer"
             >
               <ChevronRight className="w-4 h-4" />
             </button>

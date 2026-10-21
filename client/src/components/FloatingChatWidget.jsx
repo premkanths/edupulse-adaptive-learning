@@ -64,7 +64,7 @@ export const FloatingChatWidget = () => {
       )}
 
       {isOpen && (
-        <div className="bg-white/95 dark:bg-[#131C2E]/95 backdrop-blur-xl rounded-3xl border border-slate-200/90 dark:border-slate-800/90 shadow-2xl w-96 h-[500px] flex flex-col justify-between overflow-hidden animate-in fade-in slide-in-from-bottom-6 duration-200">
+        <div className="bg-white/95 dark:bg-gray-900 backdrop-blur-xl rounded-3xl border border-gray-200 dark:border-gray-800 shadow-2xl w-96 h-[500px] flex flex-col justify-between overflow-hidden animate-in fade-in slide-in-from-bottom-6 duration-200">
           {/* Header */}
           <div className="bg-gradient-to-r from-indigo-700 via-indigo-600 to-violet-700 text-white p-4 flex items-center justify-between">
             <div className="flex items-center gap-2.5">
@@ -94,7 +94,7 @@ export const FloatingChatWidget = () => {
                     className={`max-w-[85%] p-3 rounded-2xl whitespace-pre-wrap leading-relaxed ${
                       isUser
                         ? 'bg-gradient-to-r from-indigo-600 to-violet-600 text-white rounded-tr-none shadow-xs'
-                        : 'bg-slate-50 dark:bg-[#0D1424]/80 border border-slate-200/80 dark:border-slate-800 text-slate-800 dark:text-slate-200 rounded-tl-none shadow-xs'
+                        : 'bg-gray-50 dark:bg-gray-950/70 border border-gray-200 dark:border-gray-800 text-slate-800 dark:text-gray-200 rounded-tl-none shadow-xs'
                     }`}
                   >
                     {m.content}
@@ -103,7 +103,7 @@ export const FloatingChatWidget = () => {
               );
             })}
             {loading && (
-              <div className="flex items-center gap-2 text-[11px] text-slate-400 p-2">
+              <div className="flex items-center gap-2 text-[11px] text-gray-400 p-2">
                 <Sparkles className="w-3.5 h-3.5 text-indigo-500 animate-spin" />
                 <span>Generating explanation...</span>
               </div>
@@ -111,13 +111,13 @@ export const FloatingChatWidget = () => {
           </div>
 
           {/* Input Bar */}
-          <form onSubmit={handleSend} className="p-3 border-t border-slate-200/80 dark:border-slate-800 bg-slate-50/50 dark:bg-[#0A0E18]/80 flex items-center gap-2">
+          <form onSubmit={handleSend} className="p-3 border-t border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-900 flex items-center gap-2">
             <input
               type="text"
               value={input}
               onChange={(e) => setInput(e.target.value)}
               placeholder="Ask a question..."
-              className="flex-1 py-2 px-3 bg-white dark:bg-[#0D1424] border border-slate-200 dark:border-slate-700 rounded-xl text-xs text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="flex-1 py-2 px-3 bg-white dark:bg-gray-950 border border-gray-200 dark:border-gray-700 rounded-xl text-xs text-gray-900 dark:text-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500"
             />
             <button
               type="submit"

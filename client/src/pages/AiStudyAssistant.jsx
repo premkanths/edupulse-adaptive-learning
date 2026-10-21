@@ -152,14 +152,14 @@ export const AiStudyAssistant = () => {
         <div className="flex items-center gap-2.5">
           <Shield className="w-4 h-4 text-indigo-600 dark:text-indigo-400 shrink-0" />
           <span>
-            <strong>Personalized Context Active:</strong> The assistant reviews your live topic mastery (<code className="font-mono bg-white dark:bg-[#0D1424] px-1 py-0.5 rounded text-indigo-700 dark:text-indigo-300">pKnown</code>) and quiz attempts to customize explanations. Chats are private to your student ID.
+            <strong>Personalized Context Active:</strong> The assistant reviews your live topic mastery (<code className="font-mono bg-white dark:bg-gray-950/70 px-1 py-0.5 rounded text-indigo-700 dark:text-indigo-300">pKnown</code>) and quiz attempts to customize explanations. Chats are private to your student ID.
           </span>
         </div>
       </div>
 
-      <div className="bg-white/95 dark:bg-[#131C2E]/95 backdrop-blur-xl rounded-3xl border border-slate-200/90 dark:border-slate-800/90 shadow-2xl overflow-hidden flex h-[680px]">
+      <div className="bg-white/95 dark:bg-gray-900 backdrop-blur-xl rounded-3xl border border-gray-200 dark:border-gray-800 shadow-2xl overflow-hidden flex h-[680px]">
         {/* Left Sidebar: Saved Sessions */}
-        <div className="w-72 border-r border-slate-200 dark:border-slate-800 p-4 flex flex-col justify-between shrink-0 bg-slate-50/50 dark:bg-[#0D1424]/70">
+        <div className="w-72 border-r border-gray-200 dark:border-gray-800 p-4 flex flex-col justify-between shrink-0 bg-gray-50 dark:bg-gray-950/70/70">
           <div className="space-y-3">
             <button
               onClick={handleCreateSession}
@@ -168,15 +168,15 @@ export const AiStudyAssistant = () => {
               <Plus className="w-4 h-4" /> New Study Chat
             </button>
 
-            <span className="text-[11px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider block px-2 pt-2">
+            <span className="text-[11px] font-bold text-gray-400 dark:text-gray-500 uppercase tracking-wider block px-2 pt-2">
               Previous Conversations
             </span>
 
             <div className="space-y-1 overflow-y-auto max-h-[500px]">
               {loadingSessions ? (
-                <div className="p-4 text-center text-xs text-slate-400">Loading chats...</div>
+                <div className="p-4 text-center text-xs text-gray-400">Loading chats...</div>
               ) : sessions.length === 0 ? (
-                <div className="p-4 text-center text-xs text-slate-400">No previous chats yet.</div>
+                <div className="p-4 text-center text-xs text-gray-400">No previous chats yet.</div>
               ) : (
                 sessions.map((s) => (
                   <div
@@ -185,7 +185,7 @@ export const AiStudyAssistant = () => {
                     className={`w-full text-left p-2.5 rounded-xl text-xs font-medium transition-all flex items-center justify-between group cursor-pointer ${
                       activeSessionId === s.id
                         ? 'bg-indigo-100/70 dark:bg-indigo-950/70 text-indigo-900 dark:text-indigo-200 font-bold shadow-xs'
-                        : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800/60'
+                        : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-slate-800/60'
                     }`}
                   >
                     <span className="truncate pr-2">{s.title}</span>
@@ -204,7 +204,7 @@ export const AiStudyAssistant = () => {
         </div>
 
         {/* Right Main Chat Window */}
-        <div className="flex-1 flex flex-col justify-between bg-white dark:bg-[#131C2E]">
+        <div className="flex-1 flex flex-col justify-between bg-white dark:bg-gray-900">
           {/* Chat Messages Body */}
           <div className="flex-1 p-6 overflow-y-auto space-y-4">
             {messages.length === 0 && !loadingMessages ? (
@@ -213,8 +213,8 @@ export const AiStudyAssistant = () => {
                   <Bot className="w-7 h-7" />
                 </div>
                 <div>
-                  <h3 className="text-base font-bold text-slate-900 dark:text-slate-100">How can I help you study today?</h3>
-                  <p className="text-xs text-slate-500 dark:text-slate-400 max-w-sm mt-1">
+                  <h3 className="text-base font-bold text-gray-900 dark:text-gray-50">How can I help you study today?</h3>
+                  <p className="text-xs text-gray-500 dark:text-gray-400 max-w-sm mt-1">
                     Ask me to explain difficult algorithms, clarify misconceptions from your recent quizzes, or break down foundational prerequisites.
                   </p>
                 </div>
@@ -223,19 +223,19 @@ export const AiStudyAssistant = () => {
                 <div className="flex flex-wrap gap-2 justify-center max-w-md pt-2">
                   <button
                     onClick={() => handleSuggestedPrompt('Why is search in an unbalanced BST O(n)?')}
-                    className="text-xs bg-slate-50 dark:bg-[#0D1424]/70 hover:bg-indigo-50 dark:hover:bg-indigo-950/60 border border-slate-200/80 dark:border-slate-800 text-slate-700 dark:text-slate-300 px-3 py-1.5 rounded-full transition-colors cursor-pointer"
+                    className="text-xs bg-gray-50 dark:bg-gray-950/70/70 hover:bg-indigo-50 dark:hover:bg-indigo-950/60 border border-gray-200 dark:border-gray-800 text-gray-700 dark:text-gray-300 px-3 py-1.5 rounded-full transition-colors cursor-pointer"
                   >
                     🌲 Why is search in an unbalanced BST O(n)?
                   </button>
                   <button
                     onClick={() => handleSuggestedPrompt('What are my identified weak topics and how should I practice?')}
-                    className="text-xs bg-slate-50 dark:bg-[#0D1424]/70 hover:bg-indigo-50 dark:hover:bg-indigo-950/60 border border-slate-200/80 dark:border-slate-800 text-slate-700 dark:text-slate-300 px-3 py-1.5 rounded-full transition-colors cursor-pointer"
+                    className="text-xs bg-gray-50 dark:bg-gray-950/70/70 hover:bg-indigo-50 dark:hover:bg-indigo-950/60 border border-gray-200 dark:border-gray-800 text-gray-700 dark:text-gray-300 px-3 py-1.5 rounded-full transition-colors cursor-pointer"
                   >
                     🎯 What are my current weak topics?
                   </button>
                   <button
                     onClick={() => handleSuggestedPrompt('Explain 3NF database normalization with a clear college example.')}
-                    className="text-xs bg-slate-50 dark:bg-[#0D1424]/70 hover:bg-indigo-50 dark:hover:bg-indigo-950/60 border border-slate-200/80 dark:border-slate-800 text-slate-700 dark:text-slate-300 px-3 py-1.5 rounded-full transition-colors cursor-pointer"
+                    className="text-xs bg-gray-50 dark:bg-gray-950/70/70 hover:bg-indigo-50 dark:hover:bg-indigo-950/60 border border-gray-200 dark:border-gray-800 text-gray-700 dark:text-gray-300 px-3 py-1.5 rounded-full transition-colors cursor-pointer"
                   >
                     🗄️ Explain 3NF database normalization
                   </button>
@@ -260,7 +260,7 @@ export const AiStudyAssistant = () => {
                       className={`max-w-[75%] p-4 rounded-2xl text-xs leading-relaxed space-y-2 whitespace-pre-wrap ${
                         isUser
                           ? 'bg-gradient-to-r from-indigo-600 to-violet-600 text-white rounded-tr-none shadow-md shadow-indigo-500/20'
-                          : 'bg-slate-50 dark:bg-[#0D1424]/80 border border-slate-200/80 dark:border-slate-800 text-slate-800 dark:text-slate-200 rounded-tl-none shadow-xs'
+                          : 'bg-gray-50 dark:bg-gray-950/70 border border-gray-200 dark:border-gray-800 text-slate-800 dark:text-gray-200 rounded-tl-none shadow-xs'
                       }`}
                     >
                       {m.content}
@@ -275,7 +275,7 @@ export const AiStudyAssistant = () => {
                 <div className="w-8 h-8 rounded-xl bg-indigo-100 dark:bg-indigo-950/80 text-indigo-700 dark:text-indigo-300 flex items-center justify-center shrink-0">
                   <Bot className="w-4 h-4" />
                 </div>
-                <div className="bg-slate-50 dark:bg-[#0D1424]/80 border border-slate-200/80 dark:border-slate-800 rounded-2xl p-3 text-xs text-slate-500 dark:text-slate-400 flex items-center gap-2">
+                <div className="bg-gray-50 dark:bg-gray-950/70 border border-gray-200 dark:border-gray-800 rounded-2xl p-3 text-xs text-gray-500 dark:text-gray-400 flex items-center gap-2">
                   <Sparkles className="w-3.5 h-3.5 text-indigo-600 animate-spin" />
                   <span>Synthesizing pedagogical explanation...</span>
                 </div>
@@ -285,13 +285,13 @@ export const AiStudyAssistant = () => {
           </div>
 
           {/* Chat Input Bar */}
-          <form onSubmit={handleSendMessage} className="p-4 border-t border-slate-200/80 dark:border-slate-800 bg-slate-50/50 dark:bg-[#0D1424]/70 flex items-center gap-2">
+          <form onSubmit={handleSendMessage} className="p-4 border-t border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-950/70/70 flex items-center gap-2">
             <input
               type="text"
               value={inputText}
               onChange={(e) => setInputText(e.target.value)}
               placeholder="Ask a question about your courses, topics, or quiz errors..."
-              className="flex-1 py-2.5 px-4 bg-white dark:bg-[#131C2E] border border-slate-200 dark:border-slate-700 rounded-xl text-xs text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all shadow-xs"
+              className="flex-1 py-2.5 px-4 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-xl text-xs text-gray-900 dark:text-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all shadow-xs"
             />
             <button
               type="submit"

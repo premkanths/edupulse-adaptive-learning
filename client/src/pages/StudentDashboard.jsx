@@ -59,9 +59,9 @@ export const StudentDashboard = () => {
   return (
     <div className="space-y-8">
       {/* Welcome Banner */}
-      <div className="bg-gradient-to-r from-blue-700 via-indigo-700 to-indigo-900 dark:from-[#131C2E] dark:via-[#19243B] dark:to-[#0D1524] text-white rounded-3xl p-8 sm:p-10 shadow-lg border border-indigo-200/20 dark:border-indigo-500/30 flex flex-col md:flex-row items-start md:items-center justify-between gap-6 relative overflow-hidden">
+      <div className="bg-gradient-to-r from-indigo-600 via-indigo-700 to-blue-600 dark:from-gray-900 dark:via-gray-900 dark:to-indigo-950/70 text-white rounded-3xl p-8 sm:p-10 shadow-lg border border-indigo-200/20 dark:border-gray-800 flex flex-col md:flex-row items-start md:items-center justify-between gap-6 relative overflow-hidden">
         {/* Ambient top right glow */}
-        <div className="absolute top-0 right-0 -mr-16 -mt-16 w-80 h-80 bg-white/10 dark:bg-indigo-500/15 rounded-full blur-2xl pointer-events-none"></div>
+        <div className="absolute top-0 right-0 -mr-16 -mt-16 w-80 h-80 bg-white/10 dark:bg-indigo-500/10 rounded-full blur-2xl pointer-events-none"></div>
 
         <div className="space-y-2.5 relative z-10">
           <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-white/15 dark:bg-indigo-500/20 text-white dark:text-indigo-200 border border-white/20 dark:border-indigo-500/30 shadow-xs">
@@ -70,7 +70,7 @@ export const StudentDashboard = () => {
           <h1 className="text-3xl sm:text-4xl font-black tracking-tight text-white">
             Welcome back, {data?.studentName}!
           </h1>
-          <p className="text-blue-100 dark:text-slate-300 text-sm max-w-xl leading-relaxed">
+          <p className="text-indigo-100 dark:text-gray-300 text-sm max-w-xl leading-relaxed">
             EduPulse continuously models your cognitive mastery state across individual knowledge components.
           </p>
         </div>
@@ -132,7 +132,7 @@ export const StudentDashboard = () => {
               subtitle="Sequenced according to prerequisite dependencies and mastery deficits"
               action={
                 <Link to="/student/recommendations">
-                  <span className="text-xs font-semibold text-blue-600 dark:text-blue-400 hover:underline inline-flex items-center gap-1">
+                  <span className="text-xs font-semibold text-indigo-600 dark:text-indigo-400 hover:underline inline-flex items-center gap-1">
                     All Recommendations &rarr;
                   </span>
                 </Link>
@@ -144,20 +144,20 @@ export const StudentDashboard = () => {
                 data.recommendations.map((rec, idx) => (
                   <div
                     key={idx}
-                    className="p-4 rounded-2xl border border-slate-200 dark:border-[#23324D] bg-slate-50 dark:bg-[#0D1424] hover:bg-slate-100/80 dark:hover:bg-[#162136] transition-colors"
+                    className="p-4 rounded-2xl border border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-950/60 hover:bg-gray-100 dark:hover:bg-gray-800/60 transition-colors"
                   >
                     <div className="flex items-start justify-between">
-                      <span className="text-sm font-bold text-slate-900 dark:text-white">{rec.topic}</span>
+                      <span className="text-sm font-bold text-gray-900 dark:text-gray-50">{rec.topic}</span>
                       <Badge variant="warning">{rec.difficulty}</Badge>
                     </div>
-                    <p className="text-xs text-slate-700 dark:text-slate-300 mt-2 leading-relaxed">
-                      <strong className="text-slate-900 dark:text-white">Why this?</strong> {rec.reason}
+                    <p className="text-xs text-gray-600 dark:text-gray-300 mt-2 leading-relaxed">
+                      <strong className="text-gray-900 dark:text-gray-100">Why this?</strong> {rec.reason}
                     </p>
                     <div className="mt-3 flex items-center justify-between text-xs">
-                      <span className="text-blue-600 dark:text-blue-400 font-semibold">{rec.action}</span>
+                      <span className="text-indigo-600 dark:text-indigo-400 font-semibold">{rec.action}</span>
                       <Link
                         to="/student/quizzes"
-                        className="text-blue-600 dark:text-blue-400 hover:underline font-semibold inline-flex items-center gap-1"
+                        className="text-indigo-600 dark:text-indigo-400 hover:underline font-semibold inline-flex items-center gap-1"
                       >
                         Start Practice <ArrowRight className="w-3.5 h-3.5" />
                       </Link>
@@ -165,7 +165,7 @@ export const StudentDashboard = () => {
                   </div>
                 ))
               ) : (
-                <p className="text-xs text-slate-500 dark:text-slate-400 py-4 text-center">
+                <p className="text-xs text-gray-500 dark:text-gray-400 py-4 text-center">
                   All prerequisite topics are currently above mastery threshold! Great work.
                 </p>
               )}
@@ -179,7 +179,7 @@ export const StudentDashboard = () => {
               subtitle="Formative evaluation history and scores"
               action={
                 <Link to="/student/performance">
-                  <span className="text-xs font-semibold text-blue-600 dark:text-blue-400 hover:underline">
+                  <span className="text-xs font-semibold text-indigo-600 dark:text-indigo-400 hover:underline">
                     Performance History &rarr;
                   </span>
                 </Link>
@@ -191,20 +191,20 @@ export const StudentDashboard = () => {
                 data.recentQuizzes.map((quiz, idx) => (
                   <div
                     key={idx}
-                    className="p-4 rounded-2xl border border-slate-200 dark:border-[#23324D] bg-slate-50 dark:bg-[#0D1424] flex items-center justify-between"
+                    className="p-4 rounded-2xl border border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-950/60 flex items-center justify-between"
                   >
                     <div>
-                      <h4 className="text-sm font-semibold text-slate-900 dark:text-white">{quiz.title}</h4>
-                      <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Attempted on {quiz.date}</p>
+                      <h4 className="text-sm font-semibold text-gray-900 dark:text-gray-50">{quiz.title}</h4>
+                      <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">Attempted on {quiz.date}</p>
                     </div>
                     <div className="text-right">
                       <div className="text-base font-bold text-emerald-600 dark:text-emerald-400">{quiz.score}%</div>
-                      <span className="text-xs font-medium text-slate-500 dark:text-slate-400">{quiz.status}</span>
+                      <span className="text-xs font-medium text-gray-500 dark:text-gray-400">{quiz.status}</span>
                     </div>
                   </div>
                 ))
               ) : (
-                <p className="text-xs text-slate-500 dark:text-slate-400 py-4 text-center">No recent quiz attempts recorded.</p>
+                <p className="text-xs text-gray-500 dark:text-gray-400 py-4 text-center">No recent quiz attempts recorded.</p>
               )}
             </div>
           </Card>
@@ -219,7 +219,7 @@ export const StudentDashboard = () => {
               subtitle="Extracurricular coding profiles"
               action={
                 <Link to="/student/connected-accounts">
-                  <span className="text-xs font-semibold text-blue-600 dark:text-blue-400 hover:underline">
+                  <span className="text-xs font-semibold text-indigo-600 dark:text-indigo-400 hover:underline">
                     Manage &rarr;
                   </span>
                 </Link>
@@ -237,20 +237,20 @@ export const StudentDashboard = () => {
                   return (
                     <div
                       key={p.platform}
-                      className="p-3.5 rounded-xl border border-slate-200 dark:border-[#23324D] bg-slate-50 dark:bg-[#0D1424] space-y-1.5"
+                      className="p-3.5 rounded-xl border border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-950/60 space-y-1.5"
                     >
                       <div className="flex items-center justify-between">
-                        <span className="text-xs font-bold text-slate-900 dark:text-white flex items-center gap-1.5">
-                          <Code2 className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" /> {p.platform}
+                        <span className="text-xs font-bold text-gray-900 dark:text-gray-50 flex items-center gap-1.5">
+                          <Code2 className="w-3.5 h-3.5 text-indigo-600 dark:text-indigo-400" /> {p.platform}
                         </span>
                         <Badge variant="success" size="sm">Connected</Badge>
                       </div>
 
-                      <p className="text-xs text-slate-700 dark:text-slate-300 font-mono">
+                      <p className="text-xs text-gray-700 dark:text-gray-300 font-mono">
                         @{p.username}
                       </p>
 
-                      <div className="text-[11px] text-slate-500 dark:text-slate-400 flex justify-between pt-1">
+                      <div className="text-[11px] text-gray-500 dark:text-gray-400 flex justify-between pt-1">
                         {p.platform === 'GITHUB' && (
                           <span>{stats.publicRepos || 0} public repositories</span>
                         )}
@@ -266,8 +266,8 @@ export const StudentDashboard = () => {
                 })
               ) : (
                 <div className="text-center py-6 space-y-3">
-                  <Code2 className="w-8 h-8 text-slate-400 dark:text-slate-500 mx-auto" />
-                  <p className="text-xs text-slate-500 dark:text-slate-400">No coding portfolios linked yet.</p>
+                  <Code2 className="w-8 h-8 text-gray-400 dark:text-gray-500 mx-auto" />
+                  <p className="text-xs text-gray-500 dark:text-gray-400">No coding portfolios linked yet.</p>
                   <Link to="/student/connected-accounts">
                     <Button variant="outline" size="sm">Connect GitHub &amp; LeetCode</Button>
                   </Link>
@@ -277,14 +277,14 @@ export const StudentDashboard = () => {
           </Card>
 
           {/* Socratic AI Study Assistant Promo */}
-          <Card className="bg-indigo-50/60 dark:bg-[#131C2E] border-indigo-200 dark:border-[#23324D]">
+          <Card className="bg-indigo-50/50 dark:bg-gray-900 border-indigo-200 dark:border-gray-800">
             <div className="space-y-3">
               <div className="w-10 h-10 rounded-xl bg-indigo-600 text-white flex items-center justify-center shadow-xs">
                 <Bot className="w-5 h-5" />
               </div>
               <div>
-                <h4 className="text-sm font-bold text-slate-900 dark:text-white">Need Pedagogical Guidance?</h4>
-                <p className="text-xs text-slate-700 dark:text-slate-300 mt-1 leading-relaxed">
+                <h4 className="text-sm font-bold text-gray-900 dark:text-gray-50">Need Pedagogical Guidance?</h4>
+                <p className="text-xs text-gray-600 dark:text-gray-300 mt-1 leading-relaxed">
                   The Socratic Study Assistant reads your recent quiz errors and explains core concepts step-by-step.
                 </p>
               </div>

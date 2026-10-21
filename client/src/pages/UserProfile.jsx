@@ -135,7 +135,7 @@ export const UserProfile = () => {
     return (
       <div className="text-center py-24">
         <RefreshCw className="w-10 h-10 text-indigo-600 animate-spin mx-auto mb-4" />
-        <p className="text-slate-600 dark:text-slate-400 font-medium">Loading profile...</p>
+        <p className="text-gray-600 dark:text-gray-400 font-medium">Loading profile...</p>
       </div>
     );
   }
@@ -148,8 +148,8 @@ export const UserProfile = () => {
     <div className="space-y-8 max-w-4xl mx-auto">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-black text-slate-900 dark:text-white tracking-tight">Account &amp; Profile Settings</h1>
-        <p className="text-slate-600 dark:text-slate-400 text-sm mt-1">
+        <h1 className="text-2xl font-black text-gray-900 dark:text-gray-50 tracking-tight">Account &amp; Profile Settings</h1>
+        <p className="text-gray-600 dark:text-gray-400 text-sm mt-1">
           Manage your personal details, academic affiliations, contact preferences, and security credentials.
         </p>
       </div>
@@ -176,7 +176,7 @@ export const UserProfile = () => {
 
         <form onSubmit={handleSaveProfile} className="space-y-6">
           {/* Avatar Section */}
-          <div className="flex flex-col sm:flex-row items-center gap-6 p-4 rounded-2xl bg-slate-50 dark:bg-[#0D1424] border border-slate-200 dark:border-[#23324D]">
+          <div className="flex flex-col sm:flex-row items-center gap-6 p-4 rounded-2xl bg-gray-50 dark:bg-gray-950 border border-gray-200 dark:border-gray-800">
             <div className="relative">
               {avatarUrl ? (
                 <img
@@ -194,14 +194,14 @@ export const UserProfile = () => {
 
             <div className="flex-1 space-y-2 text-center sm:text-left">
               <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2">
-                <span className="font-bold text-slate-900 dark:text-white">{name || 'User'}</span>
+                <span className="font-bold text-gray-900 dark:text-gray-50">{name || 'User'}</span>
                 <Badge variant={isStudent ? 'info' : isTeacher ? 'teal' : 'default'}>
                   {role}
                 </Badge>
                 <Badge variant="success">Active Account</Badge>
               </div>
 
-              <p className="text-xs text-slate-600 dark:text-slate-400">
+              <p className="text-xs text-gray-600 dark:text-gray-400">
                 Choose a preset avatar or paste a custom image URL below:
               </p>
 
@@ -225,7 +225,7 @@ export const UserProfile = () => {
           {/* Form Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
             <div>
-              <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-2">
+              <label className="block text-xs font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider mb-2">
                 Display Name *
               </label>
               <input
@@ -234,12 +234,12 @@ export const UserProfile = () => {
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 placeholder="Your Full Name"
-                className="w-full px-4 py-2.5 bg-slate-50 dark:bg-[#0D1424] border border-slate-200 dark:border-[#23324D] rounded-xl text-sm text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all"
+                className="w-full px-4 py-2.5 bg-gray-50 dark:bg-gray-950 border border-gray-200 dark:border-gray-800 rounded-xl text-sm text-gray-900 dark:text-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all"
               />
             </div>
 
             <div>
-              <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-2">
+              <label className="block text-xs font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider mb-2">
                 Email Address (Verified)
               </label>
               <div className="relative">
@@ -247,7 +247,7 @@ export const UserProfile = () => {
                   type="email"
                   disabled
                   value={profile?.email || ''}
-                  className="w-full px-4 py-2.5 bg-slate-100 dark:bg-[#1A263B] border border-slate-200 dark:border-[#23324D] rounded-xl text-sm text-slate-600 dark:text-slate-400 cursor-not-allowed"
+                  className="w-full px-4 py-2.5 bg-gray-100 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl text-sm text-gray-600 dark:text-gray-400 cursor-not-allowed"
                 />
                 <span className="absolute right-3 top-2.5 text-xs text-emerald-600 font-semibold flex items-center gap-1">
                   <CheckCircle className="w-3.5 h-3.5" /> Institutional
@@ -256,39 +256,39 @@ export const UserProfile = () => {
             </div>
 
             <div>
-              <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-2">
+              <label className="block text-xs font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider mb-2">
                 Department / Faculty
               </label>
               <div className="relative">
-                <Building className="w-4 h-4 absolute left-3.5 top-3 text-slate-400" />
+                <Building className="w-4 h-4 absolute left-3.5 top-3 text-gray-400" />
                 <input
                   type="text"
                   value={department}
                   onChange={(e) => setDepartment(e.target.value)}
                   placeholder="e.g. Computer Science & Engineering"
-                  className="w-full pl-10 pr-4 py-2.5 bg-slate-50 dark:bg-[#0D1424] border border-slate-200 dark:border-[#23324D] rounded-xl text-sm text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all"
+                  className="w-full pl-10 pr-4 py-2.5 bg-gray-50 dark:bg-gray-950 border border-gray-200 dark:border-gray-800 rounded-xl text-sm text-gray-900 dark:text-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all"
                 />
               </div>
             </div>
 
             <div>
-              <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-2">
+              <label className="block text-xs font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider mb-2">
                 {isStudent ? 'Program / Academic Year' : 'Academic Designation'}
               </label>
               <div className="relative">
-                <BookOpen className="w-4 h-4 absolute left-3.5 top-3 text-slate-400" />
+                <BookOpen className="w-4 h-4 absolute left-3.5 top-3 text-gray-400" />
                 <input
                   type="text"
                   value={academicInfo}
                   onChange={(e) => setAcademicInfo(e.target.value)}
                   placeholder={isStudent ? 'e.g. B.Tech Year 4, Section B' : 'e.g. Associate Professor'}
-                  className="w-full pl-10 pr-4 py-2.5 bg-slate-50 dark:bg-[#0D1424] border border-slate-200 dark:border-[#23324D] rounded-xl text-sm text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all"
+                  className="w-full pl-10 pr-4 py-2.5 bg-gray-50 dark:bg-gray-950 border border-gray-200 dark:border-gray-800 rounded-xl text-sm text-gray-900 dark:text-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all"
                 />
               </div>
             </div>
 
             <div className="md:col-span-2">
-              <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-2">
+              <label className="block text-xs font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider mb-2">
                 Custom Avatar Image URL
               </label>
               <input
@@ -296,12 +296,12 @@ export const UserProfile = () => {
                 value={avatarUrl}
                 onChange={(e) => setAvatarUrl(e.target.value)}
                 placeholder="https://example.com/photo.jpg"
-                className="w-full px-4 py-2.5 bg-slate-50 dark:bg-[#0D1424] border border-slate-200 dark:border-[#23324D] rounded-xl text-sm text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all"
+                className="w-full px-4 py-2.5 bg-gray-50 dark:bg-gray-950 border border-gray-200 dark:border-gray-800 rounded-xl text-sm text-gray-900 dark:text-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all"
               />
             </div>
 
             <div className="md:col-span-2">
-              <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-2">
+              <label className="block text-xs font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider mb-2">
                 Bio / Academic Summary
               </label>
               <textarea
@@ -309,59 +309,59 @@ export const UserProfile = () => {
                 value={bio}
                 onChange={(e) => setBio(e.target.value)}
                 placeholder="Briefly describe your academic background, research interests, or learning goals..."
-                className="w-full px-4 py-2.5 bg-slate-50 dark:bg-[#0D1424] border border-slate-200 dark:border-[#23324D] rounded-xl text-sm text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all"
+                className="w-full px-4 py-2.5 bg-gray-50 dark:bg-gray-950 border border-gray-200 dark:border-gray-800 rounded-xl text-sm text-gray-900 dark:text-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all"
               />
             </div>
           </div>
 
           {/* Social Links */}
-          <div className="border-t border-slate-100 dark:border-[#23324D] pt-5 space-y-4">
-            <h4 className="text-sm font-bold text-slate-900 dark:text-white">
+          <div className="border-t border-gray-100 dark:border-gray-800 pt-5 space-y-4">
+            <h4 className="text-sm font-bold text-gray-900 dark:text-gray-50">
               Public Portfolio &amp; Social Links
             </h4>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div className="relative">
-                <Github className="w-4 h-4 absolute left-3.5 top-3 text-slate-400" />
+                <Github className="w-4 h-4 absolute left-3.5 top-3 text-gray-400" />
                 <input
                   type="url"
                   value={githubUrl}
                   onChange={(e) => setGithubUrl(e.target.value)}
                   placeholder="https://github.com/..."
-                  className="w-full pl-10 pr-4 py-2 bg-slate-50 dark:bg-[#0D1424] border border-slate-200 dark:border-[#23324D] rounded-xl text-xs text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  className="w-full pl-10 pr-4 py-2 bg-gray-50 dark:bg-gray-950 border border-gray-200 dark:border-gray-800 rounded-xl text-xs text-gray-900 dark:text-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500"
                 />
               </div>
 
               <div className="relative">
-                <Linkedin className="w-4 h-4 absolute left-3.5 top-3 text-slate-400" />
+                <Linkedin className="w-4 h-4 absolute left-3.5 top-3 text-gray-400" />
                 <input
                   type="url"
                   value={linkedinUrl}
                   onChange={(e) => setLinkedinUrl(e.target.value)}
                   placeholder="https://linkedin.com/in/..."
-                  className="w-full pl-10 pr-4 py-2 bg-slate-50 dark:bg-[#0D1424] border border-slate-200 dark:border-[#23324D] rounded-xl text-xs text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  className="w-full pl-10 pr-4 py-2 bg-gray-50 dark:bg-gray-950 border border-gray-200 dark:border-gray-800 rounded-xl text-xs text-gray-900 dark:text-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500"
                 />
               </div>
 
               <div className="relative">
-                <Globe className="w-4 h-4 absolute left-3.5 top-3 text-slate-400" />
+                <Globe className="w-4 h-4 absolute left-3.5 top-3 text-gray-400" />
                 <input
                   type="url"
                   value={websiteUrl}
                   onChange={(e) => setWebsiteUrl(e.target.value)}
                   placeholder="https://yourportfolio.dev"
-                  className="w-full pl-10 pr-4 py-2 bg-slate-50 dark:bg-[#0D1424] border border-slate-200 dark:border-[#23324D] rounded-xl text-xs text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  className="w-full pl-10 pr-4 py-2 bg-gray-50 dark:bg-gray-950 border border-gray-200 dark:border-gray-800 rounded-xl text-xs text-gray-900 dark:text-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500"
                 />
               </div>
             </div>
           </div>
 
           {/* Email Notifications */}
-          <div className="border-t border-slate-100 dark:border-[#23324D] pt-5 flex items-center justify-between">
+          <div className="border-t border-gray-100 dark:border-gray-800 pt-5 flex items-center justify-between">
             <div className="space-y-0.5">
-              <label className="text-sm font-bold text-slate-900 dark:text-white flex items-center gap-2">
+              <label className="text-sm font-bold text-gray-900 dark:text-gray-50 flex items-center gap-2">
                 <Bell className="w-4 h-4 text-indigo-600 dark:text-indigo-400" /> Email Notifications
               </label>
-              <p className="text-xs text-slate-600 dark:text-slate-400">
+              <p className="text-xs text-gray-600 dark:text-gray-400">
                 Receive weekly progress summaries, mastery milestone updates, and quiz assignments.
               </p>
             </div>
@@ -369,12 +369,12 @@ export const UserProfile = () => {
               type="checkbox"
               checked={emailNotifications}
               onChange={(e) => setEmailNotifications(e.target.checked)}
-              className="w-5 h-5 text-indigo-600 rounded border-slate-300 focus:ring-indigo-500 cursor-pointer"
+              className="w-5 h-5 text-indigo-600 rounded border-gray-300 focus:ring-indigo-500 cursor-pointer"
             />
           </div>
 
           {/* Actions */}
-          <div className="border-t border-slate-100 dark:border-[#23324D] pt-5 flex justify-end gap-3">
+          <div className="border-t border-gray-100 dark:border-gray-800 pt-5 flex justify-end gap-3">
             <Button
               variant="outline"
               onClick={fetchProfile}
@@ -421,52 +421,52 @@ export const UserProfile = () => {
         <form onSubmit={handleChangePassword} className="space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div>
-              <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-2">
+              <label className="block text-xs font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider mb-2">
                 Current Password *
               </label>
               <div className="relative">
-                <Lock className="w-4 h-4 absolute left-3.5 top-3 text-slate-400" />
+                <Lock className="w-4 h-4 absolute left-3.5 top-3 text-gray-400" />
                 <input
                   type="password"
                   required
                   value={currentPassword}
                   onChange={(e) => setCurrentPassword(e.target.value)}
                   placeholder="••••••••"
-                  className="w-full pl-10 pr-4 py-2.5 bg-slate-50 dark:bg-[#0D1424] border border-slate-200 dark:border-[#23324D] rounded-xl text-sm text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  className="w-full pl-10 pr-4 py-2.5 bg-gray-50 dark:bg-gray-950 border border-gray-200 dark:border-gray-800 rounded-xl text-sm text-gray-900 dark:text-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500"
                 />
               </div>
             </div>
 
             <div>
-              <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-2">
+              <label className="block text-xs font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider mb-2">
                 New Password *
               </label>
               <div className="relative">
-                <Lock className="w-4 h-4 absolute left-3.5 top-3 text-slate-400" />
+                <Lock className="w-4 h-4 absolute left-3.5 top-3 text-gray-400" />
                 <input
                   type="password"
                   required
                   value={newPassword}
                   onChange={(e) => setNewPassword(e.target.value)}
                   placeholder="Min. 6 characters"
-                  className="w-full pl-10 pr-4 py-2.5 bg-slate-50 dark:bg-[#0D1424] border border-slate-200 dark:border-[#23324D] rounded-xl text-sm text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  className="w-full pl-10 pr-4 py-2.5 bg-gray-50 dark:bg-gray-950 border border-gray-200 dark:border-gray-800 rounded-xl text-sm text-gray-900 dark:text-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500"
                 />
               </div>
             </div>
 
             <div>
-              <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-2">
+              <label className="block text-xs font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider mb-2">
                 Confirm New Password *
               </label>
               <div className="relative">
-                <Lock className="w-4 h-4 absolute left-3.5 top-3 text-slate-400" />
+                <Lock className="w-4 h-4 absolute left-3.5 top-3 text-gray-400" />
                 <input
                   type="password"
                   required
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
                   placeholder="••••••••"
-                  className="w-full pl-10 pr-4 py-2.5 bg-slate-50 dark:bg-[#0D1424] border border-slate-200 dark:border-[#23324D] rounded-xl text-sm text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  className="w-full pl-10 pr-4 py-2.5 bg-gray-50 dark:bg-gray-950 border border-gray-200 dark:border-gray-800 rounded-xl text-sm text-gray-900 dark:text-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500"
                 />
               </div>
             </div>

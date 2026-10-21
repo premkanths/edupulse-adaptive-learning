@@ -56,14 +56,14 @@ export const AdminReports = () => {
       {/* Header */}
       <div className="flex flex-wrap items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-slate-900 dark:text-slate-100 tracking-tight">Institutional Reports & Data Exports</h1>
-          <p className="text-slate-500 dark:text-slate-400 text-sm mt-1">
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-50 tracking-tight">Institutional Reports & Data Exports</h1>
+          <p className="text-gray-500 dark:text-gray-400 text-sm mt-1">
             Generate formal academic transcripts, cohort performance matrices, and at-risk rosters for administration.
           </p>
         </div>
         <button
           onClick={fetchReportData}
-          className="inline-flex items-center gap-1.5 px-3.5 py-2 border border-slate-200/90 dark:border-slate-800/90 rounded-xl text-xs font-semibold text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800/60 dark:bg-[#0D1424]/70"
+          className="inline-flex items-center gap-1.5 px-3.5 py-2 border border-gray-200 dark:border-gray-800 rounded-xl text-xs font-semibold text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-slate-800/60 dark:bg-gray-950/70/70"
         >
           <RefreshCw className={`w-3.5 h-3.5 ${loading ? 'animate-spin' : ''}`} />
           Refresh Metrics
@@ -81,42 +81,42 @@ export const AdminReports = () => {
 
       {/* KPI Cards */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-        <div className="bg-white/95 dark:bg-[#131C2E]/95 backdrop-blur-xl p-5 rounded-2xl border border-slate-200/90 dark:border-slate-800/90 shadow-sm">
-          <p className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Enrolled Students</p>
-          <p className="text-3xl font-black text-slate-900 dark:text-slate-100 mt-2">{overview?.totalStudents || 0}</p>
-          <p className="text-xs text-slate-400 mt-1">Across {overview?.totalClasses || 0} class cohorts</p>
+        <div className="bg-white/95 dark:bg-gray-900 backdrop-blur-xl p-5 rounded-2xl border border-gray-200 dark:border-gray-800 shadow-sm">
+          <p className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Enrolled Students</p>
+          <p className="text-3xl font-black text-gray-900 dark:text-gray-50 mt-2">{overview?.totalStudents || 0}</p>
+          <p className="text-xs text-gray-400 mt-1">Across {overview?.totalClasses || 0} class cohorts</p>
         </div>
-        <div className="bg-white/95 dark:bg-[#131C2E]/95 backdrop-blur-xl p-5 rounded-2xl border border-slate-200/90 dark:border-slate-800/90 shadow-sm">
-          <p className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Quiz Submissions</p>
+        <div className="bg-white/95 dark:bg-gray-900 backdrop-blur-xl p-5 rounded-2xl border border-gray-200 dark:border-gray-800 shadow-sm">
+          <p className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Quiz Submissions</p>
           <p className="text-3xl font-black text-indigo-600 dark:text-indigo-400 mt-2">{overview?.totalAttempts || 0}</p>
-          <p className="text-xs text-slate-400 mt-1">Total completed attempts</p>
+          <p className="text-xs text-gray-400 mt-1">Total completed attempts</p>
         </div>
-        <div className="bg-white/95 dark:bg-[#131C2E]/95 backdrop-blur-xl p-5 rounded-2xl border border-slate-200/90 dark:border-slate-800/90 shadow-sm">
-          <p className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Academic Marks Records</p>
+        <div className="bg-white/95 dark:bg-gray-900 backdrop-blur-xl p-5 rounded-2xl border border-gray-200 dark:border-gray-800 shadow-sm">
+          <p className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Academic Marks Records</p>
           <p className="text-3xl font-black text-emerald-600 mt-2">{overview?.totalMarksRecords || 0}</p>
-          <p className="text-xs text-slate-400 mt-1">Imported institutional records</p>
+          <p className="text-xs text-gray-400 mt-1">Imported institutional records</p>
         </div>
-        <div className="bg-white/95 dark:bg-[#131C2E]/95 backdrop-blur-xl p-5 rounded-2xl border border-slate-200/90 dark:border-slate-800/90 shadow-sm">
-          <p className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">High Risk Alerts</p>
+        <div className="bg-white/95 dark:bg-gray-900 backdrop-blur-xl p-5 rounded-2xl border border-gray-200 dark:border-gray-800 shadow-sm">
+          <p className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">High Risk Alerts</p>
           <p className="text-3xl font-black text-rose-600 mt-2">{overview?.highRiskCount || 0}</p>
-          <p className="text-xs text-slate-400 mt-1">Urgent intervention needed</p>
+          <p className="text-xs text-gray-400 mt-1">Urgent intervention needed</p>
         </div>
       </div>
 
       {/* CSV Export Buttons Panel */}
-      <div className="bg-white/95 dark:bg-[#131C2E]/95 backdrop-blur-xl rounded-2xl border border-slate-200/90 dark:border-slate-800/90 p-6 shadow-sm space-y-4">
-        <h2 className="text-base font-bold text-slate-900 dark:text-slate-100">Official Institutional CSV Data Exports</h2>
-        <p className="text-xs text-slate-500 dark:text-slate-400">
+      <div className="bg-white/95 dark:bg-gray-900 backdrop-blur-xl rounded-2xl border border-gray-200 dark:border-gray-800 p-6 shadow-sm space-y-4">
+        <h2 className="text-base font-bold text-gray-900 dark:text-gray-50">Official Institutional CSV Data Exports</h2>
+        <p className="text-xs text-gray-500 dark:text-gray-400">
           Download structured CSV datasets for spreadsheet analytics, faculty reporting, or accreditation documentation.
         </p>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-2">
-          <div className="p-4 rounded-xl border border-slate-200/90 dark:border-slate-800/90 bg-slate-50/50 space-y-3">
+          <div className="p-4 rounded-xl border border-gray-200 dark:border-gray-800 bg-gray-50 space-y-3">
             <div className="flex items-center gap-2">
               <Users className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
-              <h3 className="text-sm font-bold text-slate-900 dark:text-slate-100">Student Performance Report</h3>
+              <h3 className="text-sm font-bold text-gray-900 dark:text-gray-50">Student Performance Report</h3>
             </div>
-            <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
+            <p className="text-xs text-gray-500 dark:text-gray-400 leading-relaxed">
               Includes student IDs, email, active status, quizzes completed, average score, attendance %, and current risk classification.
             </p>
             <button
@@ -129,12 +129,12 @@ export const AdminReports = () => {
             </button>
           </div>
 
-          <div className="p-4 rounded-xl border border-slate-200/90 dark:border-slate-800/90 bg-slate-50/50 space-y-3">
+          <div className="p-4 rounded-xl border border-gray-200 dark:border-gray-800 bg-gray-50 space-y-3">
             <div className="flex items-center gap-2">
               <ShieldAlert className="w-5 h-5 text-rose-600" />
-              <h3 className="text-sm font-bold text-slate-900 dark:text-slate-100">At-Risk Interventions Roster</h3>
+              <h3 className="text-sm font-bold text-gray-900 dark:text-gray-50">At-Risk Interventions Roster</h3>
             </div>
-            <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
+            <p className="text-xs text-gray-500 dark:text-gray-400 leading-relaxed">
               Detailed breakdown of students at risk, quantified 0–100 risk score, contributing telemetry factors, and pedagogical remediation plans.
             </p>
             <button
@@ -147,12 +147,12 @@ export const AdminReports = () => {
             </button>
           </div>
 
-          <div className="p-4 rounded-xl border border-slate-200/90 dark:border-slate-800/90 bg-slate-50/50 space-y-3">
+          <div className="p-4 rounded-xl border border-gray-200 dark:border-gray-800 bg-gray-50 space-y-3">
             <div className="flex items-center gap-2">
               <Award className="w-5 h-5 text-emerald-600" />
-              <h3 className="text-sm font-bold text-slate-900 dark:text-slate-100">Topic Mastery Matrix</h3>
+              <h3 className="text-sm font-bold text-gray-900 dark:text-gray-50">Topic Mastery Matrix</h3>
             </div>
-            <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
+            <p className="text-xs text-gray-500 dark:text-gray-400 leading-relaxed">
               Curricular Bayesian Knowledge Tracing scores across all subjects and topics, tracking probability of concept mastery P(L_n).
             </p>
             <button
@@ -168,11 +168,11 @@ export const AdminReports = () => {
       </div>
 
       {/* Student Roster Overview Table */}
-      <div className="bg-white/95 dark:bg-[#131C2E]/95 backdrop-blur-xl rounded-2xl border border-slate-200/90 dark:border-slate-800/90 p-6 shadow-sm space-y-4">
-        <h2 className="text-base font-bold text-slate-900 dark:text-slate-100">Enrolled Student Roster ({students.length})</h2>
-        <div className="overflow-x-auto border border-slate-200/90 dark:border-slate-800/90 rounded-xl">
+      <div className="bg-white/95 dark:bg-gray-900 backdrop-blur-xl rounded-2xl border border-gray-200 dark:border-gray-800 p-6 shadow-sm space-y-4">
+        <h2 className="text-base font-bold text-gray-900 dark:text-gray-50">Enrolled Student Roster ({students.length})</h2>
+        <div className="overflow-x-auto border border-gray-200 dark:border-gray-800 rounded-xl">
           <table className="w-full text-left text-sm">
-            <thead className="bg-slate-50 dark:bg-[#0D1424]/70 text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase border-b border-slate-200/90 dark:border-slate-800/90">
+            <thead className="bg-gray-50 dark:bg-gray-950/70/70 text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase border-b border-gray-200 dark:border-gray-800">
               <tr>
                 <th className="px-4 py-3">Student ID</th>
                 <th className="px-4 py-3">Name</th>
@@ -183,18 +183,18 @@ export const AdminReports = () => {
             </thead>
             <tbody className="divide-y divide-slate-100">
               {students.map((s) => (
-                <tr key={s.id} className="hover:bg-slate-50 dark:hover:bg-slate-800/60/60">
-                  <td className="px-4 py-3 font-mono text-xs font-bold text-slate-600 dark:text-slate-400">#{s.id}</td>
-                  <td className="px-4 py-3 font-medium text-slate-900 dark:text-slate-100 text-xs">{s.name}</td>
-                  <td className="px-4 py-3 text-xs text-slate-600 dark:text-slate-400">{s.email}</td>
+                <tr key={s.id} className="hover:bg-gray-50 dark:hover:bg-slate-800/60/60">
+                  <td className="px-4 py-3 font-mono text-xs font-bold text-gray-600 dark:text-gray-400">#{s.id}</td>
+                  <td className="px-4 py-3 font-medium text-gray-900 dark:text-gray-50 text-xs">{s.name}</td>
+                  <td className="px-4 py-3 text-xs text-gray-600 dark:text-gray-400">{s.email}</td>
                   <td className="px-4 py-3">
                     <span className={`px-2 py-0.5 rounded text-[11px] font-semibold ${
-                      s.isActive ? 'bg-emerald-100 text-emerald-800 dark:text-emerald-300' : 'bg-slate-100 dark:bg-slate-800/80 text-slate-600 dark:text-slate-400'
+                      s.isActive ? 'bg-emerald-100 text-emerald-800 dark:text-emerald-300' : 'bg-gray-100 dark:bg-gray-800/80 text-gray-600 dark:text-gray-400'
                     }`}>
                       {s.isActive ? 'Active' : 'Inactive'}
                     </span>
                   </td>
-                  <td className="px-4 py-3 text-slate-500 dark:text-slate-400 text-xs">
+                  <td className="px-4 py-3 text-gray-500 dark:text-gray-400 text-xs">
                     {new Date(s.createdAt).toLocaleDateString()}
                   </td>
                 </tr>

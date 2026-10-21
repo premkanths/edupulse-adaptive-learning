@@ -12,7 +12,7 @@ export const LoadingSpinner = ({ size = 'md', text = 'Loading...' }) => {
       <div
         className={`${sizeClasses[size] || sizeClasses.md} border-indigo-200 dark:border-indigo-900 border-t-indigo-600 dark:border-t-indigo-400 rounded-full animate-spin`}
       />
-      {text && <p className="text-sm text-slate-500 dark:text-slate-400 font-medium">{text}</p>}
+      {text && <p className="text-sm text-gray-500 dark:text-gray-400 font-medium">{text}</p>}
     </div>
   );
 };

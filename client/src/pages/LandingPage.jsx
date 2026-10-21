@@ -19,9 +19,9 @@ export const LandingPage = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-slate-50 dark:bg-[#090E17] text-slate-900 dark:text-slate-100 transition-colors relative overflow-hidden">
+    <div className="min-h-screen flex flex-col bg-gray-50 dark:bg-gray-950 text-gray-900 dark:text-gray-100 transition-colors relative overflow-hidden">
       {/* Top Header */}
-      <header className="border-b border-slate-200/90 dark:border-[#23324D] bg-white dark:bg-[#0D1524] sticky top-0 z-30 transition-colors shadow-xs">
+      <header className="border-b border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 sticky top-0 z-30 transition-colors shadow-xs">
         <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-2xl bg-indigo-600 flex items-center justify-center text-white font-black text-lg shadow-xs">
@@ -29,7 +29,7 @@ export const LandingPage = () => {
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <span className="font-black text-xl text-slate-900 dark:text-white tracking-tight">
+                <span className="font-black text-xl text-gray-900 dark:text-gray-50 tracking-tight">
                   EduPulse
                 </span>
                 <span className="text-[10px] font-extrabold uppercase tracking-widest px-2 py-0.5 rounded-full bg-indigo-50 dark:bg-indigo-950/60 text-indigo-700 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-800">
@@ -51,7 +51,7 @@ export const LandingPage = () => {
             ) : (
               <button
                 onClick={() => navigate('/login')}
-                className="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold border border-slate-200 dark:border-[#23324D] hover:bg-slate-100 dark:hover:bg-[#131C2E] text-slate-700 dark:text-slate-200 transition-all cursor-pointer"
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold border border-gray-200 dark:border-gray-800 hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-700 dark:text-gray-200 transition-all cursor-pointer"
               >
                 Sign In
               </button>
@@ -69,14 +69,14 @@ export const LandingPage = () => {
             <span>EduPulse 2.0 &bull; Psychometric AI &amp; Adaptive Intelligence Platform</span>
           </div>
 
-          <h1 className="text-4xl sm:text-5xl md:text-6xl font-black tracking-tight leading-tight sm:leading-tight md:leading-tight text-slate-900 dark:text-white">
+          <h1 className="text-4xl sm:text-5xl md:text-6xl font-black tracking-tight leading-tight sm:leading-tight md:leading-tight text-gray-900 dark:text-gray-50">
             Personalized Academic Mastery Grounded in{' '}
             <span className="text-indigo-600 dark:text-indigo-400">
               Psychometric Science
             </span>
           </h1>
 
-          <p className="text-base sm:text-lg text-slate-600 dark:text-slate-300 leading-relaxed font-normal">
+          <p className="text-base sm:text-lg text-gray-600 dark:text-gray-300 leading-relaxed font-normal">
             EduPulse combines Bayesian Knowledge Tracing (BKT) with multi-model machine learning and local Socratic AI to deliver dynamic practice paths and timely early-warning intervention.
           </p>
 
@@ -97,7 +97,7 @@ export const LandingPage = () => {
         {/* Two Clear Role Options (Student vs Faculty) */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
           {/* Option 1: Student Portal */}
-          <div className="group relative bg-white dark:bg-[#131C2E] border border-slate-200 dark:border-[#23324D] hover:border-indigo-500 dark:hover:border-indigo-400 rounded-3xl p-8 shadow-sm hover:shadow-lg transition-all duration-200 flex flex-col justify-between">
+          <div className="group relative bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 hover:border-indigo-500 dark:hover:border-indigo-400 rounded-3xl p-8 shadow-xs hover:shadow-md transition-all duration-200 flex flex-col justify-between">
             <div className="space-y-5">
               <div className="w-14 h-14 rounded-2xl bg-indigo-600 text-white flex items-center justify-center shadow-xs">
                 <GraduationCap className="w-7 h-7" />
@@ -107,24 +107,24 @@ export const LandingPage = () => {
                 <span className="text-xs font-extrabold uppercase tracking-widest text-indigo-600 dark:text-indigo-400">
                   Learner Gateway
                 </span>
-                <h2 className="text-2xl font-black text-slate-900 dark:text-white mt-1 tracking-tight">
+                <h2 className="text-2xl font-black text-gray-900 dark:text-gray-50 mt-1 tracking-tight">
                   Student Portal
                 </h2>
-                <p className="text-sm text-slate-600 dark:text-slate-300 mt-2 leading-relaxed">
+                <p className="text-sm text-gray-600 dark:text-gray-300 mt-2 leading-relaxed">
                   Diagnose weak knowledge components, practice adaptive prerequisite-aware questions, and study with your personalized AI Socratic assistant.
                 </p>
               </div>
 
-              <div className="space-y-2.5 pt-3 border-t border-slate-100 dark:border-[#23324D]">
-                <div className="flex items-center gap-2.5 text-xs font-medium text-slate-700 dark:text-slate-300">
+              <div className="space-y-2.5 pt-3 border-t border-gray-100 dark:border-gray-800">
+                <div className="flex items-center gap-2.5 text-xs font-medium text-gray-700 dark:text-gray-300">
                   <CheckCircle className="w-4 h-4 text-emerald-600 dark:text-emerald-400 flex-shrink-0" />
                   <span>Real-time BKT Topic Mastery Heatmaps</span>
                 </div>
-                <div className="flex items-center gap-2.5 text-xs font-medium text-slate-700 dark:text-slate-300">
+                <div className="flex items-center gap-2.5 text-xs font-medium text-gray-700 dark:text-gray-300">
                   <CheckCircle className="w-4 h-4 text-emerald-600 dark:text-emerald-400 flex-shrink-0" />
                   <span>Prerequisite-aware question recommendations</span>
                 </div>
-                <div className="flex items-center gap-2.5 text-xs font-medium text-slate-700 dark:text-slate-300">
+                <div className="flex items-center gap-2.5 text-xs font-medium text-gray-700 dark:text-gray-300">
                   <CheckCircle className="w-4 h-4 text-emerald-600 dark:text-emerald-400 flex-shrink-0" />
                   <span>GitHub, LeetCode &amp; HackerRank portfolio linking</span>
                 </div>
@@ -138,7 +138,7 @@ export const LandingPage = () => {
               >
                 Access Student Portal <ArrowRight className="w-4 h-4" />
               </button>
-              <p className="text-center text-xs text-slate-500 dark:text-slate-400 mt-3">
+              <p className="text-center text-xs text-gray-500 dark:text-gray-400 mt-3">
                 New student?{' '}
                 <button
                   onClick={() => navigate('/register')}
@@ -151,7 +151,7 @@ export const LandingPage = () => {
           </div>
 
           {/* Option 2: Teacher / Faculty Portal */}
-          <div className="group relative bg-white dark:bg-[#131C2E] border border-slate-200 dark:border-[#23324D] hover:border-teal-500 dark:hover:border-teal-400 rounded-3xl p-8 shadow-sm hover:shadow-lg transition-all duration-200 flex flex-col justify-between">
+          <div className="group relative bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 hover:border-teal-500 dark:hover:border-teal-400 rounded-3xl p-8 shadow-xs hover:shadow-md transition-all duration-200 flex flex-col justify-between">
             <div className="space-y-5">
               <div className="w-14 h-14 rounded-2xl bg-teal-600 text-white flex items-center justify-center shadow-xs">
                 <Users className="w-7 h-7" />
@@ -161,24 +161,24 @@ export const LandingPage = () => {
                 <span className="text-xs font-extrabold uppercase tracking-widest text-teal-600 dark:text-teal-400">
                   Instructor Gateway
                 </span>
-                <h2 className="text-2xl font-black text-slate-900 dark:text-white mt-1 tracking-tight">
+                <h2 className="text-2xl font-black text-gray-900 dark:text-gray-50 mt-1 tracking-tight">
                   Teacher / Faculty Portal
                 </h2>
-                <p className="text-sm text-slate-600 dark:text-slate-300 mt-2 leading-relaxed">
+                <p className="text-sm text-gray-600 dark:text-gray-300 mt-2 leading-relaxed">
                   Monitor cohort conceptual mastery matrices, identify at-risk students before examinations, and author adaptive quizzes with AI drafting.
                 </p>
               </div>
 
-              <div className="space-y-2.5 pt-3 border-t border-slate-100 dark:border-[#23324D]">
-                <div className="flex items-center gap-2.5 text-xs font-medium text-slate-700 dark:text-slate-300">
+              <div className="space-y-2.5 pt-3 border-t border-gray-100 dark:border-gray-800">
+                <div className="flex items-center gap-2.5 text-xs font-medium text-gray-700 dark:text-gray-300">
                   <CheckCircle className="w-4 h-4 text-teal-600 dark:text-teal-400 flex-shrink-0" />
                   <span>Ensemble ML At-Risk Early Warning System</span>
                 </div>
-                <div className="flex items-center gap-2.5 text-xs font-medium text-slate-700 dark:text-slate-300">
+                <div className="flex items-center gap-2.5 text-xs font-medium text-gray-700 dark:text-gray-300">
                   <CheckCircle className="w-4 h-4 text-teal-600 dark:text-teal-400 flex-shrink-0" />
                   <span>Bulk CSV marks &amp; attendance import validation</span>
                 </div>
-                <div className="flex items-center gap-2.5 text-xs font-medium text-slate-700 dark:text-slate-300">
+                <div className="flex items-center gap-2.5 text-xs font-medium text-gray-700 dark:text-gray-300">
                   <CheckCircle className="w-4 h-4 text-teal-600 dark:text-teal-400 flex-shrink-0" />
                   <span>AI question authoring with 4-option validation</span>
                 </div>
@@ -192,7 +192,7 @@ export const LandingPage = () => {
               >
                 Access Faculty Portal <ArrowRight className="w-4 h-4" />
               </button>
-              <p className="text-center text-xs text-slate-500 dark:text-slate-400 mt-3">
+              <p className="text-center text-xs text-gray-500 dark:text-gray-400 mt-3">
                 Faculty accounts are assigned by institutional administration
               </p>
             </div>
@@ -201,37 +201,37 @@ export const LandingPage = () => {
 
         {/* Platform Technical Architecture Pills */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto pt-4">
-          <div className="p-6 rounded-2xl bg-white dark:bg-[#131C2E] border border-slate-200 dark:border-[#23324D] shadow-xs space-y-2.5">
+          <div className="p-6 rounded-2xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 shadow-xs space-y-2.5">
             <div className="flex items-center gap-2.5 text-indigo-600 dark:text-indigo-400 font-bold text-sm">
               <Brain className="w-5 h-5" /> Bayesian Knowledge Tracing
             </div>
-            <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed font-normal">
+            <p className="text-xs text-gray-600 dark:text-gray-300 leading-relaxed font-normal">
               Calculates latent learning transitions with Corbett &amp; Anderson priors (P(L0)=0.30, P(T)=0.20, P(G)=0.20, P(S)=0.10).
             </p>
           </div>
 
-          <div className="p-6 rounded-2xl bg-white dark:bg-[#131C2E] border border-slate-200 dark:border-[#23324D] shadow-xs space-y-2.5">
+          <div className="p-6 rounded-2xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 shadow-xs space-y-2.5">
             <div className="flex items-center gap-2.5 text-teal-600 dark:text-teal-400 font-bold text-sm">
               <TrendingUp className="w-5 h-5" /> Multi-Model ML Classification
             </div>
-            <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed font-normal">
+            <p className="text-xs text-gray-600 dark:text-gray-300 leading-relaxed font-normal">
               Random Forest &amp; Gradient Boosting classifiers delivering ROC-AUC &gt; 0.98 for student dropout risk prediction.
             </p>
           </div>
 
-          <div className="p-6 rounded-2xl bg-white dark:bg-[#131C2E] border border-slate-200 dark:border-[#23324D] shadow-xs space-y-2.5">
+          <div className="p-6 rounded-2xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 shadow-xs space-y-2.5">
             <div className="flex items-center gap-2.5 text-purple-600 dark:text-purple-400 font-bold text-sm">
               <Sparkles className="w-5 h-5" /> Socratic AI Orchestrator
             </div>
-            <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed font-normal">
+            <p className="text-xs text-gray-600 dark:text-gray-300 leading-relaxed font-normal">
               Cascades through Gemini, Groq (Llama-3), local Ollama, and rule-based template engine for resilient zero-cost inference.
             </p>
           </div>
         </div>
 
         {/* Restricted Admin Access Link */}
-        <div className="text-center pt-6 border-t border-slate-200/90 dark:border-[#23324D] max-w-5xl mx-auto">
-          <div className="inline-flex items-center gap-2 text-xs text-slate-600 dark:text-slate-300 bg-white dark:bg-[#131C2E] px-4 py-2 rounded-full border border-slate-200 dark:border-[#23324D]">
+        <div className="text-center pt-6 border-t border-gray-200 dark:border-gray-800 max-w-5xl mx-auto">
+          <div className="inline-flex items-center gap-2 text-xs text-gray-600 dark:text-gray-300 bg-white dark:bg-gray-900 px-4 py-2 rounded-full border border-gray-200 dark:border-gray-800">
             <ShieldCheck className="w-4 h-4 text-indigo-600 dark:text-indigo-400" />
             <span>Campus Administrator?</span>
             <button
@@ -245,7 +245,7 @@ export const LandingPage = () => {
       </main>
 
       {/* Footer */}
-      <footer className="border-t border-slate-200/90 dark:border-[#23324D] py-6 text-center text-xs text-slate-500 dark:text-slate-400 relative z-10">
+      <footer className="border-t border-gray-200 dark:border-gray-800 py-6 text-center text-xs text-gray-500 dark:text-gray-400 relative z-10">
         <p>EduPulse Academic &amp; Research Platform &bull; Built with Spring Boot 3, React 18, MySQL &amp; Scikit-Learn</p>
       </footer>
     </div>

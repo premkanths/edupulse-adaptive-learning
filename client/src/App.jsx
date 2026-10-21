@@ -66,7 +66,7 @@ const RootRoute = () => {
 
 const Layout = ({ children }) => {
   return (
-    <div className="min-h-screen flex flex-col bg-slate-50 dark:bg-academic-darkBg text-slate-900 dark:text-slate-100 transition-colors">
+    <div className="min-h-screen flex flex-col bg-gray-50 dark:bg-gray-950 text-gray-900 dark:text-gray-100 transition-colors">
       <Navbar />
       <div className="flex flex-1">
         <Sidebar />

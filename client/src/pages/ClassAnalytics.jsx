@@ -39,8 +39,8 @@ export const ClassAnalytics = () => {
   return (
     <div className="space-y-8">
       <div>
-        <h1 className="text-2xl font-bold text-slate-900 dark:text-slate-100">Cohort Learning Analytics & Performance</h1>
-        <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">
+        <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-50">Cohort Learning Analytics & Performance</h1>
+        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
           Review class-wide performance indicators, evaluation trends, and topic vulnerability heatmaps.
         </p>
       </div>
@@ -70,10 +70,10 @@ export const ClassAnalytics = () => {
       </div>
 
       {/* Score Distribution Chart */}
-      <div className="bg-white/95 dark:bg-[#131C2E]/95 backdrop-blur-xl rounded-3xl p-6 border border-slate-200/80 shadow-sm space-y-4">
+      <div className="bg-white/95 dark:bg-gray-900 backdrop-blur-xl rounded-3xl p-6 border border-gray-200 shadow-sm space-y-4">
         <div className="flex items-center justify-between">
-          <h2 className="text-base font-bold text-slate-900 dark:text-slate-100">Student Score Bracket Distribution</h2>
-          <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-slate-100 dark:bg-slate-800/80 text-slate-600 dark:text-slate-400">
+          <h2 className="text-base font-bold text-gray-900 dark:text-gray-50">Student Score Bracket Distribution</h2>
+          <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-gray-100 dark:bg-gray-800/80 text-gray-600 dark:text-gray-400">
             N = 10 Cohort Students
           </span>
         </div>

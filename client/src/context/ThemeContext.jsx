@@ -6,26 +6,17 @@ export const ThemeProvider = ({ children }) => {
   const [theme, setTheme] = useState(() => {
     const saved = localStorage.getItem('edupulse-theme');
     if (saved === 'dark' || saved === 'light') return saved;
-    // Default to light for clean academic SaaS feel, or honor OS preference
-    if (typeof window !== 'undefined' && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-      return 'dark';
-    }
+    // Default to light for clean academic SaaS feel (no prefers-color-scheme override)
     return 'light';
   });
-
-  const [resolvedTheme, setResolvedTheme] = useState(theme);
 
   useEffect(() => {
     const root = document.documentElement;
     const isDark = theme === 'dark';
 
-    if (isDark) {
-      root.classList.add('dark');
-      setResolvedTheme('dark');
-    } else {
-      root.classList.remove('dark');
-      setResolvedTheme('light');
-    }
+    // Strictly toggle the .dark class on <html>
+    root.classList.toggle('dark', isDark);
+    root.style.colorScheme = theme;
 
     localStorage.setItem('edupulse-theme', theme);
   }, [theme]);
@@ -40,7 +31,7 @@ export const ThemeProvider = ({ children }) => {
   };
 
   return (
-    <ThemeContext.Provider value={{ theme, resolvedTheme, toggleTheme, cycleTheme, setTheme }}>
+    <ThemeContext.Provider value={{ theme, resolvedTheme: theme, toggleTheme, cycleTheme, setTheme }}>
       {children}
     </ThemeContext.Provider>
   );
