@@ -35,6 +35,12 @@ import { AtRiskStudents } from './pages/AtRiskStudents';
 import { ResearchEvaluation } from './pages/ResearchEvaluation';
 import { StudentProfilePrivacy } from './pages/StudentProfilePrivacy';
 
+// Phases 11 to 15 Pages
+import { ClassManagement } from './pages/ClassManagement';
+import { PlatformSettings } from './pages/PlatformSettings';
+import { AdminReports } from './pages/AdminReports';
+import { AuditLogViewer } from './pages/AuditLogViewer';
+
 const RootRedirect = () => {
   const { user, isAuthenticated, loading } = useAuth();
 
@@ -250,6 +256,38 @@ export default function App() {
             element={
               <ProtectedRoute allowedRoles={['ADMIN']}>
                 <Layout><ResearchEvaluation /></Layout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/classes"
+            element={
+              <ProtectedRoute allowedRoles={['ADMIN']}>
+                <Layout><ClassManagement /></Layout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/settings"
+            element={
+              <ProtectedRoute allowedRoles={['ADMIN']}>
+                <Layout><PlatformSettings /></Layout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/reports"
+            element={
+              <ProtectedRoute allowedRoles={['ADMIN']}>
+                <Layout><AdminReports /></Layout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/audit-logs"
+            element={
+              <ProtectedRoute allowedRoles={['ADMIN']}>
+                <Layout><AuditLogViewer /></Layout>
               </ProtectedRoute>
             }
           />

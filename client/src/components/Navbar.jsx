@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
-import { LogOut, GraduationCap, Shield, UserCheck } from 'lucide-react';
+import { LogOut, GraduationCap, Shield, UserCheck, Sparkles } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
+import { DemoWalkthroughModal } from './DemoWalkthroughModal';
 
 export const Navbar = () => {
   const { user, logout } = useAuth();
+  const [showDemoModal, setShowDemoModal] = useState(false);
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -55,6 +57,14 @@ export const Navbar = () => {
           </div>
 
           <div className="flex items-center gap-4">
+            <button
+              onClick={() => setShowDemoModal(true)}
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-gradient-to-r from-indigo-50 to-purple-50 hover:from-indigo-100 hover:to-purple-100 text-indigo-700 border border-indigo-200/80 rounded-xl text-xs font-bold transition-all shadow-sm"
+            >
+              <Sparkles className="w-3.5 h-3.5 text-indigo-600" />
+              <span>Demo Walkthrough</span>
+            </button>
+
             {user ? (
               <div className="flex items-center gap-3">
                 <div className="text-right hidden sm:block">
@@ -95,6 +105,11 @@ export const Navbar = () => {
           </div>
         </div>
       </div>
+
+      <DemoWalkthroughModal
+        isOpen={showDemoModal}
+        onClose={() => setShowDemoModal(false)}
+      />
     </header>
   );
 };

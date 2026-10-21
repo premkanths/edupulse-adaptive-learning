@@ -244,12 +244,45 @@ The platform incorporates formal research benchmarks suitable for academic publi
 - [x] Formal Benchmark Run persistence (`evaluation_runs` table).
 - [x] Interactive Research Evaluation Dashboard with Recharts line and bar graphs.
 
+### Phase 11: Class Cohorts & User Lifecycle Management
+- [x] Class Section Cohort entity & repository (`classes` table with faculty assignment and student enrollments).
+- [x] Admin Class Management UI (`/admin/classes`) to create cohorts, assign instructors, enroll/remove students, and inspect rosters.
+- [x] Admin User Lifecycle controls: activate/deactivate accounts with immediate session revocation, role reassignments, and profile editing.
+
+### Phase 12: Dynamic Platform Configuration Settings
+- [x] Dynamic `settings` database table storing runtime hyperparameters with zero server restart requirements.
+- [x] Dynamic BKT Hyperparameters ($P(L_0), P(T), P(G), P(S)$, mastery threshold).
+- [x] AI Provider Sequence Configuration (Gemini → Groq → Ollama priority ordering).
+- [x] Early warning risk thresholds (attendance minimum %, inactivity alert days).
+- [x] Platform Settings UI (`/admin/settings`) with grouped categorization and batch update capability.
+
+### Phase 13: Institutional Analytics & CSV Exports
+- [x] Institutional Key Performance Indicators overview (`/api/admin/reports/overview`).
+- [x] Automated CSV Streaming Exporters:
+  - Complete Student Roster & Performance CSV (`/api/admin/reports/export/students`).
+  - At-Risk Student Early Intervention Roster CSV (`/api/admin/reports/export/at-risk`).
+  - BKT Topic Mastery Matrix CSV (`/api/admin/reports/export/topic-mastery`).
+- [x] Admin Institutional Reports UI (`/admin/reports`) with real-time KPI cards and 1-click download actions.
+
+### Phase 14: Security Hardening & Immutable Audit Trail Logging
+- [x] Immutable `audit_events` database entity capturing actor, action tag, IP address, timestamp, and metadata.
+- [x] Automated audit interception on user creations, role changes, account toggles, settings mutations, and data deletions.
+- [x] Admin Audit Log Viewer UI (`/admin/audit-logs`) with full-text search, action filtering, and detail modal.
+
+### Phase 15: Presentation Toolkit & Live Demo Walkthrough
+- [x] In-App Interactive Demo Walkthrough Modal (`DemoWalkthroughModal.jsx`) guiding evaluators through 9 end-to-end user journeys.
+- [x] One-Click Multi-Process Launch Scripts:
+  - Windows: `run_edupulse.bat`
+  - Linux / macOS: `run_edupulse.sh`
+- [x] Comprehensive 10-Minute Viva Defense Script & Technical Q&A Guide (`docs/DEMO_SCRIPT.md`).
+- [x] End-to-End Automated Test Suites (`test_phases_6_10.ps1` and `test_phases_11_15.ps1`).
+
 ---
 
 ## 🧪 Testing and Verification
 
 All backend and frontend test suites pass with 0 errors:
 * **Backend JUnit Tests:** `mvn test` — **13 of 13 tests passing** (BktService, JwtTokenProvider, AuthIntegration).
-* **Server Compilation:** 97 Java source files compiled with 0 errors.
-* **Frontend Build:** `npm run build` — 2,398 modules transformed into production bundles with 0 errors.
-* **End-to-End Automated Test Suite:** `powershell test_phases_6_10.ps1` — Verified live against Spring Boot, MySQL, and FastAPI ML service.
+* **Server Compilation:** 105 Java source files compiled with 0 errors.
+* **Frontend Build:** `npm run build` — 2,403 modules transformed into production bundles with 0 errors.
+* **End-to-End Automated Test Suite:** `powershell test_phases_11_15.ps1` — Verified live against Spring Boot, MySQL, and FastAPI ML service.

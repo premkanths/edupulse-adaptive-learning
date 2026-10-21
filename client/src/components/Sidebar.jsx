@@ -17,7 +17,9 @@ import {
   ShieldAlert,
   Award,
   FileCheck2,
-  ShieldCheck
+  ShieldCheck,
+  FileText,
+  History
 } from 'lucide-react';
 
 export const Sidebar = () => {
@@ -29,9 +31,12 @@ export const Sidebar = () => {
         return [
           { name: 'Dashboard Overview', path: '/admin/dashboard', icon: LayoutDashboard },
           { name: 'User Management', path: '/admin/users', icon: Users },
+          { name: 'Class Cohorts', path: '/admin/classes', icon: Layers },
           { name: 'Academic Records Import', path: '/admin/import', icon: UploadCloud },
+          { name: 'Institutional Reports', path: '/admin/reports', icon: FileText },
           { name: 'Research Evaluation', path: '/admin/research', icon: Award },
           { name: 'Platform Settings', path: '/admin/settings', icon: Settings },
+          { name: 'Security Audit Logs', path: '/admin/audit-logs', icon: History },
         ];
       case 'TEACHER':
         return [
