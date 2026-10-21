@@ -1,0 +1,74 @@
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: edupulse-mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: edupulse
+      MYSQL_USER: edupulse
+      MYSQL_PASSWORD: edupulse
+      MYSQL_ROOT_PASSWORD: edupulse_root_pass
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  ml-service:
+    build:
+      context: ./ml-service
+      dockerfile: Dockerfile
+    container_name: edupulse-ml
+    restart: unless-stopped
+    ports:
+      - "8001:8001"
+
+  server:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    container_name: edupulse-backend
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    environment:
+      SERVER_PORT: 8080
+      DB_HOST: mysql
+      DB_PORT: 3306
+      DB_NAME: edupulse
+      DB_USER: edupulse
+      DB_PASSWORD: edupulse
+      ML_SERVICE_URL: http://ml-service:8001
+      CLIENT_URL: http://localhost,http://localhost:5173,http://localhost:80
+      SPRING_MAIL_HOST: ${SPRING_MAIL_HOST:-smtp.gmail.com}
+      SPRING_MAIL_PORT: ${SPRING_MAIL_PORT:-587}
+      SPRING_MAIL_USERNAME: ${SPRING_MAIL_USERNAME:-}
+      SPRING_MAIL_PASSWORD: ${SPRING_MAIL_PASSWORD:-}
+      MAIL_DRY_RUN: ${MAIL_DRY_RUN:-false}
+      GEMINI_API_KEY: ${GEMINI_API_KEY:-}
+      GROQ_API_KEY: ${GROQ_API_KEY:-}
+    depends_on:
+      mysql:
+        condition: service_healthy
+      ml-service:
+        condition: service_started
+
+  client:
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    container_name: edupulse-frontend
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "5173:80"
+    depends_on:
+      - server
+
+volumes:
+  mysql_data:
+    driver: local

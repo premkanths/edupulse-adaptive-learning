@@ -35,6 +35,27 @@ export const AdminDashboard = () => {
   const [error, setError] = useState(null);
   const [dispatchStatus, setDispatchStatus] = useState(null);
   const [dispatching, setDispatching] = useState(false);
+  const [testEmail, setTestEmail] = useState('');
+  const [sendingTest, setSendingTest] = useState(false);
+
+  const handleSendTestEmail = async (e) => {
+    e.preventDefault();
+    if (!testEmail.trim()) return;
+    try {
+      setSendingTest(true);
+      setDispatchStatus(null);
+      const res = await api.post('/admin/notifications/send-test-email', { recipientEmail: testEmail.trim() });
+      const d = res.data?.data;
+      setDispatchStatus({
+        type: d?.status === 'SENT' ? 'success' : 'error',
+        message: d?.message || d?.hint || 'Test email dispatched.'
+      });
+    } catch (err) {
+      setDispatchStatus({ type: 'error', message: err.response?.data?.message || 'Failed to dispatch test email.' });
+    } finally {
+      setSendingTest(false);
+    }
+  };
 
   const handleDispatchWeeklySummaries = async () => {
     try {
@@ -333,6 +354,27 @@ export const AdminDashboard = () => {
             </button>
           </div>
         </div>
+
+        {/* Live Test Email Bar */}
+        <form onSubmit={handleSendTestEmail} className="pt-1 flex flex-col sm:flex-row items-center gap-2.5">
+          <div className="relative flex-1 w-full">
+            <Mail className="w-4 h-4 text-gray-400 absolute left-3 top-1/2 -translate-y-1/2" />
+            <input
+              type="email"
+              value={testEmail}
+              onChange={(e) => setTestEmail(e.target.value)}
+              placeholder="Enter your Gmail to test live delivery (e.g. yourname@gmail.com)..."
+              className="w-full text-xs pl-9 pr-3 py-2 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 outline-none focus:ring-2 focus:ring-indigo-500"
+            />
+          </div>
+          <button
+            type="submit"
+            disabled={sendingTest || !testEmail.trim()}
+            className="w-full sm:w-auto px-4 py-2 rounded-xl text-xs font-bold bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50 text-white shadow-xs transition cursor-pointer whitespace-nowrap"
+          >
+            {sendingTest ? 'Sending Test...' : 'Send Live Test Email'}
+          </button>
+        </form>
 
         {dispatchStatus && (
           <div className={`p-3.5 rounded-xl text-xs font-semibold flex items-center gap-2 ${

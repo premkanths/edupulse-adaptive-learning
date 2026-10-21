@@ -91,4 +91,45 @@ public class EmailService {
 
         return emailLogRepository.save(emailLog);
     }
+
+    public boolean isMailSenderConfigured() {
+        return mailSenderProvider.getIfAvailable() != null;
+    }
+
+    public EmailLog sendDirectEmail(String recipientEmail, String recipientName, String type, String subject, String content) {
+        EmailLog emailLog = new EmailLog();
+        emailLog.setType(type);
+        emailLog.setSubject(subject);
+        emailLog.setSentAt(LocalDateTime.now());
+
+        if (recipientEmail == null || recipientEmail.isBlank()) {
+            log.warn("Cannot send email: recipient email is blank");
+            emailLog.setStatus(EmailLog.Status.FAILED);
+            return emailLogRepository.save(emailLog);
+        }
+
+        JavaMailSender mailSender = mailSenderProvider.getIfAvailable();
+        if (mailSender == null) {
+            log.warn("JavaMailSender not available (SMTP credentials not configured in application.yml), simulating for: {}", recipientEmail);
+            emailLog.setStatus(EmailLog.Status.DRY_RUN);
+            return emailLogRepository.save(emailLog);
+        }
+
+        try {
+            MimeMessage message = mailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
+            helper.setTo(recipientEmail);
+            helper.setSubject(subject);
+            helper.setText(content, true);
+            mailSender.send(message);
+
+            emailLog.setStatus(EmailLog.Status.SENT);
+            log.info("Email successfully dispatched via SMTP to: {}", recipientEmail);
+        } catch (Exception ex) {
+            log.error("Failed to send direct email to {}: {}", recipientEmail, ex.getMessage());
+            emailLog.setStatus(EmailLog.Status.FAILED);
+        }
+
+        return emailLogRepository.save(emailLog);
+    }
 }

@@ -643,25 +643,22 @@ public class StudentController {
         data.put("external", externalGrowth);
 
         Map<String, Object> aiSynthesis = new LinkedHashMap<>();
-        aiSynthesis.put("headline", "Your Learning Summary & Next Steps");
-        aiSynthesis.put("executiveSummary", String.format(
-                "You are making steady progress in %s with an overall topic mastery of %d%%. In your exams and coursework, you hold a solid average of %.1f%% with a strong %.1f%% attendance record. Right now, your main focus is to reinforce the %d topics that need a bit more practice.",
+        aiSynthesis.put("headline", "Where You Stand & What to Do Next");
+        String topGap = gapList.isEmpty() ? null : (String) gapList.get(0).get("topicName");
+        String simpleMessage = String.format(
+                "You're doing great in %s with an exam average of %.1f%% and %.1f%% attendance. You currently have %d topic%s that need a quick practice review%s.",
                 studentInfo.get("department"),
-                Math.round(avgMastery * 100),
                 marksPct,
                 attendancePct,
-                gapList.size()
-        ));
-        aiSynthesis.put("strengths", List.of(
-                "Active quiz practice: You regularly test yourself and follow recommended learning paths",
-                "Solid conceptual understanding: You retain foundational computer science concepts well",
-                "Strong academic standing: High attendance record and consistent exam performance"
-        ));
-        aiSynthesis.put("priorities", List.of(
-                gapList.isEmpty() ? "Explore advanced topics and continue building projects" : "Practice topic: " + gapList.get(0).get("topicName") + " to strengthen your understanding",
-                "Review teacher-uploaded lecture notes and study guides in Course Materials before upcoming exams",
-                "Keep working on coding challenges on GitHub and LeetCode to build practical experience"
-        ));
+                gapList.size(),
+                gapList.size() == 1 ? "" : "s",
+                topGap != null ? " (starting with " + topGap + ")" : ""
+        );
+        aiSynthesis.put("executiveSummary", simpleMessage);
+        aiSynthesis.put("nextAction", topGap != null
+                ? "Take a quick 5-question practice quiz on " + topGap + " to turn this gap into a strength."
+                : "You're all caught up! Try an advanced quiz or review teacher notes.");
+        aiSynthesis.put("readingAdvice", "Check lecture notes in Course Materials to prepare for upcoming classes.");
         aiSynthesis.put("engine", "EduPulse Student Learning Assistant");
         aiSynthesis.put("generatedAt", java.time.LocalDateTime.now().toString());
         data.put("aiSynthesis", aiSynthesis);

@@ -26,7 +26,8 @@ import {
   Check,
   Layers,
   HelpCircle,
-  Bot
+  Bot,
+  Target
 } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 
@@ -270,53 +271,57 @@ export const StudentAiSummary = () => {
             </div>
           </div>
 
-          <div className={`p-5 rounded-2xl bg-gradient-to-r from-indigo-50/70 via-purple-50/30 to-white dark:from-indigo-950/30 dark:via-gray-900 dark:to-gray-900 border border-indigo-100 dark:border-indigo-900/40 space-y-2 transition-opacity duration-300 ${generating ? 'opacity-60 animate-pulse' : 'opacity-100'}`}>
-            <h4 className="text-sm font-bold text-indigo-900 dark:text-indigo-200 flex items-center gap-2">
-              <Bot className="w-4 h-4 text-indigo-600 dark:text-indigo-400" />
-              <span>{aiSynthesis?.headline || 'Your Learning Journey & Progress'}</span>
-            </h4>
-            <p className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed font-normal">
+          {/* SIMPLE, DIRECT STUDENT SUMMARY */}
+          <div className={`p-6 rounded-3xl bg-gradient-to-r from-indigo-50/80 via-purple-50/40 to-white dark:from-indigo-950/40 dark:via-gray-900 dark:to-gray-900 border border-indigo-100 dark:border-indigo-900/50 space-y-4 transition-opacity duration-300 ${generating ? 'opacity-60 animate-pulse' : 'opacity-100'}`}>
+            <div className="flex items-center gap-2 text-indigo-700 dark:text-indigo-300 font-bold text-sm">
+              <Bot className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
+              <span>{aiSynthesis?.headline || 'Where You Stand & What to Do Next'}</span>
+            </div>
+
+            <p className="text-sm sm:text-base text-gray-800 dark:text-gray-200 leading-relaxed font-normal">
               {aiSynthesis?.executiveSummary}
             </p>
-          </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-1">
-            {/* Strengths */}
-            <div className="space-y-3">
-              <h4 className="text-xs font-bold text-gray-900 dark:text-gray-50 uppercase tracking-wider flex items-center gap-2">
-                <CheckCircle2 className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
-                <span>What You're Doing Great</span>
-              </h4>
-              <div className="space-y-2">
-                {aiSynthesis?.strengths?.map((str, idx) => (
-                  <div
-                    key={idx}
-                    className="p-3 rounded-2xl bg-emerald-50/60 dark:bg-emerald-950/20 border border-emerald-100 dark:border-emerald-900/40 text-xs text-gray-700 dark:text-gray-300 flex items-start gap-2.5"
-                  >
-                    <span className="w-2 h-2 rounded-full bg-emerald-500 mt-1.5 shrink-0" />
-                    <span className="leading-relaxed">{str}</span>
-                  </div>
-                ))}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
+              <div className="p-3.5 rounded-2xl bg-white/80 dark:bg-gray-800/80 border border-indigo-100 dark:border-gray-700 flex items-start gap-3">
+                <div className="p-2 rounded-xl bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400 shrink-0">
+                  <Target className="w-4 h-4" />
+                </div>
+                <div>
+                  <h5 className="text-xs font-bold text-gray-900 dark:text-gray-100">Next Priority</h5>
+                  <p className="text-xs text-gray-600 dark:text-gray-300 mt-0.5 leading-relaxed">
+                    {aiSynthesis?.nextAction || 'Practice a short 5-minute quiz on your priority topic to boost your mastery.'}
+                  </p>
+                </div>
+              </div>
+
+              <div className="p-3.5 rounded-2xl bg-white/80 dark:bg-gray-800/80 border border-indigo-100 dark:border-gray-700 flex items-start gap-3">
+                <div className="p-2 rounded-xl bg-emerald-50 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 shrink-0">
+                  <BookOpen className="w-4 h-4" />
+                </div>
+                <div>
+                  <h5 className="text-xs font-bold text-gray-900 dark:text-gray-100">Quick Study Tip</h5>
+                  <p className="text-xs text-gray-600 dark:text-gray-300 mt-0.5 leading-relaxed">
+                    {aiSynthesis?.readingAdvice || 'Review teacher notes and slides in Course Materials before your next lecture.'}
+                  </p>
+                </div>
               </div>
             </div>
 
-            {/* Priorities */}
-            <div className="space-y-3">
-              <h4 className="text-xs font-bold text-gray-900 dark:text-gray-50 uppercase tracking-wider flex items-center gap-2">
-                <AlertTriangle className="w-4 h-4 text-amber-600 dark:text-amber-400" />
-                <span>Recommended Next Steps</span>
-              </h4>
-              <div className="space-y-2">
-                {aiSynthesis?.priorities?.map((prio, idx) => (
-                  <div
-                    key={idx}
-                    className="p-3 rounded-2xl bg-amber-50/60 dark:bg-amber-950/20 border border-amber-100 dark:border-amber-900/40 text-xs text-gray-700 dark:text-gray-300 flex items-start gap-2.5"
-                  >
-                    <span className="w-2 h-2 rounded-full bg-amber-500 mt-1.5 shrink-0" />
-                    <span className="leading-relaxed">{prio}</span>
-                  </div>
-                ))}
-              </div>
+            <div className="flex flex-wrap items-center gap-3 pt-2">
+              <button
+                onClick={() => navigate('/student/quizzes')}
+                className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-bold bg-indigo-600 hover:bg-indigo-700 text-white shadow-xs transition cursor-pointer"
+              >
+                <span>Take 5-Min Quiz</span>
+                <ArrowRight className="w-3.5 h-3.5" />
+              </button>
+              <button
+                onClick={() => navigate('/student/materials')}
+                className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-semibold bg-white dark:bg-gray-800 hover:bg-gray-50 text-gray-700 dark:text-gray-200 border border-gray-200 dark:border-gray-700 transition cursor-pointer"
+              >
+                <span>Browse Lecture Notes</span>
+              </button>
             </div>
           </div>
 

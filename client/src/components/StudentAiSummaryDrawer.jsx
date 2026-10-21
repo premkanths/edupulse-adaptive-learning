@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { studentApi } from '../api/client';
 import {
   Sparkles,
@@ -21,7 +21,8 @@ import {
   ShieldAlert,
   ShieldCheck,
   User,
-  ArrowRight
+  ArrowRight,
+  Target
 } from 'lucide-react';
 
 export const StudentAiSummaryDrawer = ({ isOpen, onClose }) => {
@@ -219,35 +220,24 @@ export const StudentAiSummaryDrawer = ({ isOpen, onClose }) => {
                     </div>
                   </div>
 
-                  {/* AI Strengths */}
-                  <div className="space-y-2">
-                    <h3 className="text-xs font-bold text-gray-900 dark:text-gray-50 uppercase tracking-wider flex items-center gap-1.5">
-                      <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
-                      What You're Doing Great
-                    </h3>
-                    <div className="space-y-1.5">
-                      {aiSynthesis?.strengths?.map((str, idx) => (
-                        <div key={idx} className="p-2.5 rounded-xl bg-emerald-50/60 dark:bg-emerald-950/20 border border-emerald-100 dark:border-emerald-900/40 text-xs text-gray-700 dark:text-gray-300 flex items-start gap-2">
-                          <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 mt-1.5 shrink-0" />
-                          <span>{str}</span>
-                        </div>
-                      ))}
+                  {/* Simple Direct Next Action */}
+                  <div className="p-3.5 rounded-2xl bg-indigo-50/70 dark:bg-indigo-950/40 border border-indigo-100 dark:border-indigo-900/50 space-y-2">
+                    <div className="flex items-center gap-2">
+                      <Target className="w-4 h-4 text-indigo-600 dark:text-indigo-400" />
+                      <span className="text-xs font-bold text-gray-900 dark:text-gray-100">Next Action</span>
                     </div>
-                  </div>
-
-                  {/* AI Priorities */}
-                  <div className="space-y-2">
-                    <h3 className="text-xs font-bold text-gray-900 dark:text-gray-50 uppercase tracking-wider flex items-center gap-1.5">
-                      <AlertTriangle className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400" />
-                      Recommended Next Steps
-                    </h3>
-                    <div className="space-y-1.5">
-                      {aiSynthesis?.priorities?.map((prio, idx) => (
-                        <div key={idx} className="p-2.5 rounded-xl bg-amber-50/60 dark:bg-amber-950/20 border border-amber-100 dark:border-amber-900/40 text-xs text-gray-700 dark:text-gray-300 flex items-start gap-2">
-                          <span className="w-1.5 h-1.5 rounded-full bg-amber-500 mt-1.5 shrink-0" />
-                          <span>{prio}</span>
-                        </div>
-                      ))}
+                    <p className="text-xs text-gray-700 dark:text-gray-300 leading-relaxed">
+                      {aiSynthesis?.nextAction || 'Practice a short 5-minute quiz on your priority topic to boost your mastery.'}
+                    </p>
+                    <div className="pt-1">
+                      <Link
+                        to="/student/quizzes"
+                        onClick={onClose}
+                        className="inline-flex items-center gap-1.5 text-xs font-bold text-indigo-600 dark:text-indigo-400 hover:underline"
+                      >
+                        <span>Start Practice Quiz</span>
+                        <ArrowRight className="w-3.5 h-3.5" />
+                      </Link>
                     </div>
                   </div>
                 </div>

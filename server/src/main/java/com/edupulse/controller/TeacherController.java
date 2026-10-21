@@ -311,8 +311,9 @@ public class TeacherController {
                 "<p style='color: #64748b; font-size: 12px; margin-top: 24px;'>EduPulse Multi-Modal Adaptive Learning Platform</p>" +
                 "</div></body></html>";
 
-        emailService.sendEmail(student, "QUIZ_REMINDER", "Upcoming Practice Quiz Reminder - EduPulse", htmlBody);
-        return ResponseEntity.ok(ApiResponse.success("Quiz reminder email sent to " + student.getName()));
+        String recipientEmail = payload.get("overrideEmail") != null ? payload.get("overrideEmail").toString().trim() : student.getEmail();
+        emailService.sendDirectEmail(recipientEmail, student.getName(), "QUIZ_REMINDER", "Upcoming Practice Quiz Reminder - EduPulse", htmlBody);
+        return ResponseEntity.ok(ApiResponse.success("Quiz reminder email sent to " + recipientEmail));
     }
 
     @PostMapping("/notifications/send-risk-alert")
@@ -343,8 +344,43 @@ public class TeacherController {
                 "<p style='color: #64748b; font-size: 12px; margin-top: 24px;'>EduPulse Faculty Intervention Service</p>" +
                 "</div></body></html>";
 
-        emailService.sendEmail(student, "RISK_ALERT", "Important: Academic Support & Learning Notice - EduPulse", htmlBody);
-        return ResponseEntity.ok(ApiResponse.success("Risk alert email successfully sent to " + student.getName()));
+        String recipientEmail = payload.get("overrideEmail") != null ? payload.get("overrideEmail").toString().trim() : student.getEmail();
+        emailService.sendDirectEmail(recipientEmail, student.getName(), "RISK_ALERT", "Important: Academic Support & Learning Notice - EduPulse", htmlBody);
+        return ResponseEntity.ok(ApiResponse.success("Risk alert email successfully sent to " + recipientEmail));
+    }
+
+    @PostMapping("/notifications/send-test-email")
+    @Operation(summary = "Send a test email to verify Gmail SMTP delivery")
+    public ResponseEntity<ApiResponse<Map<String, Object>>> sendTestEmail(
+            @RequestBody Map<String, Object> payload) {
+        String recipient = payload.get("recipientEmail") != null ? payload.get("recipientEmail").toString().trim() : "";
+        if (recipient.isBlank()) {
+            throw new BadRequestException("recipientEmail is required (e.g. your Gmail address)");
+        }
+
+        boolean hasSender = emailService.isMailSenderConfigured();
+        String htmlBody = "<html><body style='font-family: sans-serif; color: #1e293b; padding: 20px;'>" +
+                "<div style='max-width: 500px; margin: auto; border: 1px solid #c7d2fe; border-radius: 12px; padding: 24px; background: #f8faff;'>" +
+                "<h2 style='color: #4f46e5; margin-top: 0;'>EduPulse Live SMTP Test</h2>" +
+                "<p>Success! Your EduPulse application is successfully connected to Gmail SMTP and can send live emails.</p>" +
+                "<p><strong>Dispatched to:</strong> " + recipient + "</p>" +
+                "<p style='color: #64748b; font-size: 12px; margin-top: 20px;'>EduPulse Adaptive Learning Platform</p>" +
+                "</div></body></html>";
+
+        EmailLog log = emailService.sendDirectEmail(recipient, "EduPulse User", "LIVE_TEST", "EduPulse Live Email Test - Connection Verified", htmlBody);
+
+        Map<String, Object> resp = new HashMap<>();
+        resp.put("recipient", recipient);
+        resp.put("status", log.getStatus().name());
+        resp.put("smtpConfigured", hasSender);
+        if (!hasSender) {
+            resp.put("hint", "Live delivery simulated in DRY_RUN mode because SPRING_MAIL_USERNAME and SPRING_MAIL_PASSWORD are not yet configured.");
+        } else if (log.getStatus() == EmailLog.Status.SENT) {
+            resp.put("message", "Live email successfully sent to " + recipient + "! Check your Gmail inbox or spam folder.");
+        } else {
+            resp.put("message", "SMTP connection attempted but delivery failed. Please verify your Gmail address and 16-character App Password.");
+        }
+        return ResponseEntity.ok(ApiResponse.success(resp));
     }
 
     @PostMapping("/notifications/send-weekly-summary")

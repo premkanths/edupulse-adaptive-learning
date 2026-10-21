@@ -22,6 +22,18 @@ spring:
       hibernate:
         format_sql: false
         dialect: org.hibernate.dialect.MySQLDialect
+  mail:
+    host: ${SPRING_MAIL_HOST:smtp.gmail.com}
+    port: ${SPRING_MAIL_PORT:587}
+    username: ${SPRING_MAIL_USERNAME:}
+    password: ${SPRING_MAIL_PASSWORD:}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+            required: true
 
 app:
   jwt:
@@ -31,7 +43,8 @@ app:
     allowed-origins: ${CLIENT_URL:http://localhost:5173}
 
 mail:
-  dry-run: ${MAIL_DRY_RUN:true}
+  dry-run: ${MAIL_DRY_RUN:false}
+  allow-demo-accounts: ${MAIL_ALLOW_DEMO:true}
 
 edupulse:
   summary:
