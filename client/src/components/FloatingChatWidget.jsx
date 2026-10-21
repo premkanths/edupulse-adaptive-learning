@@ -56,7 +56,7 @@ export const FloatingChatWidget = () => {
       {!isOpen && (
         <button
           onClick={() => setIsOpen(true)}
-          className="flex items-center gap-2 py-3 px-5 rounded-full bg-indigo-600 hover:bg-indigo-700 text-white shadow-xl shadow-indigo-200 text-xs font-bold transition-transform hover:scale-105 cursor-pointer"
+          className="flex items-center gap-2 py-3 px-5 rounded-full bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white shadow-xl shadow-indigo-500/30 text-xs font-bold transition-all hover:scale-105 cursor-pointer"
         >
           <Bot className="w-4 h-4" />
           <span>Ask AI Assistant</span>
@@ -64,9 +64,9 @@ export const FloatingChatWidget = () => {
       )}
 
       {isOpen && (
-        <div className="bg-white rounded-3xl border border-slate-200 shadow-2xl w-96 h-[500px] flex flex-col justify-between overflow-hidden animate-in fade-in slide-in-from-bottom-6 duration-200">
+        <div className="bg-white/95 dark:bg-[#0F1626]/95 backdrop-blur-xl rounded-3xl border border-slate-200/90 dark:border-slate-800/90 shadow-2xl w-96 h-[500px] flex flex-col justify-between overflow-hidden animate-in fade-in slide-in-from-bottom-6 duration-200">
           {/* Header */}
-          <div className="bg-gradient-to-r from-indigo-700 to-indigo-600 text-white p-4 flex items-center justify-between">
+          <div className="bg-gradient-to-r from-indigo-700 via-indigo-600 to-violet-700 text-white p-4 flex items-center justify-between">
             <div className="flex items-center gap-2.5">
               <div className="w-8 h-8 rounded-xl bg-white/20 flex items-center justify-center">
                 <Bot className="w-4 h-4 text-white" />
@@ -93,8 +93,8 @@ export const FloatingChatWidget = () => {
                   <div
                     className={`max-w-[85%] p-3 rounded-2xl whitespace-pre-wrap leading-relaxed ${
                       isUser
-                        ? 'bg-indigo-600 text-white rounded-tr-none'
-                        : 'bg-slate-50 border border-slate-200/80 text-slate-800 rounded-tl-none'
+                        ? 'bg-gradient-to-r from-indigo-600 to-violet-600 text-white rounded-tr-none shadow-xs'
+                        : 'bg-slate-50 dark:bg-[#080B11]/80 border border-slate-200/80 dark:border-slate-800 text-slate-800 dark:text-slate-200 rounded-tl-none shadow-xs'
                     }`}
                   >
                     {m.content}
@@ -104,25 +104,25 @@ export const FloatingChatWidget = () => {
             })}
             {loading && (
               <div className="flex items-center gap-2 text-[11px] text-slate-400 p-2">
-                <Sparkles className="w-3.5 h-3.5 text-indigo-600 animate-spin" />
+                <Sparkles className="w-3.5 h-3.5 text-indigo-500 animate-spin" />
                 <span>Generating explanation...</span>
               </div>
             )}
           </div>
 
           {/* Input Bar */}
-          <form onSubmit={handleSend} className="p-3 border-t border-slate-200 bg-slate-50/50 flex items-center gap-2">
+          <form onSubmit={handleSend} className="p-3 border-t border-slate-200/80 dark:border-slate-800 bg-slate-50/50 dark:bg-[#0A0E18]/80 flex items-center gap-2">
             <input
               type="text"
               value={input}
               onChange={(e) => setInput(e.target.value)}
               placeholder="Ask a question..."
-              className="flex-1 py-2 px-3 bg-white border border-slate-200 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="flex-1 py-2 px-3 bg-white dark:bg-[#080B11] border border-slate-200 dark:border-slate-700 rounded-xl text-xs text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-indigo-500"
             />
             <button
               type="submit"
               disabled={loading || !input.trim()}
-              className="p-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl transition-colors disabled:opacity-40 cursor-pointer"
+              className="p-2 bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white rounded-xl transition-all disabled:opacity-40 cursor-pointer shadow-xs"
             >
               <Send className="w-3.5 h-3.5" />
             </button>

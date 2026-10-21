@@ -85,11 +85,11 @@ export const AiQuizGenerator = () => {
   return (
     <div className="max-w-4xl mx-auto space-y-8 pb-12">
       <div>
-        <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-indigo-50 text-indigo-700 border border-indigo-200 mb-2">
+        <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-indigo-50 dark:bg-indigo-950/60 text-indigo-700 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-800/80 mb-2">
           <Sparkles className="w-3.5 h-3.5" /> Provider Fallback: Gemini → Groq → Ollama
         </span>
-        <h1 className="text-2xl font-bold text-slate-900">AI-Powered Quiz Generator</h1>
-        <p className="text-sm text-slate-500 mt-1">
+        <h1 className="text-2xl font-bold text-slate-900 dark:text-slate-100">AI-Powered Quiz Generator</h1>
+        <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">
           Draft structured, pedagogically validated question sets with automated duplicate detection and teacher review before publication.
         </p>
       </div>
@@ -97,18 +97,18 @@ export const AiQuizGenerator = () => {
       {error && <Alert type="error" message={error} />}
 
       {/* Configuration Form */}
-      <div className="bg-white rounded-3xl p-6 border border-slate-200 shadow-sm space-y-6">
+      <div className="bg-white/95 dark:bg-[#0F1626]/95 backdrop-blur-xl rounded-3xl p-6 border border-slate-200/90 dark:border-slate-800/90 shadow-sm space-y-6">
         <form onSubmit={handleGenerate} className="space-y-5">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">
+              <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-2">
                 Curriculum Subject
               </label>
               <select
                 value={subjectId}
                 onChange={(e) => setSubjectId(e.target.value)}
                 required
-                className="w-full py-2.5 px-3.5 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                className="w-full py-2.5 px-3.5 bg-slate-50 dark:bg-[#080B11]/70 border border-slate-200/90 dark:border-slate-800/90 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-indigo-500"
               >
                 {subjects.map((s) => (
                   <option key={s.id} value={s.id}>{s.name}</option>
@@ -117,14 +117,14 @@ export const AiQuizGenerator = () => {
             </div>
 
             <div>
-              <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">
+              <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-2">
                 Target Topic
               </label>
               <select
                 value={topicId}
                 onChange={(e) => setTopicId(e.target.value)}
                 required
-                className="w-full py-2.5 px-3.5 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                className="w-full py-2.5 px-3.5 bg-slate-50 dark:bg-[#080B11]/70 border border-slate-200/90 dark:border-slate-800/90 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-indigo-500"
               >
                 {topics.map((t) => (
                   <option key={t.id} value={t.id}>{t.name}</option>
@@ -135,13 +135,13 @@ export const AiQuizGenerator = () => {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">
+              <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-2">
                 Question Count
               </label>
               <select
                 value={questionCount}
                 onChange={(e) => setQuestionCount(e.target.value)}
-                className="w-full py-2.5 px-3.5 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                className="w-full py-2.5 px-3.5 bg-slate-50 dark:bg-[#080B11]/70 border border-slate-200/90 dark:border-slate-800/90 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-indigo-500"
               >
                 <option value={3}>3 Questions (Fast Quick Quiz)</option>
                 <option value={5}>5 Questions (Standard Diagnostic)</option>
@@ -151,13 +151,13 @@ export const AiQuizGenerator = () => {
             </div>
 
             <div>
-              <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">
+              <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-2">
                 Cognitive Difficulty
               </label>
               <select
                 value={difficulty}
                 onChange={(e) => setDifficulty(e.target.value)}
-                className="w-full py-2.5 px-3.5 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                className="w-full py-2.5 px-3.5 bg-slate-50 dark:bg-[#080B11]/70 border border-slate-200/90 dark:border-slate-800/90 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-indigo-500"
               >
                 <option value="EASY">Easy (Foundational Definitions)</option>
                 <option value="MEDIUM">Medium (Conceptual Application)</option>
@@ -188,15 +188,15 @@ export const AiQuizGenerator = () => {
 
       {/* Generated Draft Review Banner */}
       {generatedDraft && (
-        <div className="bg-emerald-50 border border-emerald-200 rounded-3xl p-6 shadow-sm space-y-4">
+        <div className="bg-emerald-50 dark:bg-emerald-950/50 border border-emerald-200 dark:border-emerald-800/80 rounded-3xl p-6 shadow-sm space-y-4">
           <div className="flex items-start justify-between">
             <div className="flex items-center gap-3">
-              <div className="p-3 bg-emerald-100 text-emerald-800 rounded-2xl">
+              <div className="p-3 bg-emerald-100 text-emerald-800 dark:text-emerald-300 rounded-2xl">
                 <CheckCircle2 className="w-6 h-6" />
               </div>
               <div>
                 <h2 className="text-base font-bold text-emerald-950">Draft Questions Successfully Generated!</h2>
-                <p className="text-xs text-emerald-700 mt-0.5">
+                <p className="text-xs text-emerald-700 dark:text-emerald-300 mt-0.5">
                   Quiz Draft Title: <strong>{generatedDraft.title}</strong> (Saved in Question Bank with status DRAFT).
                 </p>
               </div>
@@ -210,7 +210,7 @@ export const AiQuizGenerator = () => {
             </button>
           </div>
 
-          <p className="text-xs text-emerald-800 leading-relaxed border-t border-emerald-200/80 pt-3">
+          <p className="text-xs text-emerald-800 dark:text-emerald-300 leading-relaxed border-t border-emerald-200/80 pt-3">
             In accordance with educational AI safety standards, all AI-generated items are initially quarantined in <strong>DRAFT</strong> status until instructor review and publication.
           </p>
         </div>

@@ -134,20 +134,20 @@ export const QuizTaking = () => {
   return (
     <div className="max-w-4xl mx-auto space-y-6 pb-12">
       {/* Top Header with Timer */}
-      <div className="bg-white rounded-3xl p-6 border border-slate-200 shadow-sm flex items-center justify-between">
+      <div className="bg-white/95 dark:bg-[#0F1626]/95 backdrop-blur-xl rounded-3xl p-6 border border-slate-200/90 dark:border-slate-800/90 shadow-sm flex items-center justify-between">
         <div>
-          <span className="text-xs font-bold text-indigo-600 uppercase tracking-wider">
+          <span className="text-xs font-bold text-indigo-600 dark:text-indigo-400 uppercase tracking-wider">
             {quizData.subjectName}
           </span>
-          <h1 className="text-xl font-bold text-slate-900">{quizData.title}</h1>
+          <h1 className="text-xl font-bold text-slate-900 dark:text-slate-100">{quizData.title}</h1>
         </div>
 
         <div className="flex items-center gap-3">
           <div
             className={`flex items-center gap-2 px-4 py-2 rounded-2xl font-mono text-sm font-bold border ${
               timeLeft < 300
-                ? 'bg-rose-50 text-rose-700 border-rose-200 animate-pulse'
-                : 'bg-indigo-50 text-indigo-700 border-indigo-200'
+                ? 'bg-rose-50 dark:bg-rose-950/50 text-rose-700 dark:text-rose-300 border-rose-200 dark:border-rose-800/80 animate-pulse'
+                : 'bg-indigo-50 dark:bg-indigo-950/60 text-indigo-700 dark:text-indigo-300 border-indigo-200 dark:border-indigo-800/80'
             }`}
           >
             <Clock className="w-4 h-4" />
@@ -167,8 +167,8 @@ export const QuizTaking = () => {
       </div>
 
       {/* Question Navigator Pills */}
-      <div className="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm flex items-center gap-2 overflow-x-auto">
-        <span className="text-xs font-bold text-slate-500 uppercase mr-2 shrink-0">Questions:</span>
+      <div className="bg-white/95 dark:bg-[#0F1626]/95 backdrop-blur-xl p-4 rounded-2xl border border-slate-200/90 dark:border-slate-800/90 shadow-sm flex items-center gap-2 overflow-x-auto">
+        <span className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase mr-2 shrink-0">Questions:</span>
         {questions.map((q, idx) => (
           <button
             key={q.id}
@@ -177,8 +177,8 @@ export const QuizTaking = () => {
               idx === currentIndex
                 ? 'bg-indigo-600 text-white ring-2 ring-indigo-300'
                 : isAnswered(q.id)
-                ? 'bg-emerald-100 text-emerald-800 border border-emerald-200'
-                : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                ? 'bg-emerald-100 text-emerald-800 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800/80'
+                : 'bg-slate-100 dark:bg-slate-800/80 text-slate-600 dark:text-slate-400 hover:bg-slate-200'
             }`}
           >
             {idx + 1}
@@ -191,20 +191,20 @@ export const QuizTaking = () => {
 
       {/* Active Question Card */}
       {currentQ && (
-        <div className="bg-white rounded-3xl p-8 border border-slate-200 shadow-sm space-y-6">
-          <div className="flex items-center justify-between text-xs text-slate-500 border-b border-slate-100 pb-3">
+        <div className="bg-white/95 dark:bg-[#0F1626]/95 backdrop-blur-xl rounded-3xl p-8 border border-slate-200/90 dark:border-slate-800/90 shadow-sm space-y-6">
+          <div className="flex items-center justify-between text-xs text-slate-500 dark:text-slate-400 border-b border-slate-100 dark:border-slate-800/80 pb-3">
             <span>Question {currentIndex + 1} of {questions.length}</span>
             <div className="flex items-center gap-2">
-              <span className="px-2 py-0.5 rounded-full bg-slate-100 text-slate-700 font-medium">
+              <span className="px-2 py-0.5 rounded-full bg-slate-100 dark:bg-slate-800/80 text-slate-700 dark:text-slate-300 font-medium">
                 {currentQ.topicName}
               </span>
-              <span className="px-2 py-0.5 rounded-full bg-indigo-50 text-indigo-700 font-semibold">
+              <span className="px-2 py-0.5 rounded-full bg-indigo-50 dark:bg-indigo-950/60 text-indigo-700 dark:text-indigo-300 font-semibold">
                 {currentQ.difficulty}
               </span>
             </div>
           </div>
 
-          <p className="text-base font-semibold text-slate-900 leading-relaxed">
+          <p className="text-base font-semibold text-slate-900 dark:text-slate-100 leading-relaxed">
             {currentQ.text}
           </p>
 
@@ -218,8 +218,8 @@ export const QuizTaking = () => {
                   onClick={() => handleSelectOption(optIdx)}
                   className={`w-full text-left p-4 rounded-2xl border transition-all flex items-center justify-between cursor-pointer ${
                     isSelected
-                      ? 'border-indigo-600 bg-indigo-50/70 text-indigo-900 font-semibold shadow-sm'
-                      : 'border-slate-200 hover:border-slate-300 bg-white text-slate-800 hover:bg-slate-50/60'
+                      ? 'border-indigo-600 bg-indigo-50/70 text-indigo-900 dark:text-indigo-200 font-semibold shadow-sm'
+                      : 'border-slate-200/90 dark:border-slate-800/90 hover:border-slate-300 bg-white/95 dark:bg-[#0F1626]/95 backdrop-blur-xl text-slate-800 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800/60/60'
                   }`}
                 >
                   <div className="flex items-center gap-3">
@@ -227,25 +227,25 @@ export const QuizTaking = () => {
                       className={`w-7 h-7 rounded-lg text-xs font-bold flex items-center justify-center shrink-0 ${
                         isSelected
                           ? 'bg-indigo-600 text-white'
-                          : 'bg-slate-100 text-slate-600'
+                          : 'bg-slate-100 dark:bg-slate-800/80 text-slate-600 dark:text-slate-400'
                       }`}
                     >
                       {String.fromCharCode(65 + optIdx)}
                     </span>
                     <span className="text-sm">{option}</span>
                   </div>
-                  {isSelected && <CheckCircle2 className="w-5 h-5 text-indigo-600 shrink-0 ml-2" />}
+                  {isSelected && <CheckCircle2 className="w-5 h-5 text-indigo-600 dark:text-indigo-400 shrink-0 ml-2" />}
                 </button>
               );
             })}
           </div>
 
           {/* Navigation Controls */}
-          <div className="flex items-center justify-between pt-6 border-t border-slate-100">
+          <div className="flex items-center justify-between pt-6 border-t border-slate-100 dark:border-slate-800/80">
             <button
               onClick={handlePrev}
               disabled={currentIndex === 0}
-              className="py-2.5 px-4 rounded-xl text-sm font-semibold border border-slate-200 text-slate-700 hover:bg-slate-50 transition-colors disabled:opacity-40 flex items-center gap-1.5 cursor-pointer"
+              className="py-2.5 px-4 rounded-xl text-sm font-semibold border border-slate-200/90 dark:border-slate-800/90 text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800/60 dark:bg-[#080B11]/70 transition-colors disabled:opacity-40 flex items-center gap-1.5 cursor-pointer"
             >
               <ArrowLeft className="w-4 h-4" /> Previous
             </button>
@@ -272,23 +272,23 @@ export const QuizTaking = () => {
       {/* Confirmation Modal */}
       {showConfirmModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/40 backdrop-blur-sm p-4">
-          <div className="bg-white rounded-3xl p-6 max-w-md w-full border border-slate-200 shadow-xl space-y-4">
+          <div className="bg-white/95 dark:bg-[#0F1626]/95 backdrop-blur-xl rounded-3xl p-6 max-w-md w-full border border-slate-200/90 dark:border-slate-800/90 shadow-xl space-y-4">
             <div className="flex items-center gap-3">
-              <div className="p-3 bg-amber-50 text-amber-600 rounded-2xl">
+              <div className="p-3 bg-amber-50 dark:bg-amber-950/50 text-amber-600 rounded-2xl">
                 <AlertCircle className="w-6 h-6" />
               </div>
-              <h2 className="text-lg font-bold text-slate-900">Confirm Submission?</h2>
+              <h2 className="text-lg font-bold text-slate-900 dark:text-slate-100">Confirm Submission?</h2>
             </div>
 
-            <p className="text-sm text-slate-600">
+            <p className="text-sm text-slate-600 dark:text-slate-400">
               You have answered <strong>{answeredCount}</strong> of <strong>{questions.length}</strong> questions.
               Once submitted, your responses will be evaluated and your topic mastery will be updated.
             </p>
 
-            <div className="flex items-center justify-end gap-3 pt-4 border-t border-slate-100">
+            <div className="flex items-center justify-end gap-3 pt-4 border-t border-slate-100 dark:border-slate-800/80">
               <button
                 onClick={() => setShowConfirmModal(false)}
-                className="px-4 py-2 text-sm font-semibold text-slate-600 hover:bg-slate-100 rounded-xl transition-colors cursor-pointer"
+                className="px-4 py-2 text-sm font-semibold text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800/80 dark:bg-slate-800/80 rounded-xl transition-colors cursor-pointer"
               >
                 Continue Quiz
               </button>

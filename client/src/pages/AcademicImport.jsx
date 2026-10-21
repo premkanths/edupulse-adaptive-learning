@@ -129,15 +129,15 @@ student3@edupulse.local,Web Technologies,2025-10-15,EXCUSED`
     <div className="space-y-8">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold text-slate-900 tracking-tight">Academic Records & Attendance Import</h1>
-        <p className="text-slate-500 text-sm mt-1">
+        <h1 className="text-2xl font-bold text-slate-900 dark:text-slate-100 tracking-tight">Academic Records & Attendance Import</h1>
+        <p className="text-slate-500 dark:text-slate-400 text-sm mt-1">
           Import institutional academic marks and attendance records via validated CSV batches.
         </p>
       </div>
 
       {notification && (
         <div className={`p-4 rounded-xl flex items-center gap-3 text-sm font-medium ${
-          notification.type === 'success' ? 'bg-emerald-50 text-emerald-800 border border-emerald-200' : 'bg-rose-50 text-rose-800 border border-rose-200'
+          notification.type === 'success' ? 'bg-emerald-50 dark:bg-emerald-950/50 text-emerald-800 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800/80' : 'bg-rose-50 dark:bg-rose-950/50 text-rose-800 dark:text-rose-300 border border-rose-200 dark:border-rose-800/80'
         }`}>
           {notification.type === 'success' ? <CheckCircle2 className="w-5 h-5 text-emerald-600" /> : <AlertTriangle className="w-5 h-5 text-rose-600" />}
           {notification.message}
@@ -145,16 +145,16 @@ student3@edupulse.local,Web Technologies,2025-10-15,EXCUSED`
       )}
 
       {/* Import Configuration Card */}
-      <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm space-y-6">
-        <div className="flex flex-wrap items-center justify-between gap-4 border-b border-slate-100 pb-5">
+      <div className="bg-white/95 dark:bg-[#0F1626]/95 backdrop-blur-xl rounded-2xl border border-slate-200/90 dark:border-slate-800/90 p-6 shadow-sm space-y-6">
+        <div className="flex flex-wrap items-center justify-between gap-4 border-b border-slate-100 dark:border-slate-800/80 pb-5">
           <div className="flex items-center gap-3">
-            <span className="text-sm font-semibold text-slate-700">Import Category:</span>
-            <div className="inline-flex rounded-xl bg-slate-100 p-1 border border-slate-200">
+            <span className="text-sm font-semibold text-slate-700 dark:text-slate-300">Import Category:</span>
+            <div className="inline-flex rounded-xl bg-slate-100 dark:bg-slate-800/80 p-1 border border-slate-200/90 dark:border-slate-800/90">
               <button
                 type="button"
                 onClick={() => { setImportType('MARKS'); setPreview(null); }}
                 className={`px-4 py-1.5 rounded-lg text-sm font-medium transition-all ${
-                  importType === 'MARKS' ? 'bg-white text-indigo-700 shadow-sm font-semibold' : 'text-slate-600 hover:text-slate-900'
+                  importType === 'MARKS' ? 'bg-white/95 dark:bg-[#0F1626]/95 backdrop-blur-xl text-indigo-700 dark:text-indigo-300 shadow-sm font-semibold' : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 dark:text-slate-100'
                 }`}
               >
                 Assessment Marks
@@ -163,7 +163,7 @@ student3@edupulse.local,Web Technologies,2025-10-15,EXCUSED`
                 type="button"
                 onClick={() => { setImportType('ATTENDANCE'); setPreview(null); }}
                 className={`px-4 py-1.5 rounded-lg text-sm font-medium transition-all ${
-                  importType === 'ATTENDANCE' ? 'bg-white text-indigo-700 shadow-sm font-semibold' : 'text-slate-600 hover:text-slate-900'
+                  importType === 'ATTENDANCE' ? 'bg-white/95 dark:bg-[#0F1626]/95 backdrop-blur-xl text-indigo-700 dark:text-indigo-300 shadow-sm font-semibold' : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 dark:text-slate-100'
                 }`}
               >
                 Attendance Records
@@ -174,16 +174,16 @@ student3@edupulse.local,Web Technologies,2025-10-15,EXCUSED`
           <div className="flex items-center gap-3">
             <button
               onClick={handleDownloadTemplate}
-              className="inline-flex items-center gap-2 px-3.5 py-2 border border-slate-200 rounded-xl text-sm font-medium text-slate-700 hover:bg-slate-50 transition-colors"
+              className="inline-flex items-center gap-2 px-3.5 py-2 border border-slate-200/90 dark:border-slate-800/90 rounded-xl text-sm font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800/60 dark:bg-[#080B11]/70 transition-colors"
             >
-              <Download className="w-4 h-4 text-slate-500" />
+              <Download className="w-4 h-4 text-slate-500 dark:text-slate-400" />
               Download {importType} Template (.csv)
             </button>
             <button
               onClick={loadSampleData}
-              className="inline-flex items-center gap-2 px-3.5 py-2 bg-indigo-50 border border-indigo-100 rounded-xl text-sm font-medium text-indigo-700 hover:bg-indigo-100 transition-colors"
+              className="inline-flex items-center gap-2 px-3.5 py-2 bg-indigo-50 dark:bg-indigo-950/60 border border-indigo-100 dark:border-indigo-900/50 rounded-xl text-sm font-medium text-indigo-700 dark:text-indigo-300 hover:bg-indigo-100 transition-colors"
             >
-              <FileText className="w-4 h-4 text-indigo-600" />
+              <FileText className="w-4 h-4 text-indigo-600 dark:text-indigo-400" />
               Load Sample Data
             </button>
           </div>
@@ -192,8 +192,8 @@ student3@edupulse.local,Web Technologies,2025-10-15,EXCUSED`
         {/* Input Area */}
         <div className="space-y-4">
           <div className="flex items-center justify-between">
-            <label className="text-sm font-medium text-slate-700">CSV Content</label>
-            <label className="cursor-pointer text-sm font-medium text-indigo-600 hover:text-indigo-700">
+            <label className="text-sm font-medium text-slate-700 dark:text-slate-300">CSV Content</label>
+            <label className="cursor-pointer text-sm font-medium text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:text-indigo-300">
               <span>Choose CSV File</span>
               <input type="file" accept=".csv" onChange={handleFileUpload} className="hidden" />
             </label>
@@ -204,7 +204,7 @@ student3@edupulse.local,Web Technologies,2025-10-15,EXCUSED`
             value={csvContent}
             onChange={(e) => setCsvContent(e.target.value)}
             placeholder="Paste CSV rows here or upload a file..."
-            className="w-full font-mono text-xs p-3.5 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none"
+            className="w-full font-mono text-xs p-3.5 border border-slate-200/90 dark:border-slate-800/90 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none"
           />
 
           <div className="flex justify-end">
@@ -222,12 +222,12 @@ student3@edupulse.local,Web Technologies,2025-10-15,EXCUSED`
 
       {/* Preview Section */}
       {preview && (
-        <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm space-y-6">
-          <div className="flex flex-wrap items-center justify-between gap-4 border-b border-slate-100 pb-5">
+        <div className="bg-white/95 dark:bg-[#0F1626]/95 backdrop-blur-xl rounded-2xl border border-slate-200/90 dark:border-slate-800/90 p-6 shadow-sm space-y-6">
+          <div className="flex flex-wrap items-center justify-between gap-4 border-b border-slate-100 dark:border-slate-800/80 pb-5">
             <div>
-              <h2 className="text-lg font-bold text-slate-900">Batch Preview & Pre-Commit Validation</h2>
-              <p className="text-sm text-slate-500 mt-0.5">
-                Total Rows: <span className="font-semibold text-slate-800">{preview.totalRows}</span> | Valid: <span className="font-semibold text-emerald-600">{preview.validRows}</span> | Invalid: <span className="font-semibold text-rose-600">{preview.invalidRows}</span>
+              <h2 className="text-lg font-bold text-slate-900 dark:text-slate-100">Batch Preview & Pre-Commit Validation</h2>
+              <p className="text-sm text-slate-500 dark:text-slate-400 mt-0.5">
+                Total Rows: <span className="font-semibold text-slate-800 dark:text-slate-200">{preview.totalRows}</span> | Valid: <span className="font-semibold text-emerald-600">{preview.validRows}</span> | Invalid: <span className="font-semibold text-rose-600">{preview.invalidRows}</span>
               </p>
             </div>
 
@@ -241,9 +241,9 @@ student3@edupulse.local,Web Technologies,2025-10-15,EXCUSED`
             </button>
           </div>
 
-          <div className="overflow-x-auto border border-slate-200 rounded-xl">
+          <div className="overflow-x-auto border border-slate-200/90 dark:border-slate-800/90 rounded-xl">
             <table className="w-full text-left text-sm">
-              <thead className="bg-slate-50 text-xs font-semibold text-slate-600 uppercase border-b border-slate-200">
+              <thead className="bg-slate-50 dark:bg-[#080B11]/70 text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase border-b border-slate-200/90 dark:border-slate-800/90">
                 <tr>
                   <th className="px-4 py-3">Row #</th>
                   <th className="px-4 py-3">Status</th>
@@ -266,36 +266,36 @@ student3@edupulse.local,Web Technologies,2025-10-15,EXCUSED`
               </thead>
               <tbody className="divide-y divide-slate-100">
                 {preview.rows.map((row) => (
-                  <tr key={row.rowNumber} className={row.valid ? 'hover:bg-slate-50/60' : 'bg-rose-50/40'}>
-                    <td className="px-4 py-3 font-mono text-xs text-slate-500">{row.rowNumber}</td>
+                  <tr key={row.rowNumber} className={row.valid ? 'hover:bg-slate-50 dark:hover:bg-slate-800/60/60' : 'bg-rose-50/40'}>
+                    <td className="px-4 py-3 font-mono text-xs text-slate-500 dark:text-slate-400">{row.rowNumber}</td>
                     <td className="px-4 py-3">
                       {row.valid ? (
-                        <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
+                        <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-emerald-50 dark:bg-emerald-950/50 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800/80">
                           <CheckCircle2 className="w-3.5 h-3.5" /> Valid
                         </span>
                       ) : (
-                        <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-rose-50 text-rose-700 border border-rose-200">
+                        <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-rose-50 dark:bg-rose-950/50 text-rose-700 dark:text-rose-300 border border-rose-200 dark:border-rose-800/80">
                           <AlertCircle className="w-3.5 h-3.5" /> Error
                         </span>
                       )}
                     </td>
-                    <td className="px-4 py-3 text-slate-800 font-medium">{row.studentEmail}</td>
-                    <td className="px-4 py-3 text-slate-600">{row.subjectName}</td>
+                    <td className="px-4 py-3 text-slate-800 dark:text-slate-200 font-medium">{row.studentEmail}</td>
+                    <td className="px-4 py-3 text-slate-600 dark:text-slate-400">{row.subjectName}</td>
                     {importType === 'MARKS' ? (
                       <>
-                        <td className="px-4 py-3 font-mono text-xs text-slate-600">{row.assessmentType}</td>
-                        <td className="px-4 py-3 font-semibold text-slate-800">
+                        <td className="px-4 py-3 font-mono text-xs text-slate-600 dark:text-slate-400">{row.assessmentType}</td>
+                        <td className="px-4 py-3 font-semibold text-slate-800 dark:text-slate-200">
                           {row.marksObtained != null ? `${row.marksObtained} / ${row.maxMarks}` : '-'}
                         </td>
-                        <td className="px-4 py-3 text-slate-500 text-xs">{row.semester}</td>
+                        <td className="px-4 py-3 text-slate-500 dark:text-slate-400 text-xs">{row.semester}</td>
                       </>
                     ) : (
                       <>
-                        <td className="px-4 py-3 text-slate-600 text-xs">{row.attendanceDate}</td>
+                        <td className="px-4 py-3 text-slate-600 dark:text-slate-400 text-xs">{row.attendanceDate}</td>
                         <td className="px-4 py-3">
                           <span className={`px-2 py-0.5 rounded text-xs font-semibold ${
-                            row.attendanceStatus === 'PRESENT' ? 'bg-emerald-100 text-emerald-800' :
-                            row.attendanceStatus === 'ABSENT' ? 'bg-rose-100 text-rose-800' : 'bg-amber-100 text-amber-800'
+                            row.attendanceStatus === 'PRESENT' ? 'bg-emerald-100 text-emerald-800 dark:text-emerald-300' :
+                            row.attendanceStatus === 'ABSENT' ? 'bg-rose-100 text-rose-800 dark:text-rose-300' : 'bg-amber-100 text-amber-800 dark:text-amber-300'
                           }`}>
                             {row.attendanceStatus}
                           </span>
@@ -318,25 +318,25 @@ student3@edupulse.local,Web Technologies,2025-10-15,EXCUSED`
       )}
 
       {/* History of Import Batches */}
-      <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm space-y-4">
+      <div className="bg-white/95 dark:bg-[#0F1626]/95 backdrop-blur-xl rounded-2xl border border-slate-200/90 dark:border-slate-800/90 p-6 shadow-sm space-y-4">
         <div className="flex items-center justify-between">
-          <h2 className="text-lg font-bold text-slate-900">Import Batch Audit History</h2>
+          <h2 className="text-lg font-bold text-slate-900 dark:text-slate-100">Import Batch Audit History</h2>
           <button
             onClick={fetchBatches}
-            className="p-1.5 text-slate-400 hover:text-slate-600 rounded-lg hover:bg-slate-100 transition-colors"
+            className="p-1.5 text-slate-400 hover:text-slate-600 dark:text-slate-400 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800/80 dark:bg-slate-800/80 transition-colors"
           >
             <RefreshCw className={`w-4 h-4 ${loadingBatches ? 'animate-spin' : ''}`} />
           </button>
         </div>
 
         {batches.length === 0 ? (
-          <div className="text-center py-8 text-sm text-slate-500">
+          <div className="text-center py-8 text-sm text-slate-500 dark:text-slate-400">
             No previous import batches recorded yet.
           </div>
         ) : (
-          <div className="overflow-x-auto border border-slate-200 rounded-xl">
+          <div className="overflow-x-auto border border-slate-200/90 dark:border-slate-800/90 rounded-xl">
             <table className="w-full text-left text-sm">
-              <thead className="bg-slate-50 text-xs font-semibold text-slate-600 uppercase border-b border-slate-200">
+              <thead className="bg-slate-50 dark:bg-[#080B11]/70 text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase border-b border-slate-200/90 dark:border-slate-800/90">
                 <tr>
                   <th className="px-4 py-3">Batch ID</th>
                   <th className="px-4 py-3">File Name</th>
@@ -349,21 +349,21 @@ student3@edupulse.local,Web Technologies,2025-10-15,EXCUSED`
               </thead>
               <tbody className="divide-y divide-slate-100">
                 {batches.map((b) => (
-                  <tr key={b.id} className="hover:bg-slate-50/60">
-                    <td className="px-4 py-3 font-mono text-xs font-semibold text-slate-700">#{b.id}</td>
-                    <td className="px-4 py-3 text-slate-800 font-medium">{b.fileName}</td>
+                  <tr key={b.id} className="hover:bg-slate-50 dark:hover:bg-slate-800/60/60">
+                    <td className="px-4 py-3 font-mono text-xs font-semibold text-slate-700 dark:text-slate-300">#{b.id}</td>
+                    <td className="px-4 py-3 text-slate-800 dark:text-slate-200 font-medium">{b.fileName}</td>
                     <td className="px-4 py-3">
                       <span className={`px-2 py-0.5 rounded text-xs font-semibold ${
-                        b.status === 'COMPLETED' ? 'bg-emerald-100 text-emerald-800' :
-                        b.status === 'FAILED' ? 'bg-rose-100 text-rose-800' : 'bg-amber-100 text-amber-800'
+                        b.status === 'COMPLETED' ? 'bg-emerald-100 text-emerald-800 dark:text-emerald-300' :
+                        b.status === 'FAILED' ? 'bg-rose-100 text-rose-800 dark:text-rose-300' : 'bg-amber-100 text-amber-800 dark:text-amber-300'
                       }`}>
                         {b.status}
                       </span>
                     </td>
-                    <td className="px-4 py-3 text-slate-600">{b.totalRows}</td>
+                    <td className="px-4 py-3 text-slate-600 dark:text-slate-400">{b.totalRows}</td>
                     <td className="px-4 py-3 font-medium text-emerald-600">{b.successfulRows}</td>
                     <td className="px-4 py-3 font-medium text-rose-600">{b.failedRows}</td>
-                    <td className="px-4 py-3 text-slate-500 text-xs">
+                    <td className="px-4 py-3 text-slate-500 dark:text-slate-400 text-xs">
                       {new Date(b.createdAt).toLocaleString()}
                     </td>
                   </tr>

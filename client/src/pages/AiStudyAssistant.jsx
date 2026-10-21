@@ -100,31 +100,39 @@ export const AiStudyAssistant = () => {
     e?.preventDefault();
     if (!inputText.trim() || sending) return;
 
-    let targetSessionId = activeSessionId;
-    if (!targetSessionId) {
-      const newSessionRes = await studentApi.createChatSession(inputText.trim().substring(0, 25));
-      targetSessionId = newSessionRes.data.id;
-      setSessions([newSessionRes.data, ...sessions]);
-      setActiveSessionId(targetSessionId);
-    }
-
-    const userText = inputText.trim();
+    const userMessage = inputText.trim();
     setInputText('');
 
-    // Optimistic user message update
-    const optimisticMsg = {
+    let currentSessionId = activeSessionId;
+    if (!currentSessionId) {
+      try {
+        const newSessionRes = await studentApi.createChatSession(userMessage.substring(0, 30));
+        if (newSessionRes.success) {
+          currentSessionId = newSessionRes.data.id;
+          setSessions([newSessionRes.data, ...sessions]);
+          setActiveSessionId(currentSessionId);
+        }
+      } catch (err) {
+        alert('Could not start a new chat: ' + err.message);
+        return;
+      }
+    }
+
+    const optimisticMessage = {
       id: Date.now(),
       role: 'USER',
-      content: userText,
+      content: userMessage,
       createdAt: new Date().toISOString(),
     };
-    setMessages((prev) => [...prev, optimisticMsg]);
+    setMessages((prev) => [...prev, optimisticMessage]);
     setSending(true);
 
     try {
-      const res = await studentApi.sendChatMessage(targetSessionId, userText);
+      const res = await studentApi.sendChatMessage(currentSessionId, userMessage);
       if (res.success) {
         setMessages((prev) => [...prev, res.data]);
+      } else {
+        alert(res.message || 'Error communicating with AI assistant.');
       }
     } catch (err) {
       alert(err.message || 'Error communicating with AI assistant.');
@@ -140,27 +148,27 @@ export const AiStudyAssistant = () => {
   return (
     <div className="space-y-6">
       {/* Privacy Notice */}
-      <div className="bg-indigo-50 border border-indigo-200/80 rounded-2xl p-4 flex items-center justify-between text-xs text-indigo-900">
+      <div className="bg-indigo-50/70 dark:bg-indigo-950/40 border border-indigo-200/80 dark:border-indigo-800/80 rounded-2xl p-4 flex items-center justify-between text-xs text-indigo-900 dark:text-indigo-200 shadow-xs">
         <div className="flex items-center gap-2.5">
-          <Shield className="w-4 h-4 text-indigo-600 shrink-0" />
+          <Shield className="w-4 h-4 text-indigo-600 dark:text-indigo-400 shrink-0" />
           <span>
-            <strong>Personalized Context Active:</strong> The assistant reviews your live topic mastery (<code className="font-mono bg-white px-1 py-0.5 rounded text-indigo-700">pKnown</code>) and quiz attempts to customize explanations. Chats are private to your student ID.
+            <strong>Personalized Context Active:</strong> The assistant reviews your live topic mastery (<code className="font-mono bg-white dark:bg-[#080B11] px-1 py-0.5 rounded text-indigo-700 dark:text-indigo-300">pKnown</code>) and quiz attempts to customize explanations. Chats are private to your student ID.
           </span>
         </div>
       </div>
 
-      <div className="bg-white rounded-3xl border border-slate-200/80 shadow-sm overflow-hidden flex h-[680px]">
+      <div className="bg-white/95 dark:bg-[#0F1626]/95 backdrop-blur-xl rounded-3xl border border-slate-200/90 dark:border-slate-800/90 shadow-2xl overflow-hidden flex h-[680px]">
         {/* Left Sidebar: Saved Sessions */}
-        <div className="w-72 border-r border-slate-200 p-4 flex flex-col justify-between shrink-0 bg-slate-50/50">
+        <div className="w-72 border-r border-slate-200 dark:border-slate-800 p-4 flex flex-col justify-between shrink-0 bg-slate-50/50 dark:bg-[#080B11]/70">
           <div className="space-y-3">
             <button
               onClick={handleCreateSession}
-              className="w-full py-2.5 px-3.5 rounded-xl text-xs font-semibold text-white bg-indigo-600 hover:bg-indigo-700 transition-colors flex items-center justify-center gap-2 cursor-pointer shadow-sm shadow-indigo-100"
+              className="w-full py-2.5 px-3.5 rounded-xl text-xs font-bold text-white bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 transition-all flex items-center justify-center gap-2 cursor-pointer shadow-md shadow-indigo-500/25"
             >
               <Plus className="w-4 h-4" /> New Study Chat
             </button>
 
-            <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider block px-2 pt-2">
+            <span className="text-[11px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider block px-2 pt-2">
               Previous Conversations
             </span>
 
@@ -176,14 +184,14 @@ export const AiStudyAssistant = () => {
                     onClick={() => setActiveSessionId(s.id)}
                     className={`w-full text-left p-2.5 rounded-xl text-xs font-medium transition-all flex items-center justify-between group cursor-pointer ${
                       activeSessionId === s.id
-                        ? 'bg-indigo-100/70 text-indigo-900 font-semibold shadow-xs'
-                        : 'text-slate-600 hover:bg-slate-100'
+                        ? 'bg-indigo-100/70 dark:bg-indigo-950/70 text-indigo-900 dark:text-indigo-200 font-bold shadow-xs'
+                        : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800/60'
                     }`}
                   >
                     <span className="truncate pr-2">{s.title}</span>
                     <button
                       onClick={(e) => handleDeleteSession(s.id, e)}
-                      className="opacity-0 group-hover:opacity-100 p-1 hover:text-rose-600 rounded transition-opacity"
+                      className="opacity-0 group-hover:opacity-100 p-1 hover:text-rose-600 dark:hover:text-rose-400 rounded transition-opacity"
                       title="Delete chat"
                     >
                       <Trash2 className="w-3.5 h-3.5" />
@@ -196,17 +204,17 @@ export const AiStudyAssistant = () => {
         </div>
 
         {/* Right Main Chat Window */}
-        <div className="flex-1 flex flex-col justify-between bg-white">
+        <div className="flex-1 flex flex-col justify-between bg-white dark:bg-[#0F1626]">
           {/* Chat Messages Body */}
           <div className="flex-1 p-6 overflow-y-auto space-y-4">
             {messages.length === 0 && !loadingMessages ? (
               <div className="h-full flex flex-col items-center justify-center text-center p-8 space-y-4">
-                <div className="w-14 h-14 bg-indigo-50 text-indigo-600 rounded-3xl flex items-center justify-center shadow-inner">
+                <div className="w-14 h-14 bg-indigo-50 dark:bg-indigo-950/60 border border-indigo-200 dark:border-indigo-800 text-indigo-600 dark:text-indigo-400 rounded-3xl flex items-center justify-center shadow-inner">
                   <Bot className="w-7 h-7" />
                 </div>
                 <div>
-                  <h3 className="text-base font-bold text-slate-900">How can I help you study today?</h3>
-                  <p className="text-xs text-slate-500 max-w-sm mt-1">
+                  <h3 className="text-base font-bold text-slate-900 dark:text-slate-100">How can I help you study today?</h3>
+                  <p className="text-xs text-slate-500 dark:text-slate-400 max-w-sm mt-1">
                     Ask me to explain difficult algorithms, clarify misconceptions from your recent quizzes, or break down foundational prerequisites.
                   </p>
                 </div>
@@ -215,19 +223,19 @@ export const AiStudyAssistant = () => {
                 <div className="flex flex-wrap gap-2 justify-center max-w-md pt-2">
                   <button
                     onClick={() => handleSuggestedPrompt('Why is search in an unbalanced BST O(n)?')}
-                    className="text-xs bg-slate-50 hover:bg-indigo-50 border border-slate-200 text-slate-700 px-3 py-1.5 rounded-full transition-colors cursor-pointer"
+                    className="text-xs bg-slate-50 dark:bg-[#080B11]/70 hover:bg-indigo-50 dark:hover:bg-indigo-950/60 border border-slate-200/80 dark:border-slate-800 text-slate-700 dark:text-slate-300 px-3 py-1.5 rounded-full transition-colors cursor-pointer"
                   >
                     🌲 Why is search in an unbalanced BST O(n)?
                   </button>
                   <button
                     onClick={() => handleSuggestedPrompt('What are my identified weak topics and how should I practice?')}
-                    className="text-xs bg-slate-50 hover:bg-indigo-50 border border-slate-200 text-slate-700 px-3 py-1.5 rounded-full transition-colors cursor-pointer"
+                    className="text-xs bg-slate-50 dark:bg-[#080B11]/70 hover:bg-indigo-50 dark:hover:bg-indigo-950/60 border border-slate-200/80 dark:border-slate-800 text-slate-700 dark:text-slate-300 px-3 py-1.5 rounded-full transition-colors cursor-pointer"
                   >
                     🎯 What are my current weak topics?
                   </button>
                   <button
                     onClick={() => handleSuggestedPrompt('Explain 3NF database normalization with a clear college example.')}
-                    className="text-xs bg-slate-50 hover:bg-indigo-50 border border-slate-200 text-slate-700 px-3 py-1.5 rounded-full transition-colors cursor-pointer"
+                    className="text-xs bg-slate-50 dark:bg-[#080B11]/70 hover:bg-indigo-50 dark:hover:bg-indigo-950/60 border border-slate-200/80 dark:border-slate-800 text-slate-700 dark:text-slate-300 px-3 py-1.5 rounded-full transition-colors cursor-pointer"
                   >
                     🗄️ Explain 3NF database normalization
                   </button>
@@ -241,8 +249,8 @@ export const AiStudyAssistant = () => {
                     <div
                       className={`w-8 h-8 rounded-xl flex items-center justify-center shrink-0 text-xs font-bold ${
                         isUser
-                          ? 'bg-indigo-600 text-white'
-                          : 'bg-indigo-100 text-indigo-700'
+                          ? 'bg-gradient-to-br from-indigo-600 to-violet-600 text-white shadow-xs'
+                          : 'bg-indigo-100 dark:bg-indigo-950/80 text-indigo-700 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-800'
                       }`}
                     >
                       {isUser ? <User className="w-4 h-4" /> : <Bot className="w-4 h-4" />}
@@ -251,8 +259,8 @@ export const AiStudyAssistant = () => {
                     <div
                       className={`max-w-[75%] p-4 rounded-2xl text-xs leading-relaxed space-y-2 whitespace-pre-wrap ${
                         isUser
-                          ? 'bg-indigo-600 text-white rounded-tr-none'
-                          : 'bg-slate-50 border border-slate-200/80 text-slate-800 rounded-tl-none shadow-xs'
+                          ? 'bg-gradient-to-r from-indigo-600 to-violet-600 text-white rounded-tr-none shadow-md shadow-indigo-500/20'
+                          : 'bg-slate-50 dark:bg-[#080B11]/80 border border-slate-200/80 dark:border-slate-800 text-slate-800 dark:text-slate-200 rounded-tl-none shadow-xs'
                       }`}
                     >
                       {m.content}
@@ -264,10 +272,10 @@ export const AiStudyAssistant = () => {
 
             {sending && (
               <div className="flex items-center gap-3">
-                <div className="w-8 h-8 rounded-xl bg-indigo-100 text-indigo-700 flex items-center justify-center shrink-0">
+                <div className="w-8 h-8 rounded-xl bg-indigo-100 dark:bg-indigo-950/80 text-indigo-700 dark:text-indigo-300 flex items-center justify-center shrink-0">
                   <Bot className="w-4 h-4" />
                 </div>
-                <div className="bg-slate-50 border border-slate-200/80 rounded-2xl p-3 text-xs text-slate-500 flex items-center gap-2">
+                <div className="bg-slate-50 dark:bg-[#080B11]/80 border border-slate-200/80 dark:border-slate-800 rounded-2xl p-3 text-xs text-slate-500 dark:text-slate-400 flex items-center gap-2">
                   <Sparkles className="w-3.5 h-3.5 text-indigo-600 animate-spin" />
                   <span>Synthesizing pedagogical explanation...</span>
                 </div>
@@ -277,18 +285,18 @@ export const AiStudyAssistant = () => {
           </div>
 
           {/* Chat Input Bar */}
-          <form onSubmit={handleSendMessage} className="p-4 border-t border-slate-200 bg-slate-50/50 flex items-center gap-2">
+          <form onSubmit={handleSendMessage} className="p-4 border-t border-slate-200/80 dark:border-slate-800 bg-slate-50/50 dark:bg-[#080B11]/70 flex items-center gap-2">
             <input
               type="text"
               value={inputText}
               onChange={(e) => setInputText(e.target.value)}
               placeholder="Ask a question about your courses, topics, or quiz errors..."
-              className="flex-1 py-2.5 px-4 bg-white border border-slate-200 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all shadow-xs"
+              className="flex-1 py-2.5 px-4 bg-white dark:bg-[#0F1626] border border-slate-200 dark:border-slate-700 rounded-xl text-xs text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all shadow-xs"
             />
             <button
               type="submit"
               disabled={sending || !inputText.trim()}
-              className="p-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl transition-colors disabled:opacity-40 cursor-pointer shadow-sm shadow-indigo-100"
+              className="p-2.5 bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white rounded-xl transition-all disabled:opacity-40 cursor-pointer shadow-md shadow-indigo-500/25"
             >
               <Send className="w-4 h-4" />
             </button>

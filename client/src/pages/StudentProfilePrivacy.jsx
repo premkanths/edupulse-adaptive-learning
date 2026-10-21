@@ -164,15 +164,15 @@ export const StudentProfilePrivacy = () => {
     <div className="space-y-8">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold text-slate-900 tracking-tight">Student Academic Hub & Privacy Controls</h1>
-        <p className="text-slate-500 text-sm mt-1">
+        <h1 className="text-2xl font-bold text-slate-900 dark:text-slate-100 tracking-tight">Student Academic Hub & Privacy Controls</h1>
+        <p className="text-slate-500 dark:text-slate-400 text-sm mt-1">
           Review your institutional marks, weekly progress digests, external coding portfolios, and GDPR/FERPA privacy rights.
         </p>
       </div>
 
       {notification && (
         <div className={`p-4 rounded-xl flex items-center gap-3 text-sm font-medium ${
-          notification.type === 'success' ? 'bg-emerald-50 text-emerald-800 border border-emerald-200' : 'bg-rose-50 text-rose-800 border border-rose-200'
+          notification.type === 'success' ? 'bg-emerald-50 dark:bg-emerald-950/50 text-emerald-800 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800/80' : 'bg-rose-50 dark:bg-rose-950/50 text-rose-800 dark:text-rose-300 border border-rose-200 dark:border-rose-800/80'
         }`}>
           <CheckCircle className="w-5 h-5 text-emerald-600" />
           {notification.message}
@@ -180,7 +180,7 @@ export const StudentProfilePrivacy = () => {
       )}
 
       {/* Tabs */}
-      <div className="flex items-center gap-2 border-b border-slate-200 overflow-x-auto pb-2">
+      <div className="flex items-center gap-2 border-b border-slate-200/90 dark:border-slate-800/90 overflow-x-auto pb-2">
         {[
           { id: 'ACADEMIC', label: 'Academic & Attendance', icon: FileText },
           { id: 'WEEKLY', label: 'Weekly Summaries', icon: Mail },
@@ -196,7 +196,7 @@ export const StudentProfilePrivacy = () => {
               className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold transition-all whitespace-nowrap ${
                 activeTab === tab.id
                   ? 'bg-indigo-600 text-white shadow-sm'
-                  : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
+                  : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 dark:text-slate-100 hover:bg-slate-100 dark:hover:bg-slate-800/80 dark:bg-slate-800/80'
               }`}
             >
               <Icon className="w-4 h-4" />
@@ -210,22 +210,22 @@ export const StudentProfilePrivacy = () => {
       {activeTab === 'ACADEMIC' && (
         <div className="space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-            <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
-              <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Attendance Rate</p>
-              <p className="text-3xl font-black text-indigo-600 mt-2">
+            <div className="bg-white/95 dark:bg-[#0F1626]/95 backdrop-blur-xl p-5 rounded-2xl border border-slate-200/90 dark:border-slate-800/90 shadow-sm">
+              <p className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Attendance Rate</p>
+              <p className="text-3xl font-black text-indigo-600 dark:text-indigo-400 mt-2">
                 {academicData?.attendancePercentage != null ? `${academicData.attendancePercentage}%` : '100%'}
               </p>
               <p className="text-xs text-slate-400 mt-1">Based on {academicData?.totalAttendanceClasses || 0} class sessions</p>
             </div>
-            <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
-              <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Institutional Marks Avg</p>
+            <div className="bg-white/95 dark:bg-[#0F1626]/95 backdrop-blur-xl p-5 rounded-2xl border border-slate-200/90 dark:border-slate-800/90 shadow-sm">
+              <p className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Institutional Marks Avg</p>
               <p className="text-3xl font-black text-emerald-600 mt-2">
                 {academicData?.averageMarksPercentage != null ? `${academicData.averageMarksPercentage}%` : '85%'}
               </p>
               <p className="text-xs text-slate-400 mt-1">Across {academicData?.totalAssessments || 0} formal assessments</p>
             </div>
-            <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
-              <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Academic Risk Level</p>
+            <div className="bg-white/95 dark:bg-[#0F1626]/95 backdrop-blur-xl p-5 rounded-2xl border border-slate-200/90 dark:border-slate-800/90 shadow-sm">
+              <p className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Academic Risk Level</p>
               <p className={`text-xl font-black mt-2 ${
                 riskStatus?.riskLevel === 'HIGH' ? 'text-rose-600' : riskStatus?.riskLevel === 'MODERATE' ? 'text-amber-600' : 'text-emerald-600'
               }`}>
@@ -233,22 +233,22 @@ export const StudentProfilePrivacy = () => {
               </p>
               <p className="text-xs text-slate-400 mt-1">Continuous self-monitoring</p>
             </div>
-            <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
-              <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Status</p>
-              <p className="text-xl font-bold text-slate-800 mt-2">Active Enrolled</p>
+            <div className="bg-white/95 dark:bg-[#0F1626]/95 backdrop-blur-xl p-5 rounded-2xl border border-slate-200/90 dark:border-slate-800/90 shadow-sm">
+              <p className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Status</p>
+              <p className="text-xl font-bold text-slate-800 dark:text-slate-200 mt-2">Active Enrolled</p>
               <p className="text-xs text-slate-400 mt-1">Academic Year 2025-2026</p>
             </div>
           </div>
 
           {/* Marks Table */}
-          <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm space-y-4">
-            <h3 className="text-base font-bold text-slate-900">Institutional Examination & Assessment Records</h3>
+          <div className="bg-white/95 dark:bg-[#0F1626]/95 backdrop-blur-xl rounded-2xl border border-slate-200/90 dark:border-slate-800/90 p-6 shadow-sm space-y-4">
+            <h3 className="text-base font-bold text-slate-900 dark:text-slate-100">Institutional Examination & Assessment Records</h3>
             {academicData?.marksRecords?.length === 0 ? (
-              <p className="text-sm text-slate-500 py-4">No examination marks imported yet.</p>
+              <p className="text-sm text-slate-500 dark:text-slate-400 py-4">No examination marks imported yet.</p>
             ) : (
-              <div className="overflow-x-auto border border-slate-200 rounded-xl">
+              <div className="overflow-x-auto border border-slate-200/90 dark:border-slate-800/90 rounded-xl">
                 <table className="w-full text-left text-sm">
-                  <thead className="bg-slate-50 text-xs font-semibold text-slate-600 uppercase border-b border-slate-200">
+                  <thead className="bg-slate-50 dark:bg-[#080B11]/70 text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase border-b border-slate-200/90 dark:border-slate-800/90">
                     <tr>
                       <th className="px-4 py-3">Subject</th>
                       <th className="px-4 py-3">Assessment</th>
@@ -261,17 +261,17 @@ export const StudentProfilePrivacy = () => {
                   </thead>
                   <tbody className="divide-y divide-slate-100">
                     {academicData?.marksRecords?.map((m) => (
-                      <tr key={m.id} className="hover:bg-slate-50/60">
-                        <td className="px-4 py-3 font-medium text-slate-900">{m.subject?.name}</td>
-                        <td className="px-4 py-3 font-mono text-xs text-slate-700">{m.assessmentName}</td>
-                        <td className="px-4 py-3 font-semibold text-indigo-700">{m.marksObtained}</td>
-                        <td className="px-4 py-3 text-slate-600">{m.maximumMarks}</td>
-                        <td className="px-4 py-3 font-bold text-slate-800">
+                      <tr key={m.id} className="hover:bg-slate-50 dark:hover:bg-slate-800/60/60">
+                        <td className="px-4 py-3 font-medium text-slate-900 dark:text-slate-100">{m.subject?.name}</td>
+                        <td className="px-4 py-3 font-mono text-xs text-slate-700 dark:text-slate-300">{m.assessmentName}</td>
+                        <td className="px-4 py-3 font-semibold text-indigo-700 dark:text-indigo-300">{m.marksObtained}</td>
+                        <td className="px-4 py-3 text-slate-600 dark:text-slate-400">{m.maximumMarks}</td>
+                        <td className="px-4 py-3 font-bold text-slate-800 dark:text-slate-200">
                           {Math.round((m.marksObtained / m.maximumMarks) * 100)}%
                         </td>
-                        <td className="px-4 py-3 text-slate-500 text-xs">{m.assessmentDate}</td>
+                        <td className="px-4 py-3 text-slate-500 dark:text-slate-400 text-xs">{m.assessmentDate}</td>
                         <td className="px-4 py-3 text-xs">
-                          <span className="px-2 py-0.5 rounded bg-slate-100 text-slate-600 font-mono">
+                          <span className="px-2 py-0.5 rounded bg-slate-100 dark:bg-slate-800/80 text-slate-600 dark:text-slate-400 font-mono">
                             {m.source}
                           </span>
                         </td>
@@ -289,25 +289,25 @@ export const StudentProfilePrivacy = () => {
       {activeTab === 'WEEKLY' && (
         <div className="space-y-6">
           <div className="flex items-center justify-between">
-            <h2 className="text-lg font-bold text-slate-900">Your Weekly Adaptive Learning Summaries</h2>
-            <span className="text-xs text-slate-500">Automatically generated every Monday at 6:00 AM</span>
+            <h2 className="text-lg font-bold text-slate-900 dark:text-slate-100">Your Weekly Adaptive Learning Summaries</h2>
+            <span className="text-xs text-slate-500 dark:text-slate-400">Automatically generated every Monday at 6:00 AM</span>
           </div>
 
           {weeklySummaries.length === 0 ? (
-            <div className="bg-white rounded-2xl border border-slate-200 p-8 text-center text-slate-500">
+            <div className="bg-white/95 dark:bg-[#0F1626]/95 backdrop-blur-xl rounded-2xl border border-slate-200/90 dark:border-slate-800/90 p-8 text-center text-slate-500 dark:text-slate-400">
               No weekly summaries generated yet. Complete quizzes to receive your Monday progress report!
             </div>
           ) : (
             weeklySummaries.map((summary) => (
-              <div key={summary.id} className="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm space-y-4">
-                <div className="flex items-center justify-between border-b border-slate-100 pb-3">
+              <div key={summary.id} className="bg-white/95 dark:bg-[#0F1626]/95 backdrop-blur-xl rounded-2xl border border-slate-200/90 dark:border-slate-800/90 p-6 shadow-sm space-y-4">
+                <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-800/80 pb-3">
                   <div className="flex items-center gap-2">
-                    <Calendar className="w-4 h-4 text-indigo-600" />
-                    <span className="text-sm font-bold text-slate-900">Week of {summary.weekStart}</span>
+                    <Calendar className="w-4 h-4 text-indigo-600 dark:text-indigo-400" />
+                    <span className="text-sm font-bold text-slate-900 dark:text-slate-100">Week of {summary.weekStart}</span>
                   </div>
                   <span className="text-xs text-slate-400">Dispatched: {new Date(summary.emailedAt).toLocaleDateString()}</span>
                 </div>
-                <div className="prose prose-sm max-w-none text-slate-700 whitespace-pre-line font-sans text-xs leading-relaxed">
+                <div className="prose prose-sm max-w-none text-slate-700 dark:text-slate-300 whitespace-pre-line font-sans text-xs leading-relaxed">
                   {summary.content}
                 </div>
               </div>
@@ -319,19 +319,19 @@ export const StudentProfilePrivacy = () => {
       {/* TAB 3: EXTERNAL CODING PROFILES */}
       {activeTab === 'EXTERNAL' && (
         <div className="space-y-6">
-          <p className="text-sm text-slate-600">
+          <p className="text-sm text-slate-600 dark:text-slate-400">
             Connect your public developer and competitive programming profiles to enrich your academic portfolio.
           </p>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {/* GitHub Card */}
-            <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm space-y-4">
+            <div className="bg-white/95 dark:bg-[#0F1626]/95 backdrop-blur-xl rounded-2xl border border-slate-200/90 dark:border-slate-800/90 p-6 shadow-sm space-y-4">
               <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2 text-slate-900 font-bold">
+                <div className="flex items-center gap-2 text-slate-900 dark:text-slate-100 font-bold">
                   <Github className="w-5 h-5" /> GitHub
                 </div>
                 {externalProfiles.find(p => p.platform === 'GITHUB') && (
-                  <span className="text-xs font-semibold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
+                  <span className="text-xs font-semibold text-emerald-600 bg-emerald-50 dark:bg-emerald-950/50 px-2 py-0.5 rounded-full border border-emerald-200 dark:border-emerald-800/80">
                     Linked
                   </span>
                 )}
@@ -343,7 +343,7 @@ export const StudentProfilePrivacy = () => {
                   placeholder="GitHub username"
                   value={githubUser}
                   onChange={(e) => setGithubUser(e.target.value)}
-                  className="w-full text-xs p-2.5 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-indigo-500"
+                  className="w-full text-xs p-2.5 border border-slate-200/90 dark:border-slate-800/90 rounded-xl outline-none focus:ring-2 focus:ring-indigo-500"
                 />
                 <button
                   onClick={() => handleLinkProfile('GITHUB', githubUser)}
@@ -360,11 +360,11 @@ export const StudentProfilePrivacy = () => {
                 const snap = p ? parseSnapshot(p.snapshotJson) : null;
                 if (!snap) return null;
                 return (
-                  <div className="p-3 bg-slate-50 rounded-xl border border-slate-200 text-xs space-y-1.5 text-slate-700">
+                  <div className="p-3 bg-slate-50 dark:bg-[#080B11]/70 rounded-xl border border-slate-200/90 dark:border-slate-800/90 text-xs space-y-1.5 text-slate-700 dark:text-slate-300">
                     <p><strong>Public Repos:</strong> {snap.publicRepos}</p>
                     <p><strong>Followers:</strong> {snap.followers}</p>
                     {snap.topLanguages && <p><strong>Languages:</strong> {snap.topLanguages.join(', ')}</p>}
-                    <a href={snap.profileUrl} target="_blank" rel="noreferrer" className="text-indigo-600 flex items-center gap-1 font-semibold text-[11px] pt-1">
+                    <a href={snap.profileUrl} target="_blank" rel="noreferrer" className="text-indigo-600 dark:text-indigo-400 flex items-center gap-1 font-semibold text-[11px] pt-1">
                       View Profile <ExternalLink className="w-3 h-3" />
                     </a>
                   </div>
@@ -373,13 +373,13 @@ export const StudentProfilePrivacy = () => {
             </div>
 
             {/* LeetCode Card */}
-            <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm space-y-4">
+            <div className="bg-white/95 dark:bg-[#0F1626]/95 backdrop-blur-xl rounded-2xl border border-slate-200/90 dark:border-slate-800/90 p-6 shadow-sm space-y-4">
               <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2 text-slate-900 font-bold">
+                <div className="flex items-center gap-2 text-slate-900 dark:text-slate-100 font-bold">
                   <Code2 className="w-5 h-5 text-amber-500" /> LeetCode
                 </div>
                 {externalProfiles.find(p => p.platform === 'LEETCODE') && (
-                  <span className="text-xs font-semibold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
+                  <span className="text-xs font-semibold text-emerald-600 bg-emerald-50 dark:bg-emerald-950/50 px-2 py-0.5 rounded-full border border-emerald-200 dark:border-emerald-800/80">
                     Linked
                   </span>
                 )}
@@ -391,7 +391,7 @@ export const StudentProfilePrivacy = () => {
                   placeholder="LeetCode username"
                   value={leetcodeUser}
                   onChange={(e) => setLeetcodeUser(e.target.value)}
-                  className="w-full text-xs p-2.5 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-indigo-500"
+                  className="w-full text-xs p-2.5 border border-slate-200/90 dark:border-slate-800/90 rounded-xl outline-none focus:ring-2 focus:ring-indigo-500"
                 />
                 <button
                   onClick={() => handleLinkProfile('LEETCODE', leetcodeUser)}
@@ -408,11 +408,11 @@ export const StudentProfilePrivacy = () => {
                 const snap = p ? parseSnapshot(p.snapshotJson) : null;
                 if (!snap) return null;
                 return (
-                  <div className="p-3 bg-amber-50/50 rounded-xl border border-amber-200 text-xs space-y-1.5 text-slate-700">
-                    <p><strong>Total Solved:</strong> <span className="font-bold text-amber-700">{snap.totalSolved}</span></p>
-                    <p className="text-[11px] text-slate-500">Easy: {snap.easySolved} | Medium: {snap.mediumSolved} | Hard: {snap.hardSolved}</p>
+                  <div className="p-3 bg-amber-50/50 rounded-xl border border-amber-200 dark:border-amber-800/80 text-xs space-y-1.5 text-slate-700 dark:text-slate-300">
+                    <p><strong>Total Solved:</strong> <span className="font-bold text-amber-700 dark:text-amber-300">{snap.totalSolved}</span></p>
+                    <p className="text-[11px] text-slate-500 dark:text-slate-400">Easy: {snap.easySolved} | Medium: {snap.mediumSolved} | Hard: {snap.hardSolved}</p>
                     {snap.acceptanceRate && <p><strong>Acceptance Rate:</strong> {snap.acceptanceRate}%</p>}
-                    <a href={snap.profileUrl} target="_blank" rel="noreferrer" className="text-amber-700 flex items-center gap-1 font-semibold text-[11px] pt-1">
+                    <a href={snap.profileUrl} target="_blank" rel="noreferrer" className="text-amber-700 dark:text-amber-300 flex items-center gap-1 font-semibold text-[11px] pt-1">
                       View Profile <ExternalLink className="w-3 h-3" />
                     </a>
                   </div>
@@ -421,13 +421,13 @@ export const StudentProfilePrivacy = () => {
             </div>
 
             {/* HackerRank Card */}
-            <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm space-y-4">
+            <div className="bg-white/95 dark:bg-[#0F1626]/95 backdrop-blur-xl rounded-2xl border border-slate-200/90 dark:border-slate-800/90 p-6 shadow-sm space-y-4">
               <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2 text-slate-900 font-bold">
+                <div className="flex items-center gap-2 text-slate-900 dark:text-slate-100 font-bold">
                   <Award className="w-5 h-5 text-emerald-600" /> HackerRank
                 </div>
                 {externalProfiles.find(p => p.platform === 'HACKERRANK') && (
-                  <span className="text-xs font-semibold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
+                  <span className="text-xs font-semibold text-emerald-600 bg-emerald-50 dark:bg-emerald-950/50 px-2 py-0.5 rounded-full border border-emerald-200 dark:border-emerald-800/80">
                     Linked
                   </span>
                 )}
@@ -439,7 +439,7 @@ export const StudentProfilePrivacy = () => {
                   placeholder="HackerRank username"
                   value={hackerrankUser}
                   onChange={(e) => setHackerrankUser(e.target.value)}
-                  className="w-full text-xs p-2.5 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-indigo-500"
+                  className="w-full text-xs p-2.5 border border-slate-200/90 dark:border-slate-800/90 rounded-xl outline-none focus:ring-2 focus:ring-indigo-500"
                 />
                 <button
                   onClick={() => handleLinkProfile('HACKERRANK', hackerrankUser)}
@@ -456,12 +456,12 @@ export const StudentProfilePrivacy = () => {
                 const snap = p ? parseSnapshot(p.snapshotJson) : null;
                 if (!snap) return null;
                 return (
-                  <div className="p-3 bg-emerald-50/50 rounded-xl border border-emerald-200 text-xs space-y-1.5 text-slate-700">
+                  <div className="p-3 bg-emerald-50/50 rounded-xl border border-emerald-200 dark:border-emerald-800/80 text-xs space-y-1.5 text-slate-700 dark:text-slate-300">
                     <p><strong>Badges:</strong></p>
                     <ul className="list-disc pl-4 space-y-0.5 text-[11px]">
                       {snap.badges?.map((b, i) => <li key={i}>{b}</li>)}
                     </ul>
-                    <a href={snap.profileUrl} target="_blank" rel="noreferrer" className="text-emerald-700 flex items-center gap-1 font-semibold text-[11px] pt-1">
+                    <a href={snap.profileUrl} target="_blank" rel="noreferrer" className="text-emerald-700 dark:text-emerald-300 flex items-center gap-1 font-semibold text-[11px] pt-1">
                       View Profile <ExternalLink className="w-3 h-3" />
                     </a>
                   </div>
@@ -474,10 +474,10 @@ export const StudentProfilePrivacy = () => {
 
       {/* TAB 4: RESEARCH FEEDBACK SURVEY */}
       {activeTab === 'SURVEY' && (
-        <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm space-y-6">
-          <div className="border-b border-slate-100 pb-4">
-            <h2 className="text-lg font-bold text-slate-900">EduPulse Platform Research Feedback Survey</h2>
-            <p className="text-xs text-slate-500 mt-1">
+        <div className="bg-white/95 dark:bg-[#0F1626]/95 backdrop-blur-xl rounded-2xl border border-slate-200/90 dark:border-slate-800/90 p-6 shadow-sm space-y-6">
+          <div className="border-b border-slate-100 dark:border-slate-800/80 pb-4">
+            <h2 className="text-lg font-bold text-slate-900 dark:text-slate-100">EduPulse Platform Research Feedback Survey</h2>
+            <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
               Your empirical ratings help evaluate the Bayesian Knowledge Tracing model, explainability clarity, and AI assistant usability for research publication.
             </p>
           </div>
@@ -491,7 +491,7 @@ export const StudentProfilePrivacy = () => {
               { key: 'q5AiUsefulness', question: '5. How helpful was the AI study assistant in resolving your specific conceptual doubts?' }
             ].map(({ key, question }) => (
               <div key={key} className="space-y-2">
-                <label className="text-xs font-semibold text-slate-800 block">{question}</label>
+                <label className="text-xs font-semibold text-slate-800 dark:text-slate-200 block">{question}</label>
                 <div className="flex items-center gap-2">
                   {[1, 2, 3, 4, 5].map((score) => (
                     <button
@@ -501,7 +501,7 @@ export const StudentProfilePrivacy = () => {
                       className={`w-12 h-10 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-1 ${
                         surveyForm[key] === score
                           ? 'bg-indigo-600 text-white shadow-sm'
-                          : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
+                          : 'bg-slate-100 dark:bg-slate-800/80 text-slate-700 dark:text-slate-300 hover:bg-slate-200'
                       }`}
                     >
                       <Star className={`w-3 h-3 ${surveyForm[key] === score ? 'fill-white' : ''}`} />
@@ -516,7 +516,7 @@ export const StudentProfilePrivacy = () => {
             ))}
 
             <div className="space-y-1">
-              <label className="text-xs font-semibold text-slate-800 block">
+              <label className="text-xs font-semibold text-slate-800 dark:text-slate-200 block">
                 Additional Qualitative Comments (Optional):
               </label>
               <textarea
@@ -524,14 +524,14 @@ export const StudentProfilePrivacy = () => {
                 value={surveyForm.comments}
                 onChange={(e) => setSurveyForm({ ...surveyForm, comments: e.target.value })}
                 placeholder="Share your thoughts on the adaptive recommendations, quiz pacing, or suggestions for improvement..."
-                className="w-full text-xs p-3 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-indigo-500"
+                className="w-full text-xs p-3 border border-slate-200/90 dark:border-slate-800/90 rounded-xl outline-none focus:ring-2 focus:ring-indigo-500"
               />
             </div>
 
             <button
               type="submit"
               disabled={submittingSurvey}
-              className="px-6 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-semibold shadow-sm transition-all flex items-center gap-2"
+              className="px-6 py-2.5 bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white shadow-md shadow-indigo-500/25 rounded-xl text-xs font-semibold shadow-sm transition-all flex items-center gap-2"
             >
               {submittingSurvey ? <RefreshCw className="w-4 h-4 animate-spin" /> : <CheckCircle className="w-4 h-4" />}
               {survey ? 'Update Research Survey Submission' : 'Submit Survey Feedback'}
@@ -544,36 +544,36 @@ export const StudentProfilePrivacy = () => {
       {activeTab === 'PRIVACY' && (
         <div className="space-y-6">
           {/* Consent Setting Card */}
-          <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm space-y-4">
-            <div className="flex items-center justify-between border-b border-slate-100 pb-4">
+          <div className="bg-white/95 dark:bg-[#0F1626]/95 backdrop-blur-xl rounded-2xl border border-slate-200/90 dark:border-slate-800/90 p-6 shadow-sm space-y-4">
+            <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-800/80 pb-4">
               <div>
-                <h3 className="text-base font-bold text-slate-900">Privacy & Research Data Sharing Consent</h3>
-                <p className="text-xs text-slate-500 mt-0.5">Policy Version 1.0 (FERPA & GDPR Compliant)</p>
+                <h3 className="text-base font-bold text-slate-900 dark:text-slate-100">Privacy & Research Data Sharing Consent</h3>
+                <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Policy Version 1.0 (FERPA & GDPR Compliant)</p>
               </div>
               <button
                 onClick={handleToggleConsent}
                 className={`px-4 py-2 rounded-xl text-xs font-bold transition-all ${
                   consent?.consentStatus === 'GRANTED'
-                    ? 'bg-emerald-100 text-emerald-800 border border-emerald-300'
-                    : 'bg-rose-100 text-rose-800 border border-rose-300'
+                    ? 'bg-emerald-100 text-emerald-800 dark:text-emerald-300 border border-emerald-300'
+                    : 'bg-rose-100 text-rose-800 dark:text-rose-300 border border-rose-300'
                 }`}
               >
                 Consent: {consent?.consentStatus || 'GRANTED'}
               </button>
             </div>
 
-            <p className="text-xs text-slate-600 leading-relaxed">
+            <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
               When enabled, your anonymized quiz attempt counts, Bayesian Knowledge Tracing topic accuracy scores, and feedback survey ratings may be incorporated into empirical research benchmarks. No personally identifying information (name, email) is ever disclosed in public findings.
             </p>
           </div>
 
           {/* Right to be Forgotten (Data Deletion) */}
-          <div className="bg-rose-50/40 rounded-2xl border border-rose-200 p-6 shadow-sm space-y-4">
+          <div className="bg-rose-50/40 rounded-2xl border border-rose-200 dark:border-rose-800/80 p-6 shadow-sm space-y-4">
             <div className="flex items-start gap-3">
               <AlertTriangle className="w-5 h-5 text-rose-600 shrink-0 mt-0.5" />
               <div>
                 <h3 className="text-base font-bold text-rose-900">Right to be Forgotten (Account Deletion & Data Purge)</h3>
-                <p className="text-xs text-rose-700 mt-1 leading-relaxed">
+                <p className="text-xs text-rose-700 dark:text-rose-300 mt-1 leading-relaxed">
                   In compliance with GDPR Article 17 and institutional privacy safeguards, you may request permanent anonymization of your personal data. This irreversibly purges your AI chat history, unlinks external coding accounts, and anonymizes your student profile.
                 </p>
               </div>
@@ -595,15 +595,15 @@ export const StudentProfilePrivacy = () => {
       {/* Confirmation Modal */}
       {showDeleteModal && (
         <div className="fixed inset-0 z-50 bg-slate-900/50 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl border border-slate-200 space-y-4">
-            <h3 className="text-lg font-bold text-slate-900">Confirm Data Erasure</h3>
-            <p className="text-xs text-slate-600 leading-relaxed">
+          <div className="bg-white/95 dark:bg-[#0F1626]/95 backdrop-blur-xl rounded-2xl max-w-md w-full p-6 shadow-2xl border border-slate-200/90 dark:border-slate-800/90 space-y-4">
+            <h3 className="text-lg font-bold text-slate-900 dark:text-slate-100">Confirm Data Erasure</h3>
+            <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
               Are you sure you want to permanently purge your private AI chat history and anonymize your account? This action cannot be undone.
             </p>
             <div className="flex justify-end gap-3 pt-2">
               <button
                 onClick={() => setShowDeleteModal(false)}
-                className="px-4 py-2 border border-slate-200 rounded-xl text-xs font-semibold text-slate-600 hover:bg-slate-50"
+                className="px-4 py-2 border border-slate-200/90 dark:border-slate-800/90 rounded-xl text-xs font-semibold text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800/60 dark:bg-[#080B11]/70"
               >
                 Cancel
               </button>

@@ -38,30 +38,49 @@ export const StudentSubjects = () => {
   }
 
   const getMasteryColor = (p) => {
-    if (p >= 0.80) return { bar: 'bg-emerald-500', text: 'text-emerald-700', bg: 'bg-emerald-50', label: 'Strong Mastery' };
-    if (p >= 0.50) return { bar: 'bg-amber-500', text: 'text-amber-700', bg: 'bg-amber-50', label: 'Developing' };
-    return { bar: 'bg-rose-500', text: 'text-rose-700', bg: 'bg-rose-50', label: 'Weak (Action Needed)' };
+    if (p >= 0.80) {
+      return {
+        bar: 'bg-emerald-500',
+        text: 'text-emerald-700 dark:text-emerald-300',
+        bg: 'bg-emerald-50 dark:bg-emerald-950/50 border border-emerald-200 dark:border-emerald-800',
+        label: 'Strong Mastery'
+      };
+    }
+    if (p >= 0.50) {
+      return {
+        bar: 'bg-amber-500',
+        text: 'text-amber-700 dark:text-amber-300',
+        bg: 'bg-amber-50 dark:bg-amber-950/50 border border-amber-200 dark:border-amber-800',
+        label: 'Developing'
+      };
+    }
+    return {
+      bar: 'bg-rose-500',
+      text: 'text-rose-700 dark:text-rose-300',
+      bg: 'bg-rose-50 dark:bg-rose-950/50 border border-rose-200 dark:border-rose-800',
+      label: 'Weak (Action Needed)'
+    };
   };
 
   return (
     <div className="space-y-8">
       <div>
-        <h1 className="text-2xl font-bold text-slate-900">Enrolled Subjects & Topic Mastery</h1>
-        <p className="text-sm text-slate-500 mt-1">
-          Each topic is dynamically tracked using Bayesian Knowledge Tracing (BKT) to estimate your true probability of mastery (<code className="bg-slate-100 px-1 py-0.5 rounded text-indigo-600 font-mono text-xs">pKnown</code>).
+        <h1 className="text-2xl font-black text-slate-900 dark:text-slate-100 tracking-tight">Enrolled Subjects &amp; Topic Mastery</h1>
+        <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">
+          Each topic is dynamically tracked using Bayesian Knowledge Tracing (BKT) to estimate your true probability of mastery (<code className="bg-slate-100 dark:bg-slate-800 px-1 py-0.5 rounded text-indigo-600 dark:text-indigo-400 font-mono text-xs">pKnown</code>).
         </p>
       </div>
 
       <div className="space-y-6">
         {subjects.map((subject) => (
-          <div key={subject.id} className="bg-white rounded-3xl p-6 border border-slate-200/80 shadow-sm space-y-4">
-            <div className="flex items-center gap-3 border-b border-slate-100 pb-4">
-              <div className="p-2.5 bg-indigo-50 text-indigo-600 rounded-2xl">
+          <div key={subject.id} className="bg-white/95 dark:bg-[#0F1626]/95 backdrop-blur-xl rounded-3xl p-6 sm:p-8 border border-slate-200/90 dark:border-slate-800/90 shadow-sm space-y-5">
+            <div className="flex items-center gap-3 border-b border-slate-100 dark:border-slate-800/80 pb-4">
+              <div className="p-3 bg-gradient-to-br from-indigo-500 to-violet-600 text-white rounded-2xl shadow-md shadow-indigo-500/20">
                 <BookOpen className="w-6 h-6" />
               </div>
               <div>
-                <h2 className="text-lg font-bold text-slate-900">{subject.name}</h2>
-                <p className="text-xs text-slate-500 mt-0.5">{subject.description}</p>
+                <h2 className="text-lg font-bold text-slate-900 dark:text-slate-100">{subject.name}</h2>
+                <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">{subject.description}</p>
               </div>
             </div>
 
@@ -74,30 +93,30 @@ export const StudentSubjects = () => {
                 return (
                   <div
                     key={topic.id}
-                    className="p-4 rounded-2xl border border-slate-200/80 bg-slate-50/50 hover:bg-slate-50 transition-colors space-y-3"
+                    className="p-4 sm:p-5 rounded-2xl border border-slate-200/80 dark:border-slate-800 bg-slate-50/50 dark:bg-[#080B11]/60 hover:bg-slate-50 dark:hover:bg-[#080B11] transition-all space-y-3.5 shadow-xs"
                   >
                     <div className="flex items-start justify-between gap-2">
                       <div>
-                        <h3 className="text-sm font-bold text-slate-900">{topic.name}</h3>
+                        <h3 className="text-sm font-bold text-slate-900 dark:text-slate-100">{topic.name}</h3>
                         {topic.prerequisiteName && (
-                          <div className="flex items-center gap-1 text-[11px] font-medium text-slate-500 mt-0.5">
-                            <GitBranch className="w-3 h-3 text-slate-400" />
-                            <span>Prerequisite: <strong>{topic.prerequisiteName}</strong></span>
+                          <div className="flex items-center gap-1.5 text-[11px] font-medium text-slate-500 dark:text-slate-400 mt-0.5">
+                            <GitBranch className="w-3 h-3 text-indigo-500 shrink-0" />
+                            <span>Prerequisite: <strong className="text-slate-700 dark:text-slate-300">{topic.prerequisiteName}</strong></span>
                           </div>
                         )}
                       </div>
-                      <span className={`text-[11px] font-bold px-2 py-0.5 rounded-full ${color.bg} ${color.text}`}>
+                      <span className={`text-[11px] font-bold px-2.5 py-0.5 rounded-full shadow-xs ${color.bg} ${color.text}`}>
                         {color.label}
                       </span>
                     </div>
 
                     {/* BKT Mastery Progress Bar */}
-                    <div className="space-y-1">
-                      <div className="flex justify-between text-xs font-semibold text-slate-600">
+                    <div className="space-y-1.5">
+                      <div className="flex justify-between text-xs font-semibold text-slate-600 dark:text-slate-300">
                         <span>pKnown Mastery</span>
-                        <span className="font-mono">{percent}%</span>
+                        <span className="font-mono text-indigo-600 dark:text-indigo-400 font-bold">{percent}%</span>
                       </div>
-                      <div className="w-full h-2 bg-slate-200 rounded-full overflow-hidden">
+                      <div className="w-full h-2.5 bg-slate-200 dark:bg-slate-800 rounded-full overflow-hidden p-0.5">
                         <div
                           className={`h-full ${color.bar} transition-all duration-500 rounded-full`}
                           style={{ width: `${percent}%` }}
@@ -105,13 +124,13 @@ export const StudentSubjects = () => {
                       </div>
                     </div>
 
-                    <div className="flex items-center justify-between text-xs pt-1 border-t border-slate-200/60 text-slate-500">
-                      <span>Historical Accuracy: <strong>{topic.accuracy}%</strong> ({topic.attemptsCount} attempts)</span>
+                    <div className="flex items-center justify-between text-xs pt-2 border-t border-slate-200/60 dark:border-slate-800/80 text-slate-500 dark:text-slate-400">
+                      <span>Historical Accuracy: <strong className="text-slate-700 dark:text-slate-200">{topic.accuracy}%</strong> ({topic.attemptsCount} attempts)</span>
                       <Link
                         to="/student/quizzes"
-                        className="inline-flex items-center gap-1 font-semibold text-indigo-600 hover:text-indigo-700"
+                        className="inline-flex items-center gap-1 font-bold text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300 transition-colors"
                       >
-                        Practice <ArrowRight className="w-3 h-3" />
+                        Practice <ArrowRight className="w-3.5 h-3.5" />
                       </Link>
                     </div>
                   </div>

@@ -48,8 +48,8 @@ export const PerformanceHistory = () => {
   return (
     <div className="space-y-8">
       <div>
-        <h1 className="text-2xl font-bold text-slate-900">Learning Analytics & Mastery Distribution</h1>
-        <p className="text-sm text-slate-500 mt-1">
+        <h1 className="text-2xl font-black text-slate-900 dark:text-slate-100 tracking-tight">Learning Analytics &amp; Mastery Distribution</h1>
+        <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">
           Visualizing your cognitive mastery progression powered by Bayesian Knowledge Tracing.
         </p>
       </div>
@@ -79,10 +79,10 @@ export const PerformanceHistory = () => {
       </div>
 
       {/* Recharts Bar Chart */}
-      <div className="bg-white rounded-3xl p-6 border border-slate-200/80 shadow-sm space-y-4">
-        <div className="flex items-center justify-between">
-          <h2 className="text-base font-bold text-slate-900">Topic-Wise BKT Mastery Comparison (%)</h2>
-          <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-indigo-50 text-indigo-700">
+      <div className="bg-white/95 dark:bg-[#0F1626]/95 backdrop-blur-xl rounded-3xl p-6 sm:p-8 border border-slate-200/90 dark:border-slate-800/90 shadow-sm space-y-4">
+        <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-800/80 pb-4">
+          <h2 className="text-base font-bold text-slate-900 dark:text-slate-100">Topic-Wise BKT Mastery Comparison (%)</h2>
+          <span className="text-xs font-bold px-3 py-1 rounded-full bg-indigo-50 dark:bg-indigo-950/50 text-indigo-700 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-800 shadow-xs">
             Live Database Metrics
           </span>
         </div>
@@ -90,18 +90,18 @@ export const PerformanceHistory = () => {
         <div className="h-80 w-full pt-4">
           <ResponsiveContainer width="100%" height="100%">
             <BarChart data={chartData} margin={{ top: 10, right: 20, left: 0, bottom: 20 }}>
-              <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
-              <XAxis dataKey="name" tick={{ fontSize: 11, fill: '#64748b' }} interval={0} />
-              <YAxis domain={[0, 100]} tick={{ fontSize: 11, fill: '#64748b' }} unit="%" />
+              <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#334155" opacity={0.3} />
+              <XAxis dataKey="name" tick={{ fontSize: 11, fill: '#94a3b8' }} interval={0} />
+              <YAxis domain={[0, 100]} tick={{ fontSize: 11, fill: '#94a3b8' }} unit="%" />
               <Tooltip
                 content={({ active, payload }) => {
                   if (active && payload && payload.length) {
                     const d = payload[0].payload;
                     return (
-                      <div className="bg-slate-900 text-white p-3 rounded-xl text-xs space-y-1 shadow-lg">
-                        <p className="font-bold">{d.fullName}</p>
-                        <p className="text-indigo-300">pKnown Mastery: {d.mastery}%</p>
-                        <p className="text-emerald-300">Historical Accuracy: {d.accuracy}%</p>
+                      <div className="bg-slate-900/95 dark:bg-[#080B11]/95 border border-slate-700 dark:border-slate-800 text-white p-3.5 rounded-xl text-xs space-y-1 shadow-2xl backdrop-blur-md">
+                        <p className="font-bold text-slate-100">{d.fullName}</p>
+                        <p className="text-indigo-300 font-semibold">pKnown Mastery: {d.mastery}%</p>
+                        <p className="text-emerald-300 font-semibold">Historical Accuracy: {d.accuracy}%</p>
                       </div>
                     );
                   }

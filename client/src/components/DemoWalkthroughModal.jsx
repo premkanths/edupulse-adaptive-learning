@@ -63,78 +63,68 @@ export const DemoWalkthroughModal = ({ isOpen, onClose }) => {
       actionRoute: '/teacher/quizzes/ai-generate'
     },
     {
-      title: 'Step 4: Student Adaptive Quiz Taking & Scoring',
+      title: 'Step 4: Student Adaptive Quizzes & Bayesian Knowledge Tracing',
       badge: 'Student Feature',
-      icon: Play,
-      description: 'Students take quizzes with timed countdowns, one question at a time. The server securely scores responses and hides correct answers until submission.',
+      icon: Award,
+      description: 'Students take timed assessments while the Bayesian Knowledge Tracing (BKT) engine updates topic mastery probabilities in real time.',
       keyPoints: [
-        'Anti-cheat design: correct answers never exposed in React state before submission',
-        'Detailed answer explanation review with pedagogical rationale'
+        'Corbett & Anderson priors: P(L0)=0.30, P(T)=0.20, P(G)=0.20, P(S)=0.10',
+        'Deterministic numerical mastery progression with pKnown updates',
+        'Explainable pedagogical recommendations triggered for weak topics (pKnown < 0.50)'
       ],
-      actionLabel: 'View Assigned Quizzes',
+      actionLabel: 'Open Student Quizzes',
       actionRoute: '/student/quizzes'
     },
     {
-      title: 'Step 5: Bayesian Knowledge Tracing (BKT) Engine',
-      badge: 'Adaptive Learning Algorithm',
-      icon: Brain,
-      description: 'After every answer, the Corbett & Anderson model updates the posterior probability of concept mastery P(L_n).',
-      keyPoints: [
-        'Standard parameters: P(L_0)=0.30, P(T)=0.20, P(G)=0.20, P(S)=0.10',
-        'Real-time topic mastery tracking across subjects',
-        'Remediation alert triggered when topic mastery drops below 60%'
-      ],
-      actionLabel: 'View Topic Mastery Bars',
-      actionRoute: '/student/subjects'
-    },
-    {
-      title: 'Step 6: Explainable Recommendations ("Why this?")',
+      title: 'Step 5: Personalized Socratic AI Study Assistant',
       badge: 'Student Feature',
-      icon: Award,
-      description: 'Students receive evidence-based study recommendations explaining exactly why a topic was suggested.',
+      icon: Brain,
+      description: 'A context-aware tutor that injects the student’s actual weak topics and recent quiz mistakes into LLM prompts for personalized guidance.',
       keyPoints: [
-        'Recommends weak topics, prerequisite reviews, or advanced challenges',
-        'Transparent "Why this?" panel detailing score evidence and rationale'
-      ],
-      actionLabel: 'View Recommendations',
-      actionRoute: '/student/recommendations'
-    },
-    {
-      title: 'Step 7: Context-Aware AI Study Assistant',
-      badge: 'AI Integration',
-      icon: Sparkles,
-      description: 'An AI study assistant that tailors responses using the authenticated student\'s actual weak topics and mastery scores.',
-      keyPoints: [
-        'Personalized prompt injection with strict student privacy isolation',
-        'Persistent markdown chat sessions and delete history capabilities'
+        'Multi-session persistent chat stored in MySQL database',
+        'Automatic topic-aware chat session titling',
+        'Contextual injection of student mastery telemetry and missed quiz questions'
       ],
       actionLabel: 'Open AI Study Assistant',
       actionRoute: '/student/assistant'
     },
     {
-      title: 'Step 8: Machine Learning At-Risk Model & Alerts',
-      badge: 'ML Prediction',
+      title: 'Step 6: Teacher At-Risk Student Early Warning Monitor',
+      badge: 'Teacher Feature',
       icon: Shield,
-      description: 'A Python FastAPI Random Forest model continuously evaluates student risk features, recommending tailored teacher interventions.',
+      description: 'An early-warning dashboard integrating a trained scikit-learn Random Forest model to flag students requiring academic intervention.',
       keyPoints: [
-        'Evaluates quiz avg, attendance %, BKT mastery, inactivity days, and missed marks',
-        '94.58% accuracy with automatic heuristic rule-based fallback if ML is offline'
+        'Ensemble Random Forest (94.6% Accuracy, 94.6% F1-Score) on FastAPI',
+        'Risk levels: HIGH (>65%), MODERATE (35-65%), LOW (<35%)',
+        'Rule-based heuristic fallback if the ML microservice is unreachable'
       ],
       actionLabel: 'Open At-Risk Monitor',
       actionRoute: '/teacher/at-risk'
     },
     {
-      title: 'Step 9: Research Benchmarks, Privacy & Reports',
-      badge: 'Research Evaluation',
-      icon: Award,
-      description: 'Empirical research comparisons suitable for academic publication and complete GDPR/FERPA privacy rights.',
+      title: 'Step 7: Institutional Analytics & CSV Exports',
+      badge: 'Admin Feature',
+      icon: BookOpen,
+      description: 'High-level administration metrics with instant streaming CSV exports for accreditation, research, and institutional reporting.',
       keyPoints: [
-        'Adaptive BKT reaches 85% mastery in 5.8 attempts vs 11.2 on fixed paths (48.2% time reduction)',
-        'BKT achieves 0.842 ROC-AUC vs 0.714 on moving average baseline (+17.9% gain)',
-        'Right to be Forgotten permanently anonymizes user and purges private chat logs',
-        '1-click CSV exports of students, at-risk rosters, and topic mastery'
+        'Export complete student performance and roster CSV',
+        'Export early intervention at-risk student list',
+        'Export BKT topic mastery matrix across entire cohort'
       ],
-      actionLabel: 'Open Research Evaluation Suite',
+      actionLabel: 'Open Institutional Reports',
+      actionRoute: '/admin/reports'
+    },
+    {
+      title: 'Step 8: Research Evaluation Suite & IEEE Benchmark Exporter',
+      badge: 'Academic Research Feature',
+      icon: Award,
+      description: 'Built-in psychometric evaluation engine computing A/B learning curves, Hake normalized learning gains, and multi-model ML comparative benchmarks.',
+      keyPoints: [
+        'Hake normalized learning gain (g=0.62) and Cohen d effect size (d=1.79)',
+        'Multi-model ML comparison: Gradient Boosting, Random Forest, Decision Tree, Logistic Regression',
+        '1-Click "Download IEEE Benchmark CSV" and camera-ready IEEE paper generator'
+      ],
+      actionLabel: 'Open Research Evaluation',
       actionRoute: '/admin/research'
     }
   ];
@@ -143,41 +133,41 @@ export const DemoWalkthroughModal = ({ isOpen, onClose }) => {
   const Icon = step.icon;
 
   const handleAction = () => {
-    navigate(step.actionRoute);
     onClose();
+    navigate(step.actionRoute);
   };
 
   return (
-    <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
-      <div className="bg-white rounded-3xl max-w-2xl w-full p-6 md:p-8 shadow-2xl border border-slate-200 space-y-6">
+    <div className="fixed inset-0 z-50 bg-slate-900/60 dark:bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
+      <div className="bg-white/95 dark:bg-[#0F1626]/95 backdrop-blur-xl rounded-3xl max-w-2xl w-full p-6 md:p-8 shadow-2xl border border-slate-200/90 dark:border-slate-800/90 space-y-6">
         {/* Header */}
-        <div className="flex items-center justify-between border-b border-slate-100 pb-4">
+        <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-800/80 pb-4">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-2xl bg-indigo-50 border border-indigo-100 flex items-center justify-center text-indigo-600">
+            <div className="w-10 h-10 rounded-2xl bg-indigo-50 dark:bg-indigo-950/50 border border-indigo-100 dark:border-indigo-800/60 flex items-center justify-center text-indigo-600 dark:text-indigo-400">
               <Icon className="w-5 h-5" />
             </div>
             <div>
-              <span className="text-[11px] font-bold text-indigo-600 uppercase tracking-wider">{step.badge}</span>
-              <h2 className="text-lg font-bold text-slate-900">{step.title}</h2>
+              <span className="text-[11px] font-bold text-indigo-600 dark:text-indigo-400 uppercase tracking-wider">{step.badge}</span>
+              <h2 className="text-lg font-bold text-slate-900 dark:text-slate-100">{step.title}</h2>
             </div>
           </div>
-          <button onClick={onClose} className="p-1.5 text-slate-400 hover:text-slate-600 rounded-lg">
+          <button onClick={onClose} className="p-1.5 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 rounded-lg cursor-pointer">
             <X className="w-5 h-5" />
           </button>
         </div>
 
         {/* Content */}
         <div className="space-y-4">
-          <p className="text-xs text-slate-600 leading-relaxed font-medium">
+          <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed font-medium">
             {step.description}
           </p>
 
-          <div className="bg-slate-50 p-4 rounded-2xl border border-slate-200/80 space-y-2">
-            <p className="text-[11px] font-bold text-slate-700 uppercase tracking-wider">Key Technical Highlights:</p>
+          <div className="bg-slate-50 dark:bg-[#080B11]/80 p-4 rounded-2xl border border-slate-200/80 dark:border-slate-800 space-y-2">
+            <p className="text-[11px] font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider">Key Technical Highlights:</p>
             <ul className="space-y-1.5">
               {step.keyPoints.map((point, idx) => (
-                <li key={idx} className="text-xs text-slate-700 flex items-start gap-2">
-                  <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
+                <li key={idx} className="text-xs text-slate-700 dark:text-slate-300 flex items-start gap-2">
+                  <CheckCircle2 className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0 mt-0.5" />
                   <span>{point}</span>
                 </li>
               ))}
@@ -186,8 +176,8 @@ export const DemoWalkthroughModal = ({ isOpen, onClose }) => {
         </div>
 
         {/* Navigation & Actions */}
-        <div className="flex flex-wrap items-center justify-between gap-4 pt-2 border-t border-slate-100">
-          <div className="flex items-center gap-1.5 text-xs text-slate-500 font-medium">
+        <div className="flex flex-wrap items-center justify-between gap-4 pt-2 border-t border-slate-100 dark:border-slate-800/80">
+          <div className="flex items-center gap-1.5 text-xs text-slate-500 dark:text-slate-400 font-medium">
             Step {currentStep + 1} of {steps.length}
           </div>
 
@@ -195,7 +185,7 @@ export const DemoWalkthroughModal = ({ isOpen, onClose }) => {
             <button
               onClick={() => setCurrentStep((prev) => Math.max(0, prev - 1))}
               disabled={currentStep === 0}
-              className="p-2 border border-slate-200 rounded-xl text-slate-600 hover:bg-slate-50 disabled:opacity-30"
+              className="p-2 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 disabled:opacity-30 cursor-pointer"
             >
               <ChevronLeft className="w-4 h-4" />
             </button>
@@ -203,14 +193,14 @@ export const DemoWalkthroughModal = ({ isOpen, onClose }) => {
             <button
               onClick={() => setCurrentStep((prev) => Math.min(steps.length - 1, prev + 1))}
               disabled={currentStep === steps.length - 1}
-              className="p-2 border border-slate-200 rounded-xl text-slate-600 hover:bg-slate-50 disabled:opacity-30"
+              className="p-2 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 disabled:opacity-30 cursor-pointer"
             >
               <ChevronRight className="w-4 h-4" />
             </button>
 
             <button
               onClick={handleAction}
-              className="px-5 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-semibold shadow-sm transition-all"
+              className="px-5 py-2 bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white rounded-xl text-xs font-semibold shadow-md shadow-indigo-500/25 transition-all cursor-pointer"
             >
               {step.actionLabel}
             </button>

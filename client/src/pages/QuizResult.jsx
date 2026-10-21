@@ -63,14 +63,14 @@ export const QuizResult = () => {
       </div>
 
       {/* Action Next Steps */}
-      <div className="bg-white rounded-3xl p-6 border border-slate-200 shadow-sm flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+      <div className="bg-white/95 dark:bg-[#0F1626]/95 backdrop-blur-xl rounded-3xl p-6 border border-slate-200/90 dark:border-slate-800/90 shadow-sm flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div className="flex items-center gap-3">
-          <div className="p-3 bg-amber-50 text-amber-600 rounded-2xl">
+          <div className="p-3 bg-amber-50 dark:bg-amber-950/50 text-amber-600 rounded-2xl">
             <Lightbulb className="w-6 h-6" />
           </div>
           <div>
-            <h2 className="text-base font-bold text-slate-900">Adaptive Recommendations Updated</h2>
-            <p className="text-xs text-slate-500 mt-0.5">
+            <h2 className="text-base font-bold text-slate-900 dark:text-slate-100">Adaptive Recommendations Updated</h2>
+            <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
               Review your personalized study suggestions tailored to today's quiz errors.
             </p>
           </div>
@@ -86,7 +86,7 @@ export const QuizResult = () => {
 
       {/* Question Review List */}
       <div className="space-y-6">
-        <h2 className="text-xl font-bold text-slate-900">Question-by-Question Diagnostic Review</h2>
+        <h2 className="text-xl font-bold text-slate-900 dark:text-slate-100">Question-by-Question Diagnostic Review</h2>
 
         {questions.map((q, idx) => {
           const isCorrect = q.isCorrect;
@@ -94,7 +94,7 @@ export const QuizResult = () => {
           return (
             <div
               key={idx}
-              className={`bg-white rounded-3xl p-6 border shadow-sm space-y-4 ${
+              className={`bg-white/95 dark:bg-[#0F1626]/95 backdrop-blur-xl rounded-3xl p-6 border shadow-sm space-y-4 ${
                 isCorrect ? 'border-emerald-200/80' : 'border-rose-200/80'
               }`}
             >
@@ -102,30 +102,30 @@ export const QuizResult = () => {
                 <div className="flex items-center gap-2">
                   <span
                     className={`w-7 h-7 rounded-lg text-xs font-bold flex items-center justify-center shrink-0 ${
-                      isCorrect ? 'bg-emerald-100 text-emerald-800' : 'bg-rose-100 text-rose-800'
+                      isCorrect ? 'bg-emerald-100 text-emerald-800 dark:text-emerald-300' : 'bg-rose-100 text-rose-800 dark:text-rose-300'
                     }`}
                   >
                     {idx + 1}
                   </span>
-                  <span className="text-xs font-semibold text-slate-500">
-                    Topic: <strong className="text-slate-700">{q.topicName}</strong>
+                  <span className="text-xs font-semibold text-slate-500 dark:text-slate-400">
+                    Topic: <strong className="text-slate-700 dark:text-slate-300">{q.topicName}</strong>
                   </span>
                 </div>
 
                 <div className="flex items-center gap-1.5">
                   {isCorrect ? (
-                    <span className="inline-flex items-center gap-1 text-xs font-semibold text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-full">
+                    <span className="inline-flex items-center gap-1 text-xs font-semibold text-emerald-700 dark:text-emerald-300 bg-emerald-50 dark:bg-emerald-950/50 px-2.5 py-1 rounded-full">
                       <CheckCircle2 className="w-3.5 h-3.5" /> Correct
                     </span>
                   ) : (
-                    <span className="inline-flex items-center gap-1 text-xs font-semibold text-rose-700 bg-rose-50 px-2.5 py-1 rounded-full">
+                    <span className="inline-flex items-center gap-1 text-xs font-semibold text-rose-700 dark:text-rose-300 bg-rose-50 dark:bg-rose-950/50 px-2.5 py-1 rounded-full">
                       <XCircle className="w-3.5 h-3.5" /> Incorrect
                     </span>
                   )}
                 </div>
               </div>
 
-              <p className="text-sm font-semibold text-slate-900 leading-relaxed">
+              <p className="text-sm font-semibold text-slate-900 dark:text-slate-100 leading-relaxed">
                 {q.text}
               </p>
 
@@ -135,11 +135,11 @@ export const QuizResult = () => {
                   const wasChosen = q.chosenIndex === optIdx;
                   const isRightOption = q.correctIndex === optIdx;
 
-                  let optClass = 'bg-slate-50 border-slate-200 text-slate-700';
+                  let optClass = 'bg-slate-50 dark:bg-[#080B11]/70 border-slate-200/90 dark:border-slate-800/90 text-slate-700 dark:text-slate-300';
                   if (isRightOption) {
-                    optClass = 'bg-emerald-50 border-emerald-300 text-emerald-900 font-semibold';
+                    optClass = 'bg-emerald-50 dark:bg-emerald-950/50 border-emerald-300 text-emerald-900 font-semibold';
                   } else if (wasChosen && !isRightOption) {
-                    optClass = 'bg-rose-50 border-rose-300 text-rose-900 line-through';
+                    optClass = 'bg-rose-50 dark:bg-rose-950/50 border-rose-300 text-rose-900 line-through';
                   }
 
                   return (
@@ -154,8 +154,8 @@ export const QuizResult = () => {
               </div>
 
               {/* Pedagogical Explanation */}
-              <div className="bg-slate-50/80 rounded-2xl p-4 border border-slate-200/60 text-xs text-slate-600 space-y-1">
-                <span className="font-bold text-slate-700 uppercase tracking-wider text-[10px] block">
+              <div className="bg-slate-50/80 rounded-2xl p-4 border border-slate-200/60 text-xs text-slate-600 dark:text-slate-400 space-y-1">
+                <span className="font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider text-[10px] block">
                   Why this answer?
                 </span>
                 <p className="leading-relaxed">{q.explanation}</p>
