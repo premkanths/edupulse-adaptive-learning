@@ -4,6 +4,8 @@ server:
 spring:
   application:
     name: edupulse-server
+  config:
+    import: "optional:application-local.yml"
   jackson:
     serialization:
       fail-on-empty-beans: false
@@ -36,6 +38,18 @@ edupulse:
     cron: "${SUMMARY_CRON:0 0 6 * * MON}"
   ml-service:
     url: ${ML_SERVICE_URL:http://localhost:8001}
+
+gemini:
+  api-key: ${GEMINI_API_KEY:}
+  model: ${GEMINI_MODEL:gemini-3.8-flash}
+
+groq:
+  api-key: ${GROQ_API_KEY:}
+  model: ${GROQ_MODEL:openai/gpt-oss-120b}
+
+ollama:
+  url: ${OLLAMA_URL:http://localhost:11434}
+  model: ${OLLAMA_MODEL:llama3}
 
 springdoc:
   api-docs:

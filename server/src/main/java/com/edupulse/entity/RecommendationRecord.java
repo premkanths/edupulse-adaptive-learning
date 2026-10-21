@@ -40,6 +40,12 @@ public class RecommendationRecord {
     @Column(nullable = false, columnDefinition = "TEXT")
     private String explanation;
 
+    @Column(name = "next_step_action", length = 255)
+    private String nextStepAction;
+
+    @Column(name = "estimated_minutes")
+    private Integer estimatedMinutes = 15;
+
     @Column(length = 100)
     private String outcome;
 
@@ -55,6 +61,19 @@ public class RecommendationRecord {
         this.recommendationType = recommendationType;
         this.supportingEvidence = supportingEvidence;
         this.explanation = explanation;
+        this.nextStepAction = "Review concept and try a short practice quiz.";
+        this.estimatedMinutes = 15;
+        this.createdAt = LocalDateTime.now();
+    }
+
+    public RecommendationRecord(User student, Topic topic, Type recommendationType, String supportingEvidence, String explanation, String nextStepAction, Integer estimatedMinutes) {
+        this.student = student;
+        this.topic = topic;
+        this.recommendationType = recommendationType;
+        this.supportingEvidence = supportingEvidence;
+        this.explanation = explanation;
+        this.nextStepAction = nextStepAction;
+        this.estimatedMinutes = estimatedMinutes != null ? estimatedMinutes : 15;
         this.createdAt = LocalDateTime.now();
     }
 
@@ -109,6 +128,22 @@ public class RecommendationRecord {
 
     public void setExplanation(String explanation) {
         this.explanation = explanation;
+    }
+
+    public String getNextStepAction() {
+        return nextStepAction != null && !nextStepAction.isBlank() ? nextStepAction : "Review concept notes and complete a 5-question practice quiz.";
+    }
+
+    public void setNextStepAction(String nextStepAction) {
+        this.nextStepAction = nextStepAction;
+    }
+
+    public Integer getEstimatedMinutes() {
+        return estimatedMinutes != null && estimatedMinutes > 0 ? estimatedMinutes : 15;
+    }
+
+    public void setEstimatedMinutes(Integer estimatedMinutes) {
+        this.estimatedMinutes = estimatedMinutes;
     }
 
     public String getOutcome() {

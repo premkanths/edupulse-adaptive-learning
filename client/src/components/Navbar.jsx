@@ -1,15 +1,20 @@
 import React, { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
-import { LogOut, GraduationCap, Shield, UserCheck, Sparkles, User, Settings, Code2, ChevronDown } from 'lucide-react';
-import { Link, useNavigate } from 'react-router-dom';
+import { LogOut, GraduationCap, Shield, UserCheck, Sparkles, User, Settings, Code2, ChevronDown, ChevronLeft } from 'lucide-react';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { DemoWalkthroughModal } from './DemoWalkthroughModal';
 import { ThemeToggle } from './ui/ThemeToggle';
+import { StudentAiSummaryDrawer } from './StudentAiSummaryDrawer';
 
 export const Navbar = () => {
   const { user, logout } = useAuth();
   const [showDemoModal, setShowDemoModal] = useState(false);
+  const [showAiSummaryDrawer, setShowAiSummaryDrawer] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
+
+  const canGoBack = location.pathname !== '/' && location.pathname !== '/home';
 
   const handleLogout = () => {
     logout();
@@ -42,9 +47,9 @@ export const Navbar = () => {
 
   return (
     <header className="bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800 shadow-xs sticky top-0 z-40 transition-colors">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="w-full px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16 items-center">
-          {/* Logo & Brand */}
+          {/* Logo & Brand + Back Button "<" */}
           <div className="flex items-center gap-3">
             <Link to="/" className="flex items-center gap-3 group">
               <div className="w-10 h-10 rounded-2xl bg-indigo-600 flex items-center justify-center text-white shadow-xs font-black text-lg group-hover:scale-105 transition-all duration-200">
@@ -55,21 +60,42 @@ export const Navbar = () => {
                   <span className="text-xl font-black text-gray-900 dark:text-gray-50 tracking-tight">
                     EduPulse
                   </span>
-                  <span className="hidden md:inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-extrabold uppercase tracking-widest bg-indigo-50 dark:bg-indigo-950/60 text-indigo-700 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-800">
-                    Pro
-                  </span>
                 </div>
-                <span className="hidden sm:inline-block text-[11px] font-medium text-gray-500 dark:text-gray-400 leading-none">
-                  Adaptive Learning &amp; Analytics
+                <span className="block text-[11px] font-medium text-gray-500 dark:text-gray-400 leading-tight mt-0.5">
+                  Adaptive Learning &amp; Student Analytics
                 </span>
               </div>
             </Link>
+
+            {/* Back Button "<" */}
+            {canGoBack && (
+              <button
+                onClick={() => navigate(-1)}
+                className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-xl border border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-200 text-xs font-bold transition-all shadow-xs cursor-pointer ml-1"
+                title="Go back to previous page"
+              >
+                <ChevronLeft className="w-4 h-4" />
+                <span className="hidden sm:inline">Back</span>
+              </button>
+            )}
           </div>
 
           {/* Right Header Navigation Controls */}
           <div className="flex items-center gap-3">
             {/* Direct Theme Toggle */}
             <ThemeToggle />
+
+            {/* Student AI Summary Drawer Trigger (Student Only) */}
+            {user?.role === 'STUDENT' && (
+              <button
+                onClick={() => setShowAiSummaryDrawer(true)}
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-gradient-to-r from-purple-50 to-indigo-50 dark:from-purple-950/60 dark:to-indigo-950/60 hover:from-purple-100 hover:to-indigo-100 dark:hover:from-purple-900/60 dark:hover:to-indigo-900/60 text-purple-700 dark:text-purple-300 border border-purple-200 dark:border-purple-800 rounded-xl text-xs font-bold transition-all shadow-xs cursor-pointer"
+                title="Open Student AI Summary Side Panel"
+              >
+                <Sparkles className="w-3.5 h-3.5 text-purple-600 dark:text-purple-400" />
+                <span className="hidden sm:inline">AI Summary</span>
+              </button>
+            )}
 
             {/* Demo Walkthrough Button */}
             <button
@@ -184,6 +210,9 @@ export const Navbar = () => {
 
       {/* Demo Walkthrough Modal */}
       <DemoWalkthroughModal isOpen={showDemoModal} onClose={() => setShowDemoModal(false)} />
+
+      {/* Student AI Summary Drawer */}
+      <StudentAiSummaryDrawer isOpen={showAiSummaryDrawer} onClose={() => setShowAiSummaryDrawer(false)} />
     </header>
   );
 };

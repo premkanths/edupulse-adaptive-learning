@@ -1,6 +1,8 @@
 # Environment Variables
 .env
 .env.local
+*-local.yml
+application-local.yml
 
 # Operating System Files
 .DS_Store

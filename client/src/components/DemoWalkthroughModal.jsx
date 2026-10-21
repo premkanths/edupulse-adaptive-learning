@@ -13,12 +13,12 @@ export const DemoWalkthroughModal = ({ isOpen, onClose }) => {
       title: 'EduPulse — Project Overview & Architecture',
       badge: 'Academic & Research Platform',
       icon: Brain,
-      description: 'EduPulse is a full-stack academic platform integrating Bayesian Knowledge Tracing (BKT), generative AI, and Random Forest machine learning to optimize student learning paths and early at-risk detection.',
+      description: 'EduPulse is an AI-powered adaptive learning platform integrating Attentive Knowledge Tracing (AKT), generative AI, and Random Forest machine learning to optimize student learning paths and early at-risk detection.',
       keyPoints: [
         'React 18 + Vite + Tailwind CSS frontend with Recharts analytics',
         'Java 23 + Spring Boot 3 backend with stateless JWT & BCrypt security',
-        'Corbett & Anderson Bayesian Knowledge Tracing algorithm',
-        'Python FastAPI service running a 94.6% accurate Random Forest model'
+        'Attentive Knowledge Tracing (AKT, Ghosh et al. KDD 2020) with temporal decay attention',
+        'Python FastAPI service running a 94.6% accurate Random Forest model and PyTorch AKT'
       ],
       actionLabel: 'Go to Student Dashboard',
       actionRoute: '/student/dashboard'
@@ -109,7 +109,7 @@ export const DemoWalkthroughModal = ({ isOpen, onClose }) => {
       keyPoints: [
         'Export complete student performance and roster CSV',
         'Export early intervention at-risk student list',
-        'Export BKT topic mastery matrix across entire cohort'
+        'Export AKT and BKT topic mastery matrix across entire cohort'
       ],
       actionLabel: 'Open Institutional Reports',
       actionRoute: '/admin/reports'

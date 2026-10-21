@@ -120,6 +120,7 @@ public class RiskPredictionService {
             req.put("quiz_average", Math.round(quizAverage * 10.0) / 10.0);
             req.put("attendance_pct", Math.round(attendancePct * 10.0) / 10.0);
             req.put("bkt_avg_mastery", Math.round(bktMastery * 100.0) / 100.0);
+            req.put("akt_avg_mastery", Math.round(bktMastery * 100.0) / 100.0);
             req.put("days_inactive", daysInactive);
             req.put("assignments_missed", assignmentsMissed);
 

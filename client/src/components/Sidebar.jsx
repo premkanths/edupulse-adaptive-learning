@@ -38,7 +38,6 @@ export const Sidebar = () => {
           { name: 'Research Evaluation', path: '/admin/research', icon: Award },
           { name: 'Platform Settings', path: '/admin/settings', icon: Settings },
           { name: 'Security Audit Logs', path: '/admin/audit-logs', icon: History },
-          { name: 'Profile & Credentials', path: '/profile', icon: User },
         ];
       case 'TEACHER':
         return [
@@ -51,20 +50,20 @@ export const Sidebar = () => {
           { name: 'At-Risk Student Monitor', path: '/teacher/at-risk', icon: ShieldAlert },
           { name: 'Academic Records Import', path: '/teacher/import', icon: UploadCloud },
           { name: 'Research Evaluation', path: '/teacher/research', icon: Award },
-          { name: 'Profile & Credentials', path: '/profile', icon: User },
         ];
       case 'STUDENT':
       default:
         return [
           { name: 'Student Dashboard', path: '/student/dashboard', icon: LayoutDashboard },
+          { name: 'AI Student Summary', path: '/student/ai-summary', icon: Sparkles },
           { name: 'My Subjects & Topics', path: '/student/subjects', icon: BookOpen },
+          { name: 'Course Materials', path: '/student/materials', icon: FileText },
           { name: 'Assigned Quizzes', path: '/student/quizzes', icon: HelpCircle },
           { name: 'Adaptive Recommendations', path: '/student/recommendations', icon: Lightbulb },
           { name: 'Performance Analytics', path: '/student/performance', icon: TrendingUp },
           { name: 'AI Study Assistant', path: '/student/assistant', icon: Bot },
           { name: 'Connected Portfolios', path: '/student/connected-accounts', icon: Code2 },
           { name: 'Academic Hub & Privacy', path: '/student/profile', icon: ShieldCheck },
-          { name: 'Profile & Credentials', path: '/profile', icon: User },
         ];
     }
   };
@@ -72,8 +71,8 @@ export const Sidebar = () => {
   const links = getLinks();
 
   return (
-    <aside className="w-64 bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-800 min-h-[calc(100vh-4rem)] p-4 hidden md:block transition-colors">
-      <div className="space-y-1">
+    <aside className="w-64 bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-800 sticky top-16 h-[calc(100vh-4rem)] p-4 hidden md:flex flex-col justify-between transition-colors z-20 shrink-0">
+      <div className="space-y-1 overflow-y-auto pr-1 flex-1 no-scrollbar">
         {links.map((link) => {
           const Icon = link.icon;
           return (
@@ -95,18 +94,36 @@ export const Sidebar = () => {
         })}
       </div>
 
-      <div className="mt-8 p-4 bg-gray-50 dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 transition-colors">
-        <div className="flex items-center gap-2 mb-1.5">
-          <div className="w-6 h-6 rounded-lg bg-indigo-600 text-white flex items-center justify-center shadow-xs">
-            <GraduationCap className="w-3.5 h-3.5" />
+      {/* Pinned Bottom Identity & Profile Access */}
+      <div className="pt-3 border-t border-gray-200 dark:border-gray-800 shrink-0 mt-3">
+        <NavLink
+          to="/profile"
+          className={({ isActive }) =>
+            `flex items-center gap-3 p-2.5 rounded-2xl transition-all border ${
+              isActive
+                ? 'bg-indigo-50 dark:bg-indigo-950/60 border-indigo-200 dark:border-indigo-800 text-indigo-700 dark:text-indigo-300 font-bold shadow-xs'
+                : 'bg-gray-50 dark:bg-gray-800/80 hover:bg-indigo-50 dark:hover:bg-gray-800 border-gray-200/80 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400'
+            }`
+          }
+          title="Profile & Credentials"
+        >
+          <div className="w-8 h-8 rounded-xl bg-indigo-600 text-white flex items-center justify-center font-black text-xs shadow-xs shrink-0">
+            E
           </div>
-          <span className="text-[11px] font-extrabold text-indigo-700 dark:text-indigo-300 uppercase tracking-wider">
-            EduPulse Pro
-          </span>
-        </div>
-        <p className="text-[11px] text-gray-600 dark:text-gray-400 leading-relaxed">
-          BKT adaptive mastery, ML risk prediction, research benchmarks &amp; IEEE publication suite live.
-        </p>
+          <div className="overflow-hidden">
+            <div className="flex items-center gap-1.5 leading-tight">
+              <span className="text-xs font-black text-gray-900 dark:text-gray-50 tracking-tight">
+                EduPulse
+              </span>
+              <span className="text-[10px] font-bold px-1.5 py-0.2 rounded-full bg-indigo-100 dark:bg-indigo-900/60 text-indigo-700 dark:text-indigo-300">
+                {role === 'TEACHER' ? 'Faculty' : role === 'ADMIN' ? 'Admin' : 'Student'}
+              </span>
+            </div>
+            <p className="text-[10px] text-gray-500 dark:text-gray-400 font-medium truncate mt-0.5">
+              Profile &amp; Credentials
+            </p>
+          </div>
+        </NavLink>
       </div>
     </aside>
   );

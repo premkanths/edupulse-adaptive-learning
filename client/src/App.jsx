@@ -21,6 +21,8 @@ import { NotFound } from './pages/NotFound';
 
 // Phase 2 to 5 Pages
 import { StudentSubjects } from './pages/StudentSubjects';
+import { StudentMaterials } from './pages/StudentMaterials';
+import { StudentAiSummary } from './pages/StudentAiSummary';
 import { StudentQuizzes } from './pages/StudentQuizzes';
 import { QuizTaking } from './pages/QuizTaking';
 import { QuizResult } from './pages/QuizResult';
@@ -113,10 +115,26 @@ export default function App() {
               }
             />
             <Route
+              path="/student/ai-summary"
+              element={
+                <ProtectedRoute allowedRoles={['STUDENT']}>
+                  <Layout><StudentAiSummary /></Layout>
+                </ProtectedRoute>
+              }
+            />
+            <Route
               path="/student/subjects"
               element={
                 <ProtectedRoute allowedRoles={['STUDENT']}>
                   <Layout><StudentSubjects /></Layout>
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/student/materials"
+              element={
+                <ProtectedRoute allowedRoles={['STUDENT']}>
+                  <Layout><StudentMaterials /></Layout>
                 </ProtectedRoute>
               }
             />

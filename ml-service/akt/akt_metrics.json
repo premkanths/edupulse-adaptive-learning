@@ -1,0 +1,130 @@
+{
+  "model_architecture": "Attentive Knowledge Tracing (AKT)",
+  "reference_paper": "Ghosh et al., KDD 2020 (arXiv:2007.12324)",
+  "config": {
+    "n_questions": 120,
+    "n_skills": 24,
+    "d_model": 64,
+    "n_heads": 4,
+    "n_blocks": 1,
+    "dropout": 0.1,
+    "max_seq_len": 80,
+    "decay_param": 0.5
+  },
+  "training_time_seconds": 232.29,
+  "total_training_epochs": 12,
+  "test_metrics": {
+    "akt": {
+      "model_name": "Attentive Knowledge Tracing (AKT)",
+      "auc": 0.7625,
+      "logLoss": 0.5135,
+      "accuracy": 0.7589,
+      "rmse": 0.4101,
+      "test_samples": 7553
+    },
+    "bkt_baseline": {
+      "model": "Bayesian Knowledge Tracing (Corbett & Anderson Baseline)",
+      "auc": 0.588,
+      "logLoss": 0.6718,
+      "accuracy": 0.5439,
+      "rmse": 0.489,
+      "total_interactions_evaluated": 7553
+    },
+    "comparison": {
+      "auc_gain_percent": 29.68,
+      "rmse_reduction_percent": 16.13,
+      "logloss_reduction_percent": 23.56,
+      "key_advantages": [
+        "Context-aware self-attention over long-term question interaction sequences",
+        "Monotonic temporal distance decay prevents historical decay bias",
+        "Continuous latent state representation captures cross-topic skill transfer"
+      ]
+    }
+  },
+  "training_history": [
+    {
+      "epoch": 1,
+      "train_loss": 0.5654,
+      "val_auc": 0.7478,
+      "val_log_loss": 0.5147,
+      "val_accuracy": 0.754
+    },
+    {
+      "epoch": 2,
+      "train_loss": 0.5205,
+      "val_auc": 0.76,
+      "val_log_loss": 0.5048,
+      "val_accuracy": 0.7707
+    },
+    {
+      "epoch": 3,
+      "train_loss": 0.5126,
+      "val_auc": 0.7617,
+      "val_log_loss": 0.5009,
+      "val_accuracy": 0.7691
+    },
+    {
+      "epoch": 4,
+      "train_loss": 0.5099,
+      "val_auc": 0.7637,
+      "val_log_loss": 0.4987,
+      "val_accuracy": 0.7719
+    },
+    {
+      "epoch": 5,
+      "train_loss": 0.508,
+      "val_auc": 0.762,
+      "val_log_loss": 0.5003,
+      "val_accuracy": 0.7722
+    },
+    {
+      "epoch": 6,
+      "train_loss": 0.5057,
+      "val_auc": 0.7647,
+      "val_log_loss": 0.4982,
+      "val_accuracy": 0.7731
+    },
+    {
+      "epoch": 7,
+      "train_loss": 0.5048,
+      "val_auc": 0.7626,
+      "val_log_loss": 0.4996,
+      "val_accuracy": 0.7724
+    },
+    {
+      "epoch": 8,
+      "train_loss": 0.5029,
+      "val_auc": 0.7623,
+      "val_log_loss": 0.502,
+      "val_accuracy": 0.7698
+    },
+    {
+      "epoch": 9,
+      "train_loss": 0.5015,
+      "val_auc": 0.7652,
+      "val_log_loss": 0.498,
+      "val_accuracy": 0.7711
+    },
+    {
+      "epoch": 10,
+      "train_loss": 0.4993,
+      "val_auc": 0.763,
+      "val_log_loss": 0.4991,
+      "val_accuracy": 0.7704
+    },
+    {
+      "epoch": 11,
+      "train_loss": 0.4988,
+      "val_auc": 0.7626,
+      "val_log_loss": 0.5011,
+      "val_accuracy": 0.7676
+    },
+    {
+      "epoch": 12,
+      "train_loss": 0.4937,
+      "val_auc": 0.7618,
+      "val_log_loss": 0.5012,
+      "val_accuracy": 0.768
+    }
+  ]
+}

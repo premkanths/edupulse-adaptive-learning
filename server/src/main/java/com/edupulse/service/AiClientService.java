@@ -6,9 +6,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
+import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 
+import java.time.Duration;
 import java.util.*;
 
 @Service
@@ -19,13 +21,13 @@ public class AiClientService {
     @Value("${gemini.api-key:${GEMINI_API_KEY:}}")
     private String geminiApiKey;
 
-    @Value("${gemini.model:${GEMINI_MODEL:gemini-1.5-flash}}")
+    @Value("${gemini.model:${GEMINI_MODEL:gemini-3.8-flash}}")
     private String geminiModel;
 
     @Value("${groq.api-key:${GROQ_API_KEY:}}")
     private String groqApiKey;
 
-    @Value("${groq.model:${GROQ_MODEL:llama-3.3-70b-versatile}}")
+    @Value("${groq.model:${GROQ_MODEL:openai/gpt-oss-120b}}")
     private String groqModel;
 
     @Value("${ollama.url:${OLLAMA_URL:http://localhost:11434}}")
@@ -38,7 +40,24 @@ public class AiClientService {
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     public AiClientService() {
-        this.restClient = RestClient.builder().build();
+        SimpleClientHttpRequestFactory requestFactory = new SimpleClientHttpRequestFactory();
+        requestFactory.setConnectTimeout(Duration.ofSeconds(6));
+        requestFactory.setReadTimeout(Duration.ofSeconds(12));
+        this.restClient = RestClient.builder().requestFactory(requestFactory).build();
+    }
+
+    public String getActiveProviderName() {
+        if (geminiApiKey != null && !geminiApiKey.trim().isEmpty() && !geminiApiKey.contains("your-")) {
+            return "Google Gemini (" + geminiModel + ")";
+        }
+        if (groqApiKey != null && !groqApiKey.trim().isEmpty() && !groqApiKey.contains("your-")) {
+            return "Groq (" + groqModel + ")";
+        }
+        return "EduPulse Offline AI Tutor";
+    }
+
+    public boolean isGeminiConfigured() {
+        return geminiApiKey != null && !geminiApiKey.trim().isEmpty() && !geminiApiKey.contains("your-");
     }
 
     /**
@@ -179,9 +198,9 @@ public class AiClientService {
         }
 
         return "Hello! I am **J.A.R.V.I.S.**, your EduPulse AI study assistant and tutor.\n\n" +
-               "At your service. I have analyzed your live course data and Bayesian Knowledge Tracing mastery profile.\n\n" +
+               "At your service. I have reviewed your current learning progress and Attentive Knowledge Tracing (AKT) mastery.\n\n" +
                "- **Current Active Subjects**: Data Structures & Algorithms, Database Management Systems, Computer Networks.\n" +
-               "- **Recommended Focus**: Spend 20 minutes reviewing prerequisite tree algorithms and relation schemas.\n\n" +
-               "Feel free to ask me to explain any complex algorithms, solve tricky questions step-by-step, or break down your weak topics!";
+               "- **Recommended Focus**: Spend 15-20 minutes reviewing prerequisite tree algorithms and relational schema normalization.\n\n" +
+               "Feel free to ask me to explain any complex algorithms, solve tricky questions step-by-step, or break down any topics you want to practise!";
     }
 }

@@ -75,6 +75,8 @@ export const studentApi = {
   deleteChatSession: (sessionId) => apiRequest(`/student/chat/sessions/${sessionId}`, { method: 'DELETE' }),
   exportMyData: () => apiRequest('/student/export-my-data'),
   getAvailableMaterials: () => apiRequest('/student/materials'),
+  getAiSummary: () => apiRequest('/student/ai-summary'),
+  generateAiSummary: () => apiRequest('/student/ai-summary/generate', { method: 'POST' }),
   retrieveCoursePassages: (query, subjectIds, topK = 3) =>
     apiRequest('/student/materials/retrieve', {
       method: 'POST',

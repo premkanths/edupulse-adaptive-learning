@@ -50,7 +50,7 @@ export const PerformanceHistory = () => {
       <div>
         <h1 className="text-2xl font-black text-gray-900 dark:text-gray-50 tracking-tight">Learning Analytics &amp; Mastery Distribution</h1>
         <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
-          Visualizing your cognitive mastery progression powered by Bayesian Knowledge Tracing.
+          Visualizing your cognitive mastery progression powered by Attentive Knowledge Tracing (AKT).
         </p>
       </div>
 
@@ -81,7 +81,7 @@ export const PerformanceHistory = () => {
       {/* Recharts Bar Chart */}
       <div className="bg-white/95 dark:bg-gray-900 backdrop-blur-xl rounded-3xl p-6 sm:p-8 border border-gray-200 dark:border-gray-800 shadow-sm space-y-4">
         <div className="flex items-center justify-between border-b border-gray-100 dark:border-gray-800 pb-4">
-          <h2 className="text-base font-bold text-gray-900 dark:text-gray-50">Topic-Wise BKT Mastery Comparison (%)</h2>
+          <h2 className="text-base font-bold text-gray-900 dark:text-gray-50">Topic-Wise AKT Mastery Comparison (%)</h2>
           <span className="text-xs font-bold px-3 py-1 rounded-full bg-indigo-50 dark:bg-indigo-950/50 text-indigo-700 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-800 shadow-xs">
             Live Database Metrics
           </span>

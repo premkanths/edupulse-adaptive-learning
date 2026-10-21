@@ -89,7 +89,7 @@ export const Login = () => {
       badgeColor: 'bg-indigo-50 dark:bg-indigo-950/60 text-indigo-700 dark:text-indigo-300 border-indigo-200 dark:border-indigo-800 shadow-xs',
       icon: GraduationCap,
       title: 'Sign in to EduPulse',
-      subtitle: 'Adaptive learning paths, BKT mastery, and AI tutor'
+      subtitle: 'Adaptive learning paths, AKT mastery, and AI tutor'
     };
   };
 

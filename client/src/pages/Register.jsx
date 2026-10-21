@@ -59,7 +59,7 @@ export const Register = () => {
             Student Registration
           </h2>
           <p className="text-sm text-gray-600 dark:text-gray-400">
-            Join EduPulse to access personalized BKT learning paths
+            Join EduPulse to access personalized AKT learning paths
           </p>
         </div>
 

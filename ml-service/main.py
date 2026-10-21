@@ -5,9 +5,11 @@ import joblib
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
-from typing import List, Optional, Dict
+from typing import List, Optional, Dict, Any
 
-app = FastAPI(title="EduPulse ML Risk Prediction Service", version="1.0.0")
+from akt.akt_inference import akt_engine
+
+app = FastAPI(title="EduPulse ML Risk Prediction & Attentive Knowledge Tracing Service", version="2.0.0")
 
 app.add_middleware(
     CORSMiddleware,
@@ -41,11 +43,18 @@ def load_or_train_model():
 @app.on_event("startup")
 def startup_event():
     load_or_train_model()
+    if not akt_engine.is_loaded:
+        akt_engine.load()
+
+# ==========================================
+# 1. Risk Prediction Models
+# ==========================================
 
 class RiskInput(BaseModel):
     quiz_average: float = Field(..., ge=0, le=100, description="Average quiz score percentage")
     attendance_pct: float = Field(..., ge=0, le=100, description="Attendance percentage")
-    bkt_avg_mastery: float = Field(..., ge=0, le=1.0, description="Average Bayesian Knowledge Tracing mastery")
+    bkt_avg_mastery: Optional[float] = Field(default=None, description="Average Bayesian Knowledge Tracing mastery")
+    akt_avg_mastery: Optional[float] = Field(default=None, description="Average Attentive Knowledge Tracing mastery")
     days_inactive: int = Field(..., ge=0, le=365, description="Number of days since last platform activity")
     assignments_missed: int = Field(default=0, ge=0, le=100, description="Number of missed assignments")
 
@@ -60,8 +69,9 @@ class RiskResponse(BaseModel):
 def health_check():
     return {
         "status": "UP",
-        "service": "EduPulse ML Risk Prediction Service",
-        "model_loaded": model is not None
+        "service": "EduPulse ML Risk Prediction & AKT Service",
+        "risk_model_loaded": model is not None,
+        "akt_model_loaded": akt_engine.is_loaded
     }
 
 @app.get("/metrics")
@@ -73,10 +83,14 @@ def get_metrics():
 
 @app.get("/benchmark")
 def get_benchmark():
+    res = {}
     if os.path.exists(BENCHMARK_PATH):
         with open(BENCHMARK_PATH, "r") as f:
-            return json.load(f)
-    return {"message": "Benchmark not generated yet"}
+            res = json.load(f)
+    akt_metrics = akt_engine.get_metrics()
+    if akt_metrics and "test_metrics" in akt_metrics:
+        res["knowledge_tracing_benchmark"] = akt_metrics
+    return res
 
 @app.get("/feature-importance")
 def get_feature_importance():
@@ -92,10 +106,15 @@ def predict_risk(data: RiskInput):
     if model is None:
         load_or_train_model()
     
+    # Use AKT mastery if provided, otherwise BKT mastery, otherwise 0.50 default
+    mastery = data.akt_avg_mastery if data.akt_avg_mastery is not None else (
+        data.bkt_avg_mastery if data.bkt_avg_mastery is not None else 0.50
+    )
+    
     features = np.array([[
         data.quiz_average,
         data.attendance_pct,
-        data.bkt_avg_mastery,
+        mastery,
         data.days_inactive,
         data.assignments_missed
     ]])
@@ -122,8 +141,8 @@ def predict_risk(data: RiskInput):
     if data.attendance_pct < 75.0:
         reasons.append(f"Attendance ({data.attendance_pct:.1f}%) is below the minimum 75% threshold")
 
-    if data.bkt_avg_mastery < 0.45:
-        reasons.append(f"Bayesian Knowledge Tracing mastery across topics is low ({data.bkt_avg_mastery*100:.0f}%)")
+    if mastery < 0.45:
+        reasons.append(f"Knowledge Tracing mastery across topics is low ({mastery*100:.0f}%)")
 
     if data.days_inactive >= 7:
         reasons.append(f"Inactive for {data.days_inactive} consecutive days")
@@ -138,7 +157,7 @@ def predict_risk(data: RiskInput):
     feature_contributions = {
         "quiz_average": round(float(100.0 - data.quiz_average) * 0.35, 1),
         "attendance_pct": round(float(100.0 - data.attendance_pct) * 0.25, 1),
-        "bkt_avg_mastery": round(float((1.0 - data.bkt_avg_mastery) * 100) * 0.20, 1),
+        "mastery": round(float((1.0 - mastery) * 100) * 0.20, 1),
         "days_inactive": round(float(min(data.days_inactive * 5.0, 100)) * 0.10, 1),
         "assignments_missed": round(float(min(data.assignments_missed * 20.0, 100)) * 0.10, 1),
     }
@@ -150,3 +169,70 @@ def predict_risk(data: RiskInput):
         model="RandomForestClassifier-v1",
         feature_contributions=feature_contributions
     )
+
+
+# ==========================================
+# 2. Attentive Knowledge Tracing (AKT) Models & Endpoints
+# ==========================================
+
+class InteractionItem(BaseModel):
+    question_id: int
+    topic_id: Optional[int] = 1
+    is_correct: bool
+    timestamp: Optional[int] = None
+
+class AKTPredictRequest(BaseModel):
+    student_id: int
+    history: List[InteractionItem] = []
+    target_question_id: Optional[int] = 1
+    target_topic_id: int
+
+class TargetTopicItem(BaseModel):
+    topic_id: int
+    question_id: Optional[int] = None
+
+class AKTBatchPredictRequest(BaseModel):
+    student_id: int
+    history: List[InteractionItem] = []
+    target_topics: List[TargetTopicItem]
+
+@app.get("/akt/health")
+def akt_health():
+    return {
+        "status": "UP" if akt_engine.is_loaded else "DEGRADED",
+        "model": "Attentive Knowledge Tracing (Ghosh et al. KDD 2020)",
+        "is_loaded": akt_engine.is_loaded,
+        "n_questions": akt_engine.vocab.get("n_questions", 120),
+        "n_skills": akt_engine.vocab.get("n_skills", 24)
+    }
+
+@app.get("/akt/metrics")
+def get_akt_metrics():
+    return akt_engine.get_metrics()
+
+@app.post("/akt/predict")
+def predict_akt(data: AKTPredictRequest):
+    history_dicts = [item.dict() for item in data.history]
+    target_q = data.target_question_id if data.target_question_id is not None else data.target_topic_id
+    result = akt_engine.predict_next(
+        student_id=data.student_id,
+        history=history_dicts,
+        target_question_id=target_q,
+        target_topic_id=data.target_topic_id
+    )
+    return result
+
+@app.post("/akt/batch-predict")
+def batch_predict_akt(data: AKTBatchPredictRequest):
+    history_dicts = [item.dict() for item in data.history]
+    target_dicts = [item.dict() for item in data.target_topics]
+    results = akt_engine.batch_predict(
+        student_id=data.student_id,
+        history=history_dicts,
+        target_topics=target_dicts
+    )
+    return {
+        "student_id": data.student_id,
+        "predictions": results,
+        "model": "Attentive Knowledge Tracing (AKT-v1)"
+    }

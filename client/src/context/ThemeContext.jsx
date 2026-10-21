@@ -5,35 +5,41 @@ const ThemeContext = createContext();
 export const ThemeProvider = ({ children }) => {
   const [theme, setTheme] = useState(() => {
     const saved = localStorage.getItem('edupulse-theme');
-    if (saved === 'dark' || saved === 'light') return saved;
-    // Default to light for clean academic SaaS feel
+    if (saved === 'dark' || saved === 'light' || saved === 'premium') return saved;
     return 'light';
   });
 
   useEffect(() => {
     const root = document.documentElement;
     const body = document.body;
-    const isDark = theme === 'dark';
 
-    if (isDark) {
+    root.classList.remove('dark', 'premium');
+    if (body) body.classList.remove('dark', 'premium');
+
+    if (theme === 'dark') {
       root.classList.add('dark');
       if (body) body.classList.add('dark');
+      root.style.colorScheme = 'dark';
+    } else if (theme === 'premium') {
+      root.classList.add('premium');
+      if (body) body.classList.add('premium');
+      root.style.colorScheme = 'light';
     } else {
-      root.classList.remove('dark');
-      if (body) body.classList.remove('dark');
+      root.style.colorScheme = 'light';
     }
 
-    root.style.colorScheme = theme;
     localStorage.setItem('edupulse-theme', theme);
   }, [theme]);
 
   const toggleTheme = () => {
-    setTheme((prev) => (prev === 'dark' ? 'light' : 'dark'));
+    setTheme((prev) => {
+      if (prev === 'light') return 'premium';
+      if (prev === 'premium') return 'dark';
+      return 'light';
+    });
   };
 
-  const cycleTheme = () => {
-    setTheme((prev) => (prev === 'dark' ? 'light' : 'dark'));
-  };
+  const cycleTheme = toggleTheme;
 
   return (
     <ThemeContext.Provider value={{ theme, resolvedTheme: theme, toggleTheme, cycleTheme, setTheme }}>

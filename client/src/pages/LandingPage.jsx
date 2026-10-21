@@ -1,6 +1,19 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { GraduationCap, Users, ShieldCheck, Brain, TrendingUp, Sparkles, ArrowRight, CheckCircle, Bot } from 'lucide-react';
+import {
+  GraduationCap,
+  Users,
+  ShieldCheck,
+  Brain,
+  TrendingUp,
+  Sparkles,
+  ArrowRight,
+  CheckCircle,
+  Bot,
+  Database,
+  Lightbulb,
+  BarChart3
+} from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { ThemeToggle } from '../components/ui/ThemeToggle';
 
@@ -32,10 +45,10 @@ export const LandingPage = () => {
                 <span className="font-black text-xl text-gray-900 dark:text-gray-50 tracking-tight">
                   EduPulse
                 </span>
-                <span className="text-[10px] font-extrabold uppercase tracking-widest px-2 py-0.5 rounded-full bg-indigo-50 dark:bg-indigo-950/60 text-indigo-700 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-800">
-                  Pro
-                </span>
               </div>
+              <span className="block text-[11px] font-medium text-gray-500 dark:text-gray-400 leading-tight mt-0.5">
+                Adaptive Learning &amp; Student Analytics
+              </span>
             </div>
           </div>
 
@@ -211,33 +224,261 @@ export const LandingPage = () => {
           </div>
         </div>
 
-        {/* Platform Technical Architecture Pills */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto pt-4">
-          <div className="p-6 rounded-2xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 shadow-xs space-y-2.5">
-            <div className="flex items-center gap-2.5 text-indigo-600 dark:text-indigo-400 font-bold text-sm">
-              <Brain className="w-5 h-5" /> Bayesian Knowledge Tracing
-            </div>
-            <p className="text-xs text-gray-600 dark:text-gray-300 leading-relaxed font-normal">
-              Estimates student topic mastery from quiz responses and updates learning progress to identify concepts that need more practice.
+        {/* Section: How EduPulse Works */}
+        <div className="max-w-5xl mx-auto w-full space-y-8 pt-4">
+          <div className="text-center space-y-2">
+            <span className="text-xs font-extrabold uppercase tracking-widest text-indigo-600 dark:text-indigo-400">
+              Workflow Overview
+            </span>
+            <h2 className="text-2xl sm:text-3xl font-black text-gray-900 dark:text-gray-50 tracking-tight">
+              How EduPulse Works
+            </h2>
+            <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+              A structured four-step process connecting multimodal academic data with intelligent sequence modeling and automated guidance.
             </p>
           </div>
 
-          <div className="p-6 rounded-2xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 shadow-xs space-y-2.5">
-            <div className="flex items-center gap-2.5 text-teal-600 dark:text-teal-400 font-bold text-sm">
-              <TrendingUp className="w-5 h-5" /> Multi-Model Machine Learning
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {/* Step 01 */}
+            <div className="relative bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-3xl p-6 shadow-xs flex flex-col justify-between space-y-4">
+              <div className="space-y-3">
+                <div className="flex items-center justify-between">
+                  <div className="w-10 h-10 rounded-2xl bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400 flex items-center justify-center font-bold shadow-xs">
+                    <Database className="w-5 h-5" />
+                  </div>
+                  <span className="text-2xl font-black text-gray-300 dark:text-gray-700 font-mono">
+                    01
+                  </span>
+                </div>
+                <h3 className="text-sm font-bold text-gray-900 dark:text-gray-50">
+                  Academic &amp; External Data
+                </h3>
+                <p className="text-xs text-gray-600 dark:text-gray-400 leading-relaxed font-normal">
+                  Uses available academic records, marks, attendance, quiz responses, and supported external coding-profile data from platforms such as GitHub, LeetCode, and HackerRank.
+                </p>
+              </div>
             </div>
-            <p className="text-xs text-gray-600 dark:text-gray-300 leading-relaxed font-normal">
-              Analyzes academic performance and learning indicators using machine learning models such as Random Forest and Gradient Boosting to support the early identification of students who may need additional help.
+
+            {/* Step 02 */}
+            <div className="relative bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-3xl p-6 shadow-xs flex flex-col justify-between space-y-4">
+              <div className="space-y-3">
+                <div className="flex items-center justify-between">
+                  <div className="w-10 h-10 rounded-2xl bg-teal-50 dark:bg-teal-950/60 text-teal-600 dark:text-teal-400 flex items-center justify-center font-bold shadow-xs">
+                    <Brain className="w-5 h-5" />
+                  </div>
+                  <span className="text-2xl font-black text-gray-300 dark:text-gray-700 font-mono">
+                    02
+                  </span>
+                </div>
+                <h3 className="text-sm font-bold text-gray-900 dark:text-gray-50">
+                  Intelligent Analysis
+                </h3>
+                <p className="text-xs text-gray-600 dark:text-gray-400 leading-relaxed font-normal">
+                  Analyses available student data using machine learning and knowledge tracing to identify strengths and learning gaps.
+                </p>
+              </div>
+            </div>
+
+            {/* Step 03 */}
+            <div className="relative bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-3xl p-6 shadow-xs flex flex-col justify-between space-y-4">
+              <div className="space-y-3">
+                <div className="flex items-center justify-between">
+                  <div className="w-10 h-10 rounded-2xl bg-purple-50 dark:bg-purple-950/60 text-purple-600 dark:text-purple-400 flex items-center justify-center font-bold shadow-xs">
+                    <Lightbulb className="w-5 h-5" />
+                  </div>
+                  <span className="text-2xl font-black text-gray-300 dark:text-gray-700 font-mono">
+                    03
+                  </span>
+                </div>
+                <h3 className="text-sm font-bold text-gray-900 dark:text-gray-50">
+                  Personalized Learning
+                </h3>
+                <p className="text-xs text-gray-600 dark:text-gray-400 leading-relaxed font-normal">
+                  Provides relevant practice suggestions, learning resources, and AI-powered explanations based on identified learning needs.
+                </p>
+              </div>
+            </div>
+
+            {/* Step 04 */}
+            <div className="relative bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-3xl p-6 shadow-xs flex flex-col justify-between space-y-4">
+              <div className="space-y-3">
+                <div className="flex items-center justify-between">
+                  <div className="w-10 h-10 rounded-2xl bg-amber-50 dark:bg-amber-950/60 text-amber-600 dark:text-amber-400 flex items-center justify-center font-bold shadow-xs">
+                    <TrendingUp className="w-5 h-5" />
+                  </div>
+                  <span className="text-2xl font-black text-gray-300 dark:text-gray-700 font-mono">
+                    04
+                  </span>
+                </div>
+                <h3 className="text-sm font-bold text-gray-900 dark:text-gray-50">
+                  Progress Insights
+                </h3>
+                <p className="text-xs text-gray-600 dark:text-gray-400 leading-relaxed font-normal">
+                  Helps students track their progress and enables instructors to understand academic performance and areas needing support.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Section: Core Technologies Behind EduPulse */}
+        <div className="max-w-5xl mx-auto w-full space-y-8 pt-4">
+          <div className="text-center space-y-2">
+            <span className="text-xs font-extrabold uppercase tracking-widest text-indigo-600 dark:text-indigo-400">
+              Technical Architecture
+            </span>
+            <h2 className="text-2xl sm:text-3xl font-black text-gray-900 dark:text-gray-50 tracking-tight">
+              Core Technologies Behind EduPulse
+            </h2>
+            <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+              Key machine learning models, sequence algorithms, and AI assistance architectures powering the platform.
             </p>
           </div>
 
-          <div className="p-6 rounded-2xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 shadow-xs space-y-2.5">
-            <div className="flex items-center gap-2.5 text-purple-600 dark:text-purple-400 font-bold text-sm">
-              <Bot className="w-5 h-5" /> AI-Powered Learning Assistant
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-6">
+            {/* Card 1: Attentive Knowledge Tracing (AKT) */}
+            <div className="lg:col-span-2 p-6 rounded-3xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 shadow-xs space-y-4 flex flex-col justify-between">
+              <div className="space-y-3">
+                <div className="flex items-center gap-2.5 text-indigo-600 dark:text-indigo-400 font-bold text-sm">
+                  <div className="w-9 h-9 rounded-xl bg-indigo-50 dark:bg-indigo-950/60 flex items-center justify-center shrink-0 shadow-xs">
+                    <Brain className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
+                  </div>
+                  <h3 className="text-sm font-bold text-gray-900 dark:text-gray-50">
+                    Attentive Knowledge Tracing (AKT)
+                  </h3>
+                </div>
+                <ul className="space-y-2 text-xs text-gray-600 dark:text-gray-300 font-normal leading-relaxed pt-1">
+                  <li className="flex items-start gap-2">
+                    <span className="w-1.5 h-1.5 rounded-full bg-indigo-500 mt-1.5 shrink-0" />
+                    <span>Learns from student quiz-response sequences.</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="w-1.5 h-1.5 rounded-full bg-indigo-500 mt-1.5 shrink-0" />
+                    <span>Predicts performance on upcoming questions.</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="w-1.5 h-1.5 rounded-full bg-indigo-500 mt-1.5 shrink-0" />
+                    <span>Helps identify topics needing more practice.</span>
+                  </li>
+                </ul>
+              </div>
             </div>
-            <p className="text-xs text-gray-600 dark:text-gray-300 leading-relaxed font-normal">
-              Combines available AI providers, including Gemini, Groq, and local Ollama when configured, with a rule-based fallback to provide personalized explanations, study guidance, and learning recommendations.
-            </p>
+
+            {/* Card 2: Multi-Model Machine Learning */}
+            <div className="lg:col-span-2 p-6 rounded-3xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 shadow-xs space-y-4 flex flex-col justify-between">
+              <div className="space-y-3">
+                <div className="flex items-center gap-2.5 text-teal-600 dark:text-teal-400 font-bold text-sm">
+                  <div className="w-9 h-9 rounded-xl bg-teal-50 dark:bg-teal-950/60 flex items-center justify-center shrink-0 shadow-xs">
+                    <TrendingUp className="w-5 h-5 text-teal-600 dark:text-teal-400" />
+                  </div>
+                  <h3 className="text-sm font-bold text-gray-900 dark:text-gray-50">
+                    Multi-Model Machine Learning
+                  </h3>
+                </div>
+                <ul className="space-y-2 text-xs text-gray-600 dark:text-gray-300 font-normal leading-relaxed pt-1">
+                  <li className="flex items-start gap-2">
+                    <span className="w-1.5 h-1.5 rounded-full bg-teal-500 mt-1.5 shrink-0" />
+                    <span>Analyses academic performance indicators.</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="w-1.5 h-1.5 rounded-full bg-teal-500 mt-1.5 shrink-0" />
+                    <span>Uses Random Forest and Gradient Boosting where implemented.</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="w-1.5 h-1.5 rounded-full bg-teal-500 mt-1.5 shrink-0" />
+                    <span>Supports identifying learning difficulties.</span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+
+            {/* Card 3: AI-Powered Learning Assistant */}
+            <div className="lg:col-span-2 p-6 rounded-3xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 shadow-xs space-y-4 flex flex-col justify-between">
+              <div className="space-y-3">
+                <div className="flex items-center gap-2.5 text-purple-600 dark:text-purple-400 font-bold text-sm">
+                  <div className="w-9 h-9 rounded-xl bg-purple-50 dark:bg-purple-950/60 flex items-center justify-center shrink-0 shadow-xs">
+                    <Bot className="w-5 h-5 text-purple-600 dark:text-purple-400" />
+                  </div>
+                  <h3 className="text-sm font-bold text-gray-900 dark:text-gray-50">
+                    AI-Powered Learning Assistant
+                  </h3>
+                </div>
+                <ul className="space-y-1.5 text-xs text-gray-600 dark:text-gray-300 font-normal leading-relaxed pt-1">
+                  <li className="flex items-start gap-2">
+                    <span className="w-1.5 h-1.5 rounded-full bg-purple-500 mt-1.5 shrink-0" />
+                    <span><strong className="text-gray-800 dark:text-gray-200 font-semibold">Google Gemini:</strong> AI-powered explanations.</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="w-1.5 h-1.5 rounded-full bg-purple-500 mt-1.5 shrink-0" />
+                    <span><strong className="text-gray-800 dark:text-gray-200 font-semibold">Groq (Llama models):</strong> Fast AI responses.</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="w-1.5 h-1.5 rounded-full bg-purple-500 mt-1.5 shrink-0" />
+                    <span><strong className="text-gray-800 dark:text-gray-200 font-semibold">Local Ollama:</strong> Local AI inference when configured.</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="w-1.5 h-1.5 rounded-full bg-purple-500 mt-1.5 shrink-0" />
+                    <span><strong className="text-gray-800 dark:text-gray-200 font-semibold">Rule-based fallback:</strong> Basic guidance when AI services are unavailable.</span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+
+            {/* Card 4: Student Performance Analytics */}
+            <div className="lg:col-span-3 p-6 rounded-3xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 shadow-xs space-y-4 flex flex-col justify-between">
+              <div className="space-y-3">
+                <div className="flex items-center gap-2.5 text-blue-600 dark:text-blue-400 font-bold text-sm">
+                  <div className="w-9 h-9 rounded-xl bg-blue-50 dark:bg-blue-950/60 flex items-center justify-center shrink-0 shadow-xs">
+                    <BarChart3 className="w-5 h-5 text-blue-600 dark:text-blue-400" />
+                  </div>
+                  <h3 className="text-sm font-bold text-gray-900 dark:text-gray-50">
+                    Student Performance Analytics
+                  </h3>
+                </div>
+                <ul className="space-y-2 text-xs text-gray-600 dark:text-gray-300 font-normal leading-relaxed pt-1">
+                  <li className="flex items-start gap-2">
+                    <span className="w-1.5 h-1.5 rounded-full bg-blue-500 mt-1.5 shrink-0" />
+                    <span>Visualizes available marks and attendance.</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="w-1.5 h-1.5 rounded-full bg-blue-500 mt-1.5 shrink-0" />
+                    <span>Tracks academic performance and trends.</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="w-1.5 h-1.5 rounded-full bg-blue-500 mt-1.5 shrink-0" />
+                    <span>Highlights areas where students may need support.</span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+
+            {/* Card 5: Adaptive Learning Recommendations */}
+            <div className="lg:col-span-3 p-6 rounded-3xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 shadow-xs space-y-4 flex flex-col justify-between">
+              <div className="space-y-3">
+                <div className="flex items-center gap-2.5 text-amber-600 dark:text-amber-400 font-bold text-sm">
+                  <div className="w-9 h-9 rounded-xl bg-amber-50 dark:bg-amber-950/60 flex items-center justify-center shrink-0 shadow-xs">
+                    <Lightbulb className="w-5 h-5 text-amber-600 dark:text-amber-400" />
+                  </div>
+                  <h3 className="text-sm font-bold text-gray-900 dark:text-gray-50">
+                    Adaptive Learning Recommendations
+                  </h3>
+                </div>
+                <ul className="space-y-2 text-xs text-gray-600 dark:text-gray-300 font-normal leading-relaxed pt-1">
+                  <li className="flex items-start gap-2">
+                    <span className="w-1.5 h-1.5 rounded-full bg-amber-500 mt-1.5 shrink-0" />
+                    <span>Identifies topics needing more practice.</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="w-1.5 h-1.5 rounded-full bg-amber-500 mt-1.5 shrink-0" />
+                    <span>Suggests relevant questions and resources.</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="w-1.5 h-1.5 rounded-full bg-amber-500 mt-1.5 shrink-0" />
+                    <span>Supports individual learning needs.</span>
+                  </li>
+                </ul>
+              </div>
+            </div>
           </div>
         </div>
 

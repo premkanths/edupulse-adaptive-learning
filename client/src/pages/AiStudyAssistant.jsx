@@ -179,7 +179,7 @@ export const AiStudyAssistant = () => {
         <div className="flex items-center gap-2.5 text-xs text-gray-700 dark:text-gray-300">
           <Shield className="w-4 h-4 text-indigo-600 dark:text-indigo-400 shrink-0" />
           <span>
-            <strong>Course-Material RAG & BKT Active:</strong> Answers are grounded in teacher notes & your real mastery profile.
+            <strong>Course-Material RAG & AKT Active:</strong> Answers are grounded in teacher notes & your real mastery profile.
           </span>
         </div>
 

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { studentApi } from '../api/client';
 import { LoadingSpinner } from '../components/LoadingSpinner';
 import { Alert } from '../components/Alert';
-import { BookOpen, GitBranch, ArrowRight } from 'lucide-react';
+import { BookOpen, GitBranch, ArrowRight, FileText } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 export const StudentSubjects = () => {
@@ -30,7 +30,7 @@ export const StudentSubjects = () => {
   }, []);
 
   if (loading) {
-    return <LoadingSpinner size="lg" text="Loading subjects and BKT mastery..." />;
+    return <LoadingSpinner size="lg" text="Loading subjects and AKT mastery..." />;
   }
 
   if (error) {
@@ -67,21 +67,55 @@ export const StudentSubjects = () => {
       <div>
         <h1 className="text-2xl font-black text-gray-900 dark:text-gray-50 tracking-tight">Enrolled Subjects &amp; Topic Mastery</h1>
         <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
-          Each topic is dynamically tracked using Bayesian Knowledge Tracing (BKT) to estimate your true probability of mastery (<code className="bg-gray-100 dark:bg-gray-800 px-1.5 py-0.5 rounded text-indigo-700 dark:text-indigo-300 font-mono text-xs border border-gray-200 dark:border-gray-700">pKnown</code>).
+          Each topic is dynamically tracked using Attentive Knowledge Tracing (AKT) to estimate your true probability of mastery (<code className="bg-gray-100 dark:bg-gray-800 px-1.5 py-0.5 rounded text-indigo-700 dark:text-indigo-300 font-mono text-xs border border-gray-200 dark:border-gray-700">pKnown</code>) through context-aware attention and monotonic decay.
         </p>
+      </div>
+
+      {/* Course Materials Quick Banner */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-4 rounded-2xl bg-indigo-50/70 dark:bg-indigo-950/40 border border-indigo-100 dark:border-indigo-900/50 shadow-xs">
+        <div className="flex items-center gap-3">
+          <div className="p-2.5 rounded-xl bg-indigo-600 text-white shadow-xs">
+            <FileText className="w-5 h-5" />
+          </div>
+          <div>
+            <h3 className="text-sm font-bold text-gray-900 dark:text-gray-100">
+              Instructor Course Materials &amp; Lecture Notes
+            </h3>
+            <p className="text-xs text-gray-600 dark:text-gray-400">
+              Study guides, slides, and RAG document summaries provided by your professors.
+            </p>
+          </div>
+        </div>
+        <Link
+          to="/student/materials"
+          className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-bold bg-indigo-600 hover:bg-indigo-700 text-white shadow-xs transition whitespace-nowrap cursor-pointer"
+        >
+          <span>Browse Course Materials</span>
+          <ArrowRight className="w-3.5 h-3.5" />
+        </Link>
       </div>
 
       <div className="space-y-6">
         {subjects.map((subject) => (
           <div key={subject.id} className="bg-white dark:bg-gray-900 rounded-3xl p-6 sm:p-8 border border-gray-200 dark:border-gray-800 shadow-xs space-y-5">
-            <div className="flex items-center gap-3 border-b border-gray-100 dark:border-gray-800 pb-4">
-              <div className="p-3 bg-indigo-600 text-white rounded-2xl shadow-xs">
-                <BookOpen className="w-6 h-6" />
+            <div className="flex items-center justify-between gap-3 border-b border-gray-100 dark:border-gray-800 pb-4">
+              <div className="flex items-center gap-3">
+                <div className="p-3 bg-indigo-600 text-white rounded-2xl shadow-xs">
+                  <BookOpen className="w-6 h-6" />
+                </div>
+                <div>
+                  <h2 className="text-lg font-bold text-gray-900 dark:text-gray-50">{subject.name}</h2>
+                  <p className="text-xs text-gray-600 dark:text-gray-400 mt-0.5">{subject.description}</p>
+                </div>
               </div>
-              <div>
-                <h2 className="text-lg font-bold text-gray-900 dark:text-gray-50">{subject.name}</h2>
-                <p className="text-xs text-gray-600 dark:text-gray-400 mt-0.5">{subject.description}</p>
-              </div>
+
+              <Link
+                to="/student/materials"
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold bg-gray-100 dark:bg-gray-800 hover:bg-indigo-50 dark:hover:bg-indigo-950/60 text-gray-700 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 border border-gray-200 dark:border-gray-700 transition cursor-pointer"
+              >
+                <FileText className="w-3.5 h-3.5" />
+                <span className="hidden sm:inline">Subject Notes</span>
+              </Link>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

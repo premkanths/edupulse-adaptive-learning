@@ -153,7 +153,7 @@ export const AdminReports = () => {
               <h3 className="text-sm font-bold text-gray-900 dark:text-gray-50">Topic Mastery Matrix</h3>
             </div>
             <p className="text-xs text-gray-500 dark:text-gray-400 leading-relaxed">
-              Curricular Bayesian Knowledge Tracing scores across all subjects and topics, tracking probability of concept mastery P(L_n).
+              Curricular Attentive Knowledge Tracing (AKT) scores across all subjects and topics, tracking probability of concept mastery.
             </p>
             <button
               onClick={() => handleDownloadCsv('/admin/reports/export/topic-mastery', 'topic_mastery_matrix.csv')}

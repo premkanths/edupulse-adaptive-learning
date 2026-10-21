@@ -22,14 +22,17 @@ public class ResearchEvaluationService {
     private final EvaluationRunRepository evaluationRunRepository;
     private final ObjectMapper objectMapper;
     private final RestClient restClient;
+    private final AktService aktService;
 
     @Value("${ml.service.url:http://127.0.0.1:8001}")
     private String mlServiceUrl;
 
     public ResearchEvaluationService(EvaluationRunRepository evaluationRunRepository,
-                                     ObjectMapper objectMapper) {
+                                     ObjectMapper objectMapper,
+                                     AktService aktService) {
         this.evaluationRunRepository = evaluationRunRepository;
         this.objectMapper = objectMapper;
+        this.aktService = aktService;
         this.restClient = RestClient.builder().build();
     }
 
@@ -82,6 +85,10 @@ public class ResearchEvaluationService {
         bktVsBaseline.put("aucGainPercent", 17.9);
         bktVsBaseline.put("rmseReductionPercent", 26.2);
         report.put("bktBenchmark", bktVsBaseline);
+
+        // 2b. Attentive Knowledge Tracing (AKT) vs BKT Baseline
+        Map<String, Object> aktBenchmark = aktService.getAktEvaluationMetrics();
+        report.put("aktBenchmark", aktBenchmark);
 
         // 3. Multi-Model Machine Learning Comparison (Phase 16)
         Map<String, Object> multiModelData = fetchMultiModelBenchmark();

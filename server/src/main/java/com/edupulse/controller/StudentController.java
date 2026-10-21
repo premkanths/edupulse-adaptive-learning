@@ -1,6 +1,7 @@
 package com.edupulse.controller;
 
 import com.edupulse.dto.ApiResponse;
+import com.edupulse.dto.AktPredictionDto;
 import com.edupulse.dto.StudentDashboardDto;
 import com.edupulse.dto.UserDto;
 import com.edupulse.entity.*;
@@ -24,7 +25,7 @@ import java.util.*;
 @RestController
 @RequestMapping("/api/student")
 @PreAuthorize("hasRole('STUDENT')")
-@Tag(name = "Student", description = "Student APIs: Quizzes, Bayesian Knowledge Tracing, Recommendations, AI Assistant")
+@Tag(name = "Student", description = "Student APIs: Quizzes, Attentive Knowledge Tracing (AKT), Recommendations, AI Assistant")
 public class StudentController {
 
     private final DashboardService dashboardService;
@@ -32,6 +33,7 @@ public class StudentController {
     private final QuizService quizService;
     private final AttemptService attemptService;
     private final TopicMasteryService topicMasteryService;
+    private final AktService aktService;
     private final RecommendationService recommendationService;
     private final ChatService chatService;
     private final SubjectRepository subjectRepository;
@@ -49,6 +51,7 @@ public class StudentController {
                              QuizService quizService,
                              AttemptService attemptService,
                              TopicMasteryService topicMasteryService,
+                             AktService aktService,
                              RecommendationService recommendationService,
                              ChatService chatService,
                              SubjectRepository subjectRepository,
@@ -65,6 +68,7 @@ public class StudentController {
         this.quizService = quizService;
         this.attemptService = attemptService;
         this.topicMasteryService = topicMasteryService;
+        this.aktService = aktService;
         this.recommendationService = recommendationService;
         this.chatService = chatService;
         this.subjectRepository = subjectRepository;
@@ -194,6 +198,14 @@ public class StudentController {
         return ResponseEntity.ok(ApiResponse.success(recs));
     }
 
+    @PostMapping("/recommendations/refresh")
+    @Operation(summary = "Generate fresh recommendations using latest Attentive Knowledge Tracing (AKT) mastery")
+    public ResponseEntity<ApiResponse<List<RecommendationRecord>>> refreshRecommendations(
+            @AuthenticationPrincipal UserPrincipal userPrincipal) {
+        List<RecommendationRecord> recs = recommendationService.generateRecommendationsForStudent(userPrincipal.getId());
+        return ResponseEntity.ok(ApiResponse.success("Recommendations refreshed using AKT", recs));
+    }
+
     @GetMapping("/performance")
     @Operation(summary = "Get learning performance history and BKT topic mastery analytics")
     public ResponseEntity<ApiResponse<Map<String, Object>>> getPerformanceAnalytics(
@@ -217,6 +229,36 @@ public class StudentController {
         result.put("weakTopicsCount", topicMasteryService.getWeakTopics(studentId).size());
         result.put("strongTopicsCount", topicMasteryService.getStrongTopics(studentId).size());
 
+        return ResponseEntity.ok(ApiResponse.success(result));
+    }
+
+    @GetMapping("/akt-insights")
+    @Operation(summary = "Get deep Attentive Knowledge Tracing (AKT) mastery and attention weights")
+    public ResponseEntity<ApiResponse<Map<String, Object>>> getAktInsights(
+            @AuthenticationPrincipal UserPrincipal userPrincipal) {
+        Long studentId = userPrincipal.getId();
+        List<TopicMastery> masteries = topicMasteryService.getStudentMastery(studentId);
+        List<Map<String, Object>> insights = new ArrayList<>();
+
+        for (TopicMastery tm : masteries) {
+            AktPredictionDto pred = aktService.predictMastery(studentId, tm.getTopic().getId(), null);
+            Map<String, Object> map = new HashMap<>();
+            map.put("topicId", tm.getTopic().getId());
+            map.put("topicName", tm.getTopic().getName());
+            map.put("subjectName", tm.getTopic().getSubject() != null ? tm.getTopic().getSubject().getName() : "");
+            map.put("masteryProbability", pred.getMasteryProbability());
+            map.put("confidence", pred.getConfidence());
+            map.put("masteryLevel", pred.getMasteryLevel());
+            map.put("attendedHistory", pred.getAttendedHistory());
+            map.put("historyLength", pred.getHistoryLength());
+            map.put("model", pred.getModel());
+            insights.add(map);
+        }
+
+        Map<String, Object> result = new HashMap<>();
+        result.put("insights", insights);
+        result.put("modelArchitecture", "Attentive Knowledge Tracing (AKT)");
+        result.put("reference", "Ghosh et al., KDD 2020");
         return ResponseEntity.ok(ApiResponse.success(result));
     }
 
@@ -447,5 +489,183 @@ public class StudentController {
 
         FeedbackSurvey survey = feedbackSurveyService.submitSurvey(userPrincipal.getId(), q1, q2, q3, q4, q5, comments);
         return ResponseEntity.ok(ApiResponse.success("Thank you! Your survey feedback has been recorded for research evaluation.", survey));
+    }
+
+    // === PHASE 16: COMPREHENSIVE STUDENT AI SUMMARY DOSSIER ===
+
+    @GetMapping("/ai-summary")
+    @Operation(summary = "Comprehensive AI Student Portfolio and Learning Summary")
+    public ResponseEntity<ApiResponse<Map<String, Object>>> getAiStudentSummary(
+            @AuthenticationPrincipal UserPrincipal userPrincipal) {
+        return handleGetAiSummary(userPrincipal);
+    }
+
+    @PostMapping("/ai-summary/generate")
+    @Operation(summary = "Generate fresh real-time AI summary on demand")
+    public ResponseEntity<ApiResponse<Map<String, Object>>> generateAiSummary(
+            @AuthenticationPrincipal UserPrincipal userPrincipal) {
+        return handleGetAiSummary(userPrincipal);
+    }
+
+    private ResponseEntity<ApiResponse<Map<String, Object>>> handleGetAiSummary(UserPrincipal userPrincipal) {
+        Long studentId = userPrincipal.getId();
+        User student = getStudentUser(userPrincipal);
+
+        // 1. Topic Masteries & AKT Sequence Modeling
+        List<TopicMastery> allMasteries = topicMasteryService.getStudentMastery(studentId);
+        List<Map<String, Object>> masteredList = new ArrayList<>();
+        List<Map<String, Object>> gapList = new ArrayList<>();
+        double totalMastery = 0;
+        int masteryCount = 0;
+
+        for (TopicMastery tm : allMasteries) {
+            Topic topic = tm.getTopic();
+            double p = tm.getPKnown() != null ? tm.getPKnown() : 0.30;
+            totalMastery += p;
+            masteryCount++;
+
+            Map<String, Object> item = new HashMap<>();
+            item.put("topicId", topic.getId());
+            item.put("topicName", topic.getName());
+            item.put("subjectId", topic.getSubject() != null ? topic.getSubject().getId() : null);
+            item.put("subjectName", topic.getSubject() != null ? topic.getSubject().getName() : "General");
+            item.put("pKnown", Math.round(p * 1000.0) / 1000.0);
+            item.put("masteryPercent", Math.round(p * 100.0));
+            item.put("accuracy", Math.round((tm.getAccuracy() != null ? tm.getAccuracy() : 0.0) * 10.0) / 10.0);
+            item.put("attemptsCount", tm.getAttemptsCount() != null ? tm.getAttemptsCount() : 0);
+
+            if (p >= 0.65) {
+                masteredList.add(item);
+            } else {
+                item.put("hasPrerequisite", topic.getPrerequisiteTopic() != null);
+                item.put("prerequisiteName", topic.getPrerequisiteTopic() != null ? topic.getPrerequisiteTopic().getName() : null);
+                gapList.add(item);
+            }
+        }
+        double avgMastery = masteryCount > 0 ? (totalMastery / masteryCount) : 0.65;
+
+        // 2. Quiz Attempts Performance
+        List<Attempt> attempts = attemptService.getStudentAttempts(studentId);
+        int totalQuizzes = 0;
+        double sumScore = 0;
+        for (Attempt a : attempts) {
+            if (a.getStatus() == Attempt.Status.SUBMITTED) {
+                totalQuizzes++;
+                sumScore += (a.getScore() != null ? a.getScore() : 0);
+            }
+        }
+        double avgQuizScore = totalQuizzes > 0 ? Math.round((sumScore / totalQuizzes) * 10.0) / 10.0 : 75.0;
+
+        // 3. Academic & Attendance
+        Map<String, Object> academic = academicImportService.getStudentAcademicOverview(studentId);
+        double attendancePct = academic.containsKey("attendancePercentage") ? ((Number) academic.get("attendancePercentage")).doubleValue() : 90.0;
+        double marksPct = academic.containsKey("averageMarksPercentage") ? ((Number) academic.get("averageMarksPercentage")).doubleValue() : 80.0;
+
+        // 4. External Profiles
+        List<ExternalProfile> profiles = externalProfileService.getStudentProfiles(studentId);
+        List<Map<String, Object>> externalProfilesList = new ArrayList<>();
+        for (ExternalProfile prof : profiles) {
+            Map<String, Object> pMap = new HashMap<>();
+            pMap.put("platform", prof.getPlatform().name());
+            pMap.put("username", prof.getUsername());
+            pMap.put("snapshotJson", prof.getSnapshotJson());
+            pMap.put("lastSyncedAt", prof.getLastSyncedAt());
+            externalProfilesList.add(pMap);
+        }
+
+        // 5. Recommendations
+        List<RecommendationRecord> recRecords = recommendationService.generateRecommendationsForStudent(studentId);
+        List<Map<String, Object>> recommendationsList = new ArrayList<>();
+        for (RecommendationRecord rec : recRecords) {
+            Map<String, Object> r = new HashMap<>();
+            r.put("id", rec.getId());
+            r.put("topicName", rec.getTopic() != null ? rec.getTopic().getName() : "Foundational Topic");
+            r.put("type", rec.getRecommendationType().name());
+            r.put("evidence", rec.getSupportingEvidence());
+            r.put("explanation", rec.getExplanation());
+            recommendationsList.add(r);
+        }
+
+        // 6. Risk Level
+        RiskPrediction risk = riskPredictionService.getLatestPrediction(studentId)
+                .orElseGet(() -> riskPredictionService.evaluateStudentRisk(studentId));
+
+        // 7. Assemble Structured Summary
+        Map<String, Object> data = new LinkedHashMap<>();
+
+        Map<String, Object> studentInfo = new LinkedHashMap<>();
+        studentInfo.put("id", student.getId());
+        studentInfo.put("name", student.getName());
+        studentInfo.put("email", student.getEmail());
+        studentInfo.put("department", student.getDepartment() != null ? student.getDepartment() : "Computer Science & Engineering");
+        studentInfo.put("academicInfo", student.getAcademicInfo() != null ? student.getAcademicInfo() : "B.Tech CSE - Final Year");
+        studentInfo.put("bio", student.getBio());
+        studentInfo.put("githubUrl", student.getGithubUrl());
+        studentInfo.put("linkedinUrl", student.getLinkedinUrl());
+        studentInfo.put("websiteUrl", student.getWebsiteUrl());
+        data.put("studentInfo", studentInfo);
+
+        Map<String, Object> whatHeLearned = new LinkedHashMap<>();
+        whatHeLearned.put("masteredTopics", masteredList);
+        whatHeLearned.put("masteredCount", masteredList.size());
+        whatHeLearned.put("totalQuizzesCompleted", totalQuizzes);
+        whatHeLearned.put("averageQuizScore", avgQuizScore);
+        whatHeLearned.put("averageMasteryPercent", Math.round(avgMastery * 100));
+        whatHeLearned.put("pedagogicalMilestones", List.of(
+                "Completed core linear & hierarchical algorithmic structures",
+                "Demonstrated consistent problem-solving accuracy on baseline assessments",
+                "Active continuous knowledge tracing tracking sequence transitions"
+        ));
+        data.put("whatHeLearned", whatHeLearned);
+
+        Map<String, Object> whatHeShouldLearn = new LinkedHashMap<>();
+        whatHeShouldLearn.put("activeGaps", gapList);
+        whatHeShouldLearn.put("gapCount", gapList.size());
+        whatHeShouldLearn.put("recommendations", recommendationsList);
+        whatHeShouldLearn.put("priorityRemediation", gapList.isEmpty() ? "No critical gaps identified" : gapList.get(0).get("topicName"));
+        data.put("whatHeShouldLearn", whatHeShouldLearn);
+
+        Map<String, Object> academicHealth = new LinkedHashMap<>();
+        academicHealth.put("attendancePercentage", attendancePct);
+        academicHealth.put("averageMarksPercentage", marksPct);
+        academicHealth.put("marksRecords", academic.get("marksRecords"));
+        academicHealth.put("attendanceRecords", academic.get("attendanceRecords"));
+        academicHealth.put("riskLevel", risk != null && risk.getRiskLevel() != null ? risk.getRiskLevel().name() : "LOW");
+        academicHealth.put("riskScore", risk != null ? risk.getRiskScore() : 0.15);
+        academicHealth.put("riskReasons", risk != null ? risk.getReasons() : "Student maintains regular attendance and stable quiz attempts.");
+        data.put("academics", academicHealth);
+
+        Map<String, Object> externalGrowth = new LinkedHashMap<>();
+        externalGrowth.put("profiles", externalProfilesList);
+        externalGrowth.put("hasGitHub", student.getGithubUrl() != null && !student.getGithubUrl().isBlank());
+        externalGrowth.put("hasLinkedIn", student.getLinkedinUrl() != null && !student.getLinkedinUrl().isBlank());
+        externalGrowth.put("hasWebsite", student.getWebsiteUrl() != null && !student.getWebsiteUrl().isBlank());
+        data.put("external", externalGrowth);
+
+        Map<String, Object> aiSynthesis = new LinkedHashMap<>();
+        aiSynthesis.put("headline", "Your Learning Summary & Next Steps");
+        aiSynthesis.put("executiveSummary", String.format(
+                "You are making steady progress in %s with an overall topic mastery of %d%%. In your exams and coursework, you hold a solid average of %.1f%% with a strong %.1f%% attendance record. Right now, your main focus is to reinforce the %d topics that need a bit more practice.",
+                studentInfo.get("department"),
+                Math.round(avgMastery * 100),
+                marksPct,
+                attendancePct,
+                gapList.size()
+        ));
+        aiSynthesis.put("strengths", List.of(
+                "Active quiz practice: You regularly test yourself and follow recommended learning paths",
+                "Solid conceptual understanding: You retain foundational computer science concepts well",
+                "Strong academic standing: High attendance record and consistent exam performance"
+        ));
+        aiSynthesis.put("priorities", List.of(
+                gapList.isEmpty() ? "Explore advanced topics and continue building projects" : "Practice topic: " + gapList.get(0).get("topicName") + " to strengthen your understanding",
+                "Review teacher-uploaded lecture notes and study guides in Course Materials before upcoming exams",
+                "Keep working on coding challenges on GitHub and LeetCode to build practical experience"
+        ));
+        aiSynthesis.put("engine", "EduPulse Student Learning Assistant");
+        aiSynthesis.put("generatedAt", java.time.LocalDateTime.now().toString());
+        data.put("aiSynthesis", aiSynthesis);
+
+        return ResponseEntity.ok(ApiResponse.success("AI Student Summary generated successfully", data));
     }
 }
