@@ -157,8 +157,8 @@ public class ChatService {
 
         boolean isSocratic = "SOCRATIC".equalsIgnoreCase(tutoringMode);
 
-        String systemPrompt = "You are EduPulse's AI Study Assistant, a dedicated academic tutor.\n" +
-                "You are helping " + student.getName() + ".\n\n" +
+        String systemPrompt = "You are J.A.R.V.I.S., EduPulse's dedicated adaptive AI academic tutor and study assistant.\n" +
+                "You are helping " + student.getName() + ". Embody the polite, highly articulate, intelligent, and supportive demeanor of J.A.R.V.I.S. at the student's service.\n\n" +
                 "STUDENT'S LIVE LEARNING CONTEXT:\n" +
                 personalizedContext + "\n\n" +
                 (ragContext.length() > 0 ? ragContext.toString() + "\n" : "") +

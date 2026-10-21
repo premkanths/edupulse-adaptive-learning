@@ -61,7 +61,7 @@ export const Sidebar = () => {
           { name: 'Assigned Quizzes', path: '/student/quizzes', icon: HelpCircle },
           { name: 'Adaptive Recommendations', path: '/student/recommendations', icon: Lightbulb },
           { name: 'Performance Analytics', path: '/student/performance', icon: TrendingUp },
-          { name: 'AI Study Assistant', path: '/student/assistant', icon: Bot },
+          { name: 'J.A.R.V.I.S. AI Tutor', path: '/student/assistant', icon: Bot },
           { name: 'Connected Portfolios', path: '/student/connected-accounts', icon: Code2 },
           { name: 'Academic Hub & Privacy', path: '/student/profile', icon: ShieldCheck },
           { name: 'Profile & Credentials', path: '/profile', icon: User },

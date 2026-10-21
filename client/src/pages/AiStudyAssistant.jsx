@@ -268,7 +268,7 @@ export const AiStudyAssistant = () => {
                   <Bot className="w-7 h-7" />
                 </div>
                 <div>
-                  <h3 className="text-base font-bold text-gray-900 dark:text-gray-50">How can I help you study today?</h3>
+                  <h3 className="text-base font-bold text-gray-900 dark:text-gray-50">Hello, I am J.A.R.V.I.S., your AI tutor. How may I assist you today?</h3>
                   <p className="text-xs text-gray-500 dark:text-gray-400 max-w-sm mt-1">
                     {tutoringMode === 'SOCRATIC'
                       ? 'In Socratic mode, I will guide your inquiry through targeted questions and conceptual steps.'

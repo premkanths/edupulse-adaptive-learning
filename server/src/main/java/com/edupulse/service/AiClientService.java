@@ -178,8 +178,8 @@ public class AiClientService {
                    "**Recommended Study Step**: Review the prerequisite topic on Functional Dependencies before attempting complex multi-table joins.";
         }
 
-        return "Hello! I am your **EduPulse AI Study Assistant**.\n\n" +
-               "I have analyzed your live course data and Bayesian Knowledge Tracing mastery profile.\n\n" +
+        return "Hello! I am **J.A.R.V.I.S.**, your EduPulse AI study assistant and tutor.\n\n" +
+               "At your service. I have analyzed your live course data and Bayesian Knowledge Tracing mastery profile.\n\n" +
                "- **Current Active Subjects**: Data Structures & Algorithms, Database Management Systems, Computer Networks.\n" +
                "- **Recommended Focus**: Spend 20 minutes reviewing prerequisite tree algorithms and relation schemas.\n\n" +
                "Feel free to ask me to explain any complex algorithms, solve tricky questions step-by-step, or break down your weak topics!";

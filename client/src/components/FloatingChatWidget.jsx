@@ -10,14 +10,14 @@ export const FloatingChatWidget = () => {
     {
       id: 1,
       role: 'ASSISTANT',
-      content: 'Hi there! I am your EduPulse AI Study Assistant. Ask me anything about your courses, weak topics, or quiz errors!',
+      content: 'Hello! I am J.A.R.V.I.S., your adaptive AI study assistant and academic tutor. At your service—ask me anything about your courses, weak topics, or tricky quiz concepts!',
     },
   ]);
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
   const [sessionId, setSessionId] = useState(null);
 
-// Only render for students
+  // Only render for students
   if (role !== 'STUDENT') return null;
 
   const handleSend = async (e) => {
@@ -58,22 +58,25 @@ export const FloatingChatWidget = () => {
           onClick={() => setIsOpen(true)}
           className="flex items-center gap-2 py-3 px-5 rounded-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white shadow-xl shadow-indigo-500/30 text-xs font-bold transition-all hover:scale-105 cursor-pointer"
         >
-          <Bot className="w-4 h-4" />
-          <span>Ask AI Assistant</span>
+          <Sparkles className="w-4 h-4 text-amber-300 animate-pulse" />
+          <span>Ask JARVIS AI</span>
         </button>
       )}
 
       {isOpen && (
         <div className="bg-white/95 dark:bg-gray-900 backdrop-blur-xl rounded-3xl border border-gray-200 dark:border-gray-800 shadow-2xl w-96 h-[500px] flex flex-col justify-between overflow-hidden animate-in fade-in slide-in-from-bottom-6 duration-200">
           {/* Header */}
-          <div className="bg-gradient-to-r from-indigo-700 via-indigo-600 to-violet-700 text-white p-4 flex items-center justify-between">
+          <div className="bg-gradient-to-r from-blue-600 via-indigo-600 to-indigo-700 text-white p-4 flex items-center justify-between">
             <div className="flex items-center gap-2.5">
               <div className="w-8 h-8 rounded-xl bg-white/20 flex items-center justify-center">
                 <Bot className="w-4 h-4 text-white" />
               </div>
               <div>
-                <h3 className="text-xs font-bold">EduPulse AI Study Assistant</h3>
-                <span className="text-[10px] text-indigo-200 block">Context-aware tutor</span>
+                <h3 className="text-xs font-bold flex items-center gap-1.5">
+                  J.A.R.V.I.S. AI Tutor
+                  <span className="text-[9px] px-1.5 py-0.2 bg-white/20 rounded-md font-extrabold uppercase tracking-wider">Online</span>
+                </h3>
+                <span className="text-[10px] text-indigo-100 block">Adaptive Intelligence &bull; At your service</span>
               </div>
             </div>
             <button
@@ -105,7 +108,7 @@ export const FloatingChatWidget = () => {
             {loading && (
               <div className="flex items-center gap-2 text-[11px] text-gray-400 p-2">
                 <Sparkles className="w-3.5 h-3.5 text-indigo-500 animate-spin" />
-                <span>Generating explanation...</span>
+                <span>J.A.R.V.I.S. is synthesizing your answer...</span>
               </div>
             )}
           </div>
@@ -116,7 +119,7 @@ export const FloatingChatWidget = () => {
               type="text"
               value={input}
               onChange={(e) => setInput(e.target.value)}
-              placeholder="Ask a question..."
+              placeholder="Ask J.A.R.V.I.S. a question..."
               className="flex-1 py-2 px-3 bg-white dark:bg-gray-950 border border-gray-200 dark:border-gray-700 rounded-xl text-xs text-gray-900 dark:text-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500"
             />
             <button
