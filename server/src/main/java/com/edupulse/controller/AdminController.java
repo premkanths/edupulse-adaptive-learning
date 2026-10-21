@@ -220,7 +220,7 @@ public class AdminController {
     }
 
     @GetMapping("/reports/export/topic-mastery")
-    @Operation(summary = "Export Bayesian Knowledge Tracing topic mastery matrix as CSV")
+    @Operation(summary = "Export Attentive Knowledge Tracing (AKT) topic mastery matrix as CSV (with BKT fallback parameters)")
     public ResponseEntity<String> exportTopicMasteryReport() {
         String csv = reportExportService.exportTopicMasteryCsv();
         return ResponseEntity.ok()

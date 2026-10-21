@@ -144,7 +144,7 @@ export const StudentSubjects = () => {
                       </span>
                     </div>
 
-                    {/* BKT Mastery Progress Bar */}
+                    {/* AKT Mastery Progress Bar */}
                     <div className="space-y-1.5">
                       <div className="flex justify-between text-xs font-semibold text-gray-700 dark:text-gray-300">
                         <span>pKnown Mastery</span>

@@ -169,7 +169,7 @@ public class RiskPredictionService {
             if (quizAverage < 50.0) reasons.add("Quiz score average is critically low (" + Math.round(quizAverage) + "%)");
             else if (quizAverage < 65.0) reasons.add("Quiz score average is below 65%");
             if (attendancePct < 75.0) reasons.add("Attendance is below required 75% (" + Math.round(attendancePct) + "%)");
-            if (bktMastery < 0.45) reasons.add("BKT estimated mastery is low across key syllabus topics (" + Math.round(bktMastery * 100) + "%)");
+            if (bktMastery < 0.45) reasons.add("Knowledge Tracing (AKT) estimated mastery is low across key syllabus topics (" + Math.round(bktMastery * 100) + "%)");
             if (daysInactive >= 7) reasons.add("Student has been inactive for " + daysInactive + " days");
             if (assignmentsMissed >= 2) reasons.add("Has " + assignmentsMissed + " missed or failing assessment marks");
             if (reasons.isEmpty()) reasons.add("Student is performing well with high engagement and mastery");

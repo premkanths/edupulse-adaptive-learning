@@ -63,14 +63,14 @@ export const DemoWalkthroughModal = ({ isOpen, onClose }) => {
       actionRoute: '/teacher/quizzes/ai-generate'
     },
     {
-      title: 'Step 4: Student Adaptive Quizzes & Bayesian Knowledge Tracing',
+      title: 'Step 4: Student Adaptive Quizzes & Attentive Knowledge Tracing (AKT)',
       badge: 'Student Feature',
       icon: Award,
-      description: 'Students take timed assessments while the Bayesian Knowledge Tracing (BKT) engine updates topic mastery probabilities in real time.',
+      description: 'Students take formative assessments while the deep Attentive Knowledge Tracing (AKT) model evaluates concept mastery sequences in real time, with automatic BKT fallback.',
       keyPoints: [
-        'Corbett & Anderson priors: P(L0)=0.30, P(T)=0.20, P(G)=0.20, P(S)=0.10',
-        'Deterministic numerical mastery progression with pKnown updates',
-        'Explainable pedagogical recommendations triggered for weak topics (pKnown < 0.50)'
+        'Context-aware self-attention with monotonic temporal decay over interaction sequences',
+        'Continuous probability estimation with explainable top-attended question weighting',
+        'Seamless automatic fallback to Corbett & Anderson Bayesian Knowledge Tracing (BKT) baseline'
       ],
       actionLabel: 'Open Student Quizzes',
       actionRoute: '/student/quizzes'

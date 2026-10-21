@@ -25,6 +25,7 @@ public class DashboardService {
     private final TopicMasteryRepository topicMasteryRepository;
     private final RecommendationService recommendationService;
     private final AiClientService aiClientService;
+    private final AktService aktService;
 
     public DashboardService(UserRepository userRepository,
                             ClassRepository classRepository,
@@ -33,7 +34,8 @@ public class DashboardService {
                             AttemptRepository attemptRepository,
                             TopicMasteryRepository topicMasteryRepository,
                             RecommendationService recommendationService,
-                            AiClientService aiClientService) {
+                            AiClientService aiClientService,
+                            AktService aktService) {
         this.userRepository = userRepository;
         this.classRepository = classRepository;
         this.subjectRepository = subjectRepository;
@@ -42,6 +44,7 @@ public class DashboardService {
         this.topicMasteryRepository = topicMasteryRepository;
         this.recommendationService = recommendationService;
         this.aiClientService = aiClientService;
+        this.aktService = aktService;
     }
 
     @Transactional
@@ -193,10 +196,14 @@ public class DashboardService {
         dto.setNextAction(nextAct);
 
         // 7. Explainable Learning Insights Metadata (For Expandable Section)
+        Map<String, Object> modelStatus = aktService.getModelStatus();
         Map<String, Object> analysis = new HashMap<>();
-        analysis.put("model", "Attentive Knowledge Tracing (AKT)");
-        analysis.put("description", "EduPulse models your concept understanding by observing your question-response history and applying temporal decay.");
-        analysis.put("aktStatus", "ACTIVE");
+        analysis.put("model", modelStatus.get("activeModel"));
+        analysis.put("modelCode", modelStatus.get("modelCode"));
+        analysis.put("description", modelStatus.get("description"));
+        analysis.put("aktStatus", modelStatus.get("status"));
+        analysis.put("isFallback", modelStatus.get("isFallback"));
+        analysis.put("fallbackModel", modelStatus.get("fallbackModel"));
         analysis.put("aiTutorProvider", aiClientService.getActiveProviderName());
         dto.setHowLearningIsAnalysed(analysis);
 
@@ -224,6 +231,7 @@ public class DashboardService {
         dto.setCreatedQuizzesCount(5);
         dto.setQuestionsInBankCount(45);
         dto.setClassAverageScore(72.4);
+        dto.setKnowledgeTracingModel(aktService.getModelStatus());
 
         List<Map<String, Object>> classList = new ArrayList<>();
         for (ClassEntity c : classes) {
@@ -255,6 +263,7 @@ public class DashboardService {
         dto.setAdminsCount(userRepository.countByRole(Role.ADMIN));
         dto.setClassesCount(classRepository.count());
         dto.setSubjectsCount(subjectRepository.count());
+        dto.setKnowledgeTracingModel(aktService.getModelStatus());
 
         List<UserDto> recentUsers = userRepository.findAll().stream()
                 .sorted((u1, u2) -> u2.getCreatedAt().compareTo(u1.getCreatedAt()))

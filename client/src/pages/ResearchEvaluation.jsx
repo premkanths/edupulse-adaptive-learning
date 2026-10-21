@@ -40,7 +40,7 @@ export const ResearchEvaluation = () => {
       setRunningSim(true);
       const res = await api.post('/research/run-evaluation', {
         experimentId: 'RESEARCH-RUN-' + Date.now(),
-        modelName: 'EduPulse-BKT+RandomForest-v1'
+        modelName: 'EduPulse-AKT+RandomForest-v1'
       });
       if (res.data?.success) {
         setNotification({ type: 'success', message: 'Formal benchmark run successfully computed and persisted into evaluation_runs.' });
@@ -104,7 +104,7 @@ export const ResearchEvaluation = () => {
     { name: 'Attendance %', value: Math.round((featureImportances.attendance_pct || 0.297) * 100) },
     { name: 'Quiz Average', value: Math.round((featureImportances.quiz_average || 0.275) * 100) },
     { name: 'Days Inactive', value: Math.round((featureImportances.days_inactive || 0.178) * 100) },
-    { name: 'BKT Mastery', value: Math.round((featureImportances.bkt_avg_mastery || 0.176) * 100) },
+    { name: 'AKT/BKT Mastery', value: Math.round((featureImportances.akt_avg_mastery || featureImportances.bkt_avg_mastery || 0.176) * 100) },
     { name: 'Missed Marks', value: Math.round((featureImportances.assignments_missed || 0.073) * 100) },
   ];
 

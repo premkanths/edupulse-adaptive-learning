@@ -1,6 +1,7 @@
 package com.edupulse.dto;
 
 import java.util.List;
+import java.util.Map;
 
 public class AdminDashboardDto {
     private long totalUsersCount;
@@ -10,6 +11,7 @@ public class AdminDashboardDto {
     private long classesCount;
     private long subjectsCount;
     private List<UserDto> recentUsers;
+    private Map<String, Object> knowledgeTracingModel;
 
     public AdminDashboardDto() {
     }
@@ -68,5 +70,13 @@ public class AdminDashboardDto {
 
     public void setRecentUsers(List<UserDto> recentUsers) {
         this.recentUsers = recentUsers;
+    }
+
+    public Map<String, Object> getKnowledgeTracingModel() {
+        return knowledgeTracingModel;
+    }
+
+    public void setKnowledgeTracingModel(Map<String, Object> knowledgeTracingModel) {
+        this.knowledgeTracingModel = knowledgeTracingModel;
     }
 }

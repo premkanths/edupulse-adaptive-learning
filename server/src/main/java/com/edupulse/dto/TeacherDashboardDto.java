@@ -12,6 +12,7 @@ public class TeacherDashboardDto {
     private double classAverageScore;
     private List<Map<String, Object>> managedClasses;
     private List<Map<String, Object>> recentActivities;
+    private Map<String, Object> knowledgeTracingModel;
 
     public TeacherDashboardDto() {
     }
@@ -78,5 +79,13 @@ public class TeacherDashboardDto {
 
     public void setRecentActivities(List<Map<String, Object>> recentActivities) {
         this.recentActivities = recentActivities;
+    }
+
+    public Map<String, Object> getKnowledgeTracingModel() {
+        return knowledgeTracingModel;
+    }
+
+    public void setKnowledgeTracingModel(Map<String, Object> knowledgeTracingModel) {
+        this.knowledgeTracingModel = knowledgeTracingModel;
     }
 }

@@ -118,4 +118,24 @@ class AktServiceTest {
         assertTrue(result.getMasteryProbability() > 0.0 && result.getMasteryProbability() <= 1.0);
         assertNotNull(result.getModel());
     }
+
+    @Test
+    @DisplayName("5. getModelStatus accurately reports AKT when online and BKT when offline")
+    void testGetModelStatusDualBehavior() {
+        // Test Online Behavior (FastAPI running on 8001)
+        aktService.setMlServiceUrl("http://127.0.0.1:8001");
+        var onlineStatus = aktService.getModelStatus();
+        assertNotNull(onlineStatus);
+        assertEquals("ACTIVE", onlineStatus.get("status"));
+        assertEquals("Attentive Knowledge Tracing (AKT)", onlineStatus.get("activeModel"));
+        assertEquals(false, onlineStatus.get("isFallback"));
+
+        // Test Offline Behavior (Unreachable port)
+        aktService.setMlServiceUrl("http://127.0.0.1:59999");
+        var offlineStatus = aktService.getModelStatus();
+        assertNotNull(offlineStatus);
+        assertEquals("FALLBACK_ACTIVE", offlineStatus.get("status"));
+        assertEquals("Bayesian Knowledge Tracing (BKT)", offlineStatus.get("activeModel"));
+        assertEquals(true, offlineStatus.get("isFallback"));
+    }
 }

@@ -39,6 +39,7 @@ public class TeacherController {
     private final AttemptRepository attemptRepository;
     private final QuizRepository quizRepository;
     private final RiskPredictionService riskPredictionService;
+    private final AktService aktService;
 
     public TeacherController(DashboardService dashboardService,
                              UserService userService,
@@ -52,7 +53,8 @@ public class TeacherController {
                              UserRepository userRepository,
                              AttemptRepository attemptRepository,
                              QuizRepository quizRepository,
-                             RiskPredictionService riskPredictionService) {
+                             RiskPredictionService riskPredictionService,
+                             AktService aktService) {
         this.dashboardService = dashboardService;
         this.userService = userService;
         this.questionService = questionService;
@@ -66,6 +68,7 @@ public class TeacherController {
         this.attemptRepository = attemptRepository;
         this.quizRepository = quizRepository;
         this.riskPredictionService = riskPredictionService;
+        this.aktService = aktService;
     }
 
     private User getTeacherUser(UserPrincipal principal) {
@@ -256,6 +259,7 @@ public class TeacherController {
         analytics.put("averageScore", Math.round(avgScore * 100.0) / 100.0);
         analytics.put("totalQuestionsInBank", questionRepository.count());
         analytics.put("totalQuizzesCreated", quizRepository.count());
+        analytics.put("knowledgeTracingModel", aktService.getModelStatus());
 
         return ResponseEntity.ok(ApiResponse.success(analytics));
     }

@@ -500,7 +500,7 @@ export const StudentProfilePrivacy = () => {
           <div className="border-b border-gray-100 dark:border-gray-800 pb-4">
             <h2 className="text-lg font-bold text-gray-900 dark:text-gray-50">EduPulse Platform Research Feedback Survey</h2>
             <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
-              Your empirical ratings help evaluate the Bayesian Knowledge Tracing model, explainability clarity, and AI assistant usability for research publication.
+              Your empirical ratings help evaluate the Attentive Knowledge Tracing (AKT) model, explainability clarity, and AI assistant usability for research publication.
             </p>
           </div>
 
@@ -509,7 +509,7 @@ export const StudentProfilePrivacy = () => {
               { key: 'q1Usefulness', question: '1. How effective was EduPulse in identifying your weak topics?' },
               { key: 'q2EaseOfUse', question: '2. How intuitive and seamless was the user interface?' },
               { key: 'q3ExplanationClarity', question: '3. How clear were the pedagogical answer explanations and "Why this?" recommendations?' },
-              { key: 'q4Trust', question: '4. How much do you trust the Bayesian Knowledge Tracing topic mastery estimations?' },
+              { key: 'q4Trust', question: '4. How much do you trust the Attentive Knowledge Tracing (AKT) topic mastery estimations?' },
               { key: 'q5AiUsefulness', question: '5. How helpful was the AI study assistant in resolving your specific conceptual doubts?' }
             ].map(({ key, question }) => (
               <div key={key} className="space-y-2">

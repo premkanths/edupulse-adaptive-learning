@@ -198,7 +198,7 @@ export const ConnectedAccounts = () => {
       <div className="p-4 rounded-2xl bg-blue-50/60 dark:bg-blue-950/40 border border-blue-200 dark:border-blue-800 text-xs text-gray-600 dark:text-gray-400 flex items-start gap-3 leading-relaxed">
         <ShieldAlert className="w-5 h-5 text-academic-blue flex-shrink-0 mt-0.5" />
         <div>
-          <strong className="text-gray-900 dark:text-gray-200 font-semibold">Privacy &amp; Fair Grading Notice:</strong> Coding portfolio telemetry is strictly auxiliary. It is never used to automatically penalize academic grades or override topic mastery calculated by the Bayesian Knowledge Tracing engine.
+          <strong className="text-gray-900 dark:text-gray-200 font-semibold">Privacy &amp; Fair Grading Notice:</strong> Coding portfolio telemetry is strictly auxiliary. It is never used to automatically penalize academic grades or override topic mastery calculated by the Attentive Knowledge Tracing (AKT) engine.
         </div>
       </div>
 

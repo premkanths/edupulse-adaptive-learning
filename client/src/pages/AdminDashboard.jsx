@@ -15,6 +15,11 @@ import {
   BookOpen,
   ArrowRight,
   Settings,
+  Brain,
+  Cpu,
+  Activity,
+  CheckCircle2,
+  AlertTriangle,
 } from 'lucide-react';
 import { Card } from '../components/ui/Card';
 import { Badge } from '../components/ui/Badge';
@@ -84,7 +89,7 @@ export const AdminDashboard = () => {
             EduPulse System Administration
           </h1>
           <p className="text-rose-100 dark:text-gray-300 text-sm max-w-xl leading-relaxed">
-            Manage users, class cohorts, oversee institutional CSV exports, audit security trails, and configure global BKT hyperparameters.
+            Manage users, class cohorts, oversee institutional CSV exports, audit security trails, and configure global Knowledge Tracing (AKT &amp; BKT fallback) hyperparameters.
           </p>
         </div>
 
@@ -147,6 +152,69 @@ export const AdminDashboard = () => {
           color="amber"
         />
       </div>
+
+      {/* Cognitive Knowledge Tracing Model Architecture & Live Telemetry */}
+      {data?.knowledgeTracingModel && (
+        <div className="bg-white/95 dark:bg-gray-900 backdrop-blur-xl rounded-3xl p-6 sm:p-7 border border-rose-200/60 dark:border-rose-900/40 shadow-sm relative overflow-hidden">
+          <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4 border-b border-gray-100 dark:border-gray-800 pb-4 mb-4">
+            <div className="flex items-center gap-3">
+              <div className="p-2.5 rounded-2xl bg-rose-50 dark:bg-rose-950/60 text-rose-600 dark:text-rose-400">
+                <Brain className="w-6 h-6" />
+              </div>
+              <div>
+                <div className="flex items-center gap-2 flex-wrap">
+                  <h3 className="text-base font-bold text-gray-900 dark:text-gray-50">
+                    Primary Knowledge Tracing Engine: {data.knowledgeTracingModel.displayName || 'Attentive Knowledge Tracing (AKT)'}
+                  </h3>
+                  <span className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-semibold ${
+                    data.knowledgeTracingModel.status === 'ACTIVE'
+                      ? 'bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800'
+                      : 'bg-amber-50 dark:bg-amber-950/60 text-amber-700 dark:text-amber-300 border border-amber-200 dark:border-amber-800'
+                  }`}>
+                    <span className={`w-2 h-2 rounded-full ${data.knowledgeTracingModel.status === 'ACTIVE' ? 'bg-emerald-500 animate-pulse' : 'bg-amber-500'}`} />
+                    {data.knowledgeTracingModel.status === 'ACTIVE' ? 'AKT Online (PyTorch Neural Microservice)' : 'BKT Fallback Baseline Active'}
+                  </span>
+                </div>
+                <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
+                  {data.knowledgeTracingModel.architecture || 'Context-Aware Attention with Monotonic Temporal Distance Decay'}
+                </p>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-3 text-xs">
+              <div className="px-3 py-1 rounded-xl bg-gray-50 dark:bg-gray-800/80 border border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-300">
+                <span className="font-semibold text-gray-700 dark:text-gray-200">Vocabulary: </span>
+                <span className="font-mono">{data.knowledgeTracingModel.questionsIndexed || 120} Questions / {data.knowledgeTracingModel.skillsIndexed || 24} Topics</span>
+              </div>
+              <div className="px-3 py-1 rounded-xl bg-gray-50 dark:bg-gray-800/80 border border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-300">
+                <span className="font-semibold text-gray-700 dark:text-gray-200">Fallback: </span>
+                <span className="font-mono">{data.knowledgeTracingModel.fallbackModel || 'BKT Baseline'}</span>
+              </div>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
+            <div className="p-3.5 rounded-2xl bg-gray-50 dark:bg-gray-950/60 border border-gray-100 dark:border-gray-800">
+              <span className="font-bold text-gray-900 dark:text-gray-100 block mb-1">Dual-Model Architecture</span>
+              <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
+                Primary predictions are inferred by the PyTorch AKT Transformer service. If the ML daemon is offline or restarting, the system immediately switches to the local Bayesian Knowledge Tracing (BKT) baseline.
+              </p>
+            </div>
+            <div className="p-3.5 rounded-2xl bg-gray-50 dark:bg-gray-950/60 border border-gray-100 dark:border-gray-800">
+              <span className="font-bold text-gray-900 dark:text-gray-100 block mb-1">Empirical Advantage</span>
+              <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
+                AKT outperforms standard BKT by +29.68% on ROC-AUC (0.7625 vs 0.5880) and reduces error by -16.13% RMSE, providing significantly more reliable early learning gap identification.
+              </p>
+            </div>
+            <div className="p-3.5 rounded-2xl bg-gray-50 dark:bg-gray-950/60 border border-gray-100 dark:border-gray-800">
+              <span className="font-bold text-gray-900 dark:text-gray-100 block mb-1">Institutional Governance</span>
+              <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
+                Mastery and remediation thresholds configured in Platform Settings govern both models uniformly, maintaining full continuity in reports, transcripts, and faculty dashboards.
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Quick Action Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">

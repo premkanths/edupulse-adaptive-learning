@@ -78,9 +78,9 @@ export const PlatformSettings = () => {
       {/* Header */}
       <div className="flex flex-wrap items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-50 tracking-tight">Platform Configuration & System Settings</h1>
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-50 tracking-tight">Platform Configuration &amp; System Settings</h1>
           <p className="text-gray-500 dark:text-gray-400 text-sm mt-1">
-            Fine-tune Bayesian Knowledge Tracing hyperparameters, AI fallback prioritization, and risk classification thresholds.
+            Configure Attentive Knowledge Tracing (AKT) &amp; BKT fallback thresholds, generative AI fallback sequence, and student risk parameters.
           </p>
         </div>
         <div className="flex items-center gap-2">
@@ -105,11 +105,16 @@ export const PlatformSettings = () => {
       )}
 
       <form onSubmit={handleSave} className="space-y-6">
-        {/* Section 1: Bayesian Knowledge Tracing Hyperparameters */}
+        {/* Section 1: Adaptive Knowledge Tracing (AKT & BKT Fallback) Hyperparameters */}
         <div className="bg-white/95 dark:bg-gray-900 backdrop-blur-xl rounded-2xl border border-gray-200 dark:border-gray-800 p-6 shadow-sm space-y-4">
-          <div className="flex items-center gap-2 border-b border-gray-100 dark:border-gray-800 pb-3">
-            <Brain className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
-            <h2 className="text-base font-bold text-gray-900 dark:text-gray-50">Adaptive Learning (BKT) Hyperparameters</h2>
+          <div className="border-b border-gray-100 dark:border-gray-800 pb-3">
+            <div className="flex items-center gap-2">
+              <Brain className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
+              <h2 className="text-base font-bold text-gray-900 dark:text-gray-50">Adaptive Knowledge Tracing (AKT &amp; BKT Fallback) Thresholds</h2>
+            </div>
+            <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+              These parameters calibrate cognitive concept mastery. They govern when Attentive Knowledge Tracing (AKT) sequence predictions classify a concept as Mastered, and when prerequisite remediation alerts are triggered (with identical guarantees under local BKT fallback).
+            </p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -126,7 +131,7 @@ export const PlatformSettings = () => {
                 onChange={(e) => handleChange('bkt.mastery.threshold', e.target.value)}
                 className="w-full text-xs p-2.5 border border-gray-200 dark:border-gray-800 rounded-xl outline-none focus:ring-2 focus:ring-indigo-500 font-mono"
               />
-              <p className="text-[11px] text-gray-400 mt-1">Topic is classified as MASTERED when P(L_n) reaches this level.</p>
+              <p className="text-[11px] text-gray-400 mt-1">Topic is classified as MASTERED when estimated mastery probability reaches this level (Default: 0.85).</p>
             </div>
 
             <div>
@@ -142,7 +147,7 @@ export const PlatformSettings = () => {
                 onChange={(e) => handleChange('bkt.remediation.threshold', e.target.value)}
                 className="w-full text-xs p-2.5 border border-gray-200 dark:border-gray-800 rounded-xl outline-none focus:ring-2 focus:ring-indigo-500 font-mono"
               />
-              <p className="text-[11px] text-gray-400 mt-1">Triggers prerequisite review recommendation when P(L_n) drops below this.</p>
+              <p className="text-[11px] text-gray-400 mt-1">Triggers prerequisite review and targeted practice recommendations when topic mastery drops below this level (Default: 0.60).</p>
             </div>
           </div>
         </div>

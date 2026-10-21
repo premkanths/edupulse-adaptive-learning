@@ -3,7 +3,7 @@ import { teacherApi } from '../api/client';
 import { LoadingSpinner } from '../components/LoadingSpinner';
 import { Alert } from '../components/Alert';
 import { StatCard } from '../components/StatCard';
-import { TrendingUp, Users, BookOpen, Layers, CheckCircle2, AlertTriangle } from 'lucide-react';
+import { TrendingUp, Users, BookOpen, Layers, CheckCircle2, AlertTriangle, Brain } from 'lucide-react';
 import { ResponsiveContainer, BarChart, Bar, XAxis, YAxis, Tooltip, CartesianGrid } from 'recharts';
 
 export const ClassAnalytics = () => {
@@ -39,11 +39,25 @@ export const ClassAnalytics = () => {
   return (
     <div className="space-y-8">
       <div>
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-50">Cohort Learning Analytics & Performance</h1>
+        <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-50">Cohort Learning Analytics &amp; Performance</h1>
         <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
           Review class-wide performance indicators, evaluation trends, and topic vulnerability heatmaps.
         </p>
       </div>
+
+      {data?.knowledgeTracingModel && (
+        <div className="flex items-center justify-between p-4 rounded-2xl bg-teal-50/60 dark:bg-teal-950/40 border border-teal-200/60 dark:border-teal-800 text-xs text-gray-700 dark:text-gray-300">
+          <div className="flex items-center gap-2.5">
+            <Brain className="w-4 h-4 text-teal-600 dark:text-teal-400 shrink-0" />
+            <span>
+              Cohort mastery is evaluated via <strong>{data.knowledgeTracingModel.displayName || 'Attentive Knowledge Tracing (AKT)'}</strong> ({data.knowledgeTracingModel.status === 'ACTIVE' ? 'Neural Model Online' : 'BKT Fallback Baseline'}).
+            </span>
+          </div>
+          <span className="text-[11px] font-mono text-gray-500 dark:text-gray-400">
+            Fallback: {data.knowledgeTracingModel.fallbackModel || 'BKT'}
+          </span>
+        </div>
+      )}
 
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
         <StatCard

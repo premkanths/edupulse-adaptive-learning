@@ -13,10 +13,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
+import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestClient;
 
+import java.time.Duration;
 import java.time.ZoneOffset;
 import java.util.*;
 
@@ -40,7 +42,7 @@ public class AktService {
     private final ObjectMapper objectMapper;
     private final RestClient restClient;
 
-    @Value("${ml.service.url:http://127.0.0.1:8001}")
+    @Value("${ml.service.url:${edupulse.ml-service.url:http://127.0.0.1:8001}}")
     private String mlServiceUrl = "http://127.0.0.1:8001";
 
     public AktService(AttemptAnswerRepository attemptAnswerRepository,
@@ -51,7 +53,11 @@ public class AktService {
         this.topicMasteryRepository = topicMasteryRepository;
         this.bktService = bktService;
         this.objectMapper = objectMapper;
-        this.restClient = RestClient.builder().build();
+
+        SimpleClientHttpRequestFactory requestFactory = new SimpleClientHttpRequestFactory();
+        requestFactory.setConnectTimeout(Duration.ofMillis(2500));
+        requestFactory.setReadTimeout(Duration.ofMillis(2500));
+        this.restClient = RestClient.builder().requestFactory(requestFactory).build();
     }
 
     public void setMlServiceUrl(String mlServiceUrl) {
@@ -191,6 +197,57 @@ public class AktService {
         mastery.setAccuracy(newAccuracy);
 
         return topicMasteryRepository.save(mastery);
+    }
+
+    /**
+     * Inspects actual backend health and returns live status of the cognitive knowledge tracing engine.
+     * Accurately distinguishes between active deep PyTorch AKT and local Bayesian Knowledge Tracing (BKT) fallback.
+     */
+    public Map<String, Object> getModelStatus() {
+        Map<String, Object> status = new LinkedHashMap<>();
+        try {
+            String response = restClient.get()
+                    .uri(mlServiceUrl + "/akt/health")
+                    .retrieve()
+                    .body(String.class);
+
+            Map<String, Object> health = objectMapper.readValue(response, new TypeReference<Map<String, Object>>() {});
+            boolean isLoaded = Boolean.TRUE.equals(health.get("is_loaded"));
+
+            if (isLoaded) {
+                status.put("activeModel", "Attentive Knowledge Tracing (AKT)");
+                status.put("modelCode", "AKT");
+                status.put("status", "ACTIVE");
+                status.put("displayName", "Attentive Knowledge Tracing (AKT)");
+                status.put("architecture", "Context-Aware Attention with Monotonic Temporal Distance Decay (Ghosh et al., KDD 2020)");
+                status.put("description", "Analyzes the chronological sequence of quiz attempts to predict topic mastery using attention weights and temporal decay.");
+                status.put("isFallback", false);
+                status.put("fallbackModel", "Bayesian Knowledge Tracing (BKT)");
+                status.put("questionsIndexed", health.get("n_questions"));
+                status.put("skillsIndexed", health.get("n_skills"));
+            } else {
+                status.put("activeModel", "Bayesian Knowledge Tracing (BKT)");
+                status.put("modelCode", "BKT");
+                status.put("status", "FALLBACK_ACTIVE");
+                status.put("displayName", "Bayesian Knowledge Tracing (BKT Baseline)");
+                status.put("architecture", "Corbett & Anderson Standard Two-State Hidden Markov Model");
+                status.put("description", "AKT neural engine is initializing; platform is operating on the deterministic BKT mathematical fallback baseline.");
+                status.put("isFallback", true);
+                status.put("fallbackModel", "Bayesian Knowledge Tracing (BKT)");
+            }
+        } catch (Exception ex) {
+            log.warn("AKT health check failed ({}), reporting BKT fallback baseline: {}", mlServiceUrl, ex.getMessage());
+            status.put("activeModel", "Bayesian Knowledge Tracing (BKT)");
+            status.put("modelCode", "BKT");
+            status.put("status", "FALLBACK_ACTIVE");
+            status.put("displayName", "Bayesian Knowledge Tracing (BKT Baseline)");
+            status.put("architecture", "Corbett & Anderson Standard Two-State Hidden Markov Model");
+            status.put("description", "AKT neural microservice is temporarily offline; platform is actively running on the local BKT algorithmic baseline.");
+            status.put("isFallback", true);
+            status.put("fallbackModel", "Bayesian Knowledge Tracing (BKT)");
+            status.put("error", ex.getMessage());
+        }
+        return status;
     }
 
     /**

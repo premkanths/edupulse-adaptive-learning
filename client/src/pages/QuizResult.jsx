@@ -49,7 +49,7 @@ export const QuizResult = () => {
           </span>
           <h1 className="text-2xl font-bold tracking-tight">{data.quizTitle || 'Quiz Evaluation'}</h1>
           <p className="text-indigo-100 text-sm max-w-lg">
-            Your answers have been scored and Bayesian Knowledge Tracing topic estimates have updated in real time.
+            Your answers have been scored and Attentive Knowledge Tracing (AKT) topic mastery estimates have updated in real time.
           </p>
         </div>
 
