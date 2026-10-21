@@ -68,4 +68,54 @@ public class UserService {
 
         return UserDto.fromEntity(userRepository.save(user));
     }
+
+    @Transactional
+    public UserDto updateProfile(Long userId, com.edupulse.dto.ProfileUpdateRequest request) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + userId));
+
+        if (request.getName() != null && !request.getName().isBlank()) {
+            user.setName(request.getName().trim());
+        }
+        if (request.getAvatarUrl() != null) {
+            user.setAvatarUrl(request.getAvatarUrl().trim());
+        }
+        if (request.getBio() != null) {
+            user.setBio(request.getBio().trim());
+        }
+        if (request.getDepartment() != null) {
+            user.setDepartment(request.getDepartment().trim());
+        }
+        if (request.getAcademicInfo() != null) {
+            user.setAcademicInfo(request.getAcademicInfo().trim());
+        }
+        if (request.getGithubUrl() != null) {
+            user.setGithubUrl(request.getGithubUrl().trim());
+        }
+        if (request.getLinkedinUrl() != null) {
+            user.setLinkedinUrl(request.getLinkedinUrl().trim());
+        }
+        if (request.getWebsiteUrl() != null) {
+            user.setWebsiteUrl(request.getWebsiteUrl().trim());
+        }
+        if (request.getEmailNotifications() != null) {
+            user.setEmailNotifications(request.getEmailNotifications());
+        }
+
+        User saved = userRepository.save(user);
+        return UserDto.fromEntity(saved);
+    }
+
+    @Transactional
+    public void changePassword(Long userId, com.edupulse.dto.ChangePasswordRequest request) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + userId));
+
+        if (!passwordEncoder.matches(request.getCurrentPassword(), user.getPasswordHash())) {
+            throw new BadRequestException("Current password does not match our records.");
+        }
+
+        user.setPasswordHash(passwordEncoder.encode(request.getNewPassword()));
+        userRepository.save(user);
+    }
 }

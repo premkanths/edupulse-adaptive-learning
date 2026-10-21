@@ -1,23 +1,38 @@
 import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { studentApi } from '../api/client';
+import api from '../services/api';
 import { StatCard } from '../components/StatCard';
 import { LoadingSpinner } from '../components/LoadingSpinner';
 import { Alert } from '../components/Alert';
-import { BookOpen, Award, CheckCircle, AlertTriangle, Lightbulb, ArrowRight, Zap } from 'lucide-react';
+import { BookOpen, Award, CheckCircle, AlertTriangle, Lightbulb, ArrowRight, Zap, Bot, Code2, ExternalLink } from 'lucide-react';
+import { Card, CardHeader } from '../components/ui/Card';
+import { Badge } from '../components/ui/Badge';
+import { Button } from '../components/ui/Button';
 
 export const StudentDashboard = () => {
   const [data, setData] = useState(null);
+  const [profiles, setProfiles] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchDashboard = async () => {
       try {
-        const res = await studentApi.getDashboard();
-        if (res.success) {
-          setData(res.data);
+        setLoading(true);
+        const [dashRes, extRes] = await Promise.all([
+          studentApi.getDashboard(),
+          api.get('/student/external-profiles').catch(() => ({ data: { data: [] } })),
+        ]);
+
+        if (dashRes.success) {
+          setData(dashRes.data);
         } else {
-          setError(res.message);
+          setError(dashRes.message);
+        }
+
+        if (extRes.data?.data) {
+          setProfiles(extRes.data.data);
         }
       } catch (err) {
         setError(err.message || 'Failed to load student dashboard data.');
@@ -44,17 +59,30 @@ export const StudentDashboard = () => {
   return (
     <div className="space-y-8">
       {/* Welcome Banner */}
-      <div className="bg-gradient-to-r from-indigo-700 via-indigo-600 to-indigo-800 rounded-3xl p-8 text-white shadow-xl shadow-indigo-100 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
-        <div>
-          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-white/20 text-white backdrop-blur-sm mb-3">
+      <div className="bg-academic-navy text-white rounded-3xl p-8 shadow-sm flex flex-col md:flex-row items-start md:items-center justify-between gap-6 border border-slate-800">
+        <div className="space-y-2">
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-academic-blue/30 text-blue-300 border border-blue-400/30">
             <Zap className="w-3.5 h-3.5 text-amber-300" /> Bayesian Knowledge Tracing Active
-          </span>
-          <h1 className="text-3xl font-extrabold tracking-tight">
+          </div>
+          <h1 className="text-3xl font-black tracking-tight">
             Welcome back, {data?.studentName}!
           </h1>
-          <p className="mt-2 text-indigo-100 text-sm max-w-xl">
-            EduPulse monitors your response patterns and calculates topic-level probability of mastery (pKnown) in real-time.
+          <p className="text-slate-300 text-sm max-w-xl leading-relaxed">
+            EduPulse continuously models your cognitive mastery state across individual knowledge components.
           </p>
+        </div>
+
+        <div className="flex flex-wrap gap-2.5">
+          <Link to="/student/assistant">
+            <Button variant="teal" size="sm" icon={Bot}>
+              AI Study Assistant
+            </Button>
+          </Link>
+          <Link to="/student/recommendations">
+            <Button variant="primary" size="sm" icon={Lightbulb}>
+              View Recommended Practice
+            </Button>
+          </Link>
         </div>
       </div>
 
@@ -63,22 +91,22 @@ export const StudentDashboard = () => {
         <StatCard
           title="Overall Topic Mastery"
           value={`${Math.round((data?.overallMasteryAverage || 0) * 100)}%`}
-          subtitle="Bayesian Knowledge Tracing (pKnown)"
+          subtitle="Empirical BKT Estimate (pKnown)"
           icon={Award}
-          color="indigo"
-          trend="+4.2% this week"
+          color="blue"
+          trend="+4.2% gain"
         />
         <StatCard
           title="Enrolled Subjects"
           value={data?.enrolledSubjectsCount || 0}
           subtitle="Active academic courses"
           icon={BookOpen}
-          color="blue"
+          color="teal"
         />
         <StatCard
           title="Strong Topics"
           value={data?.strongTopicsCount || 0}
-          subtitle="pKnown ≥ 0.80 threshold"
+          subtitle="pKnown ≥ 0.80 mastery threshold"
           icon={CheckCircle}
           color="emerald"
         />
@@ -92,78 +120,178 @@ export const StudentDashboard = () => {
       </div>
 
       {/* Recommendations & Recent Activity Grid */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        {/* Adaptive Recommendations */}
-        <div className="bg-white p-6 rounded-3xl border border-slate-200/80 shadow-sm space-y-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <div className="p-2 bg-amber-50 text-amber-600 rounded-xl">
-                <Lightbulb className="w-5 h-5" />
-              </div>
-              <h2 className="text-lg font-bold text-slate-900">Personalized Recommendations</h2>
-            </div>
-            <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-slate-100 text-slate-600">
-              Adaptive Engine
-            </span>
-          </div>
-
-          <div className="space-y-3">
-            {data?.recommendations?.map((rec, idx) => (
-              <div
-                key={idx}
-                className="p-4 rounded-2xl border border-slate-200 bg-slate-50/50 hover:bg-slate-50 transition-colors"
-              >
-                <div className="flex items-start justify-between">
-                  <span className="text-sm font-bold text-slate-800">{rec.topic}</span>
-                  <span className="text-xs font-semibold px-2 py-0.5 rounded-full bg-amber-100 text-amber-800">
-                    {rec.difficulty}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        {/* Adaptive Recommendations (2 Columns) */}
+        <div className="lg:col-span-2 space-y-4">
+          <Card>
+            <CardHeader
+              title="Personalized Topic Recommendations"
+              subtitle="Sequenced according to prerequisite dependencies and mastery deficits"
+              action={
+                <Link to="/student/recommendations">
+                  <span className="text-xs font-semibold text-academic-blue hover:underline inline-flex items-center gap-1">
+                    All Recommendations &rarr;
                   </span>
-                </div>
-                <p className="text-xs text-slate-600 mt-2 leading-relaxed">
-                  <strong>Why this?</strong> {rec.reason}
+                </Link>
+              }
+            />
+
+            <div className="space-y-3">
+              {data?.recommendations?.length > 0 ? (
+                data.recommendations.map((rec, idx) => (
+                  <div
+                    key={idx}
+                    className="p-4 rounded-2xl border border-slate-200 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-900/40 hover:bg-slate-50 dark:hover:bg-slate-900/80 transition-colors"
+                  >
+                    <div className="flex items-start justify-between">
+                      <span className="text-sm font-bold text-slate-800 dark:text-slate-100">{rec.topic}</span>
+                      <Badge variant="warning">{rec.difficulty}</Badge>
+                    </div>
+                    <p className="text-xs text-slate-600 dark:text-slate-400 mt-2 leading-relaxed">
+                      <strong className="text-slate-700 dark:text-slate-300">Why this?</strong> {rec.reason}
+                    </p>
+                    <div className="mt-3 flex items-center justify-between text-xs">
+                      <span className="text-academic-blue font-semibold">{rec.action}</span>
+                      <Link
+                        to="/student/quizzes"
+                        className="text-academic-blue hover:underline font-semibold inline-flex items-center gap-1"
+                      >
+                        Start Practice <ArrowRight className="w-3.5 h-3.5" />
+                      </Link>
+                    </div>
+                  </div>
+                ))
+              ) : (
+                <p className="text-xs text-slate-500 py-4 text-center">
+                  All prerequisite topics are currently above mastery threshold! Great work.
                 </p>
-                <div className="mt-3 flex items-center justify-between text-xs">
-                  <span className="text-indigo-600 font-semibold">{rec.action}</span>
-                  <button className="text-indigo-600 hover:text-indigo-700 font-semibold inline-flex items-center gap-1">
-                    Start Practice <ArrowRight className="w-3.5 h-3.5" />
-                  </button>
-                </div>
-              </div>
-            ))}
-          </div>
+              )}
+            </div>
+          </Card>
+
+          {/* Recent Quizzes */}
+          <Card>
+            <CardHeader
+              title="Recent Quiz Attempts"
+              subtitle="Formative evaluation history and scores"
+              action={
+                <Link to="/student/performance">
+                  <span className="text-xs font-semibold text-academic-blue hover:underline">
+                    Performance History &rarr;
+                  </span>
+                </Link>
+              }
+            />
+
+            <div className="space-y-3">
+              {data?.recentQuizzes?.length > 0 ? (
+                data.recentQuizzes.map((quiz, idx) => (
+                  <div
+                    key={idx}
+                    className="p-4 rounded-2xl border border-slate-200 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-900/40 flex items-center justify-between"
+                  >
+                    <div>
+                      <h4 className="text-sm font-semibold text-slate-900 dark:text-slate-100">{quiz.title}</h4>
+                      <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Attempted on {quiz.date}</p>
+                    </div>
+                    <div className="text-right">
+                      <div className="text-base font-bold text-emerald-600 dark:text-emerald-400">{quiz.score}%</div>
+                      <span className="text-xs font-medium text-slate-500 dark:text-slate-400">{quiz.status}</span>
+                    </div>
+                  </div>
+                ))
+              ) : (
+                <p className="text-xs text-slate-500 py-4 text-center">No recent quiz attempts recorded.</p>
+              )}
+            </div>
+          </Card>
         </div>
 
-        {/* Recent Quizzes */}
-        <div className="bg-white p-6 rounded-3xl border border-slate-200/80 shadow-sm space-y-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <div className="p-2 bg-indigo-50 text-indigo-600 rounded-xl">
-                <BookOpen className="w-5 h-5" />
-              </div>
-              <h2 className="text-lg font-bold text-slate-900">Recent Quizzes & Attempts</h2>
-            </div>
-            <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-700">
-              Completed
-            </span>
-          </div>
+        {/* Right Sidebar: Connected Portfolios & Quick Tools */}
+        <div className="space-y-6">
+          {/* Coding Profiles Snapshot */}
+          <Card>
+            <CardHeader
+              title="Connected Portfolios"
+              subtitle="Extracurricular coding profiles"
+              action={
+                <Link to="/student/connected-accounts">
+                  <span className="text-xs font-semibold text-academic-blue hover:underline">
+                    Manage &rarr;
+                  </span>
+                </Link>
+              }
+            />
 
-          <div className="space-y-3">
-            {data?.recentQuizzes?.map((quiz, idx) => (
-              <div
-                key={idx}
-                className="p-4 rounded-2xl border border-slate-200 bg-slate-50/50 hover:bg-slate-50 transition-colors flex items-center justify-between"
-              >
-                <div>
-                  <h3 className="text-sm font-semibold text-slate-900">{quiz.title}</h3>
-                  <p className="text-xs text-slate-500 mt-0.5">Attempted on {quiz.date}</p>
+            <div className="space-y-3">
+              {profiles.length > 0 ? (
+                profiles.map((p) => {
+                  let stats = {};
+                  try {
+                    stats = JSON.parse(p.snapshotJson || '{}');
+                  } catch (e) {}
+
+                  return (
+                    <div
+                      key={p.platform}
+                      className="p-3.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-900/40 space-y-1.5"
+                    >
+                      <div className="flex items-center justify-between">
+                        <span className="text-xs font-bold text-slate-900 dark:text-slate-100 flex items-center gap-1.5">
+                          <Code2 className="w-3.5 h-3.5 text-academic-blue" /> {p.platform}
+                        </span>
+                        <Badge variant="success" size="sm">Connected</Badge>
+                      </div>
+
+                      <p className="text-xs text-slate-600 dark:text-slate-400 font-mono">
+                        @{p.username}
+                      </p>
+
+                      <div className="text-[11px] text-slate-500 flex justify-between pt-1">
+                        {p.platform === 'GITHUB' && (
+                          <span>{stats.publicRepos || 0} public repositories</span>
+                        )}
+                        {p.platform === 'LEETCODE' && (
+                          <span>{stats.totalSolved || 0} problems solved</span>
+                        )}
+                        {p.platform === 'HACKERRANK' && (
+                          <span>{(stats.badges || []).length} skill badges</span>
+                        )}
+                      </div>
+                    </div>
+                  );
+                })
+              ) : (
+                <div className="text-center py-6 space-y-3">
+                  <Code2 className="w-8 h-8 text-slate-300 dark:text-slate-600 mx-auto" />
+                  <p className="text-xs text-slate-500">No coding portfolios linked yet.</p>
+                  <Link to="/student/connected-accounts">
+                    <Button variant="outline" size="sm">Connect GitHub &amp; LeetCode</Button>
+                  </Link>
                 </div>
-                <div className="text-right">
-                  <div className="text-base font-bold text-emerald-600">{quiz.score}%</div>
-                  <span className="text-xs font-medium text-slate-500">{quiz.status}</span>
-                </div>
+              )}
+            </div>
+          </Card>
+
+          {/* Socratic AI Study Assistant Promo */}
+          <Card className="bg-gradient-to-br from-blue-50/50 to-teal-50/50 dark:from-blue-950/20 dark:to-teal-950/20 border-academic-blue/30">
+            <div className="space-y-3">
+              <div className="w-9 h-9 rounded-xl bg-academic-blue text-white flex items-center justify-center">
+                <Bot className="w-5 h-5" />
               </div>
-            ))}
-          </div>
+              <div>
+                <h4 className="text-sm font-bold text-slate-900 dark:text-slate-100">Need Pedagogical Guidance?</h4>
+                <p className="text-xs text-slate-600 dark:text-slate-400 mt-1 leading-relaxed">
+                  The Socratic Study Assistant reads your recent quiz errors and explains core concepts step-by-step.
+                </p>
+              </div>
+              <Link to="/student/assistant" className="block pt-1">
+                <Button variant="primary" size="sm" className="w-full">
+                  Open AI Tutor &rarr;
+                </Button>
+              </Link>
+            </div>
+          </Card>
         </div>
       </div>
     </div>

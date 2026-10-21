@@ -40,13 +40,18 @@ public class ExternalProfileService {
 
         profile.setUsername(username.trim());
         profile = profileRepository.save(profile);
-        return syncProfile(profile);
+        return syncProfile(profile, true);
     }
 
     @Transactional
     public ExternalProfile syncProfile(ExternalProfile profile) {
-        // Enforce 1-hour rate limit unless null
-        if (profile.getLastSyncedAt() != null &&
+        return syncProfile(profile, false);
+    }
+
+    @Transactional
+    public ExternalProfile syncProfile(ExternalProfile profile, boolean force) {
+        // Enforce 1-hour rate limit unless force is requested or no snapshot exists
+        if (!force && profile.getLastSyncedAt() != null &&
                 profile.getLastSyncedAt().isAfter(LocalDateTime.now().minusMinutes(60)) &&
                 profile.getSnapshotJson() != null) {
             log.info("Returning cached profile snapshot for {} on {}", profile.getUsername(), profile.getPlatform());
@@ -72,6 +77,24 @@ public class ExternalProfileService {
             return profileRepository.save(profile);
         } catch (Exception e) {
             log.error("Failed to serialize snapshot JSON: {}", e.getMessage());
+            return profile;
+        }
+    }
+
+    @Transactional
+    public ExternalProfile saveManualProfile(User student, ExternalProfile.Platform platform, String username, Map<String, Object> manualData) {
+        ExternalProfile profile = profileRepository.findByStudentIdAndPlatform(student.getId(), platform)
+                .orElse(new ExternalProfile(student, platform, username));
+
+        profile.setUsername(username.trim());
+        manualData.put("source", "MANUAL_ENTRY");
+        manualData.put("username", username);
+        try {
+            profile.setSnapshotJson(objectMapper.writeValueAsString(manualData));
+            profile.setLastSyncedAt(LocalDateTime.now());
+            return profileRepository.save(profile);
+        } catch (Exception e) {
+            log.error("Failed to serialize manual snapshot JSON: {}", e.getMessage());
             return profile;
         }
     }

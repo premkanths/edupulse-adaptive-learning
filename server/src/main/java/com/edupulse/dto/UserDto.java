@@ -11,6 +11,13 @@ public class UserDto {
     private Role role;
     private boolean isActive;
     private boolean emailNotifications;
+    private String avatarUrl;
+    private String bio;
+    private String department;
+    private String academicInfo;
+    private String githubUrl;
+    private String linkedinUrl;
+    private String websiteUrl;
     private LocalDateTime createdAt;
 
     public UserDto() {
@@ -23,6 +30,13 @@ public class UserDto {
         this.role = user.getRole();
         this.isActive = user.isActive();
         this.emailNotifications = user.isEmailNotifications();
+        this.avatarUrl = user.getAvatarUrl();
+        this.bio = user.getBio();
+        this.department = user.getDepartment();
+        this.academicInfo = user.getAcademicInfo();
+        this.githubUrl = user.getGithubUrl();
+        this.linkedinUrl = user.getLinkedinUrl();
+        this.websiteUrl = user.getWebsiteUrl();
         this.createdAt = user.getCreatedAt();
     }
 
@@ -76,6 +90,62 @@ public class UserDto {
 
     public void setEmailNotifications(boolean emailNotifications) {
         this.emailNotifications = emailNotifications;
+    }
+
+    public String getAvatarUrl() {
+        return avatarUrl;
+    }
+
+    public void setAvatarUrl(String avatarUrl) {
+        this.avatarUrl = avatarUrl;
+    }
+
+    public String getBio() {
+        return bio;
+    }
+
+    public void setBio(String bio) {
+        this.bio = bio;
+    }
+
+    public String getDepartment() {
+        return department;
+    }
+
+    public void setDepartment(String department) {
+        this.department = department;
+    }
+
+    public String getAcademicInfo() {
+        return academicInfo;
+    }
+
+    public void setAcademicInfo(String academicInfo) {
+        this.academicInfo = academicInfo;
+    }
+
+    public String getGithubUrl() {
+        return githubUrl;
+    }
+
+    public void setGithubUrl(String githubUrl) {
+        this.githubUrl = githubUrl;
+    }
+
+    public String getLinkedinUrl() {
+        return linkedinUrl;
+    }
+
+    public void setLinkedinUrl(String linkedinUrl) {
+        this.linkedinUrl = linkedinUrl;
+    }
+
+    public String getWebsiteUrl() {
+        return websiteUrl;
+    }
+
+    public void setWebsiteUrl(String websiteUrl) {
+        this.websiteUrl = websiteUrl;
     }
 
     public LocalDateTime getCreatedAt() {

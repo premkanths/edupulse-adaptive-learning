@@ -1,9 +1,13 @@
 import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { adminApi } from '../api/client';
 import { StatCard } from '../components/StatCard';
 import { LoadingSpinner } from '../components/LoadingSpinner';
 import { Alert } from '../components/Alert';
-import { Users, GraduationCap, UserCheck, ShieldCheck, Layers, BookOpen, Shield } from 'lucide-react';
+import { Users, GraduationCap, UserCheck, ShieldCheck, Layers, BookOpen, Shield, Settings, FileText, History, ArrowRight } from 'lucide-react';
+import { Card, CardHeader } from '../components/ui/Card';
+import { Badge } from '../components/ui/Badge';
+import { Button } from '../components/ui/Button';
 
 export const AdminDashboard = () => {
   const [data, setData] = useState(null);
@@ -13,6 +17,7 @@ export const AdminDashboard = () => {
   useEffect(() => {
     const fetchDashboard = async () => {
       try {
+        setLoading(true);
         const res = await adminApi.getDashboard();
         if (res.success) {
           setData(res.data);
@@ -44,41 +49,42 @@ export const AdminDashboard = () => {
   const roleBadge = (role) => {
     switch (role) {
       case 'ADMIN':
-        return (
-          <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-rose-100 text-rose-800">
-            <Shield className="w-3 h-3" /> Admin
-          </span>
-        );
+        return <Badge variant="danger" size="sm">Admin</Badge>;
       case 'TEACHER':
-        return (
-          <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-indigo-100 text-indigo-800">
-            <UserCheck className="w-3 h-3" /> Teacher
-          </span>
-        );
+        return <Badge variant="teal" size="sm">Teacher</Badge>;
       case 'STUDENT':
       default:
-        return (
-          <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-800">
-            <GraduationCap className="w-3 h-3" /> Student
-          </span>
-        );
+        return <Badge variant="info" size="sm">Student</Badge>;
     }
   };
 
   return (
     <div className="space-y-8">
       {/* Header */}
-      <div className="bg-gradient-to-r from-rose-900 via-slate-900 to-indigo-950 rounded-3xl p-8 text-white shadow-xl flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
-        <div>
-          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-rose-500/20 text-rose-200 border border-rose-400/30 mb-3">
+      <div className="bg-academic-navy text-white rounded-3xl p-8 shadow-sm flex flex-col md:flex-row items-start md:items-center justify-between gap-6 border border-slate-800">
+        <div className="space-y-2">
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-rose-500/30 text-rose-300 border border-rose-400/30">
             <ShieldCheck className="w-3.5 h-3.5 text-rose-400" /> Platform Superadmin Portal
-          </span>
-          <h1 className="text-3xl font-extrabold tracking-tight">
+          </div>
+          <h1 className="text-3xl font-black tracking-tight">
             EduPulse System Administration
           </h1>
-          <p className="mt-2 text-slate-300 text-sm max-w-xl">
-            Manage users, oversee academic imports, review system health, and enforce institutional data boundaries.
+          <p className="text-slate-300 text-sm max-w-xl leading-relaxed">
+            Manage users, class cohorts, oversee institutional CSV exports, audit security trails, and configure global BKT hyperparameters.
           </p>
+        </div>
+
+        <div className="flex flex-wrap gap-2.5">
+          <Link to="/admin/reports">
+            <Button variant="primary" size="sm" icon={FileText}>
+              Institutional Reports
+            </Button>
+          </Link>
+          <Link to="/admin/settings">
+            <Button variant="secondary" size="sm" icon={Settings}>
+              Platform Settings
+            </Button>
+          </Link>
         </div>
       </div>
 
@@ -89,7 +95,7 @@ export const AdminDashboard = () => {
           value={data?.totalUsersCount || 0}
           subtitle="All platform accounts"
           icon={Users}
-          color="indigo"
+          color="blue"
         />
         <StatCard
           title="Students"
@@ -103,7 +109,7 @@ export const AdminDashboard = () => {
           value={data?.teachersCount || 0}
           subtitle="Faculty members"
           icon={UserCheck}
-          color="blue"
+          color="teal"
         />
         <StatCard
           title="Administrators"
@@ -117,7 +123,7 @@ export const AdminDashboard = () => {
           value={data?.classesCount || 0}
           subtitle="Academic cohorts"
           icon={Layers}
-          color="purple"
+          color="indigo"
         />
         <StatCard
           title="Subjects"
@@ -128,21 +134,69 @@ export const AdminDashboard = () => {
         />
       </div>
 
+      {/* Quick Action Cards */}
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <Link to="/admin/classes" className="block">
+          <Card hover={true} className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div className="p-3 rounded-xl bg-blue-50 dark:bg-blue-950/60 text-academic-blue">
+                <Layers className="w-5 h-5" />
+              </div>
+              <div>
+                <h4 className="text-sm font-bold text-slate-900 dark:text-slate-100">Class Cohorts &amp; Rosters</h4>
+                <p className="text-xs text-slate-500 dark:text-slate-400">Enroll students &amp; assign faculty</p>
+              </div>
+            </div>
+            <ArrowRight className="w-4 h-4 text-slate-400" />
+          </Card>
+        </Link>
+
+        <Link to="/admin/reports" className="block">
+          <Card hover={true} className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div className="p-3 rounded-xl bg-teal-50 dark:bg-teal-950/60 text-academic-teal">
+                <FileText className="w-5 h-5" />
+              </div>
+              <div>
+                <h4 className="text-sm font-bold text-slate-900 dark:text-slate-100">Institutional CSV Exports</h4>
+                <p className="text-xs text-slate-500 dark:text-slate-400">1-click audit &amp; at-risk rosters</p>
+              </div>
+            </div>
+            <ArrowRight className="w-4 h-4 text-slate-400" />
+          </Card>
+        </Link>
+
+        <Link to="/admin/audit-logs" className="block">
+          <Card hover={true} className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div className="p-3 rounded-xl bg-rose-50 dark:bg-rose-950/60 text-rose-600">
+                <History className="w-5 h-5" />
+              </div>
+              <div>
+                <h4 className="text-sm font-bold text-slate-900 dark:text-slate-100">Security Audit Trail</h4>
+                <p className="text-xs text-slate-500 dark:text-slate-400">Immutable ledger of admin actions</p>
+              </div>
+            </div>
+            <ArrowRight className="w-4 h-4 text-slate-400" />
+          </Card>
+        </Link>
+      </div>
+
       {/* Recent Users Table */}
-      <div className="bg-white rounded-3xl border border-slate-200/80 shadow-sm overflow-hidden">
-        <div className="p-6 border-b border-slate-200/80 flex items-center justify-between">
+      <Card padding="p-0" className="overflow-hidden">
+        <div className="p-6 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between">
           <div>
-            <h2 className="text-lg font-bold text-slate-900">Platform User Directory</h2>
-            <p className="text-xs text-slate-500 mt-0.5">Showing seeded and registered accounts from MySQL</p>
+            <h3 className="text-base font-bold text-slate-900 dark:text-slate-100">Platform User Directory</h3>
+            <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Showing seeded and active platform accounts from MySQL</p>
           </div>
-          <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-slate-100 text-slate-600">
-            {data?.recentUsers?.length || 0} Records Loaded
-          </span>
+          <Badge variant="default">
+            {data?.recentUsers?.length || 0} Accounts Loaded
+          </Badge>
         </div>
 
         <div className="overflow-x-auto">
           <table className="w-full text-left text-sm">
-            <thead className="bg-slate-50/75 border-b border-slate-200/80 text-xs font-bold text-slate-500 uppercase tracking-wider">
+            <thead className="bg-slate-50 dark:bg-slate-900/60 border-b border-slate-200 dark:border-slate-800 text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
               <tr>
                 <th className="px-6 py-3.5">User</th>
                 <th className="px-6 py-3.5">Email</th>
@@ -151,29 +205,23 @@ export const AdminDashboard = () => {
                 <th className="px-6 py-3.5">Created At</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-100 font-medium text-slate-700">
+            <tbody className="divide-y divide-slate-100 dark:divide-slate-800 font-medium text-slate-700 dark:text-slate-300">
               {data?.recentUsers?.map((u) => (
-                <tr key={u.id} className="hover:bg-slate-50/50 transition-colors">
+                <tr key={u.id} className="hover:bg-slate-50/50 dark:hover:bg-slate-900/40 transition-colors">
                   <td className="px-6 py-4 flex items-center gap-3">
-                    <div className="w-8 h-8 rounded-full bg-slate-100 text-slate-700 font-bold text-xs flex items-center justify-center">
+                    <div className="w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-bold text-xs flex items-center justify-center">
                       {u.name?.charAt(0)}
                     </div>
-                    <span className="font-semibold text-slate-900">{u.name}</span>
+                    <span className="font-semibold text-slate-900 dark:text-slate-100">{u.name}</span>
                   </td>
-                  <td className="px-6 py-4 text-slate-500 font-mono text-xs">{u.email}</td>
+                  <td className="px-6 py-4 text-slate-500 dark:text-slate-400 font-mono text-xs">{u.email}</td>
                   <td className="px-6 py-4">{roleBadge(u.role)}</td>
                   <td className="px-6 py-4">
-                    <span
-                      className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-semibold ${
-                        u.active
-                          ? 'bg-emerald-50 text-emerald-700'
-                          : 'bg-rose-50 text-rose-700'
-                      }`}
-                    >
+                    <Badge variant={u.active ? 'success' : 'danger'}>
                       {u.active ? 'Active' : 'Disabled'}
-                    </span>
+                    </Badge>
                   </td>
-                  <td className="px-6 py-4 text-xs text-slate-500">
+                  <td className="px-6 py-4 text-xs text-slate-500 dark:text-slate-400">
                     {u.createdAt ? new Date(u.createdAt).toLocaleDateString() : 'Initial Seed'}
                   </td>
                 </tr>
@@ -181,7 +229,7 @@ export const AdminDashboard = () => {
             </tbody>
           </table>
         </div>
-      </div>
+      </Card>
     </div>
   );
 };

@@ -30,6 +30,27 @@ public class User {
     @Column(name = "email_notifications", nullable = false)
     private boolean emailNotifications = true;
 
+    @Column(name = "avatar_url", length = 255)
+    private String avatarUrl;
+
+    @Column(columnDefinition = "TEXT")
+    private String bio;
+
+    @Column(length = 100)
+    private String department;
+
+    @Column(name = "academic_info", length = 100)
+    private String academicInfo;
+
+    @Column(name = "github_url", length = 255)
+    private String githubUrl;
+
+    @Column(name = "linkedin_url", length = 255)
+    private String linkedinUrl;
+
+    @Column(name = "website_url", length = 255)
+    private String websiteUrl;
+
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt = LocalDateTime.now();
 
@@ -119,6 +140,62 @@ public class User {
 
     public void setEmailNotifications(boolean emailNotifications) {
         this.emailNotifications = emailNotifications;
+    }
+
+    public String getAvatarUrl() {
+        return avatarUrl;
+    }
+
+    public void setAvatarUrl(String avatarUrl) {
+        this.avatarUrl = avatarUrl;
+    }
+
+    public String getBio() {
+        return bio;
+    }
+
+    public void setBio(String bio) {
+        this.bio = bio;
+    }
+
+    public String getDepartment() {
+        return department;
+    }
+
+    public void setDepartment(String department) {
+        this.department = department;
+    }
+
+    public String getAcademicInfo() {
+        return academicInfo;
+    }
+
+    public void setAcademicInfo(String academicInfo) {
+        this.academicInfo = academicInfo;
+    }
+
+    public String getGithubUrl() {
+        return githubUrl;
+    }
+
+    public void setGithubUrl(String githubUrl) {
+        this.githubUrl = githubUrl;
+    }
+
+    public String getLinkedinUrl() {
+        return linkedinUrl;
+    }
+
+    public void setLinkedinUrl(String linkedinUrl) {
+        this.linkedinUrl = linkedinUrl;
+    }
+
+    public String getWebsiteUrl() {
+        return websiteUrl;
+    }
+
+    public void setWebsiteUrl(String websiteUrl) {
+        this.websiteUrl = websiteUrl;
     }
 
     public LocalDateTime getCreatedAt() {

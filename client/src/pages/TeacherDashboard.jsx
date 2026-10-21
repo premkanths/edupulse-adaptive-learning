@@ -1,9 +1,13 @@
 import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { teacherApi } from '../api/client';
 import { StatCard } from '../components/StatCard';
 import { LoadingSpinner } from '../components/LoadingSpinner';
 import { Alert } from '../components/Alert';
-import { Users, BookOpen, HelpCircle, TrendingUp, Layers, CheckCircle2 } from 'lucide-react';
+import { Users, BookOpen, HelpCircle, TrendingUp, Layers, CheckCircle2, Sparkles, ShieldAlert, UploadCloud, ArrowRight } from 'lucide-react';
+import { Card, CardHeader } from '../components/ui/Card';
+import { Button } from '../components/ui/Button';
+import { Badge } from '../components/ui/Badge';
 
 export const TeacherDashboard = () => {
   const [data, setData] = useState(null);
@@ -13,6 +17,7 @@ export const TeacherDashboard = () => {
   useEffect(() => {
     const fetchDashboard = async () => {
       try {
+        setLoading(true);
         const res = await teacherApi.getDashboard();
         if (res.success) {
           setData(res.data);
@@ -44,17 +49,30 @@ export const TeacherDashboard = () => {
   return (
     <div className="space-y-8">
       {/* Welcome Header */}
-      <div className="bg-gradient-to-r from-slate-900 to-indigo-900 rounded-3xl p-8 text-white shadow-xl shadow-slate-200 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
-        <div>
-          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-indigo-500/20 text-indigo-200 border border-indigo-400/30 mb-3">
-            Instructor Portal & Class Analytics
-          </span>
-          <h1 className="text-3xl font-extrabold tracking-tight">
+      <div className="bg-academic-navy text-white rounded-3xl p-8 shadow-sm flex flex-col md:flex-row items-start md:items-center justify-between gap-6 border border-slate-800">
+        <div className="space-y-2">
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-academic-teal/30 text-teal-300 border border-teal-400/30">
+            Faculty Instructor Portal &amp; Academic Cohorts
+          </div>
+          <h1 className="text-3xl font-black tracking-tight">
             Welcome, {data?.teacherName}!
           </h1>
-          <p className="mt-2 text-slate-300 text-sm max-w-xl">
-            Monitor class performance, assign quizzes, inspect weak-topic distributions, and review AI-generated questions.
+          <p className="text-slate-300 text-sm max-w-xl leading-relaxed">
+            Monitor class performance, assign formative assessments, inspect curriculum bottlenecks, and review AI-generated questions.
           </p>
+        </div>
+
+        <div className="flex flex-wrap gap-2.5">
+          <Link to="/teacher/quizzes/ai-generate">
+            <Button variant="primary" size="sm" icon={Sparkles}>
+              AI Quiz Generator
+            </Button>
+          </Link>
+          <Link to="/teacher/at-risk">
+            <Button variant="teal" size="sm" icon={ShieldAlert}>
+              At-Risk Student Monitor
+            </Button>
+          </Link>
         </div>
       </div>
 
@@ -65,21 +83,21 @@ export const TeacherDashboard = () => {
           value={data?.totalStudentsCount || 0}
           subtitle="Enrolled in active cohorts"
           icon={Users}
-          color="indigo"
+          color="blue"
         />
         <StatCard
           title="Managed Classes"
           value={data?.classesCount || 0}
           subtitle="Assigned teaching sections"
           icon={Layers}
-          color="purple"
+          color="teal"
         />
         <StatCard
           title="Question Bank"
           value={data?.questionsInBankCount || 0}
-          subtitle="Available for quizzes"
+          subtitle="Questions ready for quizzes"
           icon={HelpCircle}
-          color="blue"
+          color="indigo"
         />
         <StatCard
           title="Class Average"
@@ -90,60 +108,130 @@ export const TeacherDashboard = () => {
         />
       </div>
 
-      {/* Classes & Activity */}
+      {/* Quick Action Navigation Bar */}
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+        <Link to="/teacher/questions" className="block">
+          <div className="p-4 rounded-2xl bg-white dark:bg-academic-darkCard border border-slate-200 dark:border-academic-darkBorder hover:border-academic-blue dark:hover:border-academic-blue transition-all group shadow-sm">
+            <div className="flex items-center justify-between mb-2">
+              <div className="p-2 rounded-xl bg-blue-50 dark:bg-blue-950/60 text-academic-blue">
+                <HelpCircle className="w-5 h-5" />
+              </div>
+              <ArrowRight className="w-4 h-4 text-slate-400 group-hover:translate-x-1 transition-transform" />
+            </div>
+            <h4 className="text-sm font-bold text-slate-900 dark:text-slate-100">Question Bank</h4>
+            <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Author &amp; weight questions</p>
+          </div>
+        </Link>
+
+        <Link to="/teacher/quizzes" className="block">
+          <div className="p-4 rounded-2xl bg-white dark:bg-academic-darkCard border border-slate-200 dark:border-academic-darkBorder hover:border-academic-teal dark:hover:border-academic-teal transition-all group shadow-sm">
+            <div className="flex items-center justify-between mb-2">
+              <div className="p-2 rounded-xl bg-teal-50 dark:bg-teal-950/60 text-academic-teal">
+                <BookOpen className="w-5 h-5" />
+              </div>
+              <ArrowRight className="w-4 h-4 text-slate-400 group-hover:translate-x-1 transition-transform" />
+            </div>
+            <h4 className="text-sm font-bold text-slate-900 dark:text-slate-100">Quizzes &amp; Tests</h4>
+            <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Publish &amp; assign evaluations</p>
+          </div>
+        </Link>
+
+        <Link to="/teacher/import" className="block">
+          <div className="p-4 rounded-2xl bg-white dark:bg-academic-darkCard border border-slate-200 dark:border-academic-darkBorder hover:border-indigo-500 dark:hover:border-indigo-500 transition-all group shadow-sm">
+            <div className="flex items-center justify-between mb-2">
+              <div className="p-2 rounded-xl bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600">
+                <UploadCloud className="w-5 h-5" />
+              </div>
+              <ArrowRight className="w-4 h-4 text-slate-400 group-hover:translate-x-1 transition-transform" />
+            </div>
+            <h4 className="text-sm font-bold text-slate-900 dark:text-slate-100">CSV Data Import</h4>
+            <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Bulk upload marks &amp; attendance</p>
+          </div>
+        </Link>
+
+        <Link to="/teacher/at-risk" className="block">
+          <div className="p-4 rounded-2xl bg-white dark:bg-academic-darkCard border border-slate-200 dark:border-academic-darkBorder hover:border-rose-500 dark:hover:border-rose-500 transition-all group shadow-sm">
+            <div className="flex items-center justify-between mb-2">
+              <div className="p-2 rounded-xl bg-rose-50 dark:bg-rose-950/60 text-rose-600">
+                <ShieldAlert className="w-5 h-5" />
+              </div>
+              <ArrowRight className="w-4 h-4 text-slate-400 group-hover:translate-x-1 transition-transform" />
+            </div>
+            <h4 className="text-sm font-bold text-slate-900 dark:text-slate-100">At-Risk Early Warning</h4>
+            <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Machine learning intervention</p>
+          </div>
+        </Link>
+      </div>
+
+      {/* Classes & Activity Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        <div className="bg-white p-6 rounded-3xl border border-slate-200/80 shadow-sm space-y-4">
-          <div className="flex items-center justify-between">
-            <h2 className="text-lg font-bold text-slate-900">Assigned Cohorts & Classes</h2>
-            <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-slate-100 text-slate-600">
-              Live DB Records
-            </span>
-          </div>
+        {/* Managed Cohorts */}
+        <Card>
+          <CardHeader
+            title="Assigned Cohorts &amp; Classes"
+            subtitle="Sections linked to your faculty account"
+            action={
+              <Link to="/teacher/analytics">
+                <span className="text-xs font-semibold text-academic-blue hover:underline">
+                  Full Analytics &rarr;
+                </span>
+              </Link>
+            }
+          />
 
           <div className="space-y-3">
-            {data?.managedClasses?.map((cls, idx) => (
-              <div
-                key={idx}
-                className="p-4 rounded-2xl border border-slate-200 bg-slate-50/50 flex items-center justify-between hover:bg-slate-50 transition-colors"
-              >
-                <div>
-                  <h3 className="text-sm font-bold text-slate-900">{cls.name}</h3>
-                  <p className="text-xs text-slate-500 mt-0.5">{cls.studentCount} enrolled students</p>
+            {data?.managedClasses?.length > 0 ? (
+              data.managedClasses.map((cls, idx) => (
+                <div
+                  key={idx}
+                  className="p-4 rounded-2xl border border-slate-200 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-900/40 flex items-center justify-between hover:bg-slate-50 dark:hover:bg-slate-900/80 transition-colors"
+                >
+                  <div>
+                    <h4 className="text-sm font-bold text-slate-900 dark:text-slate-100">{cls.name}</h4>
+                    <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">{cls.studentCount} enrolled students</p>
+                  </div>
+                  <Link to="/teacher/analytics">
+                    <Button variant="secondary" size="sm">
+                      Inspect Cohort
+                    </Button>
+                  </Link>
                 </div>
-                <button className="text-xs font-semibold text-indigo-600 hover:text-indigo-700 bg-indigo-50 px-3 py-1.5 rounded-lg transition-colors">
-                  View Class
-                </button>
-              </div>
-            ))}
+              ))
+            ) : (
+              <p className="text-xs text-slate-500 py-4 text-center">No assigned classes found.</p>
+            )}
           </div>
-        </div>
+        </Card>
 
-        <div className="bg-white p-6 rounded-3xl border border-slate-200/80 shadow-sm space-y-4">
-          <div className="flex items-center justify-between">
-            <h2 className="text-lg font-bold text-slate-900">Recent Class Activity</h2>
-            <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-700">
-              Real-time
-            </span>
-          </div>
+        {/* Recent Activity */}
+        <Card>
+          <CardHeader
+            title="Recent Student Activity"
+            subtitle="Live student assessment telemetry"
+          />
 
           <div className="space-y-3">
-            {data?.recentActivities?.map((act, idx) => (
-              <div
-                key={idx}
-                className="p-4 rounded-2xl border border-slate-200 bg-slate-50/50 flex items-start gap-3"
-              >
-                <div className="p-2 bg-emerald-50 text-emerald-600 rounded-xl mt-0.5">
-                  <CheckCircle2 className="w-4 h-4" />
+            {data?.recentActivities?.length > 0 ? (
+              data.recentActivities.map((act, idx) => (
+                <div
+                  key={idx}
+                  className="p-4 rounded-2xl border border-slate-200 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-900/40 flex items-start gap-3"
+                >
+                  <div className="p-2 bg-emerald-50 dark:bg-emerald-950/60 text-emerald-600 rounded-xl mt-0.5">
+                    <CheckCircle2 className="w-4 h-4" />
+                  </div>
+                  <div>
+                    <h4 className="text-sm font-semibold text-slate-900 dark:text-slate-100">{act.title}</h4>
+                    <p className="text-xs text-slate-600 dark:text-slate-400 mt-0.5">{act.description}</p>
+                    <span className="text-[11px] text-slate-400 mt-1 block">{act.timestamp}</span>
+                  </div>
                 </div>
-                <div>
-                  <h3 className="text-sm font-semibold text-slate-900">{act.title}</h3>
-                  <p className="text-xs text-slate-600 mt-0.5">{act.description}</p>
-                  <span className="text-[11px] text-slate-400 mt-1 block">{act.timestamp}</span>
-                </div>
-              </div>
-            ))}
+              ))
+            ) : (
+              <p className="text-xs text-slate-500 py-4 text-center">No student activity logged in the past 24 hours.</p>
+            )}
           </div>
-        </div>
+        </Card>
       </div>
     </div>
   );

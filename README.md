@@ -303,6 +303,39 @@ The platform incorporates formal research benchmarks suitable for academic publi
 
 ---
 
+## 🎨 UI/UX Upgrade & Feature Audit Completion
+
+A comprehensive overhaul aligning EduPulse with modern academic SaaS design principles, full light/dark theming, robust profile management, and resilient portfolio integrations:
+
+### 1. Classic Academic Design System
+* **Curated Academic Palette:** Deep Navy (`#172554`), Academic Blue (`#2563EB`), Scholar Teal (`#0D9488`), Crisp Slate Light (`#F8FAFC`), and Slate Dark (`#0F172A`).
+* **Atomic Component Library:** Standardized `Button.jsx` (primary, secondary, teal, danger, ghost variants), `Card.jsx` (with elevated cards and headers), `Badge.jsx` (contextual status tags), and `ThemeToggle.jsx`.
+
+### 2. Dual Light & Dark Themes
+* **Full Theme Support:** Light mode, Dark mode, and System default with instant toggle.
+* **Persistent Preference:** Stored in `localStorage` with real-time OS preference detection listener.
+* **Zero FOUC:** Smooth color transitions applied uniformly across navbar, sidebar, dashboards, forms, dialogs, tables, and Recharts.
+
+### 3. Role-Oriented Landing Page & Gateways
+* **Portal Gateway (`/`):** Clear role selection between **Student Portal** and **Faculty Portal**, plus discreet **Administrator Access**.
+* **Smart Sign-In (`/login?role=...`):** Contextual headers, password visibility toggle (`Eye`/`EyeOff`), and 1-click demo logins for Student, Teacher, and Admin.
+
+### 4. Self-Service Profile Management
+* **Unified Profile Endpoint:** Authenticated `GET /api/user/profile` and `PUT /api/user/profile` serving both Students and Faculty.
+* **Academic Fields:** Avatar URL picker, Department, Academic Year/Cohort, Bio, GitHub, LinkedIn, and Website URLs.
+* **Secure Credential Update:** `PUT /api/user/change-password` with current BCrypt verification and field-level validation.
+
+### 5. Multi-Source Connected Coding Accounts
+* **Platform Cards:** Dedicated cards for **GitHub**, **LeetCode**, and **HackerRank**.
+* **Cache-Bypassing Live Refresh:** Optional `force=true` query parameter to refresh statistics immediately without waiting for the 60-minute cache window.
+* **Honest Provenance Badges:** Every statistic is visibly tagged with its actual source: `LIVE_API`, `CACHED_SNAPSHOT`, or `MANUAL_ENTRY`.
+* **Manual Verification Dialog:** Fallback modal allowing students to submit verified portfolio metrics when external APIs are rate-limited or private.
+
+### 6. Automated Verification Test Suite
+* **Comprehensive Test Script:** [`test_full_upgrade_verification.ps1`](file:///C:/Users/pream/.gemini/antigravity/scratch/edupulse/test_full_upgrade_verification.ps1) verifies authentication, profile GET/PUT, password change, external force sync, manual override, role authorization guards, and production build assets.
+
+---
+
 ## 🧪 Testing and Verification
 
 All backend and frontend test suites pass with 0 errors:

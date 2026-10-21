@@ -315,14 +315,37 @@ public class StudentController {
     }
 
     @PostMapping("/external-profiles/sync/{platform}")
-    @Operation(summary = "Sync external profile stats")
+    @Operation(summary = "Sync external profile stats (forces live refresh)")
     public ResponseEntity<ApiResponse<ExternalProfile>> syncExternalProfile(
             @PathVariable String platform,
+            @RequestParam(defaultValue = "true") boolean force,
             @AuthenticationPrincipal UserPrincipal userPrincipal) {
         User student = getStudentUser(userPrincipal);
         ExternalProfile.Platform p = ExternalProfile.Platform.valueOf(platform.toUpperCase());
-        ExternalProfile profile = externalProfileService.linkProfile(student, p, student.getName().toLowerCase().replace(" ", ""));
-        return ResponseEntity.ok(ApiResponse.success("Profile synced", profile));
+        ExternalProfile profile = externalProfileService.getStudentProfiles(userPrincipal.getId()).stream()
+                .filter(prof -> prof.getPlatform() == p)
+                .findFirst()
+                .orElseThrow(() -> new ResourceNotFoundException("Profile not linked for platform: " + platform));
+
+        ExternalProfile synced = externalProfileService.syncProfile(profile, force);
+        return ResponseEntity.ok(ApiResponse.success("Profile refreshed", synced));
+    }
+
+    @PostMapping("/external-profiles/manual")
+    @Operation(summary = "Save manual statistics when public API is unavailable")
+    public ResponseEntity<ApiResponse<ExternalProfile>> saveManualExternalProfile(
+            @RequestBody Map<String, Object> payload,
+            @AuthenticationPrincipal UserPrincipal userPrincipal) {
+        User student = getStudentUser(userPrincipal);
+        String platformStr = (String) payload.get("platform");
+        String username = (String) payload.getOrDefault("username", student.getName());
+        ExternalProfile.Platform platform = ExternalProfile.Platform.valueOf(platformStr.toUpperCase());
+        
+        Map<String, Object> manualStats = new HashMap<>(payload);
+        manualStats.remove("platform");
+
+        ExternalProfile saved = externalProfileService.saveManualProfile(student, platform, username, manualStats);
+        return ResponseEntity.ok(ApiResponse.success("Manual profile metrics saved", saved));
     }
 
     @DeleteMapping("/external-profiles/{platform}")
