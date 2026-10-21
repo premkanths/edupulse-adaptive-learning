@@ -137,9 +137,9 @@ export const QuizResult = () => {
 
                   let optClass = 'bg-gray-50 dark:bg-slate-800/60 border-gray-200 dark:border-gray-800 text-gray-700 dark:text-gray-300';
                   if (isRightOption) {
-                    optClass = 'bg-emerald-50 dark:bg-emerald-950/50 border-emerald-300 text-emerald-900 font-semibold';
+                    optClass = 'bg-emerald-50 dark:bg-emerald-950/50 border-emerald-300 dark:border-emerald-800 text-emerald-900 dark:text-emerald-200 font-semibold';
                   } else if (wasChosen && !isRightOption) {
-                    optClass = 'bg-rose-50 dark:bg-rose-950/50 border-rose-300 text-rose-900 line-through';
+                    optClass = 'bg-rose-50 dark:bg-rose-950/50 border-rose-300 dark:border-rose-800 text-rose-900 dark:text-rose-200 line-through';
                   }
 
                   return (

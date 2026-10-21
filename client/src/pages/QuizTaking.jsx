@@ -218,8 +218,8 @@ export const QuizTaking = () => {
                   onClick={() => handleSelectOption(optIdx)}
                   className={`w-full text-left p-4 rounded-2xl border transition-all flex items-center justify-between cursor-pointer ${
                     isSelected
-                      ? 'border-indigo-600 bg-indigo-50/70 text-indigo-900 dark:text-indigo-200 font-semibold shadow-sm'
-                      : 'border-gray-200 dark:border-gray-800 hover:border-slate-300 bg-white/95 dark:bg-gray-900 backdrop-blur-xl text-slate-800 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-slate-800/'
+                      ? 'border-indigo-600 dark:border-indigo-500 bg-indigo-50 dark:bg-indigo-950/80 text-indigo-950 dark:text-indigo-100 font-semibold shadow-sm ring-1 ring-indigo-500/30'
+                      : 'border-gray-200 dark:border-gray-800 hover:border-indigo-300 dark:hover:border-slate-700 bg-white dark:bg-gray-900 text-slate-800 dark:text-gray-200 hover:bg-slate-50 dark:hover:bg-slate-800/60'
                   }`}
                 >
                   <div className="flex items-center gap-3">
@@ -227,7 +227,7 @@ export const QuizTaking = () => {
                       className={`w-7 h-7 rounded-lg text-xs font-bold flex items-center justify-center shrink-0 ${
                         isSelected
                           ? 'bg-indigo-600 text-white'
-                          : 'bg-gray-100 dark:bg-gray-800/80 text-gray-600 dark:text-gray-400'
+                          : 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700'
                       }`}
                     >
                       {String.fromCharCode(65 + optIdx)}

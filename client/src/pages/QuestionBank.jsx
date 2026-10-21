@@ -151,7 +151,7 @@ export const QuestionBank = () => {
                     key={idx}
                     className={`p-2.5 rounded-xl border flex items-center gap-2 ${
                       idx === q.correctIndex
-                        ? 'border-emerald-300 bg-emerald-50 dark:bg-emerald-950/50 text-emerald-900 font-semibold'
+                        ? 'border-emerald-300 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-950/50 text-emerald-900 dark:text-emerald-200 font-semibold'
                         : 'border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-slate-800/60 text-gray-700 dark:text-gray-300'
                     }`}
                   >
