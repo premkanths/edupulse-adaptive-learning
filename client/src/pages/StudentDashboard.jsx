@@ -78,7 +78,7 @@ export const StudentDashboard = () => {
         <div className="flex flex-wrap gap-3 relative z-10">
           <Link to="/student/assistant">
             <Button variant="teal" size="sm" icon={Bot}>
-              Ask J.A.R.V.I.S.
+              AI Study Assistant
             </Button>
           </Link>
           <Link to="/student/recommendations">
