@@ -1,0 +1,17 @@
+{
+  "model": "RandomForestClassifier",
+  "n_estimators": 100,
+  "max_depth": 6,
+  "test_samples": 240,
+  "accuracy": 0.9458,
+  "precision": 0.949,
+  "recall": 0.9458,
+  "f1_score": 0.9461,
+  "feature_importances": {
+    "quiz_average": 0.2532,
+    "attendance_pct": 0.3035,
+    "bkt_avg_mastery": 0.1973,
+    "days_inactive": 0.1742,
+    "assignments_missed": 0.0718
+  }
+}

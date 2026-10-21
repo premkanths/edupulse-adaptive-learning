@@ -1,0 +1,123 @@
+import React, { useEffect, useState } from 'react';
+import { studentApi } from '../api/client';
+import { LoadingSpinner } from '../components/LoadingSpinner';
+import { Alert } from '../components/Alert';
+import { HelpCircle, Clock, BookOpen, Calendar, ArrowRight, CheckCircle2 } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+
+export const StudentQuizzes = () => {
+  const [quizzes, setQuizzes] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchQuizzes = async () => {
+      try {
+        const res = await studentApi.getAssignedQuizzes();
+        if (res.success) {
+          setQuizzes(res.data);
+        } else {
+          setError(res.message);
+        }
+      } catch (err) {
+        setError(err.message || 'Failed to load assigned quizzes.');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchQuizzes();
+  }, []);
+
+  if (loading) {
+    return <LoadingSpinner size="lg" text="Loading assigned quizzes..." />;
+  }
+
+  if (error) {
+    return <Alert type="error" title="Error" message={error} />;
+  }
+
+  const handleStart = async (quizId) => {
+    try {
+      const res = await studentApi.startQuizAttempt(quizId);
+      if (res.success) {
+        navigate(`/student/quizzes/${quizId}/take`, { state: { quizData: res.data } });
+      }
+    } catch (err) {
+      alert(err.message || 'Failed to start quiz attempt.');
+    }
+  };
+
+  return (
+    <div className="space-y-8">
+      <div>
+        <h1 className="text-2xl font-bold text-slate-900">Assigned Quizzes & Diagnostic Tests</h1>
+        <p className="text-sm text-slate-500 mt-1">
+          Take quizzes to test your understanding. Results update your topic mastery immediately and adapt future recommendations.
+        </p>
+      </div>
+
+      {quizzes.length === 0 ? (
+        <div className="bg-white rounded-3xl p-12 text-center border border-slate-200">
+          <CheckCircle2 className="w-12 h-12 text-emerald-500 mx-auto mb-3" />
+          <h2 className="text-lg font-bold text-slate-800">You're all caught up!</h2>
+          <p className="text-sm text-slate-500 mt-1">No pending quizzes assigned to your cohort right now.</p>
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {quizzes.map((quiz) => (
+            <div
+              key={quiz.quizId}
+              className="bg-white rounded-3xl p-6 border border-slate-200/80 shadow-sm hover:shadow-md transition-shadow flex flex-col justify-between"
+            >
+              <div className="space-y-4">
+                <div className="flex items-start justify-between gap-3">
+                  <div className="p-2.5 bg-indigo-50 text-indigo-600 rounded-2xl shrink-0">
+                    <HelpCircle className="w-6 h-6" />
+                  </div>
+                  <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-700">
+                    Published
+                  </span>
+                </div>
+
+                <div>
+                  <span className="text-xs font-bold text-indigo-600 uppercase tracking-wider block mb-1">
+                    {quiz.subjectName}
+                  </span>
+                  <h2 className="text-lg font-bold text-slate-900">{quiz.title}</h2>
+                </div>
+
+                <div className="grid grid-cols-2 gap-2 text-xs text-slate-600 py-3 border-y border-slate-100">
+                  <div className="flex items-center gap-1.5">
+                    <BookOpen className="w-4 h-4 text-slate-400" />
+                    <span><strong>{quiz.questionCount}</strong> Questions</span>
+                  </div>
+                  <div className="flex items-center gap-1.5">
+                    <Clock className="w-4 h-4 text-slate-400" />
+                    <span><strong>{quiz.timeLimitMinutes}</strong> Minutes</span>
+                  </div>
+                  {quiz.dueDate && (
+                    <div className="flex items-center gap-1.5 col-span-2 text-slate-500">
+                      <Calendar className="w-4 h-4 text-slate-400" />
+                      <span>Due: {new Date(quiz.dueDate).toLocaleDateString()}</span>
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              <div className="pt-4">
+                <button
+                  onClick={() => handleStart(quiz.quizId)}
+                  className="w-full py-2.5 px-4 rounded-xl text-sm font-semibold text-white bg-indigo-600 hover:bg-indigo-700 transition-colors flex items-center justify-center gap-2 cursor-pointer shadow-sm shadow-indigo-100"
+                >
+                  Start Quiz Attempt <ArrowRight className="w-4 h-4" />
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+};

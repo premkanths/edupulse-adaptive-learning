@@ -1,0 +1,46 @@
+server:
+  port: ${SERVER_PORT:8080}
+
+spring:
+  application:
+    name: edupulse-server
+  jackson:
+    serialization:
+      fail-on-empty-beans: false
+  datasource:
+    url: jdbc:mysql://${DB_HOST:localhost}:${DB_PORT:3306}/${DB_NAME:edupulse}?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+    username: ${DB_USER:edupulse}
+    password: ${DB_PASSWORD:edupulse}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: false
+        dialect: org.hibernate.dialect.MySQLDialect
+
+app:
+  jwt:
+    secret: ${JWT_SECRET:EduPulseSuperSecretKeyForJwtTokenGeneration2026SecureKeyMustBeLongEnough}
+    expiration-ms: ${JWT_EXPIRATION_MS:86400000} # 24 hours
+  cors:
+    allowed-origins: ${CLIENT_URL:http://localhost:5173}
+
+mail:
+  dry-run: ${MAIL_DRY_RUN:true}
+
+edupulse:
+  summary:
+    cron: "${SUMMARY_CRON:0 0 6 * * MON}"
+  ml-service:
+    url: ${ML_SERVICE_URL:http://localhost:8001}
+
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+    tags-sorter: alpha
+    operations-sorter: method
