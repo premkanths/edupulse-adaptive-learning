@@ -10,8 +10,10 @@ public class TeacherDashboardDto {
     private long createdQuizzesCount;
     private long questionsInBankCount;
     private double classAverageScore;
+    private long atRiskCount;
     private List<Map<String, Object>> managedClasses;
     private List<Map<String, Object>> recentActivities;
+    private List<Map<String, Object>> remedialActionItems;
     private Map<String, Object> knowledgeTracingModel;
 
     public TeacherDashboardDto() {
@@ -63,6 +65,22 @@ public class TeacherDashboardDto {
 
     public void setClassAverageScore(double classAverageScore) {
         this.classAverageScore = classAverageScore;
+    }
+
+    public long getAtRiskCount() {
+        return atRiskCount;
+    }
+
+    public void setAtRiskCount(long atRiskCount) {
+        this.atRiskCount = atRiskCount;
+    }
+
+    public List<Map<String, Object>> getRemedialActionItems() {
+        return remedialActionItems;
+    }
+
+    public void setRemedialActionItems(List<Map<String, Object>> remedialActionItems) {
+        this.remedialActionItems = remedialActionItems;
     }
 
     public List<Map<String, Object>> getManagedClasses() {

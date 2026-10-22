@@ -30,6 +30,8 @@ public class StudentDashboardDto {
     private List<Map<String, Object>> recentQuizzes;
     private List<Map<String, Object>> recommendations;
     private Map<String, Object> nextAction;
+    private Map<String, Object> assessmentTrajectory;
+    private List<Map<String, Object>> dailyLearningPlan;
     private Map<String, Object> howLearningIsAnalysed;
 
     public StudentDashboardDto() {
@@ -193,6 +195,22 @@ public class StudentDashboardDto {
 
     public void setNextAction(Map<String, Object> nextAction) {
         this.nextAction = nextAction;
+    }
+
+    public Map<String, Object> getAssessmentTrajectory() {
+        return assessmentTrajectory;
+    }
+
+    public void setAssessmentTrajectory(Map<String, Object> assessmentTrajectory) {
+        this.assessmentTrajectory = assessmentTrajectory;
+    }
+
+    public List<Map<String, Object>> getDailyLearningPlan() {
+        return dailyLearningPlan;
+    }
+
+    public void setDailyLearningPlan(List<Map<String, Object>> dailyLearningPlan) {
+        this.dailyLearningPlan = dailyLearningPlan;
     }
 
     public Map<String, Object> getHowLearningIsAnalysed() {

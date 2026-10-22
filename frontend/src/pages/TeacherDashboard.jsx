@@ -20,9 +20,14 @@ import {
   Activity,
   Info,
   Mail,
+  Award,
+  AlertTriangle,
+  FileCheck,
+  Target
 } from 'lucide-react';
 import { Card, CardHeader } from '../components/ui/Card';
 import { Button } from '../components/ui/Button';
+import { Badge } from '../components/ui/Badge';
 
 export const TeacherDashboard = () => {
   const [data, setData] = useState(null);
@@ -61,12 +66,15 @@ export const TeacherDashboard = () => {
     );
   }
 
+  const remedialItems = data?.remedialActionItems || [];
+  const atRiskCount = data?.atRiskCount || 0;
+
   return (
-    <div className="space-y-8">
-      {/* Welcome Header */}
+    <div className="space-y-8 max-w-7xl mx-auto">
+      {/* 1. WELCOME HEADER */}
       <div className="bg-gradient-to-r from-teal-700 via-emerald-700 to-teal-900 dark:from-gray-900 dark:via-gray-900 dark:to-teal-950/70 text-white rounded-3xl p-8 sm:p-10 shadow-lg border border-teal-200/20 dark:border-gray-800 flex flex-col md:flex-row items-start md:items-center justify-between gap-6 relative overflow-hidden">
-        {/* Ambient top right glow */}
-        <div className="absolute top-0 right-0 -mr-16 -mt-16 w-80 h-80 bg-white/10 dark:bg-teal-500/10 rounded-full blur-2xl pointer-events-none"></div>
+        {/* Ambient glow */}
+        <div className="absolute top-0 right-0 -mr-16 -mt-16 w-80 h-80 bg-white/10 dark:bg-teal-500/10 rounded-full blur-2xl pointer-events-none" />
 
         <div className="space-y-2.5 relative z-10">
           <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-white/15 dark:bg-teal-500/20 text-white dark:text-teal-200 border border-white/20 dark:border-teal-500/30 shadow-xs">
@@ -76,30 +84,30 @@ export const TeacherDashboard = () => {
             Welcome, {data?.teacherName}!
           </h1>
           <p className="text-teal-100 dark:text-gray-300 text-sm max-w-xl leading-relaxed">
-            Monitor class performance, assign formative assessments, inspect curriculum bottlenecks, and review AI-generated questions.
+            Monitor class performance, assign formative assessments, inspect curriculum bottlenecks, and review student exam papers with AI diagnostics.
           </p>
         </div>
 
-        <div className="flex flex-wrap gap-3 relative z-10">
+        <div className="flex flex-wrap gap-2.5 relative z-10">
+          <Link to="/teacher/exam-papers">
+            <Button variant="primary" size="sm" icon={Award}>
+              Evaluated Papers
+            </Button>
+          </Link>
           <Link to="/teacher/quizzes/ai-generate">
-            <Button variant="primary" size="sm" icon={Sparkles}>
+            <Button variant="teal" size="sm" icon={Sparkles}>
               AI Quiz Generator
             </Button>
           </Link>
           <Link to="/teacher/at-risk">
-            <Button variant="teal" size="sm" icon={ShieldAlert}>
+            <Button variant="secondary" size="sm" icon={ShieldAlert}>
               At-Risk Monitor
-            </Button>
-          </Link>
-          <Link to="/teacher/analytics">
-            <Button variant="secondary" size="sm" icon={Mail}>
-              Weekly Email Digests
             </Button>
           </Link>
         </div>
       </div>
 
-      {/* Metrics Row */}
+      {/* 2. CORE METRICS */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
         <StatCard
           title="Assigned Students"
@@ -118,7 +126,7 @@ export const TeacherDashboard = () => {
         <StatCard
           title="Question Bank"
           value={data?.questionsInBankCount || 0}
-          subtitle="Questions ready for quizzes"
+          subtitle="Ready for quizzes &amp; exams"
           icon={HelpCircle}
           color="indigo"
         />
@@ -131,7 +139,73 @@ export const TeacherDashboard = () => {
         />
       </div>
 
-      {/* Active Cognitive Knowledge Tracing Status */}
+      {/* 3. REMEDIAL INTERVENTIONS & AT-RISK MONITOR HUB */}
+      <div className="p-6 sm:p-7 rounded-3xl bg-white dark:bg-gray-900 border border-teal-200/80 dark:border-teal-900/40 shadow-xs space-y-5">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-gray-100 dark:border-gray-800 pb-4">
+          <div className="flex items-center gap-3">
+            <div className="p-2.5 rounded-2xl bg-amber-50 dark:bg-amber-950/60 text-amber-600 dark:text-amber-400">
+              <AlertTriangle className="w-5 h-5" />
+            </div>
+            <div>
+              <h3 className="text-base font-bold text-gray-900 dark:text-gray-50 flex items-center gap-2">
+                <span>Faculty Remedial Intervention Queue</span>
+                {atRiskCount > 0 && (
+                  <span className="text-xs font-bold px-2 py-0.5 rounded-full bg-rose-100 dark:bg-rose-950/80 text-rose-700 dark:text-rose-300">
+                    {atRiskCount} Student{atRiskCount === 1 ? '' : 's'} At-Risk
+                  </span>
+                )}
+              </h3>
+              <p className="text-xs text-gray-500 dark:text-gray-400">
+                Identified curriculum bottlenecks and suggested teacher interventions based on AKT state and quiz accuracy.
+              </p>
+            </div>
+          </div>
+
+          <Link to="/teacher/at-risk">
+            <Button variant="secondary" size="sm" icon={ShieldAlert}>
+              Inspect At-Risk Students &rarr;
+            </Button>
+          </Link>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {remedialItems.map((item, idx) => (
+            <div
+              key={idx}
+              className="p-4 rounded-2xl border border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-950/50 flex flex-col justify-between space-y-3"
+            >
+              <div className="space-y-1.5">
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-bold text-gray-900 dark:text-gray-50 flex items-center gap-1.5">
+                    <Target className="w-3.5 h-3.5 text-teal-600 dark:text-teal-400" />
+                    {item.topic}
+                  </span>
+                  <Badge variant={item.severity === 'HIGH' ? 'danger' : 'warning'} size="sm">
+                    {item.severity} Priority
+                  </Badge>
+                </div>
+                <p className="text-xs text-gray-600 dark:text-gray-300 leading-relaxed">
+                  {item.issue}
+                </p>
+                <div className="text-[11px] text-teal-700 dark:text-teal-300 font-medium bg-teal-50 dark:bg-teal-950/40 p-2 rounded-xl border border-teal-100 dark:border-teal-900/30">
+                  <strong>Recommended Remedy:</strong> {item.remedy}
+                </div>
+              </div>
+
+              <div className="pt-2 border-t border-gray-100 dark:border-gray-800">
+                <Link to={item.actionUrl || '/teacher/quizzes/ai-generate'}>
+                  <Button variant="outline" size="sm" className="w-full justify-between">
+                    <span>{item.actionLabel || 'Take Remedial Action'}</span>
+                    <ArrowRight className="w-3.5 h-3.5" />
+                  </Button>
+                </Link>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* 4. ACTIVE KNOWLEDGE TRACING STATUS */}
       {data?.knowledgeTracingModel && (
         <div className="bg-white/95 dark:bg-gray-900 backdrop-blur-xl rounded-3xl p-6 sm:p-7 border border-teal-200/60 dark:border-teal-900/40 shadow-sm relative overflow-hidden">
           <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4 border-b border-gray-100 dark:border-gray-800 pb-4 mb-4">
@@ -175,7 +249,7 @@ export const TeacherDashboard = () => {
               </p>
             </div>
             <div className="p-3.5 rounded-2xl bg-gray-50 dark:bg-gray-950/60 border border-gray-100 dark:border-gray-800">
-              <span className="font-bold text-gray-900 dark:text-gray-100 block mb-1">Student Trends & Learning Gaps</span>
+              <span className="font-bold text-gray-900 dark:text-gray-100 block mb-1">Student Trends &amp; Learning Gaps</span>
               <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
                 Topics below 50% mastery are flagged as learning gaps. The system guides students through prerequisite topics before testing them on complex algorithms.
               </p>
@@ -190,10 +264,23 @@ export const TeacherDashboard = () => {
         </div>
       )}
 
-      {/* Quick Action Navigation Bar */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+      {/* 5. QUICK WORKFLOW NAVIGATION BAR */}
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
+        <Link to="/teacher/exam-papers" className="block">
+          <div className="p-4 rounded-2xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 hover:border-teal-400 transition-all group shadow-xs">
+            <div className="flex items-center justify-between mb-2">
+              <div className="p-2 rounded-xl bg-amber-50 dark:bg-amber-950/60 text-amber-600 dark:text-amber-400">
+                <Award className="w-5 h-5" />
+              </div>
+              <ArrowRight className="w-4 h-4 text-gray-400 group-hover:translate-x-1 transition-transform" />
+            </div>
+            <h4 className="text-sm font-bold text-gray-900 dark:text-gray-50">Evaluated Papers</h4>
+            <p className="text-xs text-gray-600 dark:text-gray-400 mt-0.5">Upload &amp; AI Diagnose</p>
+          </div>
+        </Link>
+
         <Link to="/teacher/questions" className="block">
-          <div className="p-4 rounded-2xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 hover:border-gray-300 dark:hover:border-gray-700 transition-all group shadow-xs">
+          <div className="p-4 rounded-2xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 hover:border-teal-400 transition-all group shadow-xs">
             <div className="flex items-center justify-between mb-2">
               <div className="p-2 rounded-xl bg-blue-50 dark:bg-blue-950/60 text-blue-600 dark:text-blue-400">
                 <HelpCircle className="w-5 h-5" />
@@ -206,7 +293,7 @@ export const TeacherDashboard = () => {
         </Link>
 
         <Link to="/teacher/quizzes" className="block">
-          <div className="p-4 rounded-2xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 hover:border-gray-300 dark:hover:border-gray-700 transition-all group shadow-xs">
+          <div className="p-4 rounded-2xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 hover:border-teal-400 transition-all group shadow-xs">
             <div className="flex items-center justify-between mb-2">
               <div className="p-2 rounded-xl bg-teal-50 dark:bg-teal-950/60 text-teal-600 dark:text-teal-400">
                 <BookOpen className="w-5 h-5" />
@@ -219,7 +306,7 @@ export const TeacherDashboard = () => {
         </Link>
 
         <Link to="/teacher/import" className="block">
-          <div className="p-4 rounded-2xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 hover:border-gray-300 dark:hover:border-gray-700 transition-all group shadow-xs">
+          <div className="p-4 rounded-2xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 hover:border-teal-400 transition-all group shadow-xs">
             <div className="flex items-center justify-between mb-2">
               <div className="p-2 rounded-xl bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400">
                 <UploadCloud className="w-5 h-5" />
@@ -232,7 +319,7 @@ export const TeacherDashboard = () => {
         </Link>
 
         <Link to="/teacher/at-risk" className="block">
-          <div className="p-4 rounded-2xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 hover:border-gray-300 dark:hover:border-gray-700 transition-all group shadow-xs">
+          <div className="p-4 rounded-2xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 hover:border-teal-400 transition-all group shadow-xs">
             <div className="flex items-center justify-between mb-2">
               <div className="p-2 rounded-xl bg-rose-50 dark:bg-rose-950/60 text-rose-600 dark:text-rose-400">
                 <ShieldAlert className="w-5 h-5" />
@@ -245,7 +332,7 @@ export const TeacherDashboard = () => {
         </Link>
       </div>
 
-      {/* Classes & Activity Grid */}
+      {/* 6. CLASSES & ACTIVITY GRID */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         {/* Managed Cohorts */}
         <Card>
