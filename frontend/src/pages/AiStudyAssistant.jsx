@@ -208,7 +208,7 @@ export const AiStudyAssistant = () => {
             }`}
           >
             <Compass className="w-3.5 h-3.5" />
-            Explanatory Mode
+            Direct Teaching &amp; Solutions
           </button>
           <button
             type="button"
@@ -220,7 +220,7 @@ export const AiStudyAssistant = () => {
             }`}
           >
             <HelpCircle className="w-3.5 h-3.5" />
-            Socratic Mode
+            Practice Hints Mode
           </button>
         </div>
       </div>
@@ -284,8 +284,8 @@ export const AiStudyAssistant = () => {
                   <h3 className="text-base font-bold text-gray-900 dark:text-gray-50">Hello, I am J.A.R.V.I.S., your AI tutor. How may I assist you today?</h3>
                   <p className="text-xs text-gray-500 dark:text-gray-400 max-w-sm mt-1">
                     {tutoringMode === 'SOCRATIC'
-                      ? 'In Socratic mode, I will guide your inquiry through targeted questions and conceptual steps.'
-                      : 'Ask me to explain difficult algorithms, clarify quiz misconceptions, or walk through course notes.'}
+                      ? 'In Practice Hints mode, I will give you subtle clues to help you test your understanding.'
+                      : 'Ask me to explain any difficult topic, teach you algorithms step-by-step, or walk through complete solutions grounded in your faculty course notes.'}
                   </p>
                 </div>
 

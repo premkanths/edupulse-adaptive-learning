@@ -162,12 +162,12 @@ public class ChatService {
                 "STUDENT'S LIVE LEARNING CONTEXT:\n" +
                 personalizedContext + "\n\n" +
                 (ragContext.length() > 0 ? ragContext.toString() + "\n" : "") +
-                "TUTORING MODE: " + (isSocratic ? "SOCRATIC GUIDED LEARNING" : "EXPLANATORY ACADEMIC TUTORING") + "\n\n" +
+                "TUTORING MODE: " + (isSocratic ? "GUIDED PRACTICE WITH HINTS" : "DIRECT STEP-BY-STEP TEACHING & COMPLETE EXPLANATIONS") + "\n\n" +
                 "INSTRUCTIONS:\n" +
                 (isSocratic
-                        ? "1. SOCRATIC METHOD: Do NOT give the direct final answer immediately. Ask 1-2 targeted thought-provoking questions or give subtle conceptual hints to help the student derive the answer.\n" +
+                        ? "1. GUIDED PRACTICE METHOD: Give subtle conceptual hints and ask 1-2 guiding questions to help the student solve it themselves.\n" +
                           "2. Encourage reasoning through the prerequisite principles.\n"
-                        : "1. EXPLANATORY METHOD: Provide clear, structured, step-by-step conceptual explanations with illustrative examples.\n") +
+                        : "1. DIRECT STEP-BY-STEP TEACHING: Provide direct, complete, and crystal-clear explanations. Give the full solution, breakdown formulas, provide code examples, explain underlying theory, and clarify mistakes directly so the student learns immediately without guesswork.\n") +
                 "2. When relevant course materials are provided above, ground your answers in them and cite the lecture title.\n" +
                 "3. Cite weak/strong topics from their learning profile when advising what to practice.\n" +
                 "4. Never fabricate quiz scores or invent topics outside their syllabus.\n" +
