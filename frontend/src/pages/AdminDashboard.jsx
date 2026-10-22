@@ -61,10 +61,16 @@ export const AdminDashboard = () => {
     try {
       setDispatching(true);
       setDispatchStatus(null);
-      const res = await api.post('/admin/summaries/generate-all');
-      setDispatchStatus({ type: 'success', message: res.data?.message || 'Dispatched weekly summaries to all active students!' });
+      const res = await adminApi.dispatchWeeklySummaries();
+      setDispatchStatus({
+        type: 'success',
+        message: res.data?.message || res.message || 'Dispatched weekly summaries & practice quiz alerts to all active students!'
+      });
     } catch (err) {
-      setDispatchStatus({ type: 'error', message: err.response?.data?.message || 'Failed to dispatch weekly summaries.' });
+      setDispatchStatus({
+        type: 'error',
+        message: err.response?.data?.message || err.message || 'Failed to dispatch weekly summaries.'
+      });
     } finally {
       setDispatching(false);
     }

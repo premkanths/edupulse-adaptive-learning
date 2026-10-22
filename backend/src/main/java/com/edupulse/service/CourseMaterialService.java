@@ -115,6 +115,16 @@ public class CourseMaterialService {
                 extractedText
         );
 
+        try {
+            if (file != null && !file.isEmpty()) {
+                material.setFileData(file.getBytes());
+            } else if (extractedText != null) {
+                material.setFileData(extractedText.getBytes(StandardCharsets.UTF_8));
+            }
+        } catch (Exception ex) {
+            log.warn("Could not cache fileData byte buffer for material: {}", ex.getMessage());
+        }
+
         CourseMaterial saved = courseMaterialRepository.save(material);
 
         // Chunking: 250 words per chunk with 50 words overlap
@@ -278,6 +288,11 @@ public class CourseMaterialService {
             start += (targetWords - overlapWords);
         }
         return chunks;
+    }
+
+    public CourseMaterial getMaterialById(Long id) {
+        return courseMaterialRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Course material not found with id: " + id));
     }
 
     private int countWords(String s) {

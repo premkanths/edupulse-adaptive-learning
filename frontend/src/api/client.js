@@ -76,6 +76,9 @@ export const studentApi = {
   deleteChatSession: (sessionId) => apiRequest(`/student/chat/sessions/${sessionId}`, { method: 'DELETE' }),
   exportMyData: () => apiRequest('/student/export-my-data'),
   getAvailableMaterials: () => apiRequest('/student/materials'),
+  getMaterialFileUrl: (id) => `${API_BASE}/materials/${id}/file`,
+  getExamPapers: () => apiRequest('/student/exam-papers'),
+  analyzeExamPaper: (formData) => apiRequest('/student/exam-papers/analyze', { method: 'POST', body: formData }),
   getAiSummary: () => apiRequest('/student/ai-summary'),
   generateAiSummary: () => apiRequest('/student/ai-summary/generate', { method: 'POST' }),
   retrieveCoursePassages: (query, subjectIds, topK = 3) =>
@@ -103,6 +106,7 @@ export const teacherApi = {
   getClassAnalytics: () => apiRequest('/teacher/analytics'),
   getCourseMaterials: () => apiRequest('/teacher/materials'),
   deleteCourseMaterial: (id) => apiRequest(`/teacher/materials/${id}`, { method: 'DELETE' }),
+  sendWeeklySummaryToStudent: (studentId) => apiRequest('/teacher/notifications/send-weekly-summary', { method: 'POST', body: JSON.stringify({ studentId }) }),
 };
 
 export const adminApi = {
@@ -110,4 +114,5 @@ export const adminApi = {
   getAllUsers: () => apiRequest('/admin/users'),
   createUser: (userData) => apiRequest('/admin/users', { method: 'POST', body: JSON.stringify(userData) }),
   getProfile: () => apiRequest('/admin/profile'),
+  dispatchWeeklySummaries: () => apiRequest('/admin/notifications/send-weekly-summaries', { method: 'POST' }),
 };

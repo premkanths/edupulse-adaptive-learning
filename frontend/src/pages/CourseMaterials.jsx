@@ -1,9 +1,27 @@
 import React, { useState, useEffect } from 'react';
-import { BookOpen, Upload, Trash2, FileText, CheckCircle2, AlertTriangle, RefreshCw, Plus, Search, Layers, Sparkles } from 'lucide-react';
+import {
+  BookOpen,
+  Upload,
+  Trash2,
+  FileText,
+  CheckCircle2,
+  AlertTriangle,
+  RefreshCw,
+  Plus,
+  Search,
+  Layers,
+  Sparkles,
+  Download,
+  Eye,
+  ExternalLink,
+  X
+} from 'lucide-react';
 import api from '../services/api';
 import { Card, CardHeader } from '../components/ui/Card';
 import { Button } from '../components/ui/Button';
 import { Badge } from '../components/ui/Badge';
+
+const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:8080/api';
 
 export const CourseMaterials = () => {
   const [materials, setMaterials] = useState([]);
@@ -12,6 +30,12 @@ export const CourseMaterials = () => {
   const [showUploadModal, setShowUploadModal] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [notification, setNotification] = useState(null);
+
+  // File Preview State
+  const [activeMaterial, setActiveMaterial] = useState(null);
+  const [pdfBlobUrl, setPdfBlobUrl] = useState(null);
+  const [pdfLoading, setPdfLoading] = useState(false);
+  const [viewMode, setViewMode] = useState('pdf'); // 'pdf' | 'text'
 
   // Upload Form State
   const [selectedSubjectId, setSelectedSubjectId] = useState('');
@@ -45,6 +69,50 @@ export const CourseMaterials = () => {
       setNotification({ type: 'error', message: 'Could not load course study materials.' });
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleOpenMaterial = async (item, mode = 'pdf') => {
+    setActiveMaterial(item);
+    setViewMode(mode);
+    setPdfBlobUrl(null);
+
+    if (mode === 'pdf') {
+      setPdfLoading(true);
+      try {
+        const token = localStorage.getItem('edupulse_token') || localStorage.getItem('token');
+        const res = await fetch(`${API_BASE}/teacher/materials/${item.id}/file`, {
+          headers: token ? { Authorization: `Bearer ${token}` } : {}
+        });
+        if (!res.ok) throw new Error('Failed to stream file');
+        const blob = await res.blob();
+        const url = URL.createObjectURL(blob);
+        setPdfBlobUrl(url);
+      } catch (err) {
+        console.error('Failed to load file preview:', err);
+      } finally {
+        setPdfLoading(false);
+      }
+    }
+  };
+
+  const handleDownloadFile = async (item) => {
+    try {
+      const token = localStorage.getItem('edupulse_token') || localStorage.getItem('token');
+      const res = await fetch(`${API_BASE}/teacher/materials/${item.id}/file`, {
+        headers: token ? { Authorization: `Bearer ${token}` } : {}
+      });
+      const blob = await res.blob();
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = item.fileName || `${item.title.replace(/\s+/g, '_')}.${item.fileType?.toLowerCase() || 'pdf'}`;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      setTimeout(() => URL.revokeObjectURL(url), 2000);
+    } catch (err) {
+      alert('Could not download file.');
     }
   };
 
@@ -138,10 +206,10 @@ export const CourseMaterials = () => {
         <div>
           <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-50 tracking-tight flex items-center gap-2.5">
             <BookOpen className="w-6 h-6 text-indigo-600 dark:text-indigo-400" />
-            Course Study Materials (RAG Knowledge Base)
+            Course Study Materials (RAG Knowledge Base &amp; PDF Viewer)
           </h1>
           <p className="text-gray-500 dark:text-gray-400 text-sm mt-1">
-            Upload course notes, slides, and study guides. EduPulse automatically chunks text into vector-searchable knowledge for student AI tutoring.
+            Upload course notes, slides, and syllabus PDFs. EduPulse stores the full PDF for direct on-screen viewing and chunks text into vector-searchable knowledge for student AI tutoring.
           </p>
         </div>
 
@@ -211,19 +279,45 @@ export const CourseMaterials = () => {
                   )}
                 </div>
 
-                <div className="pt-3 border-t border-gray-200 dark:border-gray-800 flex items-center justify-between text-xs text-gray-500 dark:text-gray-400">
-                  <span className="flex items-center gap-1 font-medium text-emerald-600 dark:text-emerald-400">
-                    <Layers className="w-3.5 h-3.5" />
-                    {m.chunkCount} study chunks
-                  </span>
+                <div className="space-y-2.5 pt-2">
+                  <div className="flex items-center justify-between text-xs text-gray-500 dark:text-gray-400">
+                    <span className="flex items-center gap-1 font-medium text-emerald-600 dark:text-emerald-400">
+                      <Layers className="w-3.5 h-3.5" />
+                      {m.chunkCount} study chunks
+                    </span>
+                    <span className="text-[11px] font-mono text-gray-400">
+                      {m.fileName || 'Text note'}
+                    </span>
+                  </div>
 
-                  <button
-                    onClick={() => handleDelete(m.id, m.title)}
-                    className="p-1 text-gray-400 hover:text-rose-600 dark:hover:text-rose-400 rounded transition-colors cursor-pointer"
-                    title="Delete Material"
-                  >
-                    <Trash2 className="w-4 h-4" />
-                  </button>
+                  <div className="pt-2 border-t border-gray-200 dark:border-gray-800 flex items-center justify-between text-xs">
+                    <div className="flex items-center gap-1.5">
+                      <button
+                        onClick={() => handleOpenMaterial(m, 'pdf')}
+                        className="px-2.5 py-1 rounded-lg bg-indigo-50 hover:bg-indigo-100 dark:bg-indigo-950/60 dark:hover:bg-indigo-900/60 text-indigo-700 dark:text-indigo-300 font-semibold flex items-center gap-1 transition cursor-pointer"
+                        title="View PDF / Lecture Note"
+                      >
+                        <Eye className="w-3.5 h-3.5" />
+                        <span>Preview</span>
+                      </button>
+
+                      <button
+                        onClick={() => handleDownloadFile(m)}
+                        className="p-1 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 rounded transition cursor-pointer"
+                        title="Download Document"
+                      >
+                        <Download className="w-3.5 h-3.5" />
+                      </button>
+                    </div>
+
+                    <button
+                      onClick={() => handleDelete(m.id, m.title)}
+                      className="p-1 text-gray-400 hover:text-rose-600 dark:hover:text-rose-400 rounded transition-colors cursor-pointer"
+                      title="Delete Material"
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </button>
+                  </div>
                 </div>
               </div>
             ))}
@@ -390,13 +484,104 @@ export const CourseMaterials = () => {
                 <button
                   type="submit"
                   disabled={uploading}
-                  className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50 text-white rounded-xl font-semibold shadow-xs flex items-center gap-1.5"
+                  className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50 text-white rounded-xl font-semibold shadow-xs flex items-center gap-1.5 cursor-pointer"
                 >
                   {uploading ? <RefreshCw className="w-3.5 h-3.5 animate-spin" /> : <Upload className="w-3.5 h-3.5" />}
-                  Process & Chunk Notes
+                  Process &amp; Chunk Notes
                 </button>
               </div>
             </form>
+          </div>
+        </div>
+      )}
+
+      {/* Interactive Material & PDF Viewer Modal */}
+      {activeMaterial && (
+        <div className="fixed inset-0 z-50 bg-slate-900/70 backdrop-blur-sm flex items-center justify-center p-3 sm:p-5">
+          <div className="bg-white dark:bg-gray-900 rounded-3xl w-full max-w-5xl h-[88vh] flex flex-col shadow-2xl border border-gray-200 dark:border-gray-800 overflow-hidden">
+            {/* Modal Header */}
+            <div className="p-4 sm:p-5 border-b border-gray-100 dark:border-gray-800 flex items-center justify-between gap-3 bg-gray-50/50 dark:bg-gray-950/50">
+              <div className="min-w-0">
+                <div className="flex items-center gap-2 mb-0.5">
+                  <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-indigo-100 dark:bg-indigo-950 text-indigo-700 dark:text-indigo-300">
+                    {activeMaterial.subject?.name || 'Curriculum Subject'}
+                  </span>
+                  <span className="text-xs font-mono text-gray-500">
+                    {activeMaterial.fileType || 'PDF'}
+                  </span>
+                </div>
+                <h3 className="text-base sm:text-lg font-black text-gray-900 dark:text-gray-50 truncate">
+                  {activeMaterial.title}
+                </h3>
+              </div>
+
+              <div className="flex items-center gap-2 shrink-0">
+                <button
+                  onClick={() => setViewMode(viewMode === 'pdf' ? 'text' : 'pdf')}
+                  className="px-3 py-1.5 rounded-xl text-xs font-semibold bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-200 transition cursor-pointer"
+                >
+                  {viewMode === 'pdf' ? 'View Text Summary' : 'View Embedded File'}
+                </button>
+
+                <button
+                  onClick={() => handleDownloadFile(activeMaterial)}
+                  className="p-2 rounded-xl bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-200 transition cursor-pointer"
+                  title="Download File"
+                >
+                  <Download className="w-4 h-4" />
+                </button>
+
+                <button
+                  onClick={() => {
+                    setActiveMaterial(null);
+                    if (pdfBlobUrl) URL.revokeObjectURL(pdfBlobUrl);
+                    setPdfBlobUrl(null);
+                  }}
+                  className="p-2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-800 transition cursor-pointer"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
+            </div>
+
+            {/* Modal Body */}
+            <div className="flex-1 bg-gray-100 dark:bg-gray-950 overflow-hidden relative">
+              {viewMode === 'pdf' ? (
+                pdfLoading ? (
+                  <div className="h-full flex items-center justify-center">
+                    <div className="flex flex-col items-center gap-3">
+                      <RefreshCw className="w-8 h-8 text-indigo-600 animate-spin" />
+                      <span className="text-xs font-semibold text-gray-600 dark:text-gray-300">
+                        Streaming material file...
+                      </span>
+                    </div>
+                  </div>
+                ) : pdfBlobUrl ? (
+                  <iframe
+                    src={pdfBlobUrl}
+                    title={activeMaterial.title}
+                    className="w-full h-full border-0"
+                  />
+                ) : (
+                  <div className="h-full flex flex-col items-center justify-center p-6 text-center space-y-3">
+                    <FileText className="w-12 h-12 text-gray-400" />
+                    <p className="text-xs text-gray-600 dark:text-gray-400 max-w-sm">
+                      Binary preview not directly available for this format or file data was not saved in DB. You can view the extracted lecture text or download the file.
+                    </p>
+                    <button
+                      onClick={() => setViewMode('text')}
+                      className="px-4 py-2 bg-indigo-600 text-white rounded-xl text-xs font-bold"
+                    >
+                      View Extracted Text Notes
+                    </button>
+                  </div>
+                )
+              ) : (
+                <div className="h-full overflow-y-auto p-6 bg-white dark:bg-gray-900 font-sans text-xs sm:text-sm text-gray-700 dark:text-gray-300 leading-relaxed whitespace-pre-wrap">
+                  {activeMaterial.rawText || 'No text extracted for this material.'}
+                </div>
+              )}
+            </div>
           </div>
         </div>
       )}

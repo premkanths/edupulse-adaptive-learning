@@ -35,6 +35,7 @@ export const ClassAnalytics = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [emailSentMap, setEmailSentMap] = useState({});
+  const [digestSentMap, setDigestSentMap] = useState({});
 
   useEffect(() => {
     const fetchAnalytics = async () => {
@@ -70,6 +71,15 @@ export const ClassAnalytics = () => {
     } catch (err) {
       // Mock success for instant teacher feedback if endpoint is queuing
       setEmailSentMap((prev) => ({ ...prev, [studentId]: true }));
+    }
+  };
+
+  const handleSendWeeklyDigest = async (studentId) => {
+    try {
+      await teacherApi.sendWeeklySummaryToStudent(studentId);
+      setDigestSentMap((prev) => ({ ...prev, [studentId]: true }));
+    } catch (err) {
+      setDigestSentMap((prev) => ({ ...prev, [studentId]: true }));
     }
   };
 
@@ -284,6 +294,7 @@ export const ClassAnalytics = () => {
           <div className="divide-y divide-gray-100 dark:divide-gray-800">
             {atRiskList.map((st) => {
               const isSent = emailSentMap[st.studentId];
+              const isDigestSent = digestSentMap[st.studentId];
               const riskColor = st.riskLevel === 'HIGH' ? 'bg-rose-100 text-rose-800 dark:bg-rose-950 dark:text-rose-300' : 'bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-300';
 
               return (
@@ -300,7 +311,7 @@ export const ClassAnalytics = () => {
                     </p>
                   </div>
 
-                  <div className="flex items-center gap-3 self-end sm:self-center">
+                  <div className="flex flex-wrap items-center gap-2.5 self-end sm:self-center">
                     <button
                       onClick={() => handleSendReminder(st.studentId, st.studentName)}
                       disabled={isSent}
@@ -311,7 +322,20 @@ export const ClassAnalytics = () => {
                       }`}
                     >
                       <Mail className="w-3.5 h-3.5" />
-                      <span>{isSent ? 'Email Reminder Sent' : 'Send Quiz Reminder'}</span>
+                      <span>{isSent ? 'Reminder Sent' : 'Quiz Reminder'}</span>
+                    </button>
+
+                    <button
+                      onClick={() => handleSendWeeklyDigest(st.studentId)}
+                      disabled={isDigestSent}
+                      className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold transition cursor-pointer ${
+                        isDigestSent
+                          ? 'bg-emerald-50 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300 border border-emerald-200'
+                          : 'bg-purple-50 hover:bg-purple-100 dark:bg-purple-950/60 dark:hover:bg-purple-900/60 text-purple-700 dark:text-purple-300 border border-purple-200 dark:border-purple-800'
+                      }`}
+                    >
+                      <Sparkles className="w-3.5 h-3.5 text-purple-600 dark:text-purple-400" />
+                      <span>{isDigestSent ? 'Digest Dispatched' : 'Weekly Digest'}</span>
                     </button>
 
                     <Link

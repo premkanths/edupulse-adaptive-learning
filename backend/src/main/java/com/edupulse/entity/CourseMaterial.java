@@ -38,6 +38,11 @@ public class CourseMaterial {
     @Column(name = "text_content", columnDefinition = "LONGTEXT")
     private String textContent;
 
+    @Lob
+    @Column(name = "file_data", columnDefinition = "LONGBLOB")
+    @JsonIgnore
+    private byte[] fileData;
+
     @Column(name = "chunk_count")
     private int chunkCount = 0;
 
@@ -94,4 +99,7 @@ public class CourseMaterial {
 
     public List<MaterialChunk> getChunks() { return chunks; }
     public void setChunks(List<MaterialChunk> chunks) { this.chunks = chunks; }
+
+    public byte[] getFileData() { return fileData; }
+    public void setFileData(byte[] fileData) { this.fileData = fileData; }
 }

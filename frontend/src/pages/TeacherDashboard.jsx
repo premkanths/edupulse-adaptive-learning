@@ -19,6 +19,7 @@ import {
   Cpu,
   Activity,
   Info,
+  Mail,
 } from 'lucide-react';
 import { Card, CardHeader } from '../components/ui/Card';
 import { Button } from '../components/ui/Button';
@@ -87,7 +88,12 @@ export const TeacherDashboard = () => {
           </Link>
           <Link to="/teacher/at-risk">
             <Button variant="teal" size="sm" icon={ShieldAlert}>
-              At-Risk Student Monitor
+              At-Risk Monitor
+            </Button>
+          </Link>
+          <Link to="/teacher/analytics">
+            <Button variant="secondary" size="sm" icon={Mail}>
+              Weekly Email Digests
             </Button>
           </Link>
         </div>

@@ -15,10 +15,12 @@ import com.edupulse.service.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.*;
 
@@ -45,6 +47,7 @@ public class StudentController {
     private final RiskPredictionService riskPredictionService;
     private final PrivacyConsentService privacyConsentService;
     private final FeedbackSurveyService feedbackSurveyService;
+    private final ExamPaperAnalysisService examPaperAnalysisService;
 
     public StudentController(DashboardService dashboardService,
                              UserService userService,
@@ -62,7 +65,8 @@ public class StudentController {
                              ExternalProfileService externalProfileService,
                              RiskPredictionService riskPredictionService,
                              PrivacyConsentService privacyConsentService,
-                             FeedbackSurveyService feedbackSurveyService) {
+                             FeedbackSurveyService feedbackSurveyService,
+                             ExamPaperAnalysisService examPaperAnalysisService) {
         this.dashboardService = dashboardService;
         this.userService = userService;
         this.quizService = quizService;
@@ -80,6 +84,7 @@ public class StudentController {
         this.riskPredictionService = riskPredictionService;
         this.privacyConsentService = privacyConsentService;
         this.feedbackSurveyService = feedbackSurveyService;
+        this.examPaperAnalysisService = examPaperAnalysisService;
     }
 
     private User getStudentUser(UserPrincipal principal) {
@@ -329,6 +334,26 @@ public class StudentController {
             @AuthenticationPrincipal UserPrincipal userPrincipal) {
         Map<String, Object> overview = academicImportService.getStudentAcademicOverview(userPrincipal.getId());
         return ResponseEntity.ok(ApiResponse.success(overview));
+    }
+
+    @PostMapping(value = "/exam-papers/analyze", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @Operation(summary = "Analyze student exam paper or mark sheet with OCR & AI reasoning")
+    public ResponseEntity<ApiResponse<ExamPaperAnalysis>> analyzeExamPaper(
+            @RequestParam("file") MultipartFile file,
+            @RequestParam(value = "examTitle", required = false) String examTitle,
+            @RequestParam(value = "subjectName", required = false) String subjectName,
+            @AuthenticationPrincipal UserPrincipal userPrincipal) {
+        User student = getStudentUser(userPrincipal);
+        ExamPaperAnalysis analysis = examPaperAnalysisService.analyzeExamPaper(student, file, examTitle, subjectName);
+        return ResponseEntity.ok(ApiResponse.success("Exam paper analyzed successfully", analysis));
+    }
+
+    @GetMapping("/exam-papers")
+    @Operation(summary = "Get all analyzed exam papers for current student")
+    public ResponseEntity<ApiResponse<List<ExamPaperAnalysis>>> getExamPapers(
+            @AuthenticationPrincipal UserPrincipal userPrincipal) {
+        List<ExamPaperAnalysis> list = examPaperAnalysisService.getStudentAnalyses(userPrincipal.getId());
+        return ResponseEntity.ok(ApiResponse.success(list));
     }
 
     // === WEEKLY SUMMARIES ===

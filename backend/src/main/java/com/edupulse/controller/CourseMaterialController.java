@@ -8,6 +8,7 @@ import com.edupulse.security.UserPrincipal;
 import com.edupulse.service.CourseMaterialService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -116,5 +117,33 @@ public class CourseMaterialController {
 
         List<Map<String, Object>> chunks = courseMaterialService.retrieveRelevantPassages(query, subjectIds, topK);
         return ResponseEntity.ok(ApiResponse.success(chunks));
+    }
+
+    @GetMapping({"/materials/{id}/file", "/student/materials/{id}/file", "/teacher/materials/{id}/file"})
+    @PreAuthorize("hasRole('STUDENT') or hasRole('TEACHER') or hasRole('ADMIN')")
+    @Operation(summary = "Stream or view course material document (PDF, DOCX, TXT)")
+    public ResponseEntity<byte[]> getMaterialFile(@PathVariable Long id) {
+        CourseMaterial material = courseMaterialService.getMaterialById(id);
+        byte[] data = material.getFileData();
+        if (data == null || data.length == 0) {
+            String text = material.getTextContent() != null ? material.getTextContent() : "No document content available.";
+            data = text.getBytes(java.nio.charset.StandardCharsets.UTF_8);
+        }
+
+        String fileName = material.getFileName() != null ? material.getFileName() : "material.pdf";
+        String contentType = "application/pdf";
+        String lower = fileName.toLowerCase();
+        if (lower.endsWith(".txt") || "TXT".equalsIgnoreCase(material.getFileType())) {
+            contentType = "text/plain";
+        } else if (lower.endsWith(".docx")) {
+            contentType = "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
+        } else if (lower.endsWith(".md")) {
+            contentType = "text/markdown";
+        }
+
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + fileName + "\"")
+                .header(HttpHeaders.CONTENT_TYPE, contentType)
+                .body(data);
     }
 }

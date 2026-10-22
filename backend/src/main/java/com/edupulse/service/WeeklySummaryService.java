@@ -150,21 +150,90 @@ public class WeeklySummaryService {
         summary = weeklySummaryRepository.save(summary);
 
         // Send email via service (respecting dry-run mode)
-        String htmlBody = "<html><body>" +
-                "<h2>EduPulse Weekly Learning Summary</h2>" +
-                "<p><strong>Week of: </strong>" + weekStart + "</p>" +
-                "<ul>" +
-                "<li><strong>Quizzes Completed: </strong>" + attempts.size() + "</li>" +
-                "<li><strong>Average Score: </strong>" + avgScore + "%</li>" +
-                (topTopic != null ? "<li><strong>Strongest Topic: </strong>" + topTopic.getTopic().getName() + " (" + Math.round(topTopic.getPKnown() * 100) + "% mastery)</li>" : "") +
-                (weakTopic != null ? "<li><strong>Recommended Focus: </strong>" + weakTopic.getTopic().getName() + " (" + Math.round(weakTopic.getPKnown() * 100) + "% mastery)</li>" : "") +
-                "</ul>" +
-                "<p>Log in to <a href=\"http://localhost:5173\">EduPulse</a> to review your personalized recommendations!</p>" +
-                "</body></html>";
+        String clientBase = "http://localhost:5173";
+        boolean hasWeakTopic = weakTopic != null && weakTopic.getPKnown() < 0.65;
+        
+        StringBuilder html = new StringBuilder();
+        html.append("<!DOCTYPE html><html><head><meta charset='UTF-8'>");
+        html.append("<style>");
+        html.append("body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background-color: #f8fafc; margin: 0; padding: 24px; color: #1e293b; }");
+        html.append(".card { max-width: 600px; margin: 0 auto; background: #ffffff; border-radius: 16px; border: 1px solid #e2e8f0; overflow: hidden; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); }");
+        html.append(".header { background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%); padding: 32px 24px; color: #ffffff; text-align: center; }");
+        html.append(".header h1 { margin: 0; font-size: 24px; font-weight: 800; }");
+        html.append(".header p { margin: 8px 0 0 0; opacity: 0.9; font-size: 14px; }");
+        html.append(".content { padding: 28px 24px; }");
+        html.append(".grid { display: flex; gap: 12px; margin: 20px 0; }");
+        html.append(".metric { flex: 1; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 16px; text-align: center; }");
+        html.append(".metric-val { font-size: 22px; font-weight: 800; color: #4f46e5; }");
+        html.append(".metric-lbl { font-size: 11px; text-transform: uppercase; font-weight: 700; color: #64748b; margin-top: 4px; }");
+        html.append(".alert-box { background: #fff1f2; border: 1px solid #fecdd3; border-radius: 12px; padding: 14px; color: #9f1239; font-size: 13px; margin: 20px 0; }");
+        html.append(".focus-box { background: #f5f3ff; border: 1px solid #ddd6fe; border-radius: 12px; padding: 18px; margin: 20px 0; }");
+        html.append(".btn { display: inline-block; background: #4f46e5; color: #ffffff !important; text-decoration: none; padding: 14px 28px; border-radius: 12px; font-weight: 700; font-size: 14px; text-align: center; margin: 10px 0; }");
+        html.append(".footer { background: #f8fafc; border-top: 1px solid #e2e8f0; padding: 20px; text-align: center; font-size: 12px; color: #94a3b8; }");
+        html.append("</style></head><body>");
+        html.append("<div class='card'>");
+        html.append("<div class='header'>");
+        html.append("<h1>EduPulse Weekly Learning Digest</h1>");
+        html.append("<p>Week of ").append(weekStart).append(" &bull; Continuous Student Telemetry</p>");
+        html.append("</div>");
+        html.append("<div class='content'>");
+        html.append("<p style='font-size: 15px;'>Hello <strong>").append(student.getName()).append("</strong>,</p>");
+        html.append("<p style='font-size: 14px; color: #475569;'>Here is your personalized summary of quiz practice, topic mastery standing, and immediate study priorities for the upcoming week:</p>");
 
-        emailService.sendEmail(student, "WEEKLY_SUMMARY", "Your EduPulse Weekly Learning Summary - " + weekStart, htmlBody);
+        html.append("<div class='grid'>");
+        html.append("<div class='metric'><div class='metric-val'>").append(attempts.size()).append("</div><div class='metric-lbl'>Quizzes Taken</div></div>");
+        html.append("<div class='metric'><div class='metric-val'>").append(avgScore).append("%</div><div class='metric-lbl'>Average Score</div></div>");
+        if (topTopic != null) {
+            html.append("<div class='metric'><div class='metric-val'>").append(Math.round(topTopic.getPKnown() * 100)).append("%</div><div class='metric-lbl'>Best Mastery</div></div>");
+        }
+        html.append("</div>");
+
+        if (hasWeakTopic) {
+            html.append("<div class='alert-box'>");
+            html.append("<strong>&#9888;&#65039; Academic Priority Alert:</strong> Your estimated mastery in <strong>")
+                .append(weakTopic.getTopic().getName()).append("</strong> is currently at ")
+                .append(Math.round(weakTopic.getPKnown() * 100)).append("%. Taking a quick practice test this week will boost your retention!");
+            html.append("</div>");
+        }
+
+        if (weakTopic != null) {
+            html.append("<div class='focus-box'>");
+            html.append("<h4 style='margin: 0 0 8px 0; color: #5b21b6; font-size: 15px;'>🎯 Recommended Focus Area:</h4>");
+            html.append("<p style='margin: 0; font-size: 13px; color: #4c1d95;'><strong>")
+                .append(weakTopic.getTopic().getName()).append("</strong> (Current Mastery: ")
+                .append(Math.round(weakTopic.getPKnown() * 100)).append("%)</p>");
+            html.append("<p style='margin: 8px 0 0 0; font-size: 12px; color: #6d28d9;'><em>Study Tip: Review teacher lecture slides in Course Materials and ask Jarvis AI Study Assistant to walk you through sample questions.</em></p>");
+            html.append("</div>");
+        }
+
+        html.append("<div style='text-align: center; margin: 28px 0;'>");
+        html.append("<a href='").append(clientBase).append("/student/quizzes' class='btn'>Launch Your Weekly 5-Minute Practice Quiz &rarr;</a>");
+        html.append("</div>");
+
+        html.append("<p style='font-size: 13px; color: #64748b;'>Consistency is the foundation of academic excellence. Dedicate just 5 to 10 minutes today to keep your knowledge tracing model up to date.</p>");
+        html.append("</div>");
+        html.append("<div class='footer'>");
+        html.append("&copy; ").append(java.time.Year.now().getValue()).append(" EduPulse Adaptive Learning Platform &bull; Automated Weekly Digest");
+        html.append("</div></div></body></html>");
+
+        emailService.sendEmail(student, "WEEKLY_SUMMARY", "Your EduPulse Weekly Learning Summary & Quiz Reminder - " + weekStart, html.toString());
 
         return summary;
+    }
+
+    @Transactional
+    public int dispatchWeeklySummariesToAll() {
+        List<WeeklySummary> list = generateAllWeeklySummaries();
+        return list.size();
+    }
+
+    @Transactional
+    public boolean dispatchWeeklySummaryToStudent(Long studentId) {
+        User student = userRepository.findById(studentId).orElse(null);
+        if (student == null) return false;
+        LocalDate weekStart = LocalDate.now().with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY));
+        generateSummaryForStudent(student, weekStart);
+        return true;
     }
 
     public List<WeeklySummary> getStudentSummaries(Long studentId) {

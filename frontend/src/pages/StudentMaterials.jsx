@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { studentApi } from '../api/client';
+import { studentApi, API_BASE } from '../api/client';
 import { LoadingSpinner } from '../components/LoadingSpinner';
 import { Alert } from '../components/Alert';
 import {
@@ -29,8 +29,62 @@ export const StudentMaterials = () => {
   const [selectedSubject, setSelectedSubject] = useState('ALL');
   const [searchQuery, setSearchQuery] = useState('');
   const [activeMaterial, setActiveMaterial] = useState(null);
+  const [pdfBlobUrl, setPdfBlobUrl] = useState(null);
+  const [pdfLoading, setPdfLoading] = useState(false);
+  const [viewMode, setViewMode] = useState('pdf'); // 'pdf' | 'text'
   const [copied, setCopied] = useState(false);
   const navigate = useNavigate();
+
+  const handleOpenMaterial = async (item, mode = 'pdf') => {
+    setActiveMaterial(item);
+    setViewMode(mode);
+    setPdfBlobUrl(null);
+
+    if (mode === 'pdf') {
+      setPdfLoading(true);
+      try {
+        const token = localStorage.getItem('edupulse_token') || localStorage.getItem('token');
+        const res = await fetch(`${API_BASE}/materials/${item.id}/file`, {
+          headers: token ? { Authorization: `Bearer ${token}` } : {}
+        });
+        const blob = await res.blob();
+        const url = URL.createObjectURL(blob);
+        setPdfBlobUrl(url);
+      } catch (err) {
+        console.error('Failed to load PDF preview:', err);
+      } finally {
+        setPdfLoading(false);
+      }
+    }
+  };
+
+  const handleDownloadFile = async (item) => {
+    try {
+      const token = localStorage.getItem('edupulse_token') || localStorage.getItem('token');
+      const res = await fetch(`${API_BASE}/materials/${item.id}/file`, {
+        headers: token ? { Authorization: `Bearer ${token}` } : {}
+      });
+      const blob = await res.blob();
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = item.fileName || 'material.pdf';
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+    } catch (err) {
+      console.error('Download failed:', err);
+    }
+  };
+
+  const handleCloseModal = () => {
+    if (pdfBlobUrl) {
+      URL.revokeObjectURL(pdfBlobUrl);
+      setPdfBlobUrl(null);
+    }
+    setActiveMaterial(null);
+  };
 
   const fetchMaterials = async () => {
     setLoading(true);
@@ -217,11 +271,26 @@ export const StudentMaterials = () => {
 
                   <div className="flex items-center gap-2">
                     <button
-                      onClick={() => setActiveMaterial(item)}
+                      onClick={() => handleOpenMaterial(item, 'pdf')}
                       className="flex-1 inline-flex items-center justify-center gap-1.5 px-3 py-2 rounded-xl text-xs font-bold bg-indigo-600 hover:bg-indigo-700 text-white shadow-xs transition cursor-pointer"
+                      title="Read original PDF document"
                     >
                       <Eye className="w-3.5 h-3.5" />
-                      <span>Read Notes</span>
+                      <span>View PDF</span>
+                    </button>
+                    <button
+                      onClick={() => handleOpenMaterial(item, 'text')}
+                      className="inline-flex items-center justify-center gap-1.5 px-2.5 py-2 rounded-xl text-xs font-bold bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 transition cursor-pointer"
+                      title="Read plain text"
+                    >
+                      <FileText className="w-3.5 h-3.5" />
+                    </button>
+                    <button
+                      onClick={() => handleDownloadFile(item)}
+                      title="Download original file"
+                      className="p-2 rounded-xl text-gray-700 dark:text-gray-300 bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 border border-gray-200 dark:border-gray-700 transition cursor-pointer"
+                    >
+                      <Download className="w-3.5 h-3.5" />
                     </button>
                     <button
                       onClick={() => navigate('/student/assistant')}
@@ -241,9 +310,9 @@ export const StudentMaterials = () => {
       {/* READING MODAL */}
       {activeMaterial && (
         <div className="fixed inset-0 z-50 bg-black/70 backdrop-blur-xs flex items-center justify-center p-4">
-          <div className="bg-white dark:bg-gray-900 rounded-3xl max-w-3xl w-full max-h-[90vh] shadow-2xl border border-gray-200 dark:border-gray-800 flex flex-col overflow-hidden animate-in fade-in zoom-in-95 duration-200">
+          <div className="bg-white dark:bg-gray-900 rounded-3xl max-w-4xl w-full max-h-[92vh] shadow-2xl border border-gray-200 dark:border-gray-800 flex flex-col overflow-hidden animate-in fade-in zoom-in-95 duration-200">
             {/* Modal Header */}
-            <div className="p-6 border-b border-gray-200 dark:border-gray-800 flex items-center justify-between bg-gradient-to-r from-indigo-50/70 via-white to-purple-50/70 dark:from-indigo-950/40 dark:via-gray-900 dark:to-purple-950/30">
+            <div className="p-5 border-b border-gray-200 dark:border-gray-800 flex items-center justify-between bg-gradient-to-r from-indigo-50/70 via-white to-purple-50/70 dark:from-indigo-950/40 dark:via-gray-900 dark:to-purple-950/30">
               <div className="space-y-1">
                 <div className="flex items-center gap-2">
                   <span className="text-xs font-bold px-2.5 py-0.5 rounded-full bg-indigo-100 dark:bg-indigo-900/60 text-indigo-700 dark:text-indigo-300">
@@ -253,29 +322,45 @@ export const StudentMaterials = () => {
                     {activeMaterial.fileType}
                   </span>
                 </div>
-                <h2 className="text-lg font-black text-gray-900 dark:text-gray-50">{activeMaterial.title}</h2>
+                <h2 className="text-base sm:text-lg font-black text-gray-900 dark:text-gray-50">{activeMaterial.title}</h2>
                 <p className="text-xs text-gray-500 dark:text-gray-400">
-                  By {activeMaterial.teacher?.name} • Uploaded on {activeMaterial.createdAt ? new Date(activeMaterial.createdAt).toLocaleDateString() : 'Recent'}
+                  By {activeMaterial.teacher?.name} &bull; Uploaded on {activeMaterial.createdAt ? new Date(activeMaterial.createdAt).toLocaleDateString() : 'Recent'}
                 </p>
               </div>
 
+              {/* View Switcher & Action buttons */}
               <div className="flex items-center gap-2">
+                <div className="flex bg-gray-100 dark:bg-gray-800 p-0.5 rounded-xl border border-gray-200 dark:border-gray-700">
+                  <button
+                    onClick={() => {
+                      setViewMode('pdf');
+                      if (!pdfBlobUrl) handleOpenMaterial(activeMaterial, 'pdf');
+                    }}
+                    className={`px-3 py-1 text-xs font-bold rounded-lg transition ${
+                      viewMode === 'pdf' ? 'bg-white dark:bg-gray-700 text-indigo-600 dark:text-indigo-300 shadow-xs' : 'text-gray-500'
+                    }`}
+                  >
+                    PDF Viewer
+                  </button>
+                  <button
+                    onClick={() => setViewMode('text')}
+                    className={`px-3 py-1 text-xs font-bold rounded-lg transition ${
+                      viewMode === 'text' ? 'bg-white dark:bg-gray-700 text-indigo-600 dark:text-indigo-300 shadow-xs' : 'text-gray-500'
+                    }`}
+                  >
+                    Lecture Text
+                  </button>
+                </div>
+
                 <button
-                  onClick={() => handleCopyText(activeMaterial.textContent)}
+                  onClick={() => handleDownloadFile(activeMaterial)}
                   className="p-2 rounded-xl text-gray-500 hover:text-indigo-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 transition cursor-pointer"
-                  title="Copy notes to clipboard"
+                  title="Download File"
                 >
-                  {copied ? <Check className="w-4 h-4 text-emerald-600" /> : <Copy className="w-4 h-4" />}
+                  <Download className="w-4 h-4" />
                 </button>
                 <button
-                  onClick={() => window.print()}
-                  className="p-2 rounded-xl text-gray-500 hover:text-indigo-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 transition cursor-pointer"
-                  title="Print notes"
-                >
-                  <Printer className="w-4 h-4" />
-                </button>
-                <button
-                  onClick={() => setActiveMaterial(null)}
+                  onClick={handleCloseModal}
                   className="p-2 rounded-xl text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-800 transition cursor-pointer"
                 >
                   <X className="w-5 h-5" />
@@ -284,26 +369,53 @@ export const StudentMaterials = () => {
             </div>
 
             {/* Modal Body */}
-            <div className="p-6 overflow-y-auto space-y-4 flex-1">
+            <div className="p-4 sm:p-6 overflow-y-auto space-y-4 flex-1">
               {activeMaterial.description && (
-                <div className="p-3.5 rounded-2xl bg-indigo-50/60 dark:bg-indigo-950/30 border border-indigo-100 dark:border-indigo-900/40 text-xs text-indigo-900 dark:text-indigo-200">
+                <div className="p-3 rounded-xl bg-indigo-50/60 dark:bg-indigo-950/30 border border-indigo-100 dark:border-indigo-900/40 text-xs text-indigo-900 dark:text-indigo-200">
                   <strong>Instructor Overview:</strong> {activeMaterial.description}
                 </div>
               )}
 
-              <div className="p-5 rounded-2xl bg-gray-50 dark:bg-gray-950/60 border border-gray-200 dark:border-gray-800 text-sm text-gray-800 dark:text-gray-200 leading-relaxed font-sans whitespace-pre-wrap">
-                {activeMaterial.textContent}
-              </div>
+              {viewMode === 'pdf' ? (
+                <div className="w-full min-h-[55vh] flex flex-col items-center justify-center bg-gray-100 dark:bg-gray-950 rounded-2xl border border-gray-200 dark:border-gray-800 overflow-hidden">
+                  {pdfLoading ? (
+                    <div className="p-8 text-center">
+                      <LoadingSpinner size="md" text="Loading original PDF document..." />
+                    </div>
+                  ) : pdfBlobUrl ? (
+                    <iframe
+                      src={pdfBlobUrl}
+                      title={activeMaterial.title}
+                      className="w-full h-[65vh] border-0 rounded-2xl"
+                    />
+                  ) : (
+                    <div className="p-8 text-center text-gray-500 space-y-3">
+                      <FileText className="w-12 h-12 mx-auto text-gray-400" />
+                      <p className="text-sm font-semibold">Binary PDF preview unavailable. Viewing extracted lecture text instead.</p>
+                      <button
+                        onClick={() => setViewMode('text')}
+                        className="px-4 py-2 bg-indigo-600 text-white rounded-xl text-xs font-bold"
+                      >
+                        Switch to Lecture Text
+                      </button>
+                    </div>
+                  )}
+                </div>
+              ) : (
+                <div className="p-5 rounded-2xl bg-gray-50 dark:bg-gray-950/60 border border-gray-200 dark:border-gray-800 text-sm text-gray-800 dark:text-gray-200 leading-relaxed font-sans whitespace-pre-wrap">
+                  {activeMaterial.textContent}
+                </div>
+              )}
             </div>
 
             {/* Modal Footer */}
             <div className="p-4 border-t border-gray-200 dark:border-gray-800 bg-gray-50/80 dark:bg-gray-950/80 flex items-center justify-between">
               <span className="text-xs text-gray-500">
-                Processed into {activeMaterial.chunkCount || 1} semantic study chunks for AI RAG tutor.
+                Indexed for semantic search &bull; RAG chunks ready
               </span>
               <button
                 onClick={() => {
-                  setActiveMaterial(null);
+                  handleCloseModal();
                   navigate('/student/assistant');
                 }}
                 className="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold bg-indigo-600 hover:bg-indigo-700 text-white shadow-xs transition cursor-pointer"

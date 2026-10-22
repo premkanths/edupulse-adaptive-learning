@@ -292,4 +292,15 @@ public class AdminController {
         }
         return ResponseEntity.ok(ApiResponse.success(resp));
     }
+
+    @PostMapping("/notifications/send-weekly-summaries")
+    @Operation(summary = "Dispatch weekly progress summary & quiz alerts to all active students")
+    public ResponseEntity<ApiResponse<Map<String, Object>>> dispatchWeeklySummaries() {
+        int count = weeklySummaryService.dispatchWeeklySummariesToAll();
+        auditService.logEvent(null, "ADMIN_DISPATCH_WEEKLY_EMAILS", "Dispatched weekly summaries to " + count + " students", "127.0.0.1");
+        Map<String, Object> resp = new HashMap<>();
+        resp.put("studentsNotified", count);
+        resp.put("message", "Successfully dispatched weekly learning summaries & quiz reminder emails to " + count + " students!");
+        return ResponseEntity.ok(ApiResponse.success(resp));
+    }
 }
