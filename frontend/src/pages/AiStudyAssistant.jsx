@@ -1,9 +1,14 @@
 import React, { useEffect, useState, useRef } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { studentApi } from '../api/client';
 import { LoadingSpinner } from '../components/LoadingSpinner';
-import { Bot, User, Send, Plus, Trash2, Sparkles, Shield, BookOpen, HelpCircle, Compass, CheckCircle } from 'lucide-react';
+import { Bot, User, Send, Plus, Trash2, Sparkles, Shield, BookOpen, HelpCircle, Compass, CheckCircle, ArrowRight } from 'lucide-react';
 
 export const AiStudyAssistant = () => {
+  const [searchParams] = useSearchParams();
+  const queryTopic = searchParams.get('topic');
+  const queryPrompt = searchParams.get('prompt');
+
   const [sessions, setSessions] = useState([]);
   const [activeSessionId, setActiveSessionId] = useState(null);
   const [messages, setMessages] = useState([]);
@@ -22,6 +27,14 @@ export const AiStudyAssistant = () => {
   useEffect(() => {
     loadSessions();
   }, []);
+
+  useEffect(() => {
+    if (queryPrompt) {
+      setInputText(queryPrompt);
+    } else if (queryTopic) {
+      setInputText(`Can you explain the core concepts of "${queryTopic}" step-by-step and help me understand where students typically make mistakes?`);
+    }
+  }, [queryTopic, queryPrompt]);
 
   useEffect(() => {
     if (activeSessionId) {
@@ -344,6 +357,27 @@ export const AiStudyAssistant = () => {
             )}
             <div ref={messagesEndRef} />
           </div>
+
+          {/* Redirected Focus Topic Banner */}
+          {(queryTopic || queryPrompt) && (
+            <div className="px-4 py-2.5 bg-indigo-50/90 dark:bg-indigo-950/70 border-t border-indigo-200 dark:border-indigo-900/60 flex items-center justify-between gap-3 text-xs">
+              <div className="flex items-center gap-2 overflow-hidden">
+                <Sparkles className="w-4 h-4 text-indigo-600 dark:text-indigo-400 shrink-0" />
+                <span className="text-gray-700 dark:text-gray-200 truncate">
+                  <strong className="text-indigo-900 dark:text-indigo-300 font-semibold">Recommended Study Focus:</strong> {queryTopic || 'Targeted Concept Question'}
+                </span>
+              </div>
+              <button
+                type="button"
+                onClick={handleSendMessage}
+                disabled={sending}
+                className="shrink-0 px-3 py-1 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-[11px] shadow-xs transition flex items-center gap-1 cursor-pointer"
+              >
+                <span>Ask Jarvis Now</span>
+                <ArrowRight className="w-3 h-3" />
+              </button>
+            </div>
+          )}
 
           {/* Chat Input Bar */}
           <form onSubmit={handleSendMessage} className="p-4 border-t border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-950 flex items-center gap-2">

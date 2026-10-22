@@ -389,6 +389,13 @@ export const StudentDashboard = () => {
                           {topic.masteryPercent}% Mastery
                         </span>
                         <Link
+                          to={`/student/assistant?topic=${encodeURIComponent(topic.topicName)}&prompt=${encodeURIComponent(`Can you explain ${topic.topicName} step-by-step and help me understand where students typically make mistakes?`)}`}
+                          className="px-3 py-1 bg-teal-600 hover:bg-teal-700 text-white rounded-xl text-xs font-bold transition shadow-xs flex items-center gap-1"
+                        >
+                          <Bot className="w-3.5 h-3.5" />
+                          <span>Ask Jarvis</span>
+                        </Link>
+                        <Link
                           to="/student/quizzes"
                           className="px-3 py-1 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-bold transition shadow-xs"
                         >

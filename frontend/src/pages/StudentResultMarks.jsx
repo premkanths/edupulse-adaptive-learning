@@ -24,7 +24,8 @@ import {
   RotateCw,
   Eye,
   ChevronDown,
-  ChevronUp
+  ChevronUp,
+  Bot
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
@@ -349,12 +350,20 @@ export const StudentResultMarks = () => {
                       >
                         <span className="w-2 h-2 rounded-full bg-rose-500"></span>
                         <span>{topicName}</span>
-                        <Link
-                          to="/student/quizzes"
-                          className="ml-1 text-[11px] underline text-indigo-600 dark:text-indigo-400 hover:text-indigo-800 flex items-center gap-0.5"
-                        >
-                          Practice <ArrowRight className="w-3 h-3" />
-                        </Link>
+                        <div className="flex items-center gap-2 ml-1">
+                          <Link
+                            to={`/student/assistant?topic=${encodeURIComponent(topicName)}&prompt=${encodeURIComponent(`Can you explain ${topicName} step-by-step and help me understand why I lost marks on it in my exam paper?`)}`}
+                            className="text-[11px] underline text-teal-600 dark:text-teal-400 hover:text-teal-800 flex items-center gap-0.5"
+                          >
+                            <Bot className="w-3 h-3" /> Ask Jarvis
+                          </Link>
+                          <Link
+                            to="/student/quizzes"
+                            className="text-[11px] underline text-indigo-600 dark:text-indigo-400 hover:text-indigo-800 flex items-center gap-0.5"
+                          >
+                            Practice <ArrowRight className="w-3 h-3" />
+                          </Link>
+                        </div>
                       </div>
                     );
                   })}
@@ -427,6 +436,16 @@ export const StudentResultMarks = () => {
                             {m.suggestedReview || m.correction || 'Review syllabus course notes and re-attempt practice exercises.'}
                           </p>
                         </div>
+                      </div>
+
+                      <div className="flex justify-end pt-1">
+                        <Link
+                          to={`/student/assistant?topic=${encodeURIComponent(activeAnalysis.subjectName || 'Exam Paper')}&prompt=${encodeURIComponent(`I lost marks on this question in my exam: "${m.questionText}". The teacher/AI identified this misconception: "${m.errorReason || m.misconception || ''}". Can you explain the correct concept and teach me step-by-step how to answer it correctly?`)}`}
+                          className="text-[11px] font-bold text-teal-600 dark:text-teal-400 hover:text-teal-700 dark:hover:text-teal-300 inline-flex items-center gap-1 bg-teal-50 dark:bg-teal-950/60 px-2.5 py-1 rounded-lg border border-teal-200 dark:border-teal-900/40"
+                        >
+                          <Bot className="w-3.5 h-3.5" />
+                          <span>Ask Jarvis to Explain This Question &rarr;</span>
+                        </Link>
                       </div>
                     </div>
                   ))}
