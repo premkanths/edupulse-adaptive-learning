@@ -5,6 +5,7 @@ EduPulse is an AI-powered, full-stack adaptive learning and student performance 
 ---
 
 ## 🏛 System Architecture
+[![Architecture diagram](https://gitdiagram.com/diagram-badge.svg)](https://gitdiagram.com/premkanths/edupulse-adaptive-learning?utm_source=readme&utm_medium=badge)
 
 ```text
                React 18 Frontend (Vite + Tailwind CSS + Recharts)
@@ -258,3 +259,6 @@ For in-depth guides, component diagrams, and API references, consult the dedicat
 ## 📄 License & Attribution
 
 Developed for academic research and publication in educational data mining and adaptive learning systems. Licensed under the MIT License.
+
+
+
