@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { ResponsiveContainer, LineChart, Line, XAxis, YAxis, Tooltip, CartesianGrid, Legend, BarChart, Bar, Cell } from 'recharts';
 import { Award, BookOpen, Brain, CheckCircle, RefreshCw, Sparkles, TrendingUp, Users, Star, Download, Cpu, Activity, BarChart2 } from 'lucide-react';
 import api from '../services/api';
+import { API_BASE } from '../api/client';
 
 export const ResearchEvaluation = () => {
   const [report, setReport] = useState(null);
@@ -55,9 +56,10 @@ export const ResearchEvaluation = () => {
 
   const handleDownloadBenchmarkCsv = async () => {
     try {
-      const res = await fetch('http:/localhost:8080/api/research/export/benchmark-csv', {
+      const token = localStorage.getItem('edupulse_token') || localStorage.getItem('token');
+      const res = await fetch(`${API_BASE}/research/export/benchmark-csv`, {
         headers: {
-          Authorization: `Bearer ${localStorage.getItem('token')}`
+          ...(token ? { Authorization: `Bearer ${token}` } : {})
         }
       });
       const blob = await res.blob();

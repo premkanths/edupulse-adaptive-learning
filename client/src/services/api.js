@@ -1,4 +1,4 @@
-import { apiRequest } from '../api/client';
+import { apiRequest, API_BASE } from '../api/client';
 
 const api = {
   get: async (url, options = {}) => {
@@ -6,7 +6,8 @@ const api = {
       const token = localStorage.getItem('edupulse_token');
       const headers = {};
       if (token) headers['Authorization'] = `Bearer ${token}`;
-      const res = await fetch(`/api${url}`, { headers });
+      const fullUrl = `${API_BASE}${url.startsWith('/') ? url : '/' + url}`;
+      const res = await fetch(fullUrl, { headers });
       const blob = await res.blob();
       return { data: blob };
     }
