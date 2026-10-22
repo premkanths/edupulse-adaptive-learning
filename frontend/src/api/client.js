@@ -131,7 +131,8 @@ export const studentApi = {
   getAvailableMaterials: (options) => apiRequest('/student/materials', options),
   getMaterialFileUrl: (id) => `${API_BASE}/materials/${id}/file`,
   getExamPapers: (options) => apiRequest('/student/exam-papers', options),
-  analyzeExamPaper: (formData) => apiRequest('/student/exam-papers/analyze', { method: 'POST', body: formData }),
+  getExamPaperFileUrl: (id) => `${API_BASE}/student/exam-papers/${id}/download`,
+  getExamPaperPracticeMcqs: (id, options) => apiRequest(`/student/exam-papers/${id}/practice-mcqs`, options),
   getAiSummary: (options) => apiRequest('/student/ai-summary', options),
   generateAiSummary: () => apiRequest('/student/ai-summary/generate', { method: 'POST' }),
   retrieveCoursePassages: (query, subjectIds, topK = 3) =>
@@ -159,6 +160,11 @@ export const teacherApi = {
   getClassAnalytics: (options) => apiRequest('/teacher/analytics', options),
   getCourseMaterials: (options) => apiRequest('/teacher/materials', options),
   deleteCourseMaterial: (id) => apiRequest(`/teacher/materials/${id}`, { method: 'DELETE' }),
+  getStudents: (options) => apiRequest('/teacher/students', options),
+  uploadExamPaper: (formData) => apiRequest('/teacher/exam-papers/upload', { method: 'POST', body: formData }),
+  getExamPapers: (options) => apiRequest('/teacher/exam-papers', options),
+  getExamPaperFileUrl: (id) => `${API_BASE}/teacher/exam-papers/${id}/download`,
+  deleteExamPaper: (id) => apiRequest(`/teacher/exam-papers/${id}`, { method: 'DELETE' }),
   sendWeeklySummaryToStudent: (studentId) => apiRequest('/teacher/notifications/send-weekly-summary', { method: 'POST', body: JSON.stringify({ studentId }) }),
 };
 

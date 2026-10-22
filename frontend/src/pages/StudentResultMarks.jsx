@@ -13,6 +13,8 @@ import {
   Layers,
   Sparkles,
   Upload,
+  Download,
+  X,
   AlertCircle,
   AlertTriangle,
   ArrowRight,
@@ -31,16 +33,17 @@ export const StudentResultMarks = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // Exam Paper AI Analysis State
+  // Evaluated Exam Paper State
   const [examAnalyses, setExamAnalyses] = useState([]);
   const [activeAnalysis, setActiveAnalysis] = useState(null);
-  const [uploadFile, setUploadFile] = useState(null);
-  const [examTitle, setExamTitle] = useState('');
-  const [subjectName, setSubjectName] = useState('');
-  const [analyzing, setAnalyzing] = useState(false);
-  const [analysisError, setAnalysisError] = useState(null);
-  const [analysisSuccess, setAnalysisSuccess] = useState(null);
   const [showHistory, setShowHistory] = useState(true);
+
+  // Interactive MCQ Practice Modal State
+  const [showPracticeModal, setShowPracticeModal] = useState(false);
+  const [practiceMcqs, setPracticeMcqs] = useState([]);
+  const [loadingMcqs, setLoadingMcqs] = useState(false);
+  const [selectedAnswers, setSelectedAnswers] = useState({});
+  const [submittedAnswers, setSubmittedAnswers] = useState(false);
 
   useEffect(() => {
     fetchMarksAndAnalyses();
@@ -73,38 +76,23 @@ export const StudentResultMarks = () => {
     }
   };
 
-  const handleAnalyzePaper = async (e) => {
-    e.preventDefault();
-    if (!uploadFile) {
-      setAnalysisError('Please select an exam paper or mark sheet file (.pdf, .docx, .txt, or image).');
-      return;
-    }
-
+  const handleOpenPracticeMcqs = async (paperId) => {
+    setLoadingMcqs(true);
+    setSelectedAnswers({});
+    setSubmittedAnswers(false);
+    setShowPracticeModal(true);
     try {
-      setAnalyzing(true);
-      setAnalysisError(null);
-      setAnalysisSuccess(null);
-
-      const formData = new FormData();
-      formData.append('file', uploadFile);
-      if (examTitle.trim()) formData.append('examTitle', examTitle.trim());
-      if (subjectName.trim()) formData.append('subjectName', subjectName.trim());
-
-      const res = await studentApi.analyzeExamPaper(formData);
-      if (res.success && res.data) {
-        setAnalysisSuccess('Exam paper analyzed successfully! Review your question breakdown below.');
-        setExamAnalyses((prev) => [res.data, ...prev]);
-        setActiveAnalysis(res.data);
-        setUploadFile(null);
-        setExamTitle('');
-        setSubjectName('');
+      const res = await studentApi.getExamPaperPracticeMcqs(paperId);
+      if (res.success && Array.isArray(res.data)) {
+        setPracticeMcqs(res.data);
       } else {
-        setAnalysisError(res.message || 'Could not analyze the exam paper.');
+        setPracticeMcqs([]);
       }
-    } catch (err) {
-      setAnalysisError(err.response?.data?.message || err.message || 'Failed to analyze exam script.');
+    } catch (e) {
+      console.error('Failed to load MCQs', e);
+      setPracticeMcqs([]);
     } finally {
-      setAnalyzing(false);
+      setLoadingMcqs(false);
     }
   };
 
@@ -201,117 +189,38 @@ export const StudentResultMarks = () => {
         </div>
       </div>
 
-      {/* SECTION 1: EXAM PAPER & MARK SHEET AI SCANNER (ROADMAP FEATURE) */}
+      {/* SECTION 1: OFFICIAL EVALUATED EXAM PAPERS & AI MISTAKE DIAGNOSIS */}
       <div className="bg-gradient-to-br from-indigo-50/90 via-white to-purple-50/90 dark:from-indigo-950/40 dark:via-gray-900 dark:to-purple-950/40 rounded-3xl border border-indigo-200 dark:border-indigo-800/80 p-6 sm:p-8 shadow-sm space-y-6">
         <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 border-b border-indigo-100 dark:border-indigo-900/50 pb-5">
           <div className="space-y-1">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-600 text-white font-bold text-xs shadow-xs">
               <Brain className="w-3.5 h-3.5" />
-              <span>AI Exam Paper &amp; Mark Sheet Analysis</span>
+              <span>Official Evaluated Examination Scripts</span>
             </div>
             <h2 className="text-xl sm:text-2xl font-black text-gray-900 dark:text-gray-50 tracking-tight pt-1">
-              Upload Exam Papers &amp; Uncover Exact Weak Topics
+              Evaluated Exam Papers &amp; AI Question Mistake Diagnosis
             </h2>
             <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-300 max-w-2xl leading-relaxed">
-              Upload your semester midterm, final question paper, or evaluated answer script. EduPulse AI parses your scores, pinpoints exactly where marks were lost, and maps mistakes directly to your curriculum syllabus.
+              Your professors upload and grade your examination scripts and answer sheets. Below each paper, EduPulse AI diagnoses every question you got wrong, explains the underlying misconception, and generates adaptive MCQ practice so you can master the concept.
             </p>
           </div>
 
           <div className="shrink-0 flex items-center gap-2 text-xs font-semibold text-indigo-700 dark:text-indigo-300 bg-white dark:bg-gray-800 px-3.5 py-2 rounded-xl border border-indigo-200 dark:border-indigo-700 shadow-xs">
-            <Sparkles className="w-4 h-4 text-indigo-600 dark:text-indigo-400" />
-            <span>PDF, DOCX, TXT &amp; Image Scans</span>
+            <Award className="w-4 h-4 text-indigo-600 dark:text-indigo-400" />
+            <span>Graded by Course Faculty</span>
           </div>
         </div>
 
-        {/* Upload Form */}
-        <form onSubmit={handleAnalyzePaper} className="bg-white/90 dark:bg-gray-850/80 rounded-2xl p-5 border border-indigo-100 dark:border-gray-800 space-y-4">
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div>
-              <label className="block text-xs font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider mb-1">
-                Exam / Paper Title
-              </label>
-              <input
-                type="text"
-                value={examTitle}
-                onChange={(e) => setExamTitle(e.target.value)}
-                placeholder="e.g. Data Structures Midterm Test 2026"
-                className="w-full text-xs px-3.5 py-2.5 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 outline-none focus:ring-2 focus:ring-indigo-500"
-              />
-            </div>
-
-            <div>
-              <label className="block text-xs font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider mb-1">
-                Course / Subject Name
-              </label>
-              <input
-                type="text"
-                value={subjectName}
-                onChange={(e) => setSubjectName(e.target.value)}
-                placeholder="e.g. Data Structures & Algorithms"
-                className="w-full text-xs px-3.5 py-2.5 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 outline-none focus:ring-2 focus:ring-indigo-500"
-              />
-            </div>
+        {examAnalyses.length === 0 ? (
+          <div className="p-8 text-center rounded-2xl bg-white/80 dark:bg-gray-850/80 border border-indigo-100 dark:border-gray-800 space-y-2">
+            <FileText className="w-10 h-10 text-indigo-400 mx-auto" />
+            <h3 className="text-sm font-bold text-gray-800 dark:text-gray-200">No Evaluated Exam Papers Yet</h3>
+            <p className="text-xs text-gray-500 max-w-md mx-auto">
+              Your professors will upload and grade your continuous assessment and semester exam papers here once evaluated.
+            </p>
           </div>
-
-          <div className="flex flex-col sm:flex-row items-center gap-3">
-            <div className="flex-1 w-full">
-              <label className="relative flex flex-col items-center justify-center p-4 border-2 border-dashed border-indigo-200 dark:border-indigo-800 rounded-xl cursor-pointer hover:bg-indigo-50/50 dark:hover:bg-indigo-950/20 transition group">
-                <input
-                  type="file"
-                  accept=".pdf,.docx,.txt,image/*"
-                  onChange={(e) => setUploadFile(e.target.files?.[0] || null)}
-                  className="hidden"
-                />
-                <div className="flex items-center gap-3 text-xs text-gray-600 dark:text-gray-300">
-                  <Upload className="w-5 h-5 text-indigo-600 dark:text-indigo-400 group-hover:scale-110 transition-transform" />
-                  <span className="font-semibold">
-                    {uploadFile ? (
-                      <span className="text-indigo-600 dark:text-indigo-400 font-bold">{uploadFile.name} ({(uploadFile.size / 1024).toFixed(1)} KB)</span>
-                    ) : (
-                      'Click to select Exam Script / Mark Sheet file (.pdf, .docx, .txt)'
-                    )}
-                  </span>
-                </div>
-              </label>
-            </div>
-
-            <button
-              type="submit"
-              disabled={analyzing || !uploadFile}
-              className="w-full sm:w-auto px-6 py-3.5 bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50 text-white rounded-xl text-xs font-bold shadow-md shadow-indigo-500/20 transition-all flex items-center justify-center gap-2 cursor-pointer shrink-0"
-            >
-              {analyzing ? (
-                <>
-                  <RotateCw className="w-4 h-4 animate-spin" />
-                  <span>Scanning &amp; Evaluating...</span>
-                </>
-              ) : (
-                <>
-                  <Sparkles className="w-4 h-4" />
-                  <span>Analyze Exam Paper with AI</span>
-                </>
-              )}
-            </button>
-          </div>
-
-          {analysisError && (
-            <div className="p-3 rounded-xl bg-rose-50 text-rose-800 dark:bg-rose-950/60 dark:text-rose-300 border border-rose-200 dark:border-rose-800 text-xs flex items-center gap-2">
-              <AlertCircle className="w-4 h-4 shrink-0 text-rose-600" />
-              <span>{analysisError}</span>
-            </div>
-          )}
-
-          {analysisSuccess && (
-            <div className="p-3 rounded-xl bg-emerald-50 text-emerald-800 dark:bg-emerald-950/60 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800 text-xs flex items-center gap-2">
-              <CheckCircle2 className="w-4 h-4 shrink-0 text-emerald-600" />
-              <span>{analysisSuccess}</span>
-            </div>
-          )}
-        </form>
-
-        {/* Previous Paper Analyses Selector / History Tabs */}
-        {examAnalyses.length > 0 && (
-          <div className="space-y-4 pt-2">
+        ) : (
+          <div className="space-y-4 pt-1">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <FileText className="w-4 h-4 text-indigo-600 dark:text-indigo-400" />
@@ -379,7 +288,11 @@ export const StudentResultMarks = () => {
                   {activeAnalysis.examTitle || 'Exam Script Analysis'}
                 </h3>
                 <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
-                  Subject: <span className="font-semibold text-gray-800 dark:text-gray-200">{activeAnalysis.subjectName || 'General Curriculum'}</span> &bull; Source file: <span className="font-mono">{activeAnalysis.fileName}</span>
+                  Subject: <span className="font-semibold text-gray-800 dark:text-gray-200">{activeAnalysis.subjectName || 'General Curriculum'}</span>
+                  {activeAnalysis.teacher && (
+                    <> &bull; Evaluated by: <span className="font-semibold text-indigo-600 dark:text-indigo-400">{activeAnalysis.teacher.name}</span></>
+                  )}
+                  &bull; Source file: <span className="font-mono">{activeAnalysis.fileName}</span>
                 </p>
               </div>
 
@@ -527,7 +440,18 @@ export const StudentResultMarks = () => {
                 Uploaded {activeAnalysis.uploadedAt ? new Date(activeAnalysis.uploadedAt).toLocaleString() : 'Recently'}
               </span>
 
-              <div className="flex items-center gap-2">
+              <div className="flex flex-wrap items-center gap-2">
+                {activeAnalysis.fileData && (
+                  <a
+                    href={studentApi.getExamPaperFileUrl(activeAnalysis.id)}
+                    download
+                    className="px-4 py-2 rounded-xl text-xs font-semibold bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 transition flex items-center gap-1.5 cursor-pointer"
+                  >
+                    <Download className="w-3.5 h-3.5" />
+                    <span>Download Paper (PDF)</span>
+                  </a>
+                )}
+
                 <Link
                   to="/student/materials"
                   className="px-4 py-2 rounded-xl text-xs font-semibold bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 transition flex items-center gap-1.5"
@@ -536,13 +460,14 @@ export const StudentResultMarks = () => {
                   <span>Review Course Notes</span>
                 </Link>
 
-                <Link
-                  to="/student/quizzes"
-                  className="px-4 py-2 rounded-xl text-xs font-bold text-white bg-indigo-600 hover:bg-indigo-700 shadow-xs transition flex items-center gap-1.5"
+                <button
+                  onClick={() => handleOpenPracticeMcqs(activeAnalysis.id)}
+                  className="px-4 py-2 rounded-xl text-xs font-bold text-white bg-indigo-600 hover:bg-indigo-700 shadow-md shadow-indigo-500/20 transition flex items-center gap-1.5 cursor-pointer"
                 >
-                  <span>Take Practice Quiz</span>
+                  <Brain className="w-3.5 h-3.5" />
+                  <span>Practice Weak Concept MCQs</span>
                   <ArrowRight className="w-3.5 h-3.5" />
-                </Link>
+                </button>
               </div>
             </div>
           </div>
@@ -620,6 +545,151 @@ export const StudentResultMarks = () => {
           </div>
         )}
       </div>
+
+      {/* INTERACTIVE WEAK TOPIC MCQ PRACTICE MODAL */}
+      {showPracticeModal && (
+        <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4 animate-fade-in">
+          <div className="bg-white dark:bg-gray-900 rounded-3xl max-w-2xl w-full max-h-[90vh] overflow-y-auto p-6 sm:p-7 shadow-2xl border border-gray-200 dark:border-gray-800 space-y-5 animate-scale-up">
+            <div className="flex items-center justify-between border-b border-gray-100 dark:border-gray-800 pb-4">
+              <div className="flex items-center gap-2.5">
+                <div className="p-2.5 bg-indigo-50 dark:bg-indigo-950 text-indigo-600 dark:text-indigo-400 rounded-xl">
+                  <Brain className="w-5 h-5" />
+                </div>
+                <div>
+                  <h3 className="text-base font-black text-gray-900 dark:text-gray-50">
+                    Targeted Weak Concept Practice
+                  </h3>
+                  <span className="text-[11px] text-gray-500">
+                    MCQs tailored to your mistakes in {activeAnalysis?.examTitle}
+                  </span>
+                </div>
+              </div>
+              <button
+                onClick={() => setShowPracticeModal(false)}
+                className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 p-1 cursor-pointer"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            {loadingMcqs ? (
+              <div className="p-12 text-center">
+                <LoadingSpinner size="md" text="Loading targeted practice questions..." />
+              </div>
+            ) : practiceMcqs.length === 0 ? (
+              <div className="p-8 text-center text-xs text-gray-500 space-y-2">
+                <CheckCircle2 className="w-8 h-8 text-emerald-500 mx-auto" />
+                <p>Great job! No additional weak concept MCQs needed for this assessment.</p>
+              </div>
+            ) : (
+              <div className="space-y-6">
+                {practiceMcqs.map((q, qIdx) => {
+                  const selectedOpt = selectedAnswers[q.id];
+                  return (
+                    <div key={q.id} className="p-4 rounded-2xl bg-gray-50 dark:bg-gray-800/60 border border-gray-200 dark:border-gray-700/80 space-y-3">
+                      <div className="flex items-center justify-between text-xs">
+                        <span className="font-mono font-bold text-indigo-600 dark:text-indigo-400">
+                          Question {qIdx + 1} &bull; {q.topicName}
+                        </span>
+                        <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-indigo-50 dark:bg-indigo-950 text-indigo-700 dark:text-indigo-300">
+                          {q.difficulty}
+                        </span>
+                      </div>
+
+                      <p className="text-xs sm:text-sm font-semibold text-gray-900 dark:text-gray-50">
+                        {q.text}
+                      </p>
+
+                      <div className="space-y-2 pt-1">
+                        {q.options?.map((opt, optIdx) => {
+                          const isChosen = selectedOpt === optIdx;
+                          const isCorrect = q.correctIndex === optIdx;
+                          let btnStyle = 'border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-800 dark:text-gray-200 hover:bg-indigo-50/50 dark:hover:bg-indigo-950/30';
+
+                          if (submittedAnswers) {
+                            if (isCorrect) {
+                              btnStyle = 'border-emerald-500 bg-emerald-50 dark:bg-emerald-950/80 text-emerald-900 dark:text-emerald-100 font-bold';
+                            } else if (isChosen && !isCorrect) {
+                              btnStyle = 'border-rose-500 bg-rose-50 dark:bg-rose-950/80 text-rose-900 dark:text-rose-100 font-bold';
+                            }
+                          } else if (isChosen) {
+                            btnStyle = 'border-indigo-600 bg-indigo-50 dark:bg-indigo-950 text-indigo-950 dark:text-indigo-100 font-bold ring-1 ring-indigo-500';
+                          }
+
+                          return (
+                            <button
+                              key={optIdx}
+                              disabled={submittedAnswers}
+                              onClick={() => setSelectedAnswers((prev) => ({ ...prev, [q.id]: optIdx }))}
+                              className={`w-full text-left p-3 rounded-xl border text-xs transition flex items-center justify-between cursor-pointer ${btnStyle}`}
+                            >
+                              <div className="flex items-center gap-2.5">
+                                <span className="w-5 h-5 rounded-md text-[11px] font-bold flex items-center justify-center bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300">
+                                  {String.fromCharCode(65 + optIdx)}
+                                </span>
+                                <span>{opt}</span>
+                              </div>
+                              {submittedAnswers && isCorrect && (
+                                <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+                              )}
+                            </button>
+                          );
+                        })}
+                      </div>
+
+                      {submittedAnswers && (
+                        <div className="p-3 rounded-xl bg-indigo-50/70 dark:bg-indigo-950/40 border border-indigo-100 dark:border-indigo-900/40 text-xs text-indigo-950 dark:text-indigo-200 space-y-1">
+                          <strong>Explanation:</strong> {q.explanation}
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
+
+                <div className="flex items-center justify-between pt-3 border-t border-gray-100 dark:border-gray-800">
+                  {submittedAnswers ? (
+                    <div className="text-xs font-bold text-gray-900 dark:text-gray-100">
+                      Score: {practiceMcqs.filter((q) => selectedAnswers[q.id] === q.correctIndex).length} / {practiceMcqs.length} Correct
+                    </div>
+                  ) : (
+                    <span className="text-xs text-gray-500">
+                      Answer questions above and check your understanding.
+                    </span>
+                  )}
+
+                  <div className="flex items-center gap-2">
+                    {submittedAnswers ? (
+                      <button
+                        onClick={() => {
+                          setSelectedAnswers({});
+                          setSubmittedAnswers(false);
+                        }}
+                        className="px-4 py-2 bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 text-gray-800 dark:text-gray-200 rounded-xl text-xs font-bold cursor-pointer"
+                      >
+                        Try Again
+                      </button>
+                    ) : (
+                      <button
+                        onClick={() => setSubmittedAnswers(true)}
+                        disabled={Object.keys(selectedAnswers).length === 0}
+                        className="px-5 py-2.5 bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50 text-white rounded-xl text-xs font-bold shadow-xs cursor-pointer"
+                      >
+                        Check My Answers
+                      </button>
+                    )}
+                    <button
+                      onClick={() => setShowPracticeModal(false)}
+                      className="px-4 py-2 bg-indigo-50 hover:bg-indigo-100 dark:bg-indigo-950 text-indigo-700 dark:text-indigo-300 rounded-xl text-xs font-bold cursor-pointer"
+                    >
+                      Done Studying
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
     </div>
   );
 };

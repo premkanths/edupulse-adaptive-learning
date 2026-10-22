@@ -29,6 +29,7 @@ public class DatabaseSeeder implements CommandLineRunner {
     private final TopicMasteryRepository topicMasteryRepository;
     private final ChatSessionRepository chatSessionRepository;
     private final ChatMessageRepository chatMessageRepository;
+    private final ExamPaperAnalysisRepository examPaperAnalysisRepository;
     private final PasswordEncoder passwordEncoder;
     private final ObjectMapper objectMapper = new ObjectMapper();
 
@@ -43,6 +44,7 @@ public class DatabaseSeeder implements CommandLineRunner {
                           TopicMasteryRepository topicMasteryRepository,
                           ChatSessionRepository chatSessionRepository,
                           ChatMessageRepository chatMessageRepository,
+                          ExamPaperAnalysisRepository examPaperAnalysisRepository,
                           PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.classRepository = classRepository;
@@ -55,6 +57,7 @@ public class DatabaseSeeder implements CommandLineRunner {
         this.topicMasteryRepository = topicMasteryRepository;
         this.chatSessionRepository = chatSessionRepository;
         this.chatMessageRepository = chatMessageRepository;
+        this.examPaperAnalysisRepository = examPaperAnalysisRepository;
         this.passwordEncoder = passwordEncoder;
     }
 
@@ -171,6 +174,52 @@ public class DatabaseSeeder implements CommandLineRunner {
             chatMessageRepository.save(new ChatMessage(session, ChatMessage.Role.ASSISTANT,
                     "Great question, Aarav! In a balanced BST, each comparison cuts the search space in half, giving $O(\\log n)$ time.\n\n" +
                     "However, if keys are inserted in sorted order (e.g., 1, 2, 3, 4, 5), each new node is placed as the right child of the previous one. The tree collapses into a degenerate linear shape equivalent to a singly linked list. Since height $h = n$, searching for the last element requires visiting all $n$ nodes, resulting in worst-case $O(n)$ time complexity."));
+        }
+
+        // 9. Seed Official Evaluated Exam Papers from Teachers
+        if (examPaperAnalysisRepository.count() == 0) {
+            String mistakesJson1 = "[{\"question\":\"Question 3 (Part B)\",\"topic\":\"Binary Search Trees & AVL Trees\",\"marksLost\":5.0,\"maxMarks\":10.0,\"errorReason\":\"Incorrect balance factor calculations in AVL tree node deletion leading to unbalanced binary search tree rotations.\",\"suggestedReview\":\"Practice step-by-step tree rotation diagrams and balance factor recalculation invariants in course lecture notes.\"},{\"question\":\"Question 4 (Part A)\",\"topic\":\"Recursion & Dynamic Programming\",\"marksLost\":4.0,\"maxMarks\":10.0,\"errorReason\":\"Base condition check was placed after the recursive descent call, causing stack overflow runtime anomaly.\",\"suggestedReview\":\"Always place base-case guards with explicit return values before recursive calls.\"},{\"question\":\"Question 5 (Part C)\",\"topic\":\"Graph Traversal & Shortest Path\",\"marksLost\":3.0,\"maxMarks\":10.0,\"errorReason\":\"Relaxation condition in Dijkstra algorithm incorrectly checked <= instead of < for edge relaxation.\",\"suggestedReview\":\"Revisit priority-queue relaxation step in weighted directed graph notes.\"}]";
+            String weakTopicsJson1 = "[\"Binary Search Trees & AVL Trees\",\"Recursion & Dynamic Programming\",\"Graph Traversal & Shortest Path\"]";
+
+            ExamPaperAnalysis paper1 = new ExamPaperAnalysis(
+                    student1,
+                    teacher1,
+                    "Midterm Assessment 1: Data Structures & Algorithms",
+                    "Data Structures & Algorithms",
+                    38.0,
+                    50.0,
+                    76.0,
+                    "First Class (A)",
+                    "Evaluated by Prof. Alan Turing: Strong foundational problem-solving in linear arrays and hash tables. Marks were deducted on dynamic programming base cases and self-balancing tree rotation proofs. Focus on recursive guard conditions before final exams.",
+                    mistakesJson1,
+                    weakTopicsJson1,
+                    "DSA_Midterm_Evaluated_Aarav.pdf",
+                    "PDF",
+                    "Sample Evaluated Exam Paper: Data Structures & Algorithms Midterm - Student Aarav Sharma, Total: 38/50".getBytes()
+            );
+            examPaperAnalysisRepository.save(paper1);
+
+            String mistakesJson2 = "[{\"question\":\"Question 2 (Part C)\",\"topic\":\"Database Normalization\",\"marksLost\":5.0,\"maxMarks\":10.0,\"errorReason\":\"Failed to decompose relation into Boyce-Codd Normal Form (BCNF) without violating functional dependency preservation.\",\"suggestedReview\":\"Review 3NF vs BCNF dependency preservation trade-offs in lecture module 3.\"},{\"question\":\"Question 4 (Part B)\",\"topic\":\"Transactions & Concurrency\",\"marksLost\":4.0,\"maxMarks\":10.0,\"errorReason\":\"Did not identify cascading rollback anomaly under standard Strict 2-Phase Locking (S2PL).\",\"suggestedReview\":\"Study conflict-serializable schedules and lock release timing diagrams.\"}]";
+            String weakTopicsJson2 = "[\"Database Normalization\",\"Transactions & Concurrency\"]";
+
+            ExamPaperAnalysis paper2 = new ExamPaperAnalysis(
+                    student1,
+                    teacher2,
+                    "Continuous Assessment 2: Relational DBMS & Normalization",
+                    "Database Management Systems",
+                    41.0,
+                    50.0,
+                    82.0,
+                    "First Class (A)",
+                    "Evaluated by Dr. Grace Hopper: Excellent proficiency in SQL querying and aggregate group-by clauses. Marks were lost on BCNF decomposition proofs and concurrency isolation anomalies. Review ACID schedule serialization.",
+                    mistakesJson2,
+                    weakTopicsJson2,
+                    "DBMS_CA2_Evaluated_Aarav.pdf",
+                    "PDF",
+                    "Sample Evaluated Exam Paper: DBMS CA2 - Student Aarav Sharma, Total: 41/50".getBytes()
+            );
+            examPaperAnalysisRepository.save(paper2);
+            logger.info("Seeded initial evaluated exam papers for student {}", student1.getEmail());
         }
 
         logger.info("EduPulse academic database seeding complete!");

@@ -11,14 +11,18 @@ import com.edupulse.security.UserPrincipal;
 import com.edupulse.service.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/teacher")
@@ -42,6 +46,7 @@ public class TeacherController {
     private final AktService aktService;
     private final EmailService emailService;
     private final WeeklySummaryService weeklySummaryService;
+    private final ExamPaperAnalysisService examPaperAnalysisService;
 
     public TeacherController(DashboardService dashboardService,
                              UserService userService,
@@ -58,7 +63,8 @@ public class TeacherController {
                              RiskPredictionService riskPredictionService,
                              AktService aktService,
                              EmailService emailService,
-                             WeeklySummaryService weeklySummaryService) {
+                             WeeklySummaryService weeklySummaryService,
+                             ExamPaperAnalysisService examPaperAnalysisService) {
         this.dashboardService = dashboardService;
         this.userService = userService;
         this.questionService = questionService;
@@ -75,6 +81,7 @@ public class TeacherController {
         this.aktService = aktService;
         this.emailService = emailService;
         this.weeklySummaryService = weeklySummaryService;
+        this.examPaperAnalysisService = examPaperAnalysisService;
     }
 
     private User getTeacherUser(UserPrincipal principal) {
@@ -399,5 +406,82 @@ public class TeacherController {
         weeklySummaryService.generateSummaryForStudent(student, weekStart);
 
         return ResponseEntity.ok(ApiResponse.success("Weekly summary email dispatched to " + student.getName()));
+    }
+
+    // === EVALUATED EXAM PAPERS & AI GRADER ===
+
+    @GetMapping("/students")
+    @Operation(summary = "Get list of all students for exam assignment and grading")
+    public ResponseEntity<ApiResponse<List<Map<String, Object>>>> getStudents() {
+        List<User> students = userRepository.findAll().stream()
+                .filter(u -> u.getRole() == Role.STUDENT && u.isActive())
+                .sorted(Comparator.comparing(User::getName))
+                .collect(Collectors.toList());
+
+        List<Map<String, Object>> result = students.stream().map(s -> {
+            Map<String, Object> map = new LinkedHashMap<>();
+            map.put("id", s.getId());
+            map.put("name", s.getName());
+            map.put("email", s.getEmail());
+            map.put("department", s.getDepartment());
+            map.put("academicInfo", s.getAcademicInfo());
+            return map;
+        }).collect(Collectors.toList());
+
+        return ResponseEntity.ok(ApiResponse.success(result));
+    }
+
+    @PostMapping(value = "/exam-papers/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @Operation(summary = "Upload and evaluate student exam paper with AI question diagnosis")
+    public ResponseEntity<ApiResponse<ExamPaperAnalysis>> uploadStudentExamPaper(
+            @RequestParam("studentId") Long studentId,
+            @RequestParam("file") MultipartFile file,
+            @RequestParam(value = "examTitle", required = false) String examTitle,
+            @RequestParam(value = "subjectName", required = false) String subjectName,
+            @AuthenticationPrincipal UserPrincipal userPrincipal) {
+        User teacher = getTeacherUser(userPrincipal);
+        User student = userRepository.findById(studentId)
+                .orElseThrow(() -> new ResourceNotFoundException("Student not found with ID: " + studentId));
+
+        ExamPaperAnalysis analysis = examPaperAnalysisService.uploadAndAnalyzeForStudent(student, teacher, file, examTitle, subjectName);
+        return ResponseEntity.ok(ApiResponse.success("Exam paper uploaded and evaluated successfully with AI diagnosis", analysis));
+    }
+
+    @GetMapping("/exam-papers")
+    @Operation(summary = "Get all exam papers uploaded and evaluated by the current teacher")
+    public ResponseEntity<ApiResponse<List<ExamPaperAnalysis>>> getTeacherExamPapers(
+            @AuthenticationPrincipal UserPrincipal userPrincipal) {
+        List<ExamPaperAnalysis> papers = examPaperAnalysisService.getTeacherAnalyses(userPrincipal.getId());
+        return ResponseEntity.ok(ApiResponse.success(papers));
+    }
+
+    @GetMapping("/exam-papers/{id}/download")
+    @Operation(summary = "Download original exam paper file")
+    public ResponseEntity<byte[]> downloadExamPaperFile(@PathVariable Long id) {
+        ExamPaperAnalysis paper = examPaperAnalysisService.getAnalysisById(id);
+        byte[] data = paper.getFileData();
+        if (data == null || data.length == 0) {
+            throw new BadRequestException("Binary file data not available for this exam paper.");
+        }
+
+        String fileName = paper.getFileName() != null ? paper.getFileName() : "exam_paper.pdf";
+        MediaType mediaType = MediaType.APPLICATION_PDF;
+        if (fileName.toLowerCase().endsWith(".docx")) mediaType = MediaType.APPLICATION_OCTET_STREAM;
+        else if (fileName.toLowerCase().endsWith(".png")) mediaType = MediaType.IMAGE_PNG;
+        else if (fileName.toLowerCase().endsWith(".jpg") || fileName.toLowerCase().endsWith(".jpeg")) mediaType = MediaType.IMAGE_JPEG;
+
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + fileName + "\"")
+                .contentType(mediaType)
+                .body(data);
+    }
+
+    @DeleteMapping("/exam-papers/{id}")
+    @Operation(summary = "Delete an uploaded student exam paper")
+    public ResponseEntity<ApiResponse<Void>> deleteExamPaper(
+            @PathVariable Long id,
+            @AuthenticationPrincipal UserPrincipal userPrincipal) {
+        examPaperAnalysisService.deleteAnalysis(id, userPrincipal.getId());
+        return ResponseEntity.ok(ApiResponse.success("Exam paper deleted successfully", null));
     }
 }

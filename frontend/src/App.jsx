@@ -33,6 +33,7 @@ const ConnectedAccounts = lazy(() => import('./pages/ConnectedAccounts').then(m 
 
 // Teacher Pages
 const TeacherDashboard = lazy(() => import('./pages/TeacherDashboard').then(m => ({ default: m.TeacherDashboard })));
+const TeacherExamPapers = lazy(() => import('./pages/TeacherExamPapers').then(m => ({ default: m.TeacherExamPapers })));
 const QuestionBank = lazy(() => import('./pages/QuestionBank').then(m => ({ default: m.QuestionBank })));
 const TeacherQuizzes = lazy(() => import('./pages/TeacherQuizzes').then(m => ({ default: m.TeacherQuizzes })));
 const AiQuizGenerator = lazy(() => import('./pages/AiQuizGenerator').then(m => ({ default: m.AiQuizGenerator })));
@@ -233,6 +234,14 @@ export default function App() {
                 element={
                   <ProtectedRoute allowedRoles={['TEACHER', 'ADMIN']}>
                     <Layout><TeacherDashboard /></Layout>
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/teacher/exam-papers"
+                element={
+                  <ProtectedRoute allowedRoles={['TEACHER', 'ADMIN']}>
+                    <Layout><TeacherExamPapers /></Layout>
                   </ProtectedRoute>
                 }
               />

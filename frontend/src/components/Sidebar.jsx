@@ -41,6 +41,7 @@ export const Sidebar = () => {
       case 'TEACHER':
         return [
           { name: 'Teacher Dashboard', path: '/teacher/dashboard', icon: LayoutDashboard },
+          { name: 'Evaluated Exam Papers', path: '/teacher/exam-papers', icon: Award },
           { name: 'Question Bank', path: '/teacher/questions', icon: HelpCircle },
           { name: 'Quizzes & Assignments', path: '/teacher/quizzes', icon: BookOpen },
           { name: 'AI Quiz Generator', path: '/teacher/quizzes/ai-generate', icon: Sparkles },

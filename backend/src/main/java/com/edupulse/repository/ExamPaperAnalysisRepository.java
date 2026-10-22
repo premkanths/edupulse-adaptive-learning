@@ -9,4 +9,5 @@ import java.util.List;
 @Repository
 public interface ExamPaperAnalysisRepository extends JpaRepository<ExamPaperAnalysis, Long> {
     List<ExamPaperAnalysis> findByStudentIdOrderByUploadedAtDesc(Long studentId);
+    List<ExamPaperAnalysis> findByTeacherIdOrderByUploadedAtDesc(Long teacherId);
 }

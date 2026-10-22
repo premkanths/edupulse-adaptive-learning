@@ -5,6 +5,7 @@ import com.edupulse.dto.AktPredictionDto;
 import com.edupulse.dto.StudentDashboardDto;
 import com.edupulse.dto.UserDto;
 import com.edupulse.entity.*;
+import com.edupulse.exception.BadRequestException;
 import com.edupulse.exception.ResourceNotFoundException;
 import com.edupulse.repository.SubjectRepository;
 import com.edupulse.repository.TopicMasteryRepository;
@@ -14,6 +15,7 @@ import com.edupulse.security.UserPrincipal;
 import com.edupulse.service.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -337,23 +339,58 @@ public class StudentController {
     }
 
     @PostMapping(value = "/exam-papers/analyze", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    @Operation(summary = "Analyze student exam paper or mark sheet with OCR & AI reasoning")
-    public ResponseEntity<ApiResponse<ExamPaperAnalysis>> analyzeExamPaper(
-            @RequestParam("file") MultipartFile file,
-            @RequestParam(value = "examTitle", required = false) String examTitle,
-            @RequestParam(value = "subjectName", required = false) String subjectName,
-            @AuthenticationPrincipal UserPrincipal userPrincipal) {
-        User student = getStudentUser(userPrincipal);
-        ExamPaperAnalysis analysis = examPaperAnalysisService.analyzeExamPaper(student, file, examTitle, subjectName);
-        return ResponseEntity.ok(ApiResponse.success("Exam paper analyzed successfully", analysis));
+    @Operation(summary = "Notice: Exam papers are officially evaluated and uploaded by course teachers")
+    public ResponseEntity<ApiResponse<Void>> analyzeExamPaper() {
+        throw new BadRequestException("Students cannot upload exam papers directly. Official evaluated answer sheets are uploaded by your course faculty and analyzed with EduPulse AI.");
     }
 
     @GetMapping("/exam-papers")
-    @Operation(summary = "Get all analyzed exam papers for current student")
+    @Operation(summary = "Get all evaluated exam papers uploaded by faculty for current student")
     public ResponseEntity<ApiResponse<List<ExamPaperAnalysis>>> getExamPapers(
             @AuthenticationPrincipal UserPrincipal userPrincipal) {
         List<ExamPaperAnalysis> list = examPaperAnalysisService.getStudentAnalyses(userPrincipal.getId());
         return ResponseEntity.ok(ApiResponse.success(list));
+    }
+
+    @GetMapping("/exam-papers/{id}/download")
+    @Operation(summary = "Download evaluated exam paper PDF/document uploaded by faculty")
+    public ResponseEntity<byte[]> downloadExamPaper(
+            @PathVariable Long id,
+            @AuthenticationPrincipal UserPrincipal userPrincipal) {
+        ExamPaperAnalysis paper = examPaperAnalysisService.getAnalysisById(id);
+        if (!paper.getStudent().getId().equals(userPrincipal.getId())) {
+            throw new BadRequestException("You do not have permission to access another student's exam paper.");
+        }
+
+        byte[] data = paper.getFileData();
+        if (data == null || data.length == 0) {
+            throw new BadRequestException("Binary file content not available for this exam paper.");
+        }
+
+        String fileName = paper.getFileName() != null ? paper.getFileName() : "evaluated_exam_paper.pdf";
+        MediaType mediaType = MediaType.APPLICATION_PDF;
+        if (fileName.toLowerCase().endsWith(".docx")) mediaType = MediaType.APPLICATION_OCTET_STREAM;
+        else if (fileName.toLowerCase().endsWith(".png")) mediaType = MediaType.IMAGE_PNG;
+        else if (fileName.toLowerCase().endsWith(".jpg") || fileName.toLowerCase().endsWith(".jpeg")) mediaType = MediaType.IMAGE_JPEG;
+
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + fileName + "\"")
+                .contentType(mediaType)
+                .body(data);
+    }
+
+    @GetMapping("/exam-papers/{id}/practice-mcqs")
+    @Operation(summary = "Get tailored MCQ practice questions targeting weak topics diagnosed in this exam paper")
+    public ResponseEntity<ApiResponse<List<Map<String, Object>>>> getPracticeQuestions(
+            @PathVariable Long id,
+            @AuthenticationPrincipal UserPrincipal userPrincipal) {
+        ExamPaperAnalysis paper = examPaperAnalysisService.getAnalysisById(id);
+        if (!paper.getStudent().getId().equals(userPrincipal.getId())) {
+            throw new BadRequestException("Access denied to this student record.");
+        }
+
+        List<Map<String, Object>> questions = examPaperAnalysisService.getPracticeQuestionsForPaper(id);
+        return ResponseEntity.ok(ApiResponse.success("Practice questions retrieved", questions));
     }
 
     // === WEEKLY SUMMARIES ===

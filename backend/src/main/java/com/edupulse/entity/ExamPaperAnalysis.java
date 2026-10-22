@@ -15,6 +15,18 @@ public class ExamPaperAnalysis {
     @JoinColumn(name = "student_id", nullable = false)
     private User student;
 
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "teacher_id")
+    private User teacher;
+
+    @Lob
+    @Column(name = "file_data", columnDefinition = "LONGBLOB")
+    @com.fasterxml.jackson.annotation.JsonIgnore
+    private byte[] fileData;
+
+    @Column(name = "file_type", length = 50)
+    private String fileType;
+
     @Column(name = "exam_title", nullable = false)
     private String examTitle;
 
@@ -71,6 +83,27 @@ public class ExamPaperAnalysis {
         this.uploadedAt = LocalDateTime.now();
     }
 
+    public ExamPaperAnalysis(User student, User teacher, String examTitle, String subjectName,
+                             Double totalScore, Double maxScore, Double percentage,
+                             String grade, String feedbackSummary, String mistakesJson,
+                             String weakTopicsJson, String fileName, String fileType, byte[] fileData) {
+        this.student = student;
+        this.teacher = teacher;
+        this.examTitle = examTitle;
+        this.subjectName = subjectName;
+        this.totalScore = totalScore;
+        this.maxScore = maxScore;
+        this.percentage = percentage;
+        this.grade = grade;
+        this.feedbackSummary = feedbackSummary;
+        this.mistakesJson = mistakesJson;
+        this.weakTopicsJson = weakTopicsJson;
+        this.fileName = fileName;
+        this.fileType = fileType;
+        this.fileData = fileData;
+        this.uploadedAt = LocalDateTime.now();
+    }
+
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 
@@ -109,4 +142,13 @@ public class ExamPaperAnalysis {
 
     public LocalDateTime getUploadedAt() { return uploadedAt; }
     public void setUploadedAt(LocalDateTime uploadedAt) { this.uploadedAt = uploadedAt; }
+
+    public User getTeacher() { return teacher; }
+    public void setTeacher(User teacher) { this.teacher = teacher; }
+
+    public byte[] getFileData() { return fileData; }
+    public void setFileData(byte[] fileData) { this.fileData = fileData; }
+
+    public String getFileType() { return fileType; }
+    public void setFileType(String fileType) { this.fileType = fileType; }
 }
