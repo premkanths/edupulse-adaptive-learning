@@ -3,7 +3,15 @@
  * Centralized fetch wrapper with automatic JWT injection and error handling.
  */
 
-export const API_BASE = (import.meta.env.VITE_API_URL || import.meta.env.VITE_API_BASE_URL || '/api').replace(/\/+$/, '');
+const getApiBase = () => {
+  let base = (import.meta.env.VITE_API_URL || import.meta.env.VITE_API_BASE_URL || '/api').replace(/\/+$/, '');
+  if (base.startsWith('http') && !base.endsWith('/api')) {
+    base = `${base}/api`;
+  }
+  return base;
+};
+
+export const API_BASE = getApiBase();
 
 export async function apiRequest(endpoint, options = {}) {
   const token = localStorage.getItem('edupulse_token');
