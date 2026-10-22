@@ -17,11 +17,11 @@ echo "[1/3] Starting FastAPI ML Service (Port 8001)..."
 PID_ML=$!
 
 echo "[2/3] Starting Spring Boot Server (Port 8080)..."
-(cd server && mvn spring-boot:run) &
+(cd backend && mvn spring-boot:run) &
 PID_SERVER=$!
 
 echo "[3/3] Starting React Client (Port 5173)..."
-(cd client && npm run dev) &
+(cd frontend && npm run dev) &
 PID_CLIENT=$!
 
 echo ""

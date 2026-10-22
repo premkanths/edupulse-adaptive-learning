@@ -32,12 +32,12 @@ start "EduPulse ML Service (Port 8001)" cmd /k "cd ml-service && python -m uvico
 timeout /t 3 /nobreak >nul
 
 echo [3/4] Starting Spring Boot Server (Port 8080)...
-start "EduPulse Spring Boot Server (Port 8080)" cmd /k "cd server && mvn spring-boot:run"
+start "EduPulse Spring Boot Server (Port 8080)" cmd /k "cd backend && mvn spring-boot:run"
 
 timeout /t 5 /nobreak >nul
 
 echo [4/4] Starting Vite React Client (Port 5173)...
-start "EduPulse Frontend Client (Port 5173)" cmd /k "cd client && npm run dev"
+start "EduPulse Frontend Client (Port 5173)" cmd /k "cd frontend && npm run dev"
 
 timeout /t 3 /nobreak >nul
 

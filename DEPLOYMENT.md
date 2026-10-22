@@ -76,8 +76,8 @@ If you prefer managed cloud hosting without configuring Linux servers:
 4. Note your deployed ML URL (e.g., `https://edupulse-ml.onrender.com`).
 
 ### 3. Spring Boot Backend (Render or Railway)
-1. Create a new **Web Service** pointing to directory `server`.
-2. Select runtime: **Docker** (it automatically uses `server/Dockerfile`) OR **Java 21**.
+1. Create a new **Web Service** pointing to directory `backend`.
+2. Select runtime: **Docker** (it automatically uses `backend/Dockerfile`) OR **Java 21**.
 3. Set Environment Variables:
    * `DB_HOST`: your MySQL host
    * `DB_PORT`: `3306`
@@ -94,7 +94,7 @@ If you prefer managed cloud hosting without configuring Linux servers:
 
 ### 4. React Frontend (Vercel or Netlify)
 1. Import your GitHub repository to [Vercel](https://vercel.com).
-2. Set Root Directory to `client`.
+2. Set Root Directory to `frontend`.
 3. Set Environment Variable:
    * `VITE_API_URL`: `https://edupulse-api.onrender.com/api`
 4. Click **Deploy**. Vercel will build the Vite assets and assign your global HTTPS domain.
@@ -113,7 +113,7 @@ By default, EduPulse runs in **`MAIL_DRY_RUN=true`** mode to protect local devel
 5. Google will display a **16-letter password** (e.g., `abcd efgh ijkl mnop`). Copy this without spaces.
 
 ### Step 2: Configure EduPulse with Your Gmail
-In `server/src/main/resources/application-local.yml` (or your environment variables):
+In `backend/src/main/resources/application-local.yml` (or your environment variables):
 ```yaml
 spring:
   mail:

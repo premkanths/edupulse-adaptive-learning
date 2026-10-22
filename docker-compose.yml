@@ -27,9 +27,9 @@ services:
     ports:
       - "8001:8001"
 
-  server:
+  backend:
     build:
-      context: ./server
+      context: ./backend
       dockerfile: Dockerfile
     container_name: edupulse-backend
     restart: unless-stopped
@@ -57,9 +57,9 @@ services:
       ml-service:
         condition: service_started
 
-  client:
+  frontend:
     build:
-      context: ./client
+      context: ./frontend
       dockerfile: Dockerfile
     container_name: edupulse-frontend
     restart: unless-stopped
@@ -67,7 +67,7 @@ services:
       - "80:80"
       - "5173:80"
     depends_on:
-      - server
+      - backend
 
 volumes:
   mysql_data:

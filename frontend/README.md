@@ -1,4 +1,4 @@
-# EduPulse Frontend (`client`)
+# EduPulse Frontend (`frontend`)
 
 The web frontend for **EduPulse — Adaptive Learning & Student Performance Analytics Platform**. Built with React 18, Vite, Tailwind CSS, Recharts, and Lucide Icons.
 

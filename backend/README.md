@@ -50,7 +50,7 @@ Implements an automated, resilient fallback hierarchy for generating contextual 
 ## 📁 Package Structure
 
 ```
-server/src/main/java/com/edupulse/
+backend/src/main/java/com/edupulse/
 ├── config/              # Security filter chain, CORS configuration, Swagger OpenAPI specs
 ├── controller/          # REST API endpoints (Student, Teacher, Auth, Research, Academic, Admin)
 ├── dto/                 # Request/Response Data Transfer Objects with Jakarta Validation

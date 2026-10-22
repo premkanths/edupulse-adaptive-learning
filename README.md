@@ -160,7 +160,7 @@ python -m uvicorn main:app --host 127.0.0.1 --port 8001
 
 ### 3. Spring Boot Backend
 ```bash
-cd server
+cd backend
 mvn spring-boot:run
 ```
 * Backend starts at: `http://localhost:8080`
@@ -169,7 +169,7 @@ mvn spring-boot:run
 
 ### 4. React Frontend
 ```bash
-cd client
+cd frontend
 npm install
 npm run dev
 ```
@@ -195,7 +195,7 @@ OLLAMA_URL="http://localhost:11434"
 OLLAMA_MODEL="llama3"
 ```
 
-*For local development, keys can be placed in `server/src/main/resources/application-local.yml` (automatically excluded by `.gitignore` to prevent credential leaks).*
+*For local development, keys can be placed in `backend/src/main/resources/application-local.yml` (automatically excluded by `.gitignore` to prevent credential leaks).*
 
 ---
 
@@ -214,14 +214,14 @@ OLLAMA_MODEL="llama3"
 
 ```text
 edupulse/
-├── client/                     # React 18 + Vite frontend (Tailwind CSS, 3 themes)
+├── frontend/                   # React 18 + Vite frontend (Tailwind CSS, 3 themes)
 │   ├── src/
 │   │   ├── api/                # API client with JWT interceptor
 │   │   ├── components/         # Navbar, Sidebar, StatCard, ThemeToggle, Drawers
 │   │   ├── context/            # AuthContext, ThemeContext (Light/Dark/Premium)
 │   │   └── pages/              # Dashboard, Recommendations, Quizzes, AI Summary, etc.
 │   └── README.md               # Frontend architecture and UI guide
-├── server/                     # Spring Boot 3.3.4 Java backend
+├── backend/                    # Spring Boot 3.3.4 Java backend
 │   ├── src/main/java/com/edupulse/
 │   │   ├── config/             # SecurityConfig, JwtConfig, OpenApiConfig
 │   │   ├── controller/         # Auth, Student, Teacher, Admin, Materials controllers
@@ -242,15 +242,15 @@ edupulse/
 │   ├── train_model.py          # Random Forest training script
 │   └── README.md               # AKT architecture, benchmark results, and ML guide
 ├── database/                   # Schema and database seed scripts
-├── docs/                       # Research paper manuscript, bibtex, and demo scripts
+├── docs/                       # Architecture diagrams and demo scripts
 ├── .env.example                # Environment variables template
 └── README.md                   # Complete platform documentation
 ```
 
 ### 📚 Detailed Submodule Documentation
 For in-depth guides, component diagrams, and API references, consult the dedicated documentation for each module:
-- 💻 **Frontend Web Client**: [`client/README.md`](client/README.md) — UI architecture, 3-way theme system (Light/Dark/Premium), component hierarchy, and routing.
-- ⚙️ **Spring Boot Backend**: [`server/README.md`](server/README.md) — REST APIs, JWT role-based security, MySQL schema, and 4-tier LLM fallback orchestration (Gemini, Groq, Ollama, Rule-based).
+- 💻 **Frontend Web Client**: [`frontend/README.md`](frontend/README.md) — UI architecture, 3-way theme system (Light/Dark/Premium), component hierarchy, and routing.
+- ⚙️ **Spring Boot Backend**: [`backend/README.md`](backend/README.md) — REST APIs, JWT role-based security, MySQL schema, and 4-tier LLM fallback orchestration (Gemini, Groq, Ollama, Rule-based).
 - 🧠 **ML & Deep Learning Microservice**: [`ml-service/README.md`](ml-service/README.md) — PyTorch Attentive Knowledge Tracing (AKT), decay-aware attention, benchmark AUC/RMSE comparisons, and Random Forest student risk modeling.
 
 ---
