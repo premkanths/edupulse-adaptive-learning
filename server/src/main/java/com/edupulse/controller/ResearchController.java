@@ -14,7 +14,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/research")
-@Tag(name = "Research Evaluation", description = "Evaluation benchmarks, BKT vs Baseline comparison, Learning curves, Survey analytics")
+@Tag(name = "Model Benchmarks", description = "Evaluation benchmarks, accuracy metrics, and comparative analytics")
 public class ResearchController {
 
     private final ResearchEvaluationService evaluationService;
@@ -54,11 +54,11 @@ public class ResearchController {
     }
 
     @GetMapping("/export/benchmark-csv")
-    @Operation(summary = "Export multi-model IEEE benchmark metrics as CSV")
+    @Operation(summary = "Export multi-model benchmark metrics as CSV")
     public ResponseEntity<String> exportBenchmarkCsv() {
-        String csv = evaluationService.exportIeeeBenchmarkCsv();
+        String csv = evaluationService.exportBenchmarkCsv();
         return ResponseEntity.ok()
-                .header(org.springframework.http.HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"ieee_multi_model_benchmark.csv\"")
+                .header(org.springframework.http.HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"model_benchmark.csv\"")
                 .contentType(org.springframework.http.MediaType.parseMediaType("text/csv"))
                 .body(csv);
     }

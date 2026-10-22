@@ -115,17 +115,17 @@ export const DemoWalkthroughModal = ({ isOpen, onClose }) => {
       actionRoute: '/admin/reports'
     },
     {
-      title: 'Step 8: Research Evaluation Suite & IEEE Benchmark Exporter',
-      badge: 'Academic Research Feature',
-      icon: Award,
-      description: 'Built-in psychometric evaluation engine computing A/B learning curves, Hake normalized learning gains, and multi-model ML comparative benchmarks.',
+      title: 'Step 8: Student AI Learning Summary & Progress Insights',
+      badge: 'Student Feature',
+      icon: Sparkles,
+      description: 'Personalized executive intelligence summary synthesized by Gemini, analyzing recent quizzes, AKT mastery progression, and immediate next learning priorities.',
       keyPoints: [
-        'Hake normalized learning gain (g=0.62) and Cohen d effect size (d=1.79)',
-        'Multi-model ML comparison: Gradient Boosting, Random Forest, Decision Tree, Logistic Regression',
-        '1-Click "Download IEEE Benchmark CSV" and camera-ready IEEE paper generator'
+        'Direct executive summary and clear topic mastery standing',
+        'Transparent priority identification for weak concepts needing reinforcement',
+        'Integrated 1-click quiz practice and focused study guidance'
       ],
-      actionLabel: 'Open Research Evaluation',
-      actionRoute: '/admin/research'
+      actionLabel: 'Open Student AI Summary',
+      actionRoute: '/student/ai-summary'
     }
   ];
 

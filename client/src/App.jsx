@@ -7,10 +7,10 @@ import { Sidebar } from './components/Sidebar';
 import { ProtectedRoute } from './components/ProtectedRoute';
 import { FloatingChatWidget } from './components/FloatingChatWidget';
 
-// Phase 4 Landing Page
+// Landing Page
 import { LandingPage } from './pages/LandingPage';
 
-// Phase 1 Pages
+// Auth & Base Dashboard Pages
 import { Login } from './pages/Login';
 import { Register } from './pages/Register';
 import { StudentDashboard } from './pages/StudentDashboard';
@@ -19,7 +19,7 @@ import { AdminDashboard } from './pages/AdminDashboard';
 import { Unauthorized } from './pages/Unauthorized';
 import { NotFound } from './pages/NotFound';
 
-// Phase 2 to 5 Pages
+// Student & Assessment Pages
 import { StudentSubjects } from './pages/StudentSubjects';
 import { StudentMaterials } from './pages/StudentMaterials';
 import { StudentAiSummary } from './pages/StudentAiSummary';
@@ -36,16 +36,15 @@ import { TeacherQuizzes } from './pages/TeacherQuizzes';
 import { AiQuizGenerator } from './pages/AiQuizGenerator';
 import { ClassAnalytics } from './pages/ClassAnalytics';
 
-// Phases 6 to 10 Pages
+// Faculty & Interventions Pages
 import { AcademicImport } from './pages/AcademicImport';
 import { CourseMaterials } from './pages/CourseMaterials';
 import { AtRiskStudents } from './pages/AtRiskStudents';
-import { ResearchEvaluation } from './pages/ResearchEvaluation';
 import { StudentProfilePrivacy } from './pages/StudentProfilePrivacy';
 import { ConnectedAccounts } from './pages/ConnectedAccounts';
 import { UserProfile } from './pages/UserProfile';
 
-// Phases 11 to 15 Pages
+// Admin & Institutional Management Pages
 import { ClassManagement } from './pages/ClassManagement';
 import { PlatformSettings } from './pages/PlatformSettings';
 import { AdminReports } from './pages/AdminReports';
@@ -285,14 +284,6 @@ export default function App() {
                 </ProtectedRoute>
               }
             />
-            <Route
-              path="/teacher/research"
-              element={
-                <ProtectedRoute allowedRoles={['TEACHER', 'ADMIN']}>
-                  <Layout><ResearchEvaluation /></Layout>
-                </ProtectedRoute>
-              }
-            />
 
             {/* === Admin Routes === */}
             <Route
@@ -324,14 +315,6 @@ export default function App() {
               element={
                 <ProtectedRoute allowedRoles={['ADMIN']}>
                   <Layout><AcademicImport /></Layout>
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/admin/research"
-              element={
-                <ProtectedRoute allowedRoles={['ADMIN']}>
-                  <Layout><ResearchEvaluation /></Layout>
                 </ProtectedRoute>
               }
             />

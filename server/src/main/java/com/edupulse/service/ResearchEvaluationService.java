@@ -90,11 +90,11 @@ public class ResearchEvaluationService {
         Map<String, Object> aktBenchmark = aktService.getAktEvaluationMetrics();
         report.put("aktBenchmark", aktBenchmark);
 
-        // 3. Multi-Model Machine Learning Comparison (Phase 16)
+        // 3. Multi-Model Machine Learning Comparison
         Map<String, Object> multiModelData = fetchMultiModelBenchmark();
         report.put("multiModelBenchmark", multiModelData);
 
-        // 4. Psychometric Normalized Learning Gain & Cohen's d Effect Size (Phase 17)
+        // 4. Psychometric Normalized Learning Gain & Cohen's d Effect Size
         Map<String, Object> learningGainData = getPsychometricLearningGain();
         report.put("learningGainAnalysis", learningGainData);
 
@@ -221,7 +221,7 @@ public class ResearchEvaluationService {
         return data;
     }
 
-    public String exportIeeeBenchmarkCsv() {
+    public String exportBenchmarkCsv() {
         StringBuilder csv = new StringBuilder();
         csv.append("Model,Accuracy,Precision,Recall,F1_Score,ROC_AUC,Validation_Samples\n");
         csv.append("GradientBoostingClassifier,0.9600,0.9602,0.9600,0.9599,0.9951,300\n");

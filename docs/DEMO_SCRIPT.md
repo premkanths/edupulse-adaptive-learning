@@ -109,4 +109,4 @@ EduPulse combines **Bayesian Knowledge Tracing (BKT)**, **Supervised Machine Lea
 
 ---
 
-*EduPulse was developed under modular test-driven phases 1 through 15, ensuring zero external paid dependencies and guaranteed local execution.*
+*EduPulse was developed under a modular test-driven architecture, ensuring zero external paid dependencies and guaranteed local execution.*

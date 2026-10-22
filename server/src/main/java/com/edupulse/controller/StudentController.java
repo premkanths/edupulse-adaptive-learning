@@ -321,7 +321,7 @@ public class StudentController {
         return ResponseEntity.ok(ApiResponse.success("Chat session deleted", "Session removed"));
     }
 
-    // === PHASE 6: ACADEMIC & ATTENDANCE RECORDS ===
+    // === ACADEMIC & ATTENDANCE RECORDS ===
 
     @GetMapping("/academic-records")
     @Operation(summary = "Get student marks and attendance records")
@@ -331,7 +331,7 @@ public class StudentController {
         return ResponseEntity.ok(ApiResponse.success(overview));
     }
 
-    // === PHASE 7: WEEKLY SUMMARIES ===
+    // === WEEKLY SUMMARIES ===
 
     @GetMapping("/weekly-summaries")
     @Operation(summary = "Get historical weekly learning summaries")
@@ -341,7 +341,7 @@ public class StudentController {
         return ResponseEntity.ok(ApiResponse.success(summaries));
     }
 
-    // === PHASE 8: EXTERNAL PROFILES ===
+    // === EXTERNAL PROFILES ===
 
     @GetMapping("/external-profiles")
     @Operation(summary = "Get student's connected external coding profiles")
@@ -408,7 +408,7 @@ public class StudentController {
         return ResponseEntity.ok(ApiResponse.success("Profile unlinked", platform));
     }
 
-    // === PHASE 9: RISK PREDICTION ===
+    // === RISK PREDICTION ===
 
     @GetMapping("/my-risk-status")
     @Operation(summary = "Student self-monitoring risk prediction and academic health check")
@@ -419,7 +419,7 @@ public class StudentController {
         return ResponseEntity.ok(ApiResponse.success(prediction));
     }
 
-    // === PHASE 10: PRIVACY, CONSENT & RESEARCH SURVEY ===
+    // === PRIVACY & CONSENT ===
 
     @GetMapping("/consent")
     @Operation(summary = "Get student privacy and research consent status")
@@ -491,7 +491,7 @@ public class StudentController {
         return ResponseEntity.ok(ApiResponse.success("Thank you! Your survey feedback has been recorded for research evaluation.", survey));
     }
 
-    // === PHASE 16: COMPREHENSIVE STUDENT AI SUMMARY DOSSIER ===
+    // === COMPREHENSIVE STUDENT AI SUMMARY DOSSIER ===
 
     @GetMapping("/ai-summary")
     @Operation(summary = "Comprehensive AI Student Portfolio and Learning Summary")

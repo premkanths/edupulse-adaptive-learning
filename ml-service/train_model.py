@@ -149,7 +149,7 @@ def train_and_export():
     with open(benchmark_export_path, "w") as f:
         json.dump(benchmark_data, f, indent=2)
         
-    print(f"IEEE Multi-Model Benchmark generated successfully!")
+    print(f"Multi-Model Benchmark generated successfully!")
     for name, m in results.items():
         print(f" - {name:28s}: Accuracy={m['accuracy']*100:.2f}%, F1={m['f1_score']:.4f}, AUC={m['roc_auc']:.4f}")
 

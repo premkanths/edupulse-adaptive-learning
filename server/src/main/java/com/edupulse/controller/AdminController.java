@@ -61,7 +61,7 @@ public class AdminController {
         return ResponseEntity.ok(ApiResponse.success(dashboard));
     }
 
-    // === PHASE 11: USER LIFECYCLE & ROLE MANAGEMENT ===
+    // === USER LIFECYCLE & ROLE MANAGEMENT ===
 
     @GetMapping("/users")
     @Operation(summary = "List all platform users")
@@ -117,7 +117,7 @@ public class AdminController {
         return ResponseEntity.ok(ApiResponse.success("User details updated", updated));
     }
 
-    // === PHASE 11: CLASS COHORT MANAGEMENT ===
+    // === CLASS COHORT MANAGEMENT ===
 
     @GetMapping("/classes")
     @Operation(summary = "List all classes with teacher and student enrollment count")
@@ -168,7 +168,7 @@ public class AdminController {
         return ResponseEntity.ok(ApiResponse.success("Class deleted", "Class removed successfully"));
     }
 
-    // === PHASE 12: PLATFORM CONFIGURATION SETTINGS ===
+    // === PLATFORM CONFIGURATION SETTINGS ===
 
     @GetMapping("/settings")
     @Operation(summary = "Get all dynamic platform configuration settings")
@@ -195,7 +195,7 @@ public class AdminController {
         return ResponseEntity.ok(ApiResponse.success("Settings updated successfully", updated));
     }
 
-    // === PHASE 13: INSTITUTIONAL REPORTS & CSV EXPORTS ===
+    // === INSTITUTIONAL REPORTS & CSV EXPORTS ===
 
     @GetMapping("/reports/overview")
     @Operation(summary = "Get aggregate institutional performance metrics overview")
@@ -234,7 +234,7 @@ public class AdminController {
                 .body(csv);
     }
 
-    // === PHASE 14: SECURITY AUDIT LOG TRAIL ===
+    // === SECURITY AUDIT LOG TRAIL ===
 
     @GetMapping("/audit-logs")
     @Operation(summary = "Get security audit logs (logins, imports, data erasures, settings updates)")
