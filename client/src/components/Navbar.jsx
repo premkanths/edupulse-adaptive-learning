@@ -4,12 +4,10 @@ import { LogOut, GraduationCap, Shield, UserCheck, Sparkles, User, Settings, Cod
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { DemoWalkthroughModal } from './DemoWalkthroughModal';
 import { ThemeToggle } from './ui/ThemeToggle';
-import { StudentAiSummaryDrawer } from './StudentAiSummaryDrawer';
 
 export const Navbar = () => {
   const { user, logout } = useAuth();
   const [showDemoModal, setShowDemoModal] = useState(false);
-  const [showAiSummaryDrawer, setShowAiSummaryDrawer] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
@@ -85,14 +83,18 @@ export const Navbar = () => {
             {/* Direct Theme Toggle */}
             <ThemeToggle />
 
-            {/* Student AI Summary Drawer Trigger (Student Only) */}
+            {/* Student AI Summary Trigger (Student Only) - Navigates to Full Page */}
             {user?.role === 'STUDENT' && (
               <button
-                onClick={() => setShowAiSummaryDrawer(true)}
-                className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-gradient-to-r from-purple-50 to-indigo-50 dark:from-purple-950/60 dark:to-indigo-950/60 hover:from-purple-100 hover:to-indigo-100 dark:hover:from-purple-900/60 dark:hover:to-indigo-900/60 text-purple-700 dark:text-purple-300 border border-purple-200 dark:border-purple-800 rounded-xl text-xs font-bold transition-all shadow-xs cursor-pointer"
-                title="Open Student AI Summary Side Panel"
+                onClick={() => navigate('/student/ai-summary')}
+                className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold transition-all shadow-xs cursor-pointer ${
+                  location.pathname === '/student/ai-summary'
+                    ? 'bg-purple-600 text-white shadow-purple-500/25 ring-2 ring-purple-400'
+                    : 'bg-gradient-to-r from-purple-50 to-indigo-50 dark:from-purple-950/60 dark:to-indigo-950/60 hover:from-purple-100 hover:to-indigo-100 dark:hover:from-purple-900/60 dark:hover:to-indigo-900/60 text-purple-700 dark:text-purple-300 border border-purple-200 dark:border-purple-800'
+                }`}
+                title="Open Full Student AI Summary Page"
               >
-                <Sparkles className="w-3.5 h-3.5 text-purple-600 dark:text-purple-400" />
+                <Sparkles className={`w-3.5 h-3.5 ${location.pathname === '/student/ai-summary' ? 'text-white' : 'text-purple-600 dark:text-purple-400'}`} />
                 <span className="hidden sm:inline">AI Summary</span>
               </button>
             )}
@@ -210,9 +212,6 @@ export const Navbar = () => {
 
       {/* Demo Walkthrough Modal */}
       <DemoWalkthroughModal isOpen={showDemoModal} onClose={() => setShowDemoModal(false)} />
-
-      {/* Student AI Summary Drawer */}
-      <StudentAiSummaryDrawer isOpen={showAiSummaryDrawer} onClose={() => setShowAiSummaryDrawer(false)} />
     </header>
   );
 };

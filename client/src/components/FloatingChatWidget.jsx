@@ -19,8 +19,8 @@ export const FloatingChatWidget = () => {
   const [loading, setLoading] = useState(false);
   const [sessionId, setSessionId] = useState(null);
 
-  // Hide widget if not a student, or if currently viewing the dedicated full-screen AI study assistant page
-  if (role !== 'STUDENT' || location.pathname === '/student/assistant') return null;
+  // Hide widget if not a student, or if currently viewing dedicated full-screen AI pages
+  if (role !== 'STUDENT' || location.pathname === '/student/assistant' || location.pathname === '/student/ai-summary') return null;
 
   const handleSend = async (e) => {
     e.preventDefault();
