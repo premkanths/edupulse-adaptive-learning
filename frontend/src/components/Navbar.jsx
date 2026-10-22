@@ -137,7 +137,7 @@ export const Navbar = () => {
                 {/* Dropdown Menu */}
                 {dropdownOpen && (
                   <div
-                    className="absolute right-0 mt-2 w-64 rounded-2xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 shadow-xl py-2 z-50 animate-in fade-in zoom-in-95 duration-150"
+                    className="absolute right-0 mt-2 w-64 rounded-2xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 shadow-xl py-2 z-50 animate-scale-up origin-top-right"
                     onMouseLeave={() => setDropdownOpen(false)}
                   >
                     <div className="px-4 py-2.5 border-b border-gray-100 dark:border-gray-800">

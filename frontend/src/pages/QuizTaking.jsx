@@ -191,7 +191,7 @@ export const QuizTaking = () => {
 
       {/* Active Question Card */}
       {currentQ && (
-        <div className="bg-white/95 dark:bg-gray-900 backdrop-blur-xl rounded-3xl p-8 border border-gray-200 dark:border-gray-800 shadow-sm space-y-6">
+        <div key={currentIndex} className="bg-white/95 dark:bg-gray-900 backdrop-blur-xl rounded-3xl p-8 border border-gray-200 dark:border-gray-800 shadow-sm space-y-6 animate-fade-in-up">
           <div className="flex items-center justify-between text-xs text-gray-500 dark:text-gray-400 border-b border-gray-100 dark:border-gray-800 pb-3">
             <span>Question {currentIndex + 1} of {questions.length}</span>
             <div className="flex items-center gap-2">

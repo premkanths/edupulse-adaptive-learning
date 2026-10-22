@@ -383,8 +383,8 @@ export const CourseMaterials = () => {
 
       {/* Upload Modal */}
       {showUploadModal && (
-        <div className="fixed inset-0 z-50 bg-slate-900/50 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="bg-white dark:bg-gray-900 rounded-2xl max-w-lg w-full p-6 shadow-2xl border border-gray-200 dark:border-gray-800 space-y-4">
+        <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4 animate-fade-in">
+          <div className="bg-white dark:bg-gray-900 rounded-2xl max-w-lg w-full p-6 shadow-2xl border border-gray-200 dark:border-gray-800 space-y-4 animate-scale-up">
             <h3 className="text-lg font-bold text-gray-900 dark:text-gray-50">Upload Course Study Material</h3>
 
             <form onSubmit={handleUpload} className="space-y-4 text-xs">
@@ -497,8 +497,8 @@ export const CourseMaterials = () => {
 
       {/* Interactive Material & PDF Viewer Modal */}
       {activeMaterial && (
-        <div className="fixed inset-0 z-50 bg-slate-900/70 backdrop-blur-sm flex items-center justify-center p-3 sm:p-5">
-          <div className="bg-white dark:bg-gray-900 rounded-3xl w-full max-w-5xl h-[88vh] flex flex-col shadow-2xl border border-gray-200 dark:border-gray-800 overflow-hidden">
+        <div className="fixed inset-0 z-50 bg-slate-900/70 backdrop-blur-sm flex items-center justify-center p-3 sm:p-5 animate-fade-in">
+          <div className="bg-white dark:bg-gray-900 rounded-3xl w-full max-w-5xl h-[88vh] flex flex-col shadow-2xl border border-gray-200 dark:border-gray-800 overflow-hidden animate-scale-up">
             {/* Modal Header */}
             <div className="p-4 sm:p-5 border-b border-gray-100 dark:border-gray-800 flex items-center justify-between gap-3 bg-gray-50/50 dark:bg-gray-950/50">
               <div className="min-w-0">

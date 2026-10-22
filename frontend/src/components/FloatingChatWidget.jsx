@@ -20,7 +20,7 @@ export const FloatingChatWidget = () => {
   const [sessionId, setSessionId] = useState(null);
 
   // Hide widget if not a student, or if currently viewing dedicated full-screen AI pages
-  if (role !== 'STUDENT' || location.pathname === '/student/assistant' || location.pathname === '/student/ai-summary') return null;
+  if (role !== 'STUDENT' || location.pathname === '/student/assistant' || location.pathname === '/student/chat' || location.pathname === '/student/ai-summary') return null;
 
   const handleSend = async (e) => {
     e.preventDefault();
@@ -58,7 +58,7 @@ export const FloatingChatWidget = () => {
       {!isOpen && (
         <button
           onClick={() => setIsOpen(true)}
-          className="flex items-center gap-2 py-3 px-5 rounded-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white shadow-xl shadow-indigo-500/30 text-xs font-bold transition-all hover:scale-105 cursor-pointer"
+          className="flex items-center gap-2 py-3 px-5 rounded-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white shadow-xl shadow-indigo-500/30 text-xs font-bold transition-all hover:scale-105 cursor-pointer animate-scale-up"
         >
           <Sparkles className="w-4 h-4 text-amber-300 animate-pulse" />
           <span>Ask JARVIS AI</span>
@@ -66,7 +66,7 @@ export const FloatingChatWidget = () => {
       )}
 
       {isOpen && (
-        <div className="bg-white/95 dark:bg-gray-900 backdrop-blur-xl rounded-3xl border border-gray-200 dark:border-gray-800 shadow-2xl w-96 h-[500px] flex flex-col justify-between overflow-hidden animate-in fade-in slide-in-from-bottom-6 duration-200">
+        <div className="bg-white/95 dark:bg-gray-900 backdrop-blur-xl rounded-3xl border border-gray-200 dark:border-gray-800 shadow-2xl w-96 h-[500px] flex flex-col justify-between overflow-hidden animate-slide-in-up">
           {/* Header */}
           <div className="bg-gradient-to-r from-blue-600 via-indigo-600 to-indigo-700 text-white p-4 flex items-center justify-between">
             <div className="flex items-center gap-2.5">

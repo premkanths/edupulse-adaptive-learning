@@ -171,8 +171,8 @@ export const TeacherQuizzes = () => {
 
       {/* Assign Modal */}
       {showAssignModal && selectedQuiz && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/40 backdrop-blur-sm p-4">
-          <div className="bg-white/95 dark:bg-gray-900 backdrop-blur-xl rounded-3xl p-6 max-w-md w-full border border-gray-200 dark:border-gray-800 shadow-2xl space-y-4">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/40 backdrop-blur-sm p-4 animate-fade-in">
+          <div className="bg-white/95 dark:bg-gray-900 backdrop-blur-xl rounded-3xl p-6 max-w-md w-full border border-gray-200 dark:border-gray-800 shadow-2xl space-y-4 animate-scale-up">
             <h2 className="text-lg font-bold text-gray-900 dark:text-gray-50">Assign Quiz to Class</h2>
             <p className="text-xs text-gray-500 dark:text-gray-400">Assigning: <strong>{selectedQuiz.title}</strong></p>
 

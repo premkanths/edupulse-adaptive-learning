@@ -661,8 +661,8 @@ export const Recommendations = () => {
 
       {/* 5. "WHY THIS?" EXPLANATION MODAL */}
       {selectedWhyThis && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 dark:bg-black/80 backdrop-blur-sm p-4">
-          <div className="bg-white dark:bg-gray-900 rounded-3xl p-6 md:p-7 max-w-lg w-full border border-gray-200 dark:border-gray-800 shadow-2xl space-y-5 animate-in fade-in zoom-in-95 duration-150">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 dark:bg-black/80 backdrop-blur-sm p-4 animate-fade-in">
+          <div className="bg-white dark:bg-gray-900 rounded-3xl p-6 md:p-7 max-w-lg w-full border border-gray-200 dark:border-gray-800 shadow-2xl space-y-5 animate-scale-up">
             <div className="flex items-center justify-between border-b border-gray-100 dark:border-gray-800 pb-4">
               <div className="flex items-center gap-3">
                 <div className="p-2.5 bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400 border border-indigo-200 dark:border-indigo-800 rounded-2xl shadow-xs">

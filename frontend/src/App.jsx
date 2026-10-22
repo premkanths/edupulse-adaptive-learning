@@ -1,5 +1,5 @@
 import React, { Suspense, lazy } from 'react';
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import { ThemeProvider } from './context/ThemeContext';
 import { Navbar } from './components/Navbar';
@@ -72,12 +72,13 @@ const PageFallback = () => (
 );
 
 const Layout = ({ children }) => {
+  const location = useLocation();
   return (
     <div className="min-h-screen flex flex-col bg-gray-50 dark:bg-gray-950 text-gray-900 dark:text-gray-100 transition-colors">
       <Navbar />
       <div className="flex flex-1">
         <Sidebar />
-        <main className="flex-1 p-6 md:p-8 max-w-7xl mx-auto w-full">
+        <main key={location.pathname} className="flex-1 p-6 md:p-8 max-w-7xl mx-auto w-full animate-fade-in-up">
           <Suspense fallback={<PageFallback />}>
             {children}
           </Suspense>
@@ -190,6 +191,14 @@ export default function App() {
                 element={
                   <ProtectedRoute allowedRoles={['STUDENT']}>
                     <Layout><PerformanceHistory /></Layout>
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/student/assistant"
+                element={
+                  <ProtectedRoute allowedRoles={['STUDENT']}>
+                    <Layout><AiStudyAssistant /></Layout>
                   </ProtectedRoute>
                 }
               />

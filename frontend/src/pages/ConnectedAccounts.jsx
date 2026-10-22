@@ -631,8 +631,8 @@ export const ConnectedAccounts = () => {
 
       {/* Manual Entry Modal Dialog */}
       {manualModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm">
-          <div className="bg-white dark:bg-academic-darkCard border border-gray-200 dark:border-academic-darkBorder rounded-3xl max-w-md w-full p-6 shadow-xl space-y-4">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-fade-in">
+          <div className="bg-white dark:bg-academic-darkCard border border-gray-200 dark:border-academic-darkBorder rounded-3xl max-w-md w-full p-6 shadow-xl space-y-4 animate-scale-up">
             <div className="flex items-center justify-between border-b border-gray-100 dark:border-gray-800 pb-3">
               <h3 className="text-base font-bold text-gray-900 dark:text-gray-50">
                 Manual Override: {manualModal}

@@ -638,8 +638,8 @@ export const StudentProfilePrivacy = () => {
 
       {/* Confirmation Modal */}
       {showDeleteModal && (
-        <div className="fixed inset-0 z-50 bg-slate-900/50 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="bg-white/95 dark:bg-gray-900 backdrop-blur-xl rounded-2xl max-w-md w-full p-6 shadow-2xl border border-gray-200 dark:border-gray-800 space-y-4">
+        <div className="fixed inset-0 z-50 bg-slate-900/50 backdrop-blur-sm flex items-center justify-center p-4 animate-fade-in">
+          <div className="bg-white/95 dark:bg-gray-900 backdrop-blur-xl rounded-2xl max-w-md w-full p-6 shadow-2xl border border-gray-200 dark:border-gray-800 space-y-4 animate-scale-up">
             <h3 className="text-lg font-bold text-gray-900 dark:text-gray-50">Confirm Data Erasure</h3>
             <p className="text-xs text-gray-600 dark:text-gray-400 leading-relaxed">
               Are you sure you want to permanently purge your private AI chat history and anonymize your account? This action cannot be undone.

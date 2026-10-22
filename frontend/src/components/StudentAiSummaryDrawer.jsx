@@ -67,8 +67,8 @@ export const StudentAiSummaryDrawer = ({ isOpen, onClose }) => {
   } = data || {};
 
   return (
-    <div className="fixed inset-0 z-50 flex justify-end bg-black/60 backdrop-blur-xs transition-opacity animate-in fade-in duration-200">
-      <div className="bg-white dark:bg-gray-900 w-full max-w-xl h-full shadow-2xl flex flex-col border-l border-gray-200 dark:border-gray-800 animate-in slide-in-from-right duration-300">
+    <div className="fixed inset-0 z-50 flex justify-end bg-black/60 backdrop-blur-sm transition-opacity animate-fade-in">
+      <div className="bg-white dark:bg-gray-900 w-full max-w-xl h-full shadow-2xl flex flex-col border-l border-gray-200 dark:border-gray-800 animate-slide-in-right">
         {/* Drawer Header */}
         <div className="p-5 border-b border-gray-200 dark:border-gray-800 flex items-center justify-between bg-gradient-to-r from-indigo-50/80 via-white to-purple-50/80 dark:from-indigo-950/40 dark:via-gray-900 dark:to-purple-950/30">
           <div className="flex items-center gap-3">

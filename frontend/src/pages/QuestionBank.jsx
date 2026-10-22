@@ -174,8 +174,8 @@ export const QuestionBank = () => {
 
       {/* Add Question Modal */}
       {showAddModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/40 backdrop-blur-sm p-4 overflow-y-auto">
-          <div className="bg-white/95 dark:bg-gray-900 backdrop-blur-xl rounded-3xl p-6 max-w-xl w-full border border-gray-200 dark:border-gray-800 shadow-2xl space-y-4 my-8">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/40 backdrop-blur-sm p-4 overflow-y-auto animate-fade-in">
+          <div className="bg-white/95 dark:bg-gray-900 backdrop-blur-xl rounded-3xl p-6 max-w-xl w-full border border-gray-200 dark:border-gray-800 shadow-2xl space-y-4 my-8 animate-scale-up">
             <h2 className="text-lg font-bold text-gray-900 dark:text-gray-50">Add New Question to Bank</h2>
 
             <form onSubmit={handleCreateQuestion} className="space-y-4 text-xs">
