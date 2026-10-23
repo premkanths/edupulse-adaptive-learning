@@ -175,32 +175,135 @@ public class AiClientService {
 
     /**
      * Offline fallback engine ensuring 100% demo reliability even with zero internet or API keys.
+     * Answers both stored curriculum topics and open-domain academic/engineering queries.
      */
     private String generateOfflineResponse(String systemPrompt, String userMessage) {
         String lowerMsg = userMessage.toLowerCase();
 
+        // 1. Data Structures: Trees & BST
         if (lowerMsg.contains("tree") || lowerMsg.contains("bst") || lowerMsg.contains("binary")) {
-            return "Based on your learning profile, your estimated mastery in **Binary Trees** is currently below 0.50.\n\n" +
-                   "### Key Conceptual Review:\n" +
-                   "1. **Binary Search Tree Property**: For any node $N$, all nodes in its left subtree have keys $< N$, and right subtree have keys $> N$.\n" +
-                   "2. **Search & Insertion Complexity**: $O(h)$ where $h$ is tree height ($O(\\log n)$ when balanced, $O(n)$ in degenerate linked-list shapes).\n" +
-                   "3. **In-Order Traversal**: Always yields keys in strictly ascending sorted order.\n\n" +
-                   "**Recommended Study Step**: Focus on tree balancing techniques (AVL rotations) and practice 5 medium diagnostic questions in your quiz portal.";
+            return "### 🌲 Binary Search Trees & Tree Algorithms\n\n" +
+                   "A Binary Search Tree (BST) maintains the fundamental invariant: for every node $N$, $\\forall x \\in \\text{left}(N): \\text{key}(x) < \\text{key}(N)$ and $\\forall y \\in \\text{right}(N): \\text{key}(y) > \\text{key}(N)$.\n\n" +
+                   "#### Key Characteristics & Complexity:\n" +
+                   "- **Time Complexity**: Search, Insert, and Delete operations require $O(h)$ time, where $h$ is tree height.\n" +
+                   "  - **Balanced (AVL / Red-Black)**: $h = O(\\log n)$.\n" +
+                   "  - **Skewed / Degenerate**: $h = O(n)$ (behaves like a singly linked list).\n" +
+                   "- **In-Order Traversal**: Left $\\to$ Root $\\to$ Right always produces nodes in strictly ascending sorted order in $O(n)$ time.\n\n" +
+                   "```python\n" +
+                   "def inorder(root):\n" +
+                   "    return inorder(root.left) + [root.val] + inorder(root.right) if root else []\n" +
+                   "```\n\n" +
+                   "💡 **Tip**: When building tree algorithms, always check for the base case `if not root: return` to prevent null-pointer recursion errors.";
         }
 
-        if (lowerMsg.contains("sql") || lowerMsg.contains("normalization") || lowerMsg.contains("database")) {
-            return "Looking at your database records, **Relational Model & Normalization** is a core syllabus topic.\n\n" +
-                   "### Core Principles:\n" +
-                   "- **1NF**: Atomic attributes; no repeating groups.\n" +
-                   "- **2NF**: In 1NF and no partial dependencies on composite candidate keys.\n" +
-                   "- **3NF**: In 2NF and no transitive functional dependencies ($X \\to Y \\to Z$).\n\n" +
-                   "**Recommended Study Step**: Review the prerequisite topic on Functional Dependencies before attempting complex multi-table joins.";
+        // 2. Data Structures: Graphs, BFS, DFS, Dijkstra
+        if (lowerMsg.contains("graph") || lowerMsg.contains("bfs") || lowerMsg.contains("dfs") || lowerMsg.contains("dijkstra")) {
+            return "### 🕸️ Graph Traversals & Shortest Path Algorithms\n\n" +
+                   "Graphs are defined as $G = (V, E)$ where $V$ is vertices and $E$ is edges.\n\n" +
+                   "#### Breadth-First Search (BFS) vs. Depth-First Search (DFS):\n" +
+                   "- **BFS (Queue-based / FIFO)**: Explores level by level. Optimal for finding the unweighted shortest path from a source node. Time: $O(V + E)$, Space: $O(V)$.\n" +
+                   "- **DFS (Stack/Recursion / LIFO)**: Explores deeply along each branch before backtracking. Used for cycle detection, topological sorting, and connected components. Time: $O(V + E)$, Space: $O(V)$ call stack.\n\n" +
+                   "#### Dijkstra's Algorithm (Weighted Non-Negative Graphs):\n" +
+                   "Uses a Min-Priority Queue to iteratively greedily pick the vertex with minimum tentative distance.\n" +
+                   "- **Time Complexity**: $O((V + E) \\log V)$ using a binary min-heap.\n" +
+                   "- **Limitation**: Does not work with negative edge weights (use Bellman-Ford for negative weights).";
         }
 
-        return "Hello! I am **J.A.R.V.I.S.**, your EduPulse AI study assistant and tutor.\n\n" +
-               "At your service. I have reviewed your current learning progress and Attentive Knowledge Tracing (AKT) mastery.\n\n" +
-               "- **Current Active Subjects**: Data Structures & Algorithms, Database Management Systems, Computer Networks.\n" +
-               "- **Recommended Focus**: Spend 15-20 minutes reviewing prerequisite tree algorithms and relational schema normalization.\n\n" +
-               "Feel free to ask me to explain any complex algorithms, solve tricky questions step-by-step, or break down any topics you want to practise!";
+        // 3. Algorithms: Sorting & Time Complexity
+        if (lowerMsg.contains("sort") || lowerMsg.contains("quicksort") || lowerMsg.contains("mergesort") || lowerMsg.contains("big o") || lowerMsg.contains("complexity")) {
+            return "### ⚡ Algorithm Complexity & Sorting Techniques\n\n" +
+                   "#### Sorting Comparison:\n" +
+                   "| Algorithm | Best Time | Average Time | Worst Time | Space | Stable? |\n" +
+                   "|:---|:---|:---|:---|:---|:---|\n" +
+                   "| **Merge Sort** | $O(n \\log n)$ | $O(n \\log n)$ | $O(n \\log n)$ | $O(n)$ | Yes |\n" +
+                   "| **Quick Sort** | $O(n \\log n)$ | $O(n \\log n)$ | $O(n^2)$ (bad pivot) | $O(\\log n)$ | No |\n" +
+                   "| **Heap Sort** | $O(n \\log n)$ | $O(n \\log n)$ | $O(n \\log n)$ | $O(1)$ | No |\n\n" +
+                   "#### QuickSort Core Concept (Divide-and-Conquer):\n" +
+                   "1. Pick a pivot element $P$.\n" +
+                   "2. Partition array such that elements $\\le P$ are on the left, and elements $> P$ are on the right.\n" +
+                   "3. Recursively apply QuickSort on sub-arrays.";
+        }
+
+        // 4. Databases: SQL, Normalization, ACID
+        if (lowerMsg.contains("sql") || lowerMsg.contains("normalization") || lowerMsg.contains("database") || lowerMsg.contains("acid") || lowerMsg.contains("join")) {
+            return "### 🗄️ Relational Database Management Systems (RDBMS)\n\n" +
+                   "#### 1. Database Normalization Forms:\n" +
+                   "- **1NF (First Normal Form)**: Every column contains atomic (indivisible) values, and each record is unique.\n" +
+                   "- **2NF (Second Normal Form)**: Must be in 1NF, and all non-key attributes must be fully functionally dependent on the entire primary key (no partial dependencies).\n" +
+                   "- **3NF (Third Normal Form)**: Must be in 2NF, and no transitive dependencies exist ($X \\to Y \\to Z$ where $X$ is primary key).\n" +
+                   "- **BCNF (Boyce-Codd Normal Form)**: For every functional dependency $X \\to Y$, $X$ must be a super key.\n\n" +
+                   "#### 2. The ACID Guarantees:\n" +
+                   "- **Atomicity**: 'All-or-nothing' execution of transactions.\n" +
+                   "- **Consistency**: Ensures constraints and referential integrity remain valid.\n" +
+                   "- **Isolation**: Concurrent transactions do not interfere with each other (Read Committed, Repeatable Read, Serializable).\n" +
+                   "- **Durability**: Committed data is permanently written to non-volatile storage (WAL / redo logs).";
+        }
+
+        // 5. Operating Systems: Deadlock, Threads, Memory
+        if (lowerMsg.contains("deadlock") || lowerMsg.contains("process") || lowerMsg.contains("thread") || lowerMsg.contains("operating system") || lowerMsg.contains("os") || lowerMsg.contains("paging")) {
+            return "### 💻 Operating Systems: Core Principles\n\n" +
+                   "#### Process vs. Thread:\n" +
+                   "- **Process**: An executing program with its own dedicated virtual address space, heap, and open file descriptors. Heavyweight context switching.\n" +
+                   "- **Thread**: A lightweight unit of execution within a process that shares code, data, and heap segments with other threads, but maintains its own program counter, registers, and stack.\n\n" +
+                   "#### Coffman Conditions for Deadlock:\n" +
+                   "A deadlock occurs if and only if all four conditions hold simultaneously:\n" +
+                   "1. **Mutual Exclusion**: At least one resource is held in a non-shareable mode.\n" +
+                   "2. **Hold and Wait**: A process holds resources while requesting additional ones.\n" +
+                   "3. **No Preemption**: Resources cannot be forcibly seized; only released voluntarily.\n" +
+                   "4. **Circular Wait**: A closed chain of processes exists where each waits for a resource held by the next.";
+        }
+
+        // 6. Computer Networks: TCP/UDP, OSI, HTTP
+        if (lowerMsg.contains("network") || lowerMsg.contains("tcp") || lowerMsg.contains("udp") || lowerMsg.contains("osi") || lowerMsg.contains("http") || lowerMsg.contains("dns")) {
+            return "### 🌐 Computer Networking: Transport & Application Layers\n\n" +
+                   "#### TCP vs. UDP Protocol Comparison:\n" +
+                   "- **TCP (Transmission Control Protocol)**: Connection-oriented (3-way handshake SYN $\\to$ SYN-ACK $\\to$ ACK), reliable, ordered packet delivery, flow control (sliding window), and congestion control. Best for HTTP/HTTPS, SSH, File Transfers.\n" +
+                   "- **UDP (User Datagram Protocol)**: Connectionless, lightweight, unordered, with zero transmission acknowledgment or retransmission overhead. Best for live audio/video streaming, DNS queries, and online multiplayer gaming.\n\n" +
+                   "#### OSI 7-Layer Reference Model:\n" +
+                   "1. Physical $\\to$ 2. Data Link $\\to$ 3. Network (IP) $\\to$ 4. Transport (TCP/UDP) $\\to$ 5. Session $\\to$ 6. Presentation (TLS) $\\to$ 7. Application (HTTP/SMTP).";
+        }
+
+        // 7. Software Engineering & Cloud: Microservices, Docker, REST
+        if (lowerMsg.contains("microservice") || lowerMsg.contains("monolith") || lowerMsg.contains("docker") || lowerMsg.contains("rest") || lowerMsg.contains("api")) {
+            return "### 🏗️ Software Architecture & Cloud Engineering\n\n" +
+                   "#### Monolithic vs. Microservices Architecture:\n" +
+                   "- **Monolith**: A single, unified codebase and deployment unit. Easy to develop initially and debug locally, but scales poorly and a crash in one component affects the entire application.\n" +
+                   "- **Microservices**: Decomposes the application into independently deployable, loosely coupled services communicating via REST APIs or message brokers (Kafka/RabbitMQ). Enables horizontal scaling and polyglot tech stacks, but introduces distributed tracing and network latency overhead.\n\n" +
+                   "#### RESTful API Principles:\n" +
+                   "- **Stateless**: Every request contains all necessary credentials and parameters (e.g., JWT token in Authorization header).\n" +
+                   "- **Uniform Interface**: Uses standard HTTP verbs (`GET` to read, `POST` to create, `PUT`/`PATCH` to update, `DELETE` to remove).\n" +
+                   "- **Idempotency**: Multiple identical requests have the exact same effect (`GET`, `PUT`, `DELETE` are idempotent; `POST` is not).";
+        }
+
+        // 8. Programming Languages & OOP: Python, Java, Polymorphism
+        if (lowerMsg.contains("python") || lowerMsg.contains("java") || lowerMsg.contains("oop") || lowerMsg.contains("object oriented") || lowerMsg.contains("polymorphism")) {
+            return "### 💻 Object-Oriented Programming (OOP) Pillars\n\n" +
+                   "1. **Encapsulation**: Bundling state (data) and behavior (methods) into an object, restricting direct access using visibility modifiers (`private`, `protected`).\n" +
+                   "2. **Inheritance**: Deriving new classes from existing classes (`class Dog extends Animal`), facilitating code reuse and hierarchical classification.\n" +
+                   "3. **Polymorphism**: The ability to treat child objects as instances of their parent class:\n" +
+                   "   - *Compile-Time (Static)*: Method Overloading (same method name, different signatures).\n" +
+                   "   - *Runtime (Dynamic)*: Method Overriding (virtual method dispatch resolved at runtime via vtable).\n" +
+                   "4. **Abstraction**: Hiding internal implementation complexity and exposing clean declarative interfaces (`interface` or abstract classes).";
+        }
+
+        // 9. Machine Learning & Artificial Intelligence
+        if (lowerMsg.contains("machine learning") || lowerMsg.contains("ai") || lowerMsg.contains("model") || lowerMsg.contains("neural") || lowerMsg.contains("overfitting")) {
+            return "### 🧠 Machine Learning Fundamentals\n\n" +
+                   "#### Overfitting vs. Underfitting:\n" +
+                   "- **Underfitting (High Bias)**: The model is too simple to capture the underlying data patterns (performs poorly on both training and test sets). Fix: increase model capacity or add relevant features.\n" +
+                   "- **Overfitting (High Variance)**: The model memorizes training noise rather than generalizing (high training accuracy, poor validation accuracy). Fix: L1/L2 regularization, dropout, cross-validation, or collecting more training samples.\n\n" +
+                   "#### Core Paradigm in EduPulse:\n" +
+                   "EduPulse employs **Attentive Knowledge Tracing (AKT)** using multi-head self-attention and monotonic temporal distance decay to dynamically track concept mastery probabilities from sequential quiz responses.";
+        }
+
+        // 10. Intelligent General Academic Fallback
+        return "Hello! I am **J.A.R.V.I.S.**, your EduPulse AI academic tutor and study assistant.\n\n" +
+               "I am equipped to assist you with **both**:\n" +
+               "1. **Your College Curriculum & Notes**: Reviewing your faculty course materials, quiz performance, and diagnosed exam mistakes.\n" +
+               "2. **Open Academic & Technical Topics**: Explaining any computer science concept, programming language, algorithm, mathematics, or engineering challenge step-by-step!\n\n" +
+               "### How can I help you today?\n" +
+               "- Ask me to break down any algorithm or data structure with code examples.\n" +
+               "- Ask me to explain a tricky exam question or clarify a concept from your lectures.\n" +
+               "- Ask for practical interview problem-solving strategies or system design principles!";
     }
 }

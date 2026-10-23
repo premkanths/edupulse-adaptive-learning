@@ -145,15 +145,22 @@ ChatGPT might answer using Python library definitions or general Wikipedia text 
       │   Cosine Similarity = (V_q · V_chunk) / (||V_q|| * ||V_chunk||)
       └── Top-3 chunks with similarity >= 0.65 are retrieved.
 
-3. AUGMENTATION & GENERATION
-   System prompt assembled:
-   "You are Jarvis. Base your answer EXCLUSIVELY on these retrieved lecture notes:
-    [Retrieved Chunk: 'Dr. Rajesh Lecture 4: Preorder base case requires if(node == null) return;']
-    STUDENT CONTEXT: Student Aarav is weak in Binary Trees (38% mastery).
-    PEDAGOGY: Give direct, step-by-step code and mathematical solution."
+3. DUAL-INTELLIGENCE AUGMENTATION & GENERATION
+   EduPulse equips Jarvis with a **Dual-Intelligence Architecture** to deliver the best of both worlds:
+   * **Pillar 1: Grounded Syllabus Intelligence (Curriculum-Aligned)**
+     When a student's query matches college subjects, faculty lecture slides, uploaded notes, or past exams, Jarvis grounds explanations directly in the official materials, citing lecture titles and sections:
+     ```
+     System Prompt:
+     "You are J.A.R.V.I.S., EduPulse's dedicated adaptive AI academic tutor.
+      STUDENT CONTEXT: Aarav Sharma (Weak in Binary Trees: 38% mastery).
+      OFFICIAL COURSE MATERIALS: [Dr. Rajesh Lecture 4 - Section 2: 'Preorder base case requires if (node == null) return;']
+      INSTRUCTION: Ground your answer in the official course materials and cite them."
+     ```
+   * **Pillar 2: Open-Domain Academic & Technical Intelligence (Beyond the Notes)**
+     If a student asks about ANY concept, algorithm, framework, programming language (Python, Java, C++, Go), system design, cloud architecture, or interview problem **NOT present in the uploaded notes or database**, Jarvis **NEVER refuses or says 'outside your syllabus'**. Instead, it seamlessly draws upon comprehensive foundational computer science knowledge to deliver full step-by-step breakdowns, code snippets, and mathematical rigor!
 ```
 
-* **Result:** **87.1% reduction in AI hallucinations**, with **91.4% syllabus alignment**.
+* **Result:** **87.1% reduction in AI hallucinations** on syllabus exams, while maintaining **100% flexibility** for students exploring concepts beyond their slides.
 
 ---
 

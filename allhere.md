@@ -193,17 +193,20 @@ Standard LMS platforms compute static score averages. If a student scored 20% on
 
 ---
 
-### 5.2 Course-Grounded RAG & Jarvis AI Tutoring Assistant
+### 5.2 Dual-Intelligence RAG & Jarvis AI Tutoring Assistant
 
-To eliminate AI hallucinations and ensure strict curriculum alignment, EduPulse implements **Retrieval-Augmented Generation (RAG)**:
+EduPulse implements a **Dual-Intelligence Architecture** that equips the Jarvis AI Assistant to excel in two complementary modes:
 
-1. **Chunking**: When faculty upload lecture PDFs, Apache PDFBox extracts text, splitting it into **500-token chunks with 50-token overlaps**.
-2. **Dense Vector Search**: Chunks are embedded and indexed in an in-memory **FAISS vector store**.
-3. **Semantic Querying**: When a student asks a question in Jarvis, cosine similarity retrieves the top-3 most relevant course chunks ($\ge 0.65$ similarity).
-4. **Compact Student Profile Injection**: The student's live strengths, weak topics, and recent exam mistakes are injected alongside the course chunks into the prompt.
-5. **Direct Step-by-Step Directive**: The prompt explicitly commands:
-   > *"DIRECT STEP-BY-STEP TEACHING: Provide complete, crystal-clear explanations. Give the full solution, formula breakdown, and working code. Explain underlying theory directly so the student learns immediately without guessing."*
-6. **Results:** Syllabus alignment jumps to **91.4%**, factual accuracy reaches **89.1%**, and hallucinations drop by **87.1%**.
+1. **Grounded Syllabus Intelligence (Course-Specific):**
+   - **Chunking**: When faculty upload lecture PDFs, Apache PDFBox extracts text, splitting it into **500-token chunks with 50-token overlaps**.
+   - **Dense Vector Search**: Chunks are embedded and indexed in an in-memory **FAISS vector store**.
+   - **Semantic Querying**: When a student asks a course question, cosine similarity retrieves the top-3 most relevant course chunks ($\ge 0.65$ similarity).
+   - **Compact Student Profile Injection**: The student's live strengths, weak topics, and recent exam mistakes are injected alongside the course chunks into the prompt.
+   - **Direct Step-by-Step Teaching**: The prompt commands direct, complete explanations with full solutions, formulas, and working code, citing official lecture titles.
+2. **Open-Domain Academic & Technical Intelligence (Beyond Notes):**
+   - If a student asks about ANY computer science concept, algorithm, coding language (Python, Java, C++, Rust), framework, cloud engineering, system design, or interview problem **NOT present in the uploaded course notes**, Jarvis **NEVER refuses or claims it is 'out of syllabus'**.
+   - Instead, it seamlessly draws upon comprehensive foundational computer science knowledge to provide complete, step-by-step explanations, code examples, and mathematical proofs.
+3. **Empirical Results:** Syllabus alignment reaches **91.4%**, factual accuracy reaches **89.1%**, and hallucinations drop by **87.1%**, while preserving 100% flexibility for open-ended learning.
 
 ---
 

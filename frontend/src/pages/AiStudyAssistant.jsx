@@ -281,16 +281,16 @@ export const AiStudyAssistant = () => {
                   <Bot className="w-7 h-7" />
                 </div>
                 <div>
-                  <h3 className="text-base font-bold text-gray-900 dark:text-gray-50">Hello, I am J.A.R.V.I.S., your AI tutor. How may I assist you today?</h3>
-                  <p className="text-xs text-gray-500 dark:text-gray-400 max-w-sm mt-1">
+                  <h3 className="text-base font-bold text-gray-900 dark:text-gray-50">Hello, I am J.A.R.V.I.S., your AI academic tutor. How may I assist you today?</h3>
+                  <p className="text-xs text-gray-500 dark:text-gray-400 max-w-md mt-1">
                     {tutoringMode === 'SOCRATIC'
-                      ? 'In Practice Hints mode, I will give you subtle clues to help you test your understanding.'
-                      : 'Ask me to explain any difficult topic, teach you algorithms step-by-step, or walk through complete solutions grounded in your faculty course notes.'}
+                      ? 'In Practice Hints mode, I provide guiding questions to help you solve problems independently.'
+                      : 'Dual-Intelligence Tutor: Ask me anything from your official course notes, exam mistakes & weak topics—or explore any programming language, algorithm, or general academic concept beyond your curriculum!'}
                   </p>
                 </div>
 
                 {/* Suggested Prompt Chips */}
-                <div className="flex flex-wrap gap-2 justify-center max-w-md pt-2">
+                <div className="flex flex-wrap gap-2 justify-center max-w-lg pt-2">
                   <button
                     onClick={() => handleSuggestedPrompt('Why is search in an unbalanced BST O(n)?')}
                     className="text-xs bg-gray-50 dark:bg-gray-950 hover:bg-indigo-50 dark:hover:bg-indigo-950/60 border border-gray-200 dark:border-gray-800 text-gray-700 dark:text-gray-300 px-3 py-1.5 rounded-full transition-colors cursor-pointer"
@@ -308,6 +308,18 @@ export const AiStudyAssistant = () => {
                     className="text-xs bg-gray-50 dark:bg-gray-950 hover:bg-indigo-50 dark:hover:bg-indigo-950/60 border border-gray-200 dark:border-gray-800 text-gray-700 dark:text-gray-300 px-3 py-1.5 rounded-full transition-colors cursor-pointer"
                   >
                     🗄️ Explain 3NF database normalization
+                  </button>
+                  <button
+                    onClick={() => handleSuggestedPrompt('Explain Microservices vs Monolith architecture with real-world pros and cons.')}
+                    className="text-xs bg-gray-50 dark:bg-gray-950 hover:bg-indigo-50 dark:hover:bg-indigo-950/60 border border-gray-200 dark:border-gray-800 text-gray-700 dark:text-gray-300 px-3 py-1.5 rounded-full transition-colors cursor-pointer"
+                  >
+                    🏗️ Microservices vs Monolith architecture
+                  </button>
+                  <button
+                    onClick={() => handleSuggestedPrompt('How does Python handle memory management and the Global Interpreter Lock (GIL)?')}
+                    className="text-xs bg-gray-50 dark:bg-gray-950 hover:bg-indigo-50 dark:hover:bg-indigo-950/60 border border-gray-200 dark:border-gray-800 text-gray-700 dark:text-gray-300 px-3 py-1.5 rounded-full transition-colors cursor-pointer"
+                  >
+                    🐍 Python memory & GIL explained
                   </button>
                 </div>
               </div>

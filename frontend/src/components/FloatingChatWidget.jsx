@@ -12,7 +12,7 @@ export const FloatingChatWidget = () => {
     {
       id: 1,
       role: 'ASSISTANT',
-      content: 'Hello! I am J.A.R.V.I.S., your adaptive AI study assistant and academic tutor. At your service—ask me anything about your courses, weak topics, or tricky quiz concepts!',
+      content: 'Hello! I am J.A.R.V.I.S., your adaptive AI study assistant. At your service—ask me anything from your course materials and weak topics, or any programming, algorithms, and technical concepts beyond your notes!',
     },
   ]);
   const [input, setInput] = useState('');
