@@ -83,16 +83,16 @@ const Layout = ({ children }) => {
   }, [location.pathname]);
 
   return (
-    <div className="min-h-screen flex flex-col bg-gray-50 dark:bg-gray-950 text-gray-900 dark:text-gray-100 transition-colors">
+    <div className="min-h-screen flex flex-col bg-gray-50 dark:bg-gray-950 text-gray-900 dark:text-gray-100 transition-colors overflow-x-hidden w-full max-w-full">
       <Navbar
         onToggleMobileMenu={() => setMobileMenuOpen((prev) => !prev)}
         isMobileMenuOpen={mobileMenuOpen}
       />
-      <div className="flex flex-1">
+      <div className="flex flex-1 w-full max-w-full overflow-x-hidden">
         <Sidebar mobileOpen={mobileMenuOpen} setMobileOpen={setMobileMenuOpen} />
         <main
           key={location.pathname}
-          className="flex-1 p-3.5 sm:p-6 md:p-8 pb-24 md:pb-8 max-w-7xl mx-auto w-full animate-fade-in-up"
+          className="flex-1 p-3.5 sm:p-6 md:p-8 pb-24 md:pb-8 max-w-7xl mx-auto w-full overflow-x-hidden animate-fade-in-up"
         >
           <Suspense fallback={<PageFallback />}>
             {children}

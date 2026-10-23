@@ -56,17 +56,31 @@ export const FloatingChatWidget = () => {
   return (
     <div className="fixed bottom-20 sm:bottom-6 right-3 sm:right-6 z-40">
       {!isOpen && (
-        <button
-          onClick={() => setIsOpen(true)}
-          className="flex items-center gap-2 py-2.5 sm:py-3 px-4 sm:px-5 rounded-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white shadow-xl shadow-indigo-500/30 text-xs font-bold transition-all hover:scale-105 cursor-pointer animate-scale-up"
-        >
-          <Sparkles className="w-4 h-4 text-amber-300 animate-pulse" />
-          <span>Ask JARVIS AI</span>
-        </button>
+        <>
+          {/* Mobile Compact FAB (Circular, fits any mobile screen without cutting off) */}
+          <button
+            onClick={() => setIsOpen(true)}
+            className="sm:hidden w-12 h-12 rounded-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-xl shadow-indigo-500/40 flex items-center justify-center cursor-pointer hover:scale-105 active:scale-95 transition-all animate-scale-up relative"
+            title="Ask J.A.R.V.I.S. AI Tutor"
+            aria-label="Ask J.A.R.V.I.S. AI Tutor"
+          >
+            <Bot className="w-6 h-6 text-white" />
+            <span className="absolute top-0 right-0 w-3 h-3 rounded-full bg-emerald-400 border-2 border-white dark:border-gray-900 animate-pulse" />
+          </button>
+
+          {/* Desktop / Tablet Extended Pill */}
+          <button
+            onClick={() => setIsOpen(true)}
+            className="hidden sm:flex items-center gap-2 py-3 px-5 rounded-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white shadow-xl shadow-indigo-500/30 text-xs font-bold transition-all hover:scale-105 cursor-pointer animate-scale-up"
+          >
+            <Sparkles className="w-4 h-4 text-amber-300 animate-pulse" />
+            <span>Ask JARVIS AI</span>
+          </button>
+        </>
       )}
 
       {isOpen && (
-        <div className="fixed inset-x-3 bottom-3 sm:inset-auto sm:right-6 sm:bottom-6 w-auto sm:w-96 h-[520px] max-h-[82vh] bg-white/95 dark:bg-gray-900 backdrop-blur-xl rounded-3xl border border-gray-200 dark:border-gray-800 shadow-2xl flex flex-col justify-between overflow-hidden animate-slide-in-up z-50">
+        <div className="fixed inset-x-2.5 bottom-2 sm:inset-auto sm:right-6 sm:bottom-6 w-auto sm:w-96 h-[80vh] sm:h-[520px] max-h-[560px] bg-white/95 dark:bg-gray-900 backdrop-blur-xl rounded-3xl border border-gray-200 dark:border-gray-800 shadow-2xl flex flex-col justify-between overflow-hidden animate-slide-in-up z-50">
           {/* Header */}
           <div className="bg-gradient-to-r from-blue-600 via-indigo-600 to-indigo-700 text-white p-4 flex items-center justify-between">
             <div className="flex items-center gap-2.5">

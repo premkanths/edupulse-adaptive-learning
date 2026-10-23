@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { NavLink, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { DemoWalkthroughModal } from './DemoWalkthroughModal';
 import {
   LayoutDashboard,
   BookOpen,
@@ -27,6 +28,7 @@ import {
 
 export const Sidebar = ({ mobileOpen = false, setMobileOpen = () => {} }) => {
   const { role, user, logout } = useAuth();
+  const [showDemoModal, setShowDemoModal] = useState(false);
 
   const getLinks = () => {
     switch (role) {
@@ -172,8 +174,23 @@ export const Sidebar = ({ mobileOpen = false, setMobileOpen = () => {} }) => {
                 </button>
               </div>
 
+              {/* Quick Action: Demo Walkthrough for Mobile */}
+              <div className="mt-3 mb-1">
+                <button
+                  type="button"
+                  onClick={() => {
+                    handleLinkClick();
+                    setShowDemoModal(true);
+                  }}
+                  className="w-full py-2 px-3 rounded-xl bg-gradient-to-r from-purple-50 to-indigo-50 dark:from-purple-950/60 dark:to-indigo-950/60 border border-purple-200 dark:border-purple-800 text-purple-700 dark:text-purple-300 text-xs font-bold flex items-center justify-center gap-2 cursor-pointer shadow-xs"
+                >
+                  <Sparkles className="w-3.5 h-3.5 text-purple-600 dark:text-purple-400" />
+                  <span>Launch Demo Walkthrough</span>
+                </button>
+              </div>
+
               {/* Navigation Links */}
-              <div className="space-y-1 mt-4 overflow-y-auto max-h-[calc(100vh-14rem)] pr-1">
+              <div className="space-y-1 mt-3 overflow-y-auto max-h-[calc(100vh-16rem)] pr-1">
                 {links.map((link) => {
                   const Icon = link.icon;
                   return (
@@ -231,6 +248,12 @@ export const Sidebar = ({ mobileOpen = false, setMobileOpen = () => {} }) => {
           </div>
         </div>
       )}
+
+      {/* Demo Walkthrough Modal Triggerable from Mobile Drawer */}
+      <DemoWalkthroughModal
+        isOpen={showDemoModal}
+        onClose={() => setShowDemoModal(false)}
+      />
     </>
   );
 };
