@@ -389,14 +389,18 @@ npm run dev
 
 ---
 
-## 9. PRODUCTION DEPLOYMENT ARCHITECTURE (VERCEL + RAILWAY)
+## 9. PRODUCTION DEPLOYMENT ARCHITECTURE (LIVE: VERCEL + RENDER + AIVEN)
 
-| Component | Recommended Host | Configuration Details |
+The current live production deployment of EduPulse operates across three specialized cloud platforms:
+
+| Component | Live Cloud Host | Configuration & URLs |
 |:---|:---|:---|
-| **Frontend** | **Vercel** (`edupulse-adaptive-learning.vercel.app`) | Root: `/frontend`<br>Env: `VITE_API_URL=https://<your-railway-backend>/api` |
-| **Backend** | **Railway.app** | Root: `/backend`<br>Variables: `SPRING_DATASOURCE_URL`, `JWT_SECRET`, `GEMINI_API_KEY` |
-| **Database** | **Railway MySQL** | 1-click provisioned managed MySQL instance |
-| **Keep-Alive** | **cron-job.org** (Free) | Pings `https://<backend-url>/v3/api-docs` every 10 mins to prevent sleep |
+| **Frontend SPA** | **Vercel** | **Live URL:** `https://edupulse-adaptive-learning.vercel.app`<br>Root directory: `/frontend`<br>Env Variable: `VITE_API_URL=https://<your-render-backend>/api` |
+| **Backend & ML** | **Render.com** | Root directory: `/backend` (Docker / Java 21) & `/ml-service` (Python 3.11)<br>Connected to Aiven MySQL credentials in Environment variables |
+| **Cloud Database** | **Aiven.io (MySQL 8.0)** | Managed high-availability cloud database (`*.aivencloud.com:3306`)<br>Hosts all 28 relational tables and student evaluation records |
+| **Zero Cold Starts** | **cron-job.org / UptimeRobot** | Pings `https://<your-render-backend>/v3/api-docs` every 10 minutes to keep Render 100% awake and eliminate the 90-second spin-down delay |
+
+*(Note: If migrating to Railway in the future, the same codebase deploys via 1-click Railway MySQL + Spring Boot service as outlined in `DEPLOYMENT.md`.)*
 
 ---
 
