@@ -21,6 +21,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -112,6 +113,7 @@ public class StudentController {
 
     @GetMapping("/subjects")
     @Operation(summary = "Get enrolled subjects and topics with AKT mastery estimates")
+    @Transactional(readOnly = true)
     public ResponseEntity<ApiResponse<List<Map<String, Object>>>> getSubjects(
             @AuthenticationPrincipal UserPrincipal userPrincipal) {
         List<Subject> subjects = subjectRepository.findAll();
@@ -557,6 +559,7 @@ public class StudentController {
 
     @GetMapping("/ai-summary")
     @Operation(summary = "Comprehensive AI Student Portfolio and Learning Summary")
+    @Transactional(readOnly = true)
     public ResponseEntity<ApiResponse<Map<String, Object>>> getAiStudentSummary(
             @AuthenticationPrincipal UserPrincipal userPrincipal) {
         return handleGetAiSummary(userPrincipal);
@@ -564,12 +567,14 @@ public class StudentController {
 
     @PostMapping("/ai-summary/generate")
     @Operation(summary = "Generate fresh real-time AI summary on demand")
+    @Transactional(readOnly = true)
     public ResponseEntity<ApiResponse<Map<String, Object>>> generateAiSummary(
             @AuthenticationPrincipal UserPrincipal userPrincipal) {
         return handleGetAiSummary(userPrincipal);
     }
 
-    private ResponseEntity<ApiResponse<Map<String, Object>>> handleGetAiSummary(UserPrincipal userPrincipal) {
+    @Transactional(readOnly = true)
+    protected ResponseEntity<ApiResponse<Map<String, Object>>> handleGetAiSummary(UserPrincipal userPrincipal) {
         Long studentId = userPrincipal.getId();
         User student = getStudentUser(userPrincipal);
 

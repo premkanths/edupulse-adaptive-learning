@@ -25,7 +25,7 @@ spring:
       max-lifetime: 900000
       connection-timeout: 20000
   jpa:
-    open-in-view: false
+    open-in-view: true
     hibernate:
       ddl-auto: update
     show-sql: false
