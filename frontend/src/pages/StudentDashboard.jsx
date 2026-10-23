@@ -99,7 +99,7 @@ export const StudentDashboard = () => {
   return (
     <div className="space-y-8 max-w-7xl mx-auto">
       {/* 1. WELCOME & PERSONALIZED LEARNING HUB */}
-      <div className="bg-gradient-to-r from-indigo-600 via-indigo-700 to-blue-600 dark:from-gray-900 dark:via-gray-900 dark:to-indigo-950/70 text-white rounded-3xl p-8 sm:p-10 shadow-lg border border-indigo-200/20 dark:border-gray-800 flex flex-col md:flex-row items-start md:items-center justify-between gap-6 relative overflow-hidden">
+      <div className="bg-gradient-to-r from-indigo-600 via-indigo-700 to-blue-600 dark:from-gray-900 dark:via-gray-900 dark:to-indigo-950/70 text-white rounded-3xl p-5 sm:p-8 md:p-10 shadow-lg border border-indigo-200/20 dark:border-gray-800 flex flex-col md:flex-row items-start md:items-center justify-between gap-6 relative overflow-hidden">
         <div className="absolute top-0 right-0 -mr-16 -mt-16 w-80 h-80 bg-white/10 dark:bg-indigo-500/10 rounded-full blur-2xl pointer-events-none" />
 
         <div className="space-y-2.5 relative z-10">
@@ -107,7 +107,7 @@ export const StudentDashboard = () => {
             <Sparkles className="w-3.5 h-3.5 text-indigo-300" />
             <span>Personalized Learning Hub</span>
           </div>
-          <h1 className="text-3xl sm:text-4xl font-black tracking-tight text-white">
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-black tracking-tight text-white">
             {data?.welcomeGreeting || `Welcome back, ${data?.studentName}!`}
           </h1>
           <p className="text-indigo-100 dark:text-gray-300 text-sm max-w-xl leading-relaxed">

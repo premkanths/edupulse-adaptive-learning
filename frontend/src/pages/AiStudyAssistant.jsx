@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { studentApi } from '../api/client';
 import { LoadingSpinner } from '../components/LoadingSpinner';
-import { Bot, User, Send, Plus, Trash2, Sparkles, Shield, BookOpen, HelpCircle, Compass, CheckCircle, ArrowRight } from 'lucide-react';
+import { Bot, User, Send, Plus, Trash2, Sparkles, Shield, BookOpen, HelpCircle, Compass, CheckCircle, ArrowRight, History, X, MessageSquare } from 'lucide-react';
 
 export const AiStudyAssistant = () => {
   const [searchParams] = useSearchParams();
@@ -17,6 +17,7 @@ export const AiStudyAssistant = () => {
   const [loadingSessions, setLoadingSessions] = useState(true);
   const [loadingMessages, setLoadingMessages] = useState(false);
   const [sending, setSending] = useState(false);
+  const [showMobileHistory, setShowMobileHistory] = useState(false);
 
   const messagesEndRef = useRef(null);
 
@@ -187,60 +188,107 @@ export const AiStudyAssistant = () => {
 
   return (
     <div className="space-y-6">
-      {/* Top Controls: Privacy Notice & Tutoring Mode Selector */}
-      <div className="flex flex-col sm:flex-row items-center justify-between gap-3 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-2xl p-3 shadow-xs">
+      {/* Top Controls: Privacy Notice, Tutoring Mode Selector & Mobile History Button */}
+      <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-2xl p-3 shadow-xs">
         <div className="flex items-center gap-2.5 text-xs text-gray-700 dark:text-gray-300">
           <Shield className="w-4 h-4 text-indigo-600 dark:text-indigo-400 shrink-0" />
-          <span>
-            <strong>Course-Material RAG, LLM & AKT Active:</strong> Answers are grounded in teacher notes, generative LLM reasoning & your real mastery profile.
+          <span className="line-clamp-2 sm:line-clamp-none">
+            <strong>Dual Intelligence Active:</strong> Grounded in official course materials + answers any computer science or programming question beyond your notes.
           </span>
         </div>
 
-        {/* Tutoring Mode Selector */}
-        <div className="flex items-center gap-1.5 bg-gray-100 dark:bg-gray-800 p-1 rounded-xl text-xs">
+        {/* Action Controls: Tutoring Mode Selector + Mobile Chats Toggle */}
+        <div className="flex items-center justify-between sm:justify-end gap-2">
+          {/* Mobile Chat History Toggle Button */}
           <button
             type="button"
-            onClick={() => setTutoringMode('EXPLANATORY')}
-            className={`px-3 py-1.5 rounded-lg font-medium transition-all flex items-center gap-1.5 cursor-pointer ${
-              tutoringMode === 'EXPLANATORY'
-                ? 'bg-white dark:bg-gray-900 text-indigo-600 dark:text-indigo-400 font-bold shadow-xs'
-                : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200'
-            }`}
+            onClick={() => setShowMobileHistory(true)}
+            className="md:hidden flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-800 text-xs font-bold text-gray-700 dark:text-gray-300 cursor-pointer"
+            title="View previous chats"
           >
-            <Compass className="w-3.5 h-3.5" />
-            Direct Teaching &amp; Solutions
+            <History className="w-3.5 h-3.5 text-indigo-600 dark:text-indigo-400" />
+            <span>Chats ({sessions.length})</span>
           </button>
-          <button
-            type="button"
-            onClick={() => setTutoringMode('SOCRATIC')}
-            className={`px-3 py-1.5 rounded-lg font-medium transition-all flex items-center gap-1.5 cursor-pointer ${
-              tutoringMode === 'SOCRATIC'
-                ? 'bg-white dark:bg-gray-900 text-teal-600 dark:text-teal-400 font-bold shadow-xs'
-                : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200'
-            }`}
-          >
-            <HelpCircle className="w-3.5 h-3.5" />
-            Practice Hints Mode
-          </button>
+
+          {/* Tutoring Mode Selector */}
+          <div className="flex items-center gap-1 bg-gray-100 dark:bg-gray-800 p-1 rounded-xl text-xs">
+            <button
+              type="button"
+              onClick={() => setTutoringMode('EXPLANATORY')}
+              className={`px-2.5 sm:px-3 py-1.5 rounded-lg font-medium transition-all flex items-center gap-1.5 cursor-pointer text-xs ${
+                tutoringMode === 'EXPLANATORY'
+                  ? 'bg-white dark:bg-gray-900 text-indigo-600 dark:text-indigo-400 font-bold shadow-xs'
+                  : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200'
+              }`}
+            >
+              <Compass className="w-3.5 h-3.5 shrink-0" />
+              <span>Direct Teaching</span>
+            </button>
+            <button
+              type="button"
+              onClick={() => setTutoringMode('SOCRATIC')}
+              className={`px-2.5 sm:px-3 py-1.5 rounded-lg font-medium transition-all flex items-center gap-1.5 cursor-pointer text-xs ${
+                tutoringMode === 'SOCRATIC'
+                  ? 'bg-white dark:bg-gray-900 text-teal-600 dark:text-teal-400 font-bold shadow-xs'
+                  : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200'
+              }`}
+            >
+              <HelpCircle className="w-3.5 h-3.5 shrink-0" />
+              <span>Practice Hints</span>
+            </button>
+          </div>
         </div>
       </div>
 
-      <div className="bg-white/95 dark:bg-gray-900 backdrop-blur-xl rounded-3xl border border-gray-200 dark:border-gray-800 shadow-2xl overflow-hidden flex h-[680px]">
-        {/* Left Sidebar: Saved Sessions */}
-        <div className="w-72 border-r border-gray-200 dark:border-gray-800 p-4 flex flex-col justify-between shrink-0 bg-gray-50 dark:bg-gray-950">
+      <div className="bg-white/95 dark:bg-gray-900 backdrop-blur-xl rounded-3xl border border-gray-200 dark:border-gray-800 shadow-2xl overflow-hidden flex flex-col md:flex-row h-[calc(100vh-14rem)] min-h-[550px] md:h-[680px] relative">
+        {/* Backdrop for mobile drawer */}
+        {showMobileHistory && (
+          <div
+            className="fixed inset-0 bg-black/60 backdrop-blur-xs z-40 md:hidden animate-fade-in"
+            onClick={() => setShowMobileHistory(false)}
+            aria-hidden="true"
+          />
+        )}
+
+        {/* Left Sidebar: Saved Sessions (Desktop fixed, Mobile slide-in drawer) */}
+        <div
+          className={`${
+            showMobileHistory
+              ? 'fixed inset-y-0 left-0 z-50 w-72 shadow-2xl flex flex-col'
+              : 'hidden'
+          } md:flex md:static md:w-72 border-r border-gray-200 dark:border-gray-800 p-4 flex-col justify-between shrink-0 bg-gray-50 dark:bg-gray-950 transition-all`}
+        >
           <div className="space-y-3">
+            {/* Header on mobile */}
+            <div className="flex items-center justify-between md:hidden pb-2 border-b border-gray-200 dark:border-gray-800">
+              <span className="text-xs font-bold text-gray-900 dark:text-gray-100 flex items-center gap-1.5">
+                <History className="w-4 h-4 text-indigo-600 dark:text-indigo-400" />
+                Previous Conversations
+              </span>
+              <button
+                type="button"
+                onClick={() => setShowMobileHistory(false)}
+                className="p-1 rounded-lg text-gray-500 hover:bg-gray-200 dark:hover:bg-gray-800 cursor-pointer"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+
             <button
-              onClick={handleCreateSession}
+              onClick={() => {
+                handleCreateSession();
+                setShowMobileHistory(false);
+              }}
               className="w-full py-2.5 px-3.5 rounded-xl text-xs font-bold text-white bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 transition-all flex items-center justify-center gap-2 cursor-pointer shadow-md shadow-indigo-500/25"
             >
               <Plus className="w-4 h-4" /> New Study Chat
             </button>
 
-            <span className="text-[11px] font-bold text-gray-400 dark:text-gray-500 uppercase tracking-wider block px-2 pt-2">
+            <span className="hidden md:block text-[11px] font-bold text-gray-400 dark:text-gray-500 uppercase tracking-wider px-2 pt-2">
               Previous Conversations
             </span>
 
-            <div className="space-y-1 overflow-y-auto max-h-[500px]">
+            <div className="space-y-1 overflow-y-auto max-h-[calc(100vh-16rem)] md:max-h-[500px]">
               {loadingSessions ? (
                 <div className="p-4 text-center text-xs text-gray-400">Loading chats...</div>
               ) : sessions.length === 0 ? (
@@ -249,7 +297,10 @@ export const AiStudyAssistant = () => {
                 sessions.map((s) => (
                   <div
                     key={s.id}
-                    onClick={() => setActiveSessionId(s.id)}
+                    onClick={() => {
+                      setActiveSessionId(s.id);
+                      setShowMobileHistory(false);
+                    }}
                     className={`w-full text-left p-2.5 rounded-xl text-xs font-medium transition-all flex items-center justify-between group cursor-pointer ${
                       activeSessionId === s.id
                         ? 'bg-indigo-100/70 dark:bg-indigo-950/70 text-indigo-900 dark:text-indigo-200 font-bold shadow-xs'
@@ -274,14 +325,14 @@ export const AiStudyAssistant = () => {
         {/* Right Main Chat Window */}
         <div className="flex-1 flex flex-col justify-between bg-white dark:bg-gray-900">
           {/* Chat Messages Body */}
-          <div className="flex-1 p-6 overflow-y-auto space-y-4">
+          <div className="flex-1 p-3.5 sm:p-6 overflow-y-auto space-y-4">
             {messages.length === 0 && !loadingMessages ? (
-              <div className="h-full flex flex-col items-center justify-center text-center p-8 space-y-4">
-                <div className="w-14 h-14 bg-indigo-50 dark:bg-indigo-950/60 border border-indigo-200 dark:border-indigo-800 text-indigo-600 dark:text-indigo-400 rounded-3xl flex items-center justify-center shadow-inner">
-                  <Bot className="w-7 h-7" />
+              <div className="h-full flex flex-col items-center justify-center text-center p-4 sm:p-8 space-y-4">
+                <div className="w-12 h-12 sm:w-14 sm:h-14 bg-indigo-50 dark:bg-indigo-950/60 border border-indigo-200 dark:border-indigo-800 text-indigo-600 dark:text-indigo-400 rounded-3xl flex items-center justify-center shadow-inner">
+                  <Bot className="w-6 h-6 sm:w-7 sm:h-7" />
                 </div>
                 <div>
-                  <h3 className="text-base font-bold text-gray-900 dark:text-gray-50">Hello, I am J.A.R.V.I.S., your AI academic tutor. How may I assist you today?</h3>
+                  <h3 className="text-sm sm:text-base font-bold text-gray-900 dark:text-gray-50">Hello, I am J.A.R.V.I.S., your AI academic tutor. How may I assist you today?</h3>
                   <p className="text-xs text-gray-500 dark:text-gray-400 max-w-md mt-1">
                     {tutoringMode === 'SOCRATIC'
                       ? 'In Practice Hints mode, I provide guiding questions to help you solve problems independently.'
@@ -327,19 +378,19 @@ export const AiStudyAssistant = () => {
               messages.map((m) => {
                 const isUser = m.role === 'USER';
                 return (
-                  <div key={m.id} className={`flex items-start gap-3 ${isUser ? 'flex-row-reverse' : ''}`}>
+                  <div key={m.id} className={`flex items-start gap-2.5 sm:gap-3 ${isUser ? 'flex-row-reverse' : ''}`}>
                     <div
-                      className={`w-8 h-8 rounded-xl flex items-center justify-center shrink-0 text-xs font-bold ${
+                      className={`w-7 h-7 sm:w-8 sm:h-8 rounded-xl flex items-center justify-center shrink-0 text-xs font-bold ${
                         isUser
                           ? 'bg-gradient-to-br from-blue-600 to-indigo-600 text-white shadow-xs'
                           : 'bg-indigo-100 dark:bg-indigo-950/80 text-indigo-700 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-800'
                       }`}
                     >
-                      {isUser ? <User className="w-4 h-4" /> : <Bot className="w-4 h-4" />}
+                      {isUser ? <User className="w-3.5 h-3.5 sm:w-4 sm:h-4" /> : <Bot className="w-3.5 h-3.5 sm:w-4 sm:h-4" />}
                     </div>
 
                     <div
-                      className={`max-w-[80%] p-4 rounded-2xl text-xs leading-relaxed space-y-2 ${
+                      className={`max-w-[88%] sm:max-w-[80%] p-3 sm:p-4 rounded-2xl text-xs leading-relaxed space-y-2 ${
                         isUser
                           ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-tr-none shadow-md shadow-indigo-500/20 whitespace-pre-wrap'
                           : 'bg-gray-50 dark:bg-gray-950/70 border border-gray-200 dark:border-gray-800 text-slate-800 dark:text-gray-200 rounded-tl-none shadow-xs'

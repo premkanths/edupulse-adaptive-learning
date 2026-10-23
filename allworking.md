@@ -40,6 +40,8 @@ Think of EduPulse not as a passive website, but as an **active hospital for lear
 │    - Why React 18: Instant single-page navigation without page reloads.     │
 │    - Why Vite: Blazing fast compilation and sub-second asset bundling.      │
 │    - Why Tailwind CSS: Clean, responsive design across mobile and desktop.  │
+│    - Mobile-First Architecture: Native bottom bar, sliding drawer, adaptive  │
+│      Jarvis chat drawer, and touch-optimized viewports for smartphones.     │
 ├─────────────────────────────────────────────────────────────────────────────┤
 │ 2. APPLICATION SERVER: Spring Boot 3.3.4 (Java 21 LTS, Hosted on Render)    │
 │    - What it does: The enterprise brain and business logic coordinator.     │

@@ -139,6 +139,14 @@ EduPulse strictly isolates permissions across three user roles via Spring Securi
 * **Bulk Student Onboarding:** Upload class rosters via CSV with automatic account provisioning.
 * **Audit Log Viewer:** Track security events, login timestamps, and unauthorized access attempts.
 
+### 4.4 Mobile-First Responsive Experience
+EduPulse is engineered for complete responsiveness across smartphones, tablets, and desktops:
+* **Native-Style Mobile Bottom Navigation (`MobileBottomNav.jsx`):** On screens $< 768\text{px}$, an app-like bottom navigation bar provides one-touch access to top primary views (Dashboard, Quizzes, Jarvis AI, Results/Exams) and a "More" drawer toggle.
+* **Responsive Slide-In Navigation Drawer (`Sidebar.jsx`):** A touch-friendly slide-out drawer displays all 7–10 role-based routes with user profile credentials and quick logout.
+* **Mobile-Adapted Jarvis AI Assistant (`AiStudyAssistant.jsx`):** Dedicated chat history drawer allows the AI tutoring interface to occupy 100% of mobile screen width for formulas, code blocks, and conversation.
+* **Adaptive Floating Chat Widget (`FloatingChatWidget.jsx`):** Floats above the mobile navigation bar and scales dynamically to viewport width and height (`inset-x-3 bottom-3 max-h-[82vh]`).
+* **Adaptive Padding & Layouts:** Dynamic spacing (`p-3.5 sm:p-6 md:p-8 pb-24 md:pb-8`) ensures charts, tables, and buttons never get obscured on small mobile viewports.
+
 ---
 
 ## 5. THE CORE AI & MACHINE LEARNING ENGINES

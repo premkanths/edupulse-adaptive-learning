@@ -35,18 +35,18 @@ export const LandingPage = () => {
     <div className="min-h-screen flex flex-col bg-gray-50 dark:bg-gray-950 text-gray-900 dark:text-gray-100 transition-colors relative overflow-hidden">
       {/* Top Header */}
       <header className="border-b border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 sticky top-0 z-30 transition-colors shadow-xs">
-        <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-2xl bg-indigo-600 flex items-center justify-center text-white font-black text-lg shadow-xs">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
+          <div className="flex items-center gap-2 sm:gap-3">
+            <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-2xl bg-indigo-600 flex items-center justify-center text-white font-black text-base sm:text-lg shadow-xs shrink-0">
               E
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <span className="font-black text-xl text-gray-900 dark:text-gray-50 tracking-tight">
+                <span className="font-black text-lg sm:text-xl text-gray-900 dark:text-gray-50 tracking-tight">
                   EduPulse
                 </span>
               </div>
-              <span className="block text-[11px] font-medium text-gray-500 dark:text-gray-400 leading-tight mt-0.5">
+              <span className="hidden sm:block text-[11px] font-medium text-gray-500 dark:text-gray-400 leading-tight mt-0.5">
                 Adaptive Learning &amp; Student Analytics
               </span>
             </div>
@@ -82,15 +82,15 @@ export const LandingPage = () => {
       </header>
 
       {/* Main Hero & Portals */}
-      <main className="flex-1 max-w-7xl mx-auto px-6 py-12 md:py-16 w-full space-y-14 relative z-10">
+      <main className="flex-1 max-w-7xl mx-auto px-4 sm:px-6 py-8 sm:py-12 md:py-16 w-full space-y-10 sm:space-y-14 relative z-10">
         {/* Hero Section */}
-        <div className="text-center max-w-3xl mx-auto space-y-5">
+        <div className="text-center max-w-3xl mx-auto space-y-4 sm:space-y-5">
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-bold bg-indigo-50 dark:bg-indigo-950/60 text-indigo-700 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-800 shadow-xs">
             <Sparkles className="w-3.5 h-3.5 text-indigo-600 dark:text-indigo-400" />
             <span>EduPulse | Adaptive Learning &amp; Student Analytics</span>
           </div>
 
-          <h1 className="text-4xl sm:text-5xl md:text-6xl font-black tracking-tight leading-tight sm:leading-tight md:leading-tight text-gray-900 dark:text-gray-50">
+          <h1 className="text-3xl sm:text-5xl md:text-6xl font-black tracking-tight leading-tight sm:leading-tight md:leading-tight text-gray-900 dark:text-gray-50">
             Personalized Learning.{' '}
             <span className="text-indigo-600 dark:text-indigo-400">
               Measurable Progress.

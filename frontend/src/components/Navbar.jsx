@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
-import { LogOut, GraduationCap, Shield, UserCheck, Sparkles, User, Settings, Code2, ChevronDown, ChevronLeft } from 'lucide-react';
+import { LogOut, GraduationCap, Shield, UserCheck, Sparkles, User, Settings, Code2, ChevronDown, ChevronLeft, Menu, X } from 'lucide-react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { DemoWalkthroughModal } from './DemoWalkthroughModal';
 import { ThemeToggle } from './ui/ThemeToggle';
 
-export const Navbar = () => {
+export const Navbar = ({ onToggleMobileMenu, isMobileMenuOpen = false }) => {
   const { user, logout } = useAuth();
   const [showDemoModal, setShowDemoModal] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -45,21 +45,38 @@ export const Navbar = () => {
 
   return (
     <header className="bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800 shadow-xs sticky top-0 z-40 transition-colors">
-      <div className="w-full px-4 sm:px-6 lg:px-8">
+      <div className="w-full px-3 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16 items-center">
-          {/* Logo & Brand + Back Button "<" */}
-          <div className="flex items-center gap-3">
-            <Link to="/" className="flex items-center gap-3 group">
-              <div className="w-10 h-10 rounded-2xl bg-indigo-600 flex items-center justify-center text-white shadow-xs font-black text-lg group-hover:scale-105 transition-all duration-200">
+          {/* Logo & Brand + Mobile Hamburger + Back Button "<" */}
+          <div className="flex items-center gap-2 sm:gap-3">
+            {/* Mobile Hamburger Menu Button */}
+            {user && (
+              <button
+                type="button"
+                onClick={onToggleMobileMenu}
+                className="p-2 rounded-xl text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors md:hidden cursor-pointer"
+                title={isMobileMenuOpen ? "Close navigation" : "Open navigation"}
+                aria-label="Toggle navigation menu"
+              >
+                {isMobileMenuOpen ? (
+                  <X className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
+                ) : (
+                  <Menu className="w-5 h-5" />
+                )}
+              </button>
+            )}
+
+            <Link to="/" className="flex items-center gap-2.5 sm:gap-3 group">
+              <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-2xl bg-indigo-600 flex items-center justify-center text-white shadow-xs font-black text-base sm:text-lg group-hover:scale-105 transition-all duration-200 shrink-0">
                 E
               </div>
               <div>
                 <div className="flex items-center gap-2">
-                  <span className="text-xl font-black text-gray-900 dark:text-gray-50 tracking-tight">
+                  <span className="text-lg sm:text-xl font-black text-gray-900 dark:text-gray-50 tracking-tight">
                     EduPulse
                   </span>
                 </div>
-                <span className="block text-[11px] font-medium text-gray-500 dark:text-gray-400 leading-tight mt-0.5">
+                <span className="hidden sm:block text-[11px] font-medium text-gray-500 dark:text-gray-400 leading-tight mt-0.5">
                   Adaptive Learning &amp; Student Analytics
                 </span>
               </div>
@@ -69,7 +86,7 @@ export const Navbar = () => {
             {canGoBack && (
               <button
                 onClick={() => navigate(-1)}
-                className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-xl border border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-200 text-xs font-bold transition-all shadow-xs cursor-pointer ml-1"
+                className="inline-flex items-center gap-1 px-2 sm:px-2.5 py-1.5 rounded-xl border border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-200 text-xs font-bold transition-all shadow-xs cursor-pointer ml-1"
                 title="Go back to previous page"
               >
                 <ChevronLeft className="w-4 h-4" />
@@ -79,7 +96,7 @@ export const Navbar = () => {
           </div>
 
           {/* Right Header Navigation Controls */}
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2 sm:gap-3">
             {/* Direct Theme Toggle */}
             <ThemeToggle />
 

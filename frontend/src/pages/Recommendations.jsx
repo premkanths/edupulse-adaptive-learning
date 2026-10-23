@@ -225,10 +225,10 @@ export const Recommendations = () => {
       </div>
 
       {/* TABS: ALL / WEAK TOPICS / MASTERED STRENGTHS */}
-      <div className="flex items-center gap-2 border-b border-gray-200 dark:border-gray-800 pb-2">
+      <div className="flex items-center gap-2 border-b border-gray-200 dark:border-gray-800 pb-2 overflow-x-auto no-scrollbar">
         <button
           onClick={() => setFilterTab('ALL')}
-          className={`px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer ${
+          className={`px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer shrink-0 whitespace-nowrap ${
             filterTab === 'ALL'
               ? 'bg-indigo-600 text-white shadow-xs'
               : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800'
@@ -239,7 +239,7 @@ export const Recommendations = () => {
 
         <button
           onClick={() => setFilterTab('WEAK')}
-          className={`px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 ${
+          className={`px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 shrink-0 whitespace-nowrap ${
             filterTab === 'WEAK'
               ? 'bg-rose-600 text-white shadow-xs'
               : 'text-rose-600 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/40'
@@ -251,7 +251,7 @@ export const Recommendations = () => {
 
         <button
           onClick={() => setFilterTab('CHALLENGE')}
-          className={`px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 ${
+          className={`px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 shrink-0 whitespace-nowrap ${
             filterTab === 'CHALLENGE'
               ? 'bg-emerald-600 text-white shadow-xs'
               : 'text-emerald-600 dark:text-emerald-400 hover:bg-emerald-50 dark:hover:bg-emerald-950/40'

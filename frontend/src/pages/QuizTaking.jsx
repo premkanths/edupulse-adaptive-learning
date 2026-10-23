@@ -134,17 +134,17 @@ export const QuizTaking = () => {
   return (
     <div className="max-w-4xl mx-auto space-y-6 pb-12">
       {/* Top Header with Timer */}
-      <div className="bg-white/95 dark:bg-gray-900 backdrop-blur-xl rounded-3xl p-6 border border-gray-200 dark:border-gray-800 shadow-sm flex items-center justify-between">
+      <div className="bg-white/95 dark:bg-gray-900 backdrop-blur-xl rounded-3xl p-4 sm:p-6 border border-gray-200 dark:border-gray-800 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <span className="text-xs font-bold text-indigo-600 dark:text-indigo-400 uppercase tracking-wider">
             {quizData.subjectName}
           </span>
-          <h1 className="text-xl font-bold text-gray-900 dark:text-gray-50">{quizData.title}</h1>
+          <h1 className="text-lg sm:text-xl font-bold text-gray-900 dark:text-gray-50">{quizData.title}</h1>
         </div>
 
-        <div className="flex items-center gap-3">
+        <div className="flex items-center justify-between sm:justify-end gap-3">
           <div
-            className={`flex items-center gap-2 px-4 py-2 rounded-2xl font-mono text-sm font-bold border ${
+            className={`flex items-center gap-2 px-3.5 sm:px-4 py-2 rounded-2xl font-mono text-xs sm:text-sm font-bold border ${
               timeLeft < 300
                 ? 'bg-rose-50 dark:bg-rose-950/50 text-rose-700 dark:text-rose-300 border-rose-200 dark:border-rose-800/80 animate-pulse'
                 : 'bg-indigo-50 dark:bg-indigo-950/60 text-indigo-700 dark:text-indigo-300 border-indigo-200 dark:border-indigo-800/80'
@@ -159,7 +159,7 @@ export const QuizTaking = () => {
           <button
             onClick={() => setShowConfirmModal(true)}
             disabled={submitting}
-            className="py-2 px-4 rounded-xl text-xs font-semibold text-white bg-indigo-600 hover:bg-indigo-700 transition-colors flex items-center gap-1.5 cursor-pointer shadow-sm"
+            className="py-2 px-3.5 sm:px-4 rounded-xl text-xs font-semibold text-white bg-indigo-600 hover:bg-indigo-700 transition-colors flex items-center gap-1.5 cursor-pointer shadow-sm"
           >
             <Send className="w-3.5 h-3.5" /> Submit Quiz
           </button>
@@ -191,7 +191,7 @@ export const QuizTaking = () => {
 
       {/* Active Question Card */}
       {currentQ && (
-        <div key={currentIndex} className="bg-white/95 dark:bg-gray-900 backdrop-blur-xl rounded-3xl p-8 border border-gray-200 dark:border-gray-800 shadow-sm space-y-6 animate-fade-in-up">
+        <div key={currentIndex} className="bg-white/95 dark:bg-gray-900 backdrop-blur-xl rounded-3xl p-4 sm:p-8 border border-gray-200 dark:border-gray-800 shadow-sm space-y-6 animate-fade-in-up">
           <div className="flex items-center justify-between text-xs text-gray-500 dark:text-gray-400 border-b border-gray-100 dark:border-gray-800 pb-3">
             <span>Question {currentIndex + 1} of {questions.length}</span>
             <div className="flex items-center gap-2">

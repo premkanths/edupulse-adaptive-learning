@@ -4,6 +4,7 @@ import { AuthProvider, useAuth } from './context/AuthContext';
 import { ThemeProvider } from './context/ThemeContext';
 import { Navbar } from './components/Navbar';
 import { Sidebar } from './components/Sidebar';
+import { MobileBottomNav } from './components/MobileBottomNav';
 import { ProtectedRoute } from './components/ProtectedRoute';
 import { FloatingChatWidget } from './components/FloatingChatWidget';
 import { LoadingSpinner } from './components/LoadingSpinner';
@@ -74,17 +75,31 @@ const PageFallback = () => (
 
 const Layout = ({ children }) => {
   const location = useLocation();
+  const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false);
+
+  // Auto-close mobile drawer when navigating between pages
+  React.useEffect(() => {
+    setMobileMenuOpen(false);
+  }, [location.pathname]);
+
   return (
     <div className="min-h-screen flex flex-col bg-gray-50 dark:bg-gray-950 text-gray-900 dark:text-gray-100 transition-colors">
-      <Navbar />
+      <Navbar
+        onToggleMobileMenu={() => setMobileMenuOpen((prev) => !prev)}
+        isMobileMenuOpen={mobileMenuOpen}
+      />
       <div className="flex flex-1">
-        <Sidebar />
-        <main key={location.pathname} className="flex-1 p-6 md:p-8 max-w-7xl mx-auto w-full animate-fade-in-up">
+        <Sidebar mobileOpen={mobileMenuOpen} setMobileOpen={setMobileMenuOpen} />
+        <main
+          key={location.pathname}
+          className="flex-1 p-3.5 sm:p-6 md:p-8 pb-24 md:pb-8 max-w-7xl mx-auto w-full animate-fade-in-up"
+        >
           <Suspense fallback={<PageFallback />}>
             {children}
           </Suspense>
         </main>
       </div>
+      <MobileBottomNav onOpenMenu={() => setMobileMenuOpen(true)} />
       <FloatingChatWidget />
     </div>
   );

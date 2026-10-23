@@ -54,11 +54,11 @@ export const FloatingChatWidget = () => {
   };
 
   return (
-    <div className="fixed bottom-6 right-6 z-50">
+    <div className="fixed bottom-20 sm:bottom-6 right-3 sm:right-6 z-40">
       {!isOpen && (
         <button
           onClick={() => setIsOpen(true)}
-          className="flex items-center gap-2 py-3 px-5 rounded-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white shadow-xl shadow-indigo-500/30 text-xs font-bold transition-all hover:scale-105 cursor-pointer animate-scale-up"
+          className="flex items-center gap-2 py-2.5 sm:py-3 px-4 sm:px-5 rounded-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white shadow-xl shadow-indigo-500/30 text-xs font-bold transition-all hover:scale-105 cursor-pointer animate-scale-up"
         >
           <Sparkles className="w-4 h-4 text-amber-300 animate-pulse" />
           <span>Ask JARVIS AI</span>
@@ -66,7 +66,7 @@ export const FloatingChatWidget = () => {
       )}
 
       {isOpen && (
-        <div className="bg-white/95 dark:bg-gray-900 backdrop-blur-xl rounded-3xl border border-gray-200 dark:border-gray-800 shadow-2xl w-96 h-[500px] flex flex-col justify-between overflow-hidden animate-slide-in-up">
+        <div className="fixed inset-x-3 bottom-3 sm:inset-auto sm:right-6 sm:bottom-6 w-auto sm:w-96 h-[520px] max-h-[82vh] bg-white/95 dark:bg-gray-900 backdrop-blur-xl rounded-3xl border border-gray-200 dark:border-gray-800 shadow-2xl flex flex-col justify-between overflow-hidden animate-slide-in-up z-50">
           {/* Header */}
           <div className="bg-gradient-to-r from-blue-600 via-indigo-600 to-indigo-700 text-white p-4 flex items-center justify-between">
             <div className="flex items-center gap-2.5">
