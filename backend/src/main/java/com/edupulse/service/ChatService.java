@@ -26,6 +26,8 @@ public class ChatService {
     private final AttemptRepository attemptRepository;
     private final AiClientService aiClientService;
     private final CourseMaterialService courseMaterialService;
+    private final ExamPaperAnalysisRepository examPaperAnalysisRepository;
+    private final RecommendationService recommendationService;
 
     public ChatService(ChatSessionRepository chatSessionRepository,
                        ChatMessageRepository chatMessageRepository,
@@ -33,7 +35,9 @@ public class ChatService {
                        SubjectRepository subjectRepository,
                        AttemptRepository attemptRepository,
                        AiClientService aiClientService,
-                       CourseMaterialService courseMaterialService) {
+                       CourseMaterialService courseMaterialService,
+                       ExamPaperAnalysisRepository examPaperAnalysisRepository,
+                       RecommendationService recommendationService) {
         this.chatSessionRepository = chatSessionRepository;
         this.chatMessageRepository = chatMessageRepository;
         this.topicMasteryRepository = topicMasteryRepository;
@@ -41,6 +45,8 @@ public class ChatService {
         this.attemptRepository = attemptRepository;
         this.aiClientService = aiClientService;
         this.courseMaterialService = courseMaterialService;
+        this.examPaperAnalysisRepository = examPaperAnalysisRepository;
+        this.recommendationService = recommendationService;
     }
 
     @Transactional
@@ -200,29 +206,50 @@ public class ChatService {
 
     private String buildStudentContext(User student) {
         StringBuilder sb = new StringBuilder();
-        sb.append("- Student Name: ").append(student.getName()).append(" (Email: ").append(student.getEmail()).append(")\n");
+        sb.append("=== COMPACT STUDENT LEARNING PROFILE ===\n");
+        sb.append("- Student: ").append(student.getName()).append(" (ID: ").append(student.getId()).append(")\n");
 
         List<TopicMastery> masteries = topicMasteryRepository.findByStudentId(student.getId());
         List<String> weakTopics = masteries.stream()
-                .filter(m -> m.getPKnown() < BktService.WEAK_TOPIC_THRESHOLD)
-                .map(m -> m.getTopic().getName() + " (Mastery: " + String.format("%.2f", m.getPKnown()) + ")")
+                .filter(m -> m.getPKnown() < AktService.WEAK_TOPIC_THRESHOLD)
+                .map(m -> m.getTopic().getName() + " (" + Math.round(m.getPKnown() * 100) + "% mastery)")
                 .collect(Collectors.toList());
 
         List<String> strongTopics = masteries.stream()
-                .filter(m -> m.getPKnown() >= BktService.STRONG_TOPIC_THRESHOLD)
-                .map(m -> m.getTopic().getName() + " (Mastery: " + String.format("%.2f", m.getPKnown()) + ")")
+                .filter(m -> m.getPKnown() >= AktService.STRONG_TOPIC_THRESHOLD)
+                .map(m -> m.getTopic().getName() + " (" + Math.round(m.getPKnown() * 100) + "% mastery)")
                 .collect(Collectors.toList());
 
-        sb.append("- Identified Weak Topics (<0.50): ").append(weakTopics.isEmpty() ? "None detected" : String.join(", ", weakTopics)).append("\n");
-        sb.append("- Strong Topics (>=0.80): ").append(strongTopics.isEmpty() ? "In progress" : String.join(", ", strongTopics)).append("\n");
+        sb.append("- Demonstrated Strengths: ").append(strongTopics.isEmpty() ? "Establishing baseline" : String.join(", ", strongTopics)).append("\n");
+        sb.append("- Focus Needed Areas (<60%): ").append(weakTopics.isEmpty() ? "None flagged" : String.join(", ", weakTopics)).append("\n");
 
-        List<Attempt> recentAttempts = attemptRepository.findByStudentIdOrderByStartedAtDesc(student.getId());
-        if (!recentAttempts.isEmpty()) {
-            Attempt last = recentAttempts.get(0);
-            sb.append("- Most Recent Quiz Attempt: '").append(last.getQuiz().getTitle())
-              .append("' - Score: ").append(last.getScore()).append("% (Status: ").append(last.getStatus()).append(")\n");
-        }
+        // Exam Paper Mistake attribution
+        try {
+            List<ExamPaperAnalysis> exams = examPaperAnalysisRepository.findByStudentIdOrderByUploadedAtDesc(student.getId());
+            if (!exams.isEmpty()) {
+                ExamPaperAnalysis latestExam = exams.get(0);
+                sb.append("- Latest Evaluated Exam: '").append(latestExam.getExamTitle()).append("' (Score: ").append(Math.round(latestExam.getPercentage())).append("%)\n");
+                if (latestExam.getWeakTopicsJson() != null && !latestExam.getWeakTopicsJson().isBlank()) {
+                    sb.append("  * Diagnosed Exam Deficits: ").append(latestExam.getWeakTopicsJson()).append("\n");
+                }
+            }
+        } catch (Exception ignored) {}
 
+        // Active recommendations
+        try {
+            List<RecommendationRecord> recs = recommendationService.getStudentRecommendations(student.getId());
+            if (!recs.isEmpty()) {
+                sb.append("- Current Action Plan:\n");
+                for (int i = 0; i < Math.min(3, recs.size()); i++) {
+                    RecommendationRecord r = recs.get(i);
+                    sb.append("  ").append(i + 1).append(". [").append(r.getRecommendationType()).append("] ")
+                      .append(r.getTopic() != null ? r.getTopic().getName() : "Topic")
+                      .append(": ").append(r.getNextStepAction()).append("\n");
+                }
+            }
+        } catch (Exception ignored) {}
+
+        sb.append("========================================\n");
         return sb.toString();
     }
 }

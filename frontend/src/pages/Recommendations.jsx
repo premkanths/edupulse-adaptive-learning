@@ -120,6 +120,30 @@ export const Recommendations = () => {
       icon: Info,
       actionText: 'Review Prerequisite',
     },
+    REVIEW_MISCONCEPTION: {
+      badge: 'Exam / Concept Misconception',
+      badgeColor: 'bg-red-50 dark:bg-red-950/50 text-red-700 dark:text-red-300 border-red-200 dark:border-red-800',
+      icon: AlertTriangle,
+      actionText: 'Resolve Misconception in Jarvis',
+    },
+    LEARN_BASICS: {
+      badge: 'Introductory Learning',
+      badgeColor: 'bg-sky-50 dark:bg-sky-950/50 text-sky-700 dark:text-sky-300 border-sky-200 dark:border-sky-800',
+      icon: BookOpen,
+      actionText: 'Read Lecture Notes',
+    },
+    PRACTICE_WORKED_EXAMPLE: {
+      badge: 'Worked Example & Practice',
+      badgeColor: 'bg-indigo-50 dark:bg-indigo-950/50 text-indigo-700 dark:text-indigo-300 border-indigo-200 dark:border-indigo-800',
+      icon: Code2,
+      actionText: 'Study Worked Example',
+    },
+    SPACED_REVISION: {
+      badge: 'Spaced Memory Refresh',
+      badgeColor: 'bg-purple-50 dark:bg-purple-950/50 text-purple-700 dark:text-purple-300 border-purple-200 dark:border-purple-800',
+      icon: Clock,
+      actionText: '5-Min Memory Refresh',
+    },
     CHALLENGE_TOPIC: {
       badge: 'Advanced Challenge (Strength)',
       badgeColor: 'bg-emerald-50 dark:bg-emerald-950/50 text-emerald-700 dark:text-emerald-300 border-emerald-200 dark:border-emerald-800',
@@ -130,7 +154,15 @@ export const Recommendations = () => {
 
   // Filter recommendations based on active tab
   const filteredRecs = recs.filter((r) => {
-    if (filterTab === 'WEAK') return r.recommendationType === 'PRACTICE_WEAK_TOPIC' || r.recommendationType === 'REVIEW_PREREQUISITE';
+    if (filterTab === 'WEAK') {
+      return (
+        r.recommendationType === 'PRACTICE_WEAK_TOPIC' ||
+        r.recommendationType === 'REVIEW_PREREQUISITE' ||
+        r.recommendationType === 'REVIEW_MISCONCEPTION' ||
+        r.recommendationType === 'PRACTICE_WORKED_EXAMPLE' ||
+        r.recommendationType === 'LEARN_BASICS'
+      );
+    }
     if (filterTab === 'CHALLENGE') return r.recommendationType === 'CHALLENGE_TOPIC';
     return true;
   });
@@ -366,17 +398,31 @@ export const Recommendations = () => {
                 Evidence: {primaryRec.supportingEvidence}
               </span>
               <div className="flex items-center gap-2">
+                {primaryRec.resourceLink ? (
+                  <Link
+                    to={primaryRec.resourceLink}
+                    className="px-4 py-2 rounded-xl text-xs font-semibold bg-white dark:bg-gray-800 border border-indigo-200 dark:border-indigo-800 text-indigo-700 dark:text-indigo-300 hover:bg-indigo-50 transition flex items-center gap-1.5"
+                  >
+                    <BookOpen className="w-3.5 h-3.5" />
+                    <span>{primaryRec.resourceTitle || 'Review Course Notes'}</span>
+                  </Link>
+                ) : (
+                  <Link
+                    to="/student/materials"
+                    className="px-4 py-2 rounded-xl text-xs font-semibold bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-50 transition"
+                  >
+                    Review Subject Notes
+                  </Link>
+                )}
                 <Link
-                  to="/student/materials"
-                  className="px-4 py-2 rounded-xl text-xs font-semibold bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-50 transition"
-                >
-                  Review Subject PDF
-                </Link>
-                <Link
-                  to="/student/quizzes"
+                  to={
+                    primaryRec.recommendationType === 'REVIEW_MISCONCEPTION' || primaryRec.recommendationType === 'PRACTICE_WORKED_EXAMPLE'
+                      ? (primaryRec.resourceLink || '/student/assistant')
+                      : '/student/quizzes'
+                  }
                   className="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl text-xs font-bold text-white bg-indigo-600 hover:bg-indigo-700 shadow-md hover:-translate-y-0.5 transition-all cursor-pointer"
                 >
-                  <span>Start Practice Activity</span>
+                  <span>{typeConfig[primaryRec.recommendationType]?.actionText || 'Start Learning Activity'}</span>
                   <ArrowRight className="w-4 h-4" />
                 </Link>
               </div>
@@ -539,7 +585,7 @@ export const Recommendations = () => {
                       {rec.supportingEvidence}
                     </span>
                     <Link
-                      to="/student/quizzes"
+                      to={rec.resourceLink || "/student/quizzes"}
                       className="px-4 py-2 rounded-xl text-xs font-bold text-white bg-indigo-600 hover:bg-indigo-700 transition flex items-center gap-1.5 shadow-xs"
                     >
                       <span>{cfg.actionText}</span>

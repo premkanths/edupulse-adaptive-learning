@@ -34,6 +34,7 @@ public class ExamPaperAnalysisService {
     private final TopicMasteryRepository topicMasteryRepository;
     private final AiClientService aiClientService;
     private final ObjectMapper objectMapper;
+    private final RecommendationService recommendationService;
 
     public ExamPaperAnalysisService(ExamPaperAnalysisRepository analysisRepository,
                                     QuestionRepository questionRepository,
@@ -41,7 +42,8 @@ public class ExamPaperAnalysisService {
                                     SubjectRepository subjectRepository,
                                     TopicMasteryRepository topicMasteryRepository,
                                     AiClientService aiClientService,
-                                    ObjectMapper objectMapper) {
+                                    ObjectMapper objectMapper,
+                                    RecommendationService recommendationService) {
         this.analysisRepository = analysisRepository;
         this.questionRepository = questionRepository;
         this.topicRepository = topicRepository;
@@ -49,6 +51,7 @@ public class ExamPaperAnalysisService {
         this.topicMasteryRepository = topicMasteryRepository;
         this.aiClientService = aiClientService;
         this.objectMapper = objectMapper;
+        this.recommendationService = recommendationService;
     }
 
     @Transactional
@@ -134,6 +137,14 @@ public class ExamPaperAnalysisService {
 
         // Store & record weak topics into student's topic mastery storage
         recordWeakTopicsToMastery(student, weakTopicsJson, subject);
+
+        // Immediately refresh student's personalized learning recommendations and daily study plan
+        try {
+            recommendationService.generateRecommendationsForStudent(student.getId());
+            log.info("Refreshed personalized learning recommendations for student {}", student.getEmail());
+        } catch (Exception ex) {
+            log.warn("Could not refresh recommendations after exam paper analysis: {}", ex.getMessage());
+        }
 
         return saved;
     }

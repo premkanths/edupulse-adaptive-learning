@@ -169,6 +169,9 @@ public class DashboardService {
             rMap.put("evidence", r.getSupportingEvidence());
             rMap.put("action", r.getNextStepAction());
             rMap.put("estimatedMinutes", r.getEstimatedMinutes());
+            rMap.put("learningActivity", r.getLearningActivity());
+            rMap.put("resourceTitle", r.getResourceTitle());
+            rMap.put("resourceLink", r.getResourceLink());
             recs.add(rMap);
         }
         dto.setRecommendations(recs);
@@ -181,19 +184,25 @@ public class DashboardService {
             nextAct.put("action", topRec.getNextStepAction());
             nextAct.put("reason", topRec.getExplanation());
             nextAct.put("estimatedMinutes", topRec.getEstimatedMinutes());
-            nextAct.put("url", "/student/quizzes");
+            nextAct.put("learningActivity", topRec.getLearningActivity());
+            nextAct.put("resourceTitle", topRec.getResourceTitle());
+            nextAct.put("url", topRec.getResourceLink() != null && !topRec.getResourceLink().isBlank() ? topRec.getResourceLink() : "/student/materials");
         } else if (!publishedQuizzes.isEmpty()) {
             Quiz nextQuiz = publishedQuizzes.get(0);
             nextAct.put("topic", nextQuiz.getTitle());
             nextAct.put("action", "Take this short quiz to test your concept understanding.");
             nextAct.put("reason", "Regular quizzes help keep concepts fresh and update your learning recommendations.");
             nextAct.put("estimatedMinutes", 15);
+            nextAct.put("learningActivity", "PRACTICE_QUIZ");
+            nextAct.put("resourceTitle", "Course Assessment Quiz");
             nextAct.put("url", "/student/quizzes");
         } else {
             nextAct.put("topic", "Course Notes & Learning Materials");
             nextAct.put("action", "Browse instructor-uploaded notes and slides.");
             nextAct.put("reason", "Study materials provide deep conceptual clarity.");
             nextAct.put("estimatedMinutes", 20);
+            nextAct.put("learningActivity", "READ_NOTES");
+            nextAct.put("resourceTitle", "Faculty Course Notes");
             nextAct.put("url", "/student/materials");
         }
         dto.setNextAction(nextAct);
@@ -243,44 +252,69 @@ public class DashboardService {
 
         // 8. Prioritized Daily Learning Plan (Answers: What should I do today to improve?)
         List<Map<String, Object>> dailyPlan = new ArrayList<>();
-        if (!topicsToPracticeList.isEmpty()) {
-            Map<String, Object> weak = topicsToPracticeList.get(0);
+        if (!recRecords.isEmpty()) {
+            RecommendationRecord r1 = recRecords.get(0);
             Map<String, Object> plan1 = new HashMap<>();
             plan1.put("step", 1);
-            plan1.put("title", "Review Priority Concept: " + weak.get("topicName"));
-            plan1.put("description", weak.get("prerequisiteName") != null
-                    ? "Review prerequisite '" + weak.get("prerequisiteName") + "' first for smoother concept understanding."
-                    : (String) weak.get("advice"));
-            plan1.put("estimatedMinutes", 15);
-            plan1.put("actionType", "STUDY_NOTES");
-            plan1.put("actionUrl", "/student/materials");
+            plan1.put("title", "Learn / Review: " + (r1.getTopic() != null ? r1.getTopic().getName() : "Foundational Concept"));
+            plan1.put("description", r1.getNextStepAction());
+            plan1.put("estimatedMinutes", r1.getEstimatedMinutes() != null ? r1.getEstimatedMinutes() : 15);
+            plan1.put("actionType", r1.getLearningActivity());
+            plan1.put("resourceTitle", r1.getResourceTitle());
+            plan1.put("actionUrl", r1.getResourceLink() != null && !r1.getResourceLink().isBlank() ? r1.getResourceLink() : "/student/materials");
             dailyPlan.add(plan1);
+
+            if (recRecords.size() >= 2) {
+                RecommendationRecord r2 = recRecords.get(1);
+                Map<String, Object> plan2 = new HashMap<>();
+                plan2.put("step", 2);
+                plan2.put("title", "Next Focus: " + (r2.getTopic() != null ? r2.getTopic().getName() : "Practice Target"));
+                plan2.put("description", r2.getNextStepAction());
+                plan2.put("estimatedMinutes", r2.getEstimatedMinutes() != null ? r2.getEstimatedMinutes() : 10);
+                plan2.put("actionType", r2.getLearningActivity());
+                plan2.put("resourceTitle", r2.getResourceTitle());
+                plan2.put("actionUrl", r2.getResourceLink() != null && !r2.getResourceLink().isBlank() ? r2.getResourceLink() : "/student/quizzes");
+                dailyPlan.add(plan2);
+            } else {
+                Map<String, Object> plan2 = new HashMap<>();
+                plan2.put("step", 2);
+                plan2.put("title", "Take 5 Adaptive Practice MCQs");
+                plan2.put("description", "Solve targeted questions to calibrate your Attentive Knowledge Tracing weights.");
+                plan2.put("estimatedMinutes", 10);
+                plan2.put("actionType", "TAKE_QUIZ");
+                plan2.put("resourceTitle", "Adaptive Question Bank");
+                plan2.put("actionUrl", "/student/quizzes");
+                dailyPlan.add(plan2);
+            }
         } else {
             Map<String, Object> plan1 = new HashMap<>();
             plan1.put("step", 1);
-            plan1.put("title", "Review Course Notes & Slides");
-            plan1.put("description", "Inspect teacher-curated notes to stay ahead on upcoming topics.");
+            plan1.put("title", "Read Introductory Syllabus Notes");
+            plan1.put("description", "Review instructor-uploaded course slides to build baseline conceptual understanding.");
             plan1.put("estimatedMinutes", 15);
             plan1.put("actionType", "STUDY_NOTES");
+            plan1.put("resourceTitle", "Faculty Course Notes");
             plan1.put("actionUrl", "/student/materials");
             dailyPlan.add(plan1);
-        }
 
-        Map<String, Object> plan2 = new HashMap<>();
-        plan2.put("step", 2);
-        plan2.put("title", "Take 5 Adaptive Practice MCQs");
-        plan2.put("description", "Solve targeted questions to update your Attentive Knowledge Tracing weights.");
-        plan2.put("estimatedMinutes", 10);
-        plan2.put("actionType", "TAKE_QUIZ");
-        plan2.put("actionUrl", "/student/quizzes");
-        dailyPlan.add(plan2);
+            Map<String, Object> plan2 = new HashMap<>();
+            plan2.put("step", 2);
+            plan2.put("title", "Take 5 Diagnostic Questions");
+            plan2.put("description", "Solve baseline questions to allow the system to map your strengths and gaps.");
+            plan2.put("estimatedMinutes", 10);
+            plan2.put("actionType", "TAKE_QUIZ");
+            plan2.put("resourceTitle", "Baseline Diagnostic Quiz");
+            plan2.put("actionUrl", "/student/quizzes");
+            dailyPlan.add(plan2);
+        }
 
         Map<String, Object> plan3 = new HashMap<>();
         plan3.put("step", 3);
-        plan3.put("title", "Inspect Evaluated Exam Papers & AI Mistake Breakdown");
-        plan3.put("description", "Review question-by-question diagnoses and misconception tags provided on your marked exam sheets.");
+        plan3.put("title", "Inspect Evaluated Exam Scripts & AI Diagnoses");
+        plan3.put("description", "Review question-by-question misconception attributions and re-solve missed exam problems.");
         plan3.put("estimatedMinutes", 10);
         plan3.put("actionType", "VIEW_RESULTS");
+        plan3.put("resourceTitle", "Evaluated Exam Papers");
         plan3.put("actionUrl", "/student/results");
         dailyPlan.add(plan3);
 

@@ -11,9 +11,13 @@ import java.time.LocalDateTime;
 public class RecommendationRecord {
 
     public enum Type {
-        PRACTICE_WEAK_TOPIC,
-        REVIEW_PREREQUISITE,
-        CHALLENGE_TOPIC
+        LEARN_BASICS,               // Has never learned / unassessed -> read introductory lecture notes
+        PRACTICE_WORKED_EXAMPLE,    // Understands basics but makes errors -> worked examples & practice
+        REVIEW_PREREQUISITE,        // Prerequisite deficit blocking learning
+        REVIEW_MISCONCEPTION,       // Repeats exact conceptual error from exam/quiz
+        SPACED_REVISION,            // Mastered previously but time decay indicates forgetting risk
+        CHALLENGE_TOPIC,            // High mastery -> harder application / advanced problem sets
+        PRACTICE_WEAK_TOPIC         // General weak topic remediation
     }
 
     @Id
@@ -31,7 +35,7 @@ public class RecommendationRecord {
     private Topic topic;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "recommendation_type", nullable = false, length = 30)
+    @Column(name = "recommendation_type", nullable = false, length = 50)
     private Type recommendationType;
 
     @Column(name = "supporting_evidence", nullable = false, columnDefinition = "TEXT")
@@ -45,6 +49,15 @@ public class RecommendationRecord {
 
     @Column(name = "estimated_minutes")
     private Integer estimatedMinutes = 15;
+
+    @Column(name = "learning_activity", length = 50)
+    private String learningActivity = "PRACTICE_QUIZ"; // READ_NOTES, WORKED_EXAMPLE, REVISE_MISCONCEPTION, SPACED_QUIZ, ADVANCED_DRILL
+
+    @Column(name = "resource_title", length = 255)
+    private String resourceTitle;
+
+    @Column(name = "resource_link", length = 255)
+    private String resourceLink;
 
     @Column(length = 100)
     private String outcome;
@@ -74,6 +87,20 @@ public class RecommendationRecord {
         this.explanation = explanation;
         this.nextStepAction = nextStepAction;
         this.estimatedMinutes = estimatedMinutes != null ? estimatedMinutes : 15;
+        this.createdAt = LocalDateTime.now();
+    }
+
+    public RecommendationRecord(User student, Topic topic, Type recommendationType, String supportingEvidence, String explanation, String nextStepAction, Integer estimatedMinutes, String learningActivity, String resourceTitle, String resourceLink) {
+        this.student = student;
+        this.topic = topic;
+        this.recommendationType = recommendationType;
+        this.supportingEvidence = supportingEvidence;
+        this.explanation = explanation;
+        this.nextStepAction = nextStepAction;
+        this.estimatedMinutes = estimatedMinutes != null ? estimatedMinutes : 15;
+        this.learningActivity = learningActivity != null ? learningActivity : "PRACTICE_QUIZ";
+        this.resourceTitle = resourceTitle;
+        this.resourceLink = resourceLink;
         this.createdAt = LocalDateTime.now();
     }
 
@@ -144,6 +171,30 @@ public class RecommendationRecord {
 
     public void setEstimatedMinutes(Integer estimatedMinutes) {
         this.estimatedMinutes = estimatedMinutes;
+    }
+
+    public String getLearningActivity() {
+        return learningActivity != null ? learningActivity : "PRACTICE_QUIZ";
+    }
+
+    public void setLearningActivity(String learningActivity) {
+        this.learningActivity = learningActivity;
+    }
+
+    public String getResourceTitle() {
+        return resourceTitle;
+    }
+
+    public void setResourceTitle(String resourceTitle) {
+        this.resourceTitle = resourceTitle;
+    }
+
+    public String getResourceLink() {
+        return resourceLink;
+    }
+
+    public void setResourceLink(String resourceLink) {
+        this.resourceLink = resourceLink;
     }
 
     public String getOutcome() {

@@ -341,8 +341,8 @@ export const StudentDashboard = () => {
                 to={item.actionUrl || '/student/quizzes'}
                 className="inline-flex items-center justify-between text-xs font-bold text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300 pt-2 border-t border-gray-100 dark:border-gray-800/80 group"
               >
-                <span>Take Action</span>
-                <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
+                <span className="line-clamp-1">{item.resourceTitle ? `Open ${item.resourceTitle}` : 'Take Action'}</span>
+                <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform shrink-0 ml-1" />
               </Link>
             </div>
           ))}

@@ -640,8 +640,8 @@ public class StudentController {
             externalProfilesList.add(pMap);
         }
 
-        // 5. Recommendations
-        List<RecommendationRecord> recRecords = recommendationService.generateRecommendationsForStudent(studentId);
+        // 5. Recommendations (Drawn from structured recommendation engine)
+        List<RecommendationRecord> recRecords = recommendationService.getStudentRecommendations(studentId);
         List<Map<String, Object>> recommendationsList = new ArrayList<>();
         for (RecommendationRecord rec : recRecords) {
             Map<String, Object> r = new HashMap<>();
@@ -650,6 +650,11 @@ public class StudentController {
             r.put("type", rec.getRecommendationType().name());
             r.put("evidence", rec.getSupportingEvidence());
             r.put("explanation", rec.getExplanation());
+            r.put("action", rec.getNextStepAction());
+            r.put("estimatedMinutes", rec.getEstimatedMinutes());
+            r.put("learningActivity", rec.getLearningActivity());
+            r.put("resourceTitle", rec.getResourceTitle());
+            r.put("resourceLink", rec.getResourceLink());
             recommendationsList.add(r);
         }
 
