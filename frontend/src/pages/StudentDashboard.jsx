@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { studentApi } from '../api/client';
 import api from '../services/api';
+import { launchDirectQuiz } from '../utils/quizLauncher';
 import { StatCard } from '../components/StatCard';
 import { LoadingSpinner } from '../components/LoadingSpinner';
 import { Alert } from '../components/Alert';
@@ -40,6 +41,23 @@ export const StudentDashboard = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [showTechnicalDetails, setShowTechnicalDetails] = useState(false);
+  const [launchingTopic, setLaunchingTopic] = useState(null);
+  const navigate = useNavigate();
+
+  const handlePracticeTopic = async (topic) => {
+    try {
+      setLaunchingTopic(topic.topicName);
+      await launchDirectQuiz({
+        topic: topic.topicName,
+        subject: topic.subjectName,
+        navigate
+      });
+    } catch (err) {
+      navigate(`/student/quizzes?topic=${encodeURIComponent(topic.topicName || '')}&autoStart=true`);
+    } finally {
+      setLaunchingTopic(null);
+    }
+  };
 
   useEffect(() => {
     const fetchDashboard = async () => {
@@ -304,7 +322,7 @@ export const StudentDashboard = () => {
 
           {nextAction && (
             <div className="shrink-0">
-              <Link to={nextAction.url || '/student/quizzes'}>
+              <Link to={nextAction.url?.includes('/student/quizzes') ? '/student/quizzes?autoStart=true' : (nextAction.url || '/student/quizzes?autoStart=true')}>
                 <Button variant="primary" size="md" icon={ArrowRight}>
                   {nextAction.action || 'Start Today\'s Practice'}
                 </Button>
@@ -338,7 +356,11 @@ export const StudentDashboard = () => {
               </div>
 
               <Link
-                to={item.actionUrl || '/student/quizzes'}
+                to={
+                  item.actionUrl?.includes('/student/quizzes')
+                    ? '/student/quizzes?autoStart=true'
+                    : (item.actionUrl || '/student/quizzes?autoStart=true')
+                }
                 className="inline-flex items-center justify-between text-xs font-bold text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300 pt-2 border-t border-gray-100 dark:border-gray-800/80 group"
               >
                 <span className="line-clamp-1">{item.resourceTitle ? `Open ${item.resourceTitle}` : 'Take Action'}</span>
@@ -396,11 +418,25 @@ export const StudentDashboard = () => {
                           <span>Ask Jarvis</span>
                         </Link>
                         <Link
-                          to="/student/quizzes"
-                          className="px-3 py-1 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-bold transition shadow-xs"
+                          to={`/student/materials?topic=${encodeURIComponent(topic.topicName || '')}&subject=${encodeURIComponent(topic.subjectName || '')}&autoOpen=true`}
+                          className="px-2.5 py-1 bg-white hover:bg-gray-100 dark:bg-gray-800 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-200 border border-gray-200 dark:border-gray-700 rounded-xl text-xs font-semibold transition shadow-xs flex items-center gap-1 cursor-pointer"
+                          title="Read notes and course lecture material for this topic"
                         >
-                          Practise
+                          <BookOpen className="w-3.5 h-3.5 text-indigo-600 dark:text-indigo-400" />
+                          <span>Read Notes</span>
                         </Link>
+                        <button
+                          onClick={() => handlePracticeTopic(topic)}
+                          disabled={launchingTopic === topic.topicName}
+                          className="px-3 py-1 bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50 text-white rounded-xl text-xs font-bold transition shadow-xs flex items-center gap-1 cursor-pointer"
+                        >
+                          {launchingTopic === topic.topicName ? (
+                            <Clock className="w-3.5 h-3.5 animate-spin" />
+                          ) : (
+                            <ArrowRight className="w-3.5 h-3.5" />
+                          )}
+                          <span>Practise</span>
+                        </button>
                       </div>
                     </div>
 
@@ -563,7 +599,7 @@ export const StudentDashboard = () => {
                       Try a short practice quiz to start tracking your progress over time.
                     </p>
                   </div>
-                  <Link to="/student/quizzes">
+                  <Link to="/student/quizzes?autoStart=true">
                     <Button variant="primary" size="sm">
                       Take Your First Quiz
                     </Button>
@@ -621,7 +657,7 @@ export const StudentDashboard = () => {
               title="Course Materials"
               subtitle="Notes uploaded by your teachers"
               action={
-                <Link to="/student/materials">
+                <Link to="/student/materials?autoOpen=true">
                   <span className="text-xs font-semibold text-indigo-600 dark:text-indigo-400 hover:underline">
                     View &rarr;
                   </span>
@@ -633,7 +669,7 @@ export const StudentDashboard = () => {
                 Review lecture slides, readings, and study guides before exams to reinforce your understanding.
               </p>
               <Link
-                to="/student/materials"
+                to="/student/materials?autoOpen=true"
                 className="text-xs font-bold text-indigo-600 dark:text-indigo-400 hover:underline inline-flex items-center gap-1"
               >
                 Open Course Notes <ArrowRight className="w-3.5 h-3.5" />

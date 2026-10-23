@@ -319,15 +319,15 @@ export const Recommendations = () => {
 
                 <div className="pt-2 border-t border-gray-100 dark:border-gray-800 flex items-center justify-between text-xs">
                   <Link
-                    to="/student/materials"
-                    className="text-xs font-semibold text-gray-600 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 flex items-center gap-1"
+                    to={`/student/materials?topic=${encodeURIComponent(item.topic || '')}&subject=${encodeURIComponent(item.subject || '')}&autoOpen=true`}
+                    className="text-xs font-semibold text-gray-600 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 flex items-center gap-1 cursor-pointer"
                   >
-                    <BookOpen className="w-3 h-3" />
+                    <BookOpen className="w-3.5 h-3.5 text-indigo-500" />
                     <span>Read Notes</span>
                   </Link>
 
                   <Link
-                    to="/student/quizzes"
+                    to={`/student/quizzes?topic=${encodeURIComponent(item.topic || '')}&subject=${encodeURIComponent(item.subject || '')}&autoStart=true`}
                     className="inline-flex items-center gap-1 px-3 py-1 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg text-xs font-bold shadow-xs transition"
                   >
                     <span>Practice Topic</span>
@@ -408,17 +408,18 @@ export const Recommendations = () => {
                   </Link>
                 ) : (
                   <Link
-                    to="/student/materials"
-                    className="px-4 py-2 rounded-xl text-xs font-semibold bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-50 transition"
+                    to={`/student/materials?topic=${encodeURIComponent(primaryRec.topic?.name || '')}&autoOpen=true`}
+                    className="px-4 py-2 rounded-xl text-xs font-semibold bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-50 transition flex items-center gap-1.5"
                   >
-                    Review Subject Notes
+                    <BookOpen className="w-3.5 h-3.5 text-indigo-500" />
+                    <span>Review Subject Notes</span>
                   </Link>
                 )}
                 <Link
                   to={
                     primaryRec.recommendationType === 'REVIEW_MISCONCEPTION' || primaryRec.recommendationType === 'PRACTICE_WORKED_EXAMPLE'
                       ? (primaryRec.resourceLink || '/student/assistant')
-                      : '/student/quizzes'
+                      : `/student/quizzes?topic=${encodeURIComponent(primaryRec.topic?.name || '')}&autoStart=true`
                   }
                   className="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl text-xs font-bold text-white bg-indigo-600 hover:bg-indigo-700 shadow-md hover:-translate-y-0.5 transition-all cursor-pointer"
                 >
@@ -482,20 +483,26 @@ export const Recommendations = () => {
               </p>
             </div>
 
-            <div className="p-4 rounded-2xl bg-gray-50 dark:bg-gray-800/60 border border-gray-200 dark:border-gray-700/80 space-y-2">
+            <Link
+              to={`/student/materials?topic=${encodeURIComponent(primaryRec?.topic?.name || '')}&autoOpen=true`}
+              className="p-4 rounded-2xl bg-gray-50 dark:bg-gray-800/60 border border-gray-200 dark:border-gray-700/80 space-y-2 hover:border-indigo-400 dark:hover:border-indigo-500 transition cursor-pointer block group"
+            >
               <div className="flex items-center justify-between">
                 <span className="text-xs font-black text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-950/60 px-2.5 py-0.5 rounded-md">
                   Step 2
                 </span>
-                <Target className="w-4 h-4 text-gray-400" />
+                <BookOpen className="w-4 h-4 text-indigo-500 group-hover:scale-110 transition-transform" />
               </div>
-              <h4 className="text-xs font-bold text-gray-900 dark:text-gray-100">
-                2. Read Course PDF Notes
+              <h4 className="text-xs font-bold text-gray-900 dark:text-gray-100 flex items-center justify-between">
+                <span>2. Read Course PDF Notes</span>
+                <span className="text-[10px] text-indigo-600 dark:text-indigo-400 font-semibold flex items-center gap-0.5">
+                  Open <ArrowRight className="w-2.5 h-2.5" />
+                </span>
               </h4>
               <p className="text-[11px] text-gray-600 dark:text-gray-400 leading-relaxed">
                 Open your teacher's uploaded course lecture PDF and re-check the definitions and proof derivations.
               </p>
-            </div>
+            </Link>
 
             <div className="p-4 rounded-2xl bg-gray-50 dark:bg-gray-800/60 border border-gray-200 dark:border-gray-700/80 space-y-2">
               <div className="flex items-center justify-between">
@@ -585,7 +592,11 @@ export const Recommendations = () => {
                       {rec.supportingEvidence}
                     </span>
                     <Link
-                      to={rec.resourceLink || "/student/quizzes"}
+                      to={
+                        rec.recommendationType === 'REVIEW_MISCONCEPTION' || rec.recommendationType === 'PRACTICE_WORKED_EXAMPLE'
+                          ? (rec.resourceLink || '/student/assistant')
+                          : `/student/quizzes?topic=${encodeURIComponent(rec.topic?.name || '')}&autoStart=true`
+                      }
                       className="px-4 py-2 rounded-xl text-xs font-bold text-white bg-indigo-600 hover:bg-indigo-700 transition flex items-center gap-1.5 shadow-xs"
                     >
                       <span>{cfg.actionText}</span>
@@ -777,7 +788,7 @@ export const Recommendations = () => {
                 Close
               </button>
               <Link
-                to="/student/quizzes"
+                to={`/student/quizzes?topic=${encodeURIComponent(selectedWhyThis?.topic?.name || '')}&autoStart=true`}
                 onClick={() => setSelectedWhyThis(null)}
                 className="px-5 py-2 text-xs font-bold text-white bg-indigo-600 hover:bg-indigo-700 rounded-xl transition shadow-xs flex items-center gap-1.5 cursor-pointer"
               >

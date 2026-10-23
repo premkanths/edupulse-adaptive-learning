@@ -195,11 +195,11 @@ export const StudentSubjects = () => {
 
                 <div className="flex items-center gap-2 shrink-0">
                   <Link
-                    to="/student/materials"
+                    to={`/student/materials?subject=${encodeURIComponent(subject.name)}&autoOpen=true`}
                     onClick={(e) => e.stopPropagation()}
                     className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold bg-white dark:bg-gray-800 hover:bg-indigo-50 dark:hover:bg-indigo-950/60 text-gray-700 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 border border-gray-200 dark:border-gray-700 transition"
                   >
-                    <FileText className="w-3.5 h-3.5" />
+                    <BookOpen className="w-3.5 h-3.5 text-indigo-500" />
                     <span>Notes</span>
                   </Link>
 
@@ -270,12 +270,21 @@ export const StudentSubjects = () => {
 
                             <div className="flex items-center justify-between text-xs pt-2 border-t border-gray-100 dark:border-gray-800 text-gray-600 dark:text-gray-400">
                               <span>Accuracy: <strong className="text-gray-900 dark:text-gray-100">{topic.accuracy || 0}%</strong> ({topic.attemptsCount || 0} attempts)</span>
-                              <Link
-                                to="/student/quizzes"
-                                className="inline-flex items-center gap-1 font-bold text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300 transition-colors"
-                              >
-                                Practice <ArrowRight className="w-3.5 h-3.5" />
-                              </Link>
+                              <div className="flex items-center gap-3">
+                                <Link
+                                  to={`/student/materials?topic=${encodeURIComponent(topic.name)}&subject=${encodeURIComponent(subject.name)}&autoOpen=true`}
+                                  className="inline-flex items-center gap-1 font-semibold text-gray-600 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-300 transition-colors"
+                                >
+                                  <BookOpen className="w-3.5 h-3.5" />
+                                  <span>Notes</span>
+                                </Link>
+                                <Link
+                                  to={`/student/quizzes?topic=${encodeURIComponent(topic.name)}&subject=${encodeURIComponent(subject.name)}&autoStart=true`}
+                                  className="inline-flex items-center gap-1 font-bold text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300 transition-colors"
+                                >
+                                  Practice <ArrowRight className="w-3.5 h-3.5" />
+                                </Link>
+                              </div>
                             </div>
                           </div>
                         );

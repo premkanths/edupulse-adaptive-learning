@@ -358,7 +358,13 @@ export const StudentResultMarks = () => {
                             <Bot className="w-3 h-3" /> Ask Jarvis
                           </Link>
                           <Link
-                            to="/student/quizzes"
+                            to={`/student/materials?topic=${encodeURIComponent(topicName)}&subject=${encodeURIComponent(activeAnalysis.subjectName || '')}&autoOpen=true`}
+                            className="text-[11px] underline text-indigo-600 dark:text-indigo-400 hover:text-indigo-800 flex items-center gap-0.5"
+                          >
+                            <BookOpen className="w-3 h-3" /> Notes
+                          </Link>
+                          <Link
+                            to={`/student/quizzes?topic=${encodeURIComponent(topicName)}&subject=${encodeURIComponent(activeAnalysis.subjectName || '')}&autoStart=true`}
                             className="text-[11px] underline text-indigo-600 dark:text-indigo-400 hover:text-indigo-800 flex items-center gap-0.5"
                           >
                             Practice <ArrowRight className="w-3 h-3" />
@@ -438,9 +444,16 @@ export const StudentResultMarks = () => {
                         </div>
                       </div>
 
-                      <div className="flex justify-end pt-1">
+                      <div className="flex flex-wrap items-center justify-end gap-2 pt-1">
                         <Link
-                          to={`/student/assistant?topic=${encodeURIComponent(activeAnalysis.subjectName || 'Exam Paper')}&prompt=${encodeURIComponent(`I lost marks on this question in my exam: "${m.questionText}". The teacher/AI identified this misconception: "${m.errorReason || m.misconception || ''}". Can you explain the correct concept and teach me step-by-step how to answer it correctly?`)}`}
+                          to={`/student/materials?topic=${encodeURIComponent(m.topic || '')}&subject=${encodeURIComponent(activeAnalysis.subjectName || '')}&autoOpen=true`}
+                          className="text-[11px] font-bold text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300 inline-flex items-center gap-1 bg-indigo-50 dark:bg-indigo-950/60 px-2.5 py-1 rounded-lg border border-indigo-200 dark:border-indigo-900/40"
+                        >
+                          <BookOpen className="w-3.5 h-3.5" />
+                          <span>Read Notes</span>
+                        </Link>
+                        <Link
+                          to={`/student/assistant?topic=${encodeURIComponent(m.topic || activeAnalysis.subjectName || 'Exam Paper')}&prompt=${encodeURIComponent(`I lost marks on ${m.question || m.questionText || ('Question ' + (idx + 1))}${m.topic ? ' regarding ' + m.topic : ''}. The evaluator flagged: "${m.errorReason || m.misconception || 'Conceptual mistake'}". Please explain the underlying principle and provide a step-by-step blueprint for a complete, high-scoring answer.`)}`}
                           className="text-[11px] font-bold text-teal-600 dark:text-teal-400 hover:text-teal-700 dark:hover:text-teal-300 inline-flex items-center gap-1 bg-teal-50 dark:bg-teal-950/60 px-2.5 py-1 rounded-lg border border-teal-200 dark:border-teal-900/40"
                         >
                           <Bot className="w-3.5 h-3.5" />
@@ -472,7 +485,7 @@ export const StudentResultMarks = () => {
                 )}
 
                 <Link
-                  to="/student/materials"
+                  to={`/student/materials?subject=${encodeURIComponent(activeAnalysis.subjectName || '')}&topic=${encodeURIComponent(activeWeakTopics?.[0] || '')}&autoOpen=true`}
                   className="px-4 py-2 rounded-xl text-xs font-semibold bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 transition flex items-center gap-1.5"
                 >
                   <BookOpen className="w-3.5 h-3.5" />

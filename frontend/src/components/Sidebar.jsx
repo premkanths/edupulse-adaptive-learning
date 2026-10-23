@@ -37,6 +37,8 @@ export const Sidebar = ({ mobileOpen = false, setMobileOpen = () => {} }) => {
           { name: 'Dashboard Overview', path: '/admin/dashboard', icon: LayoutDashboard },
           { name: 'User Management', path: '/admin/users', icon: Users },
           { name: 'Class Cohorts', path: '/admin/classes', icon: Layers },
+          { name: 'Quizzes & Assessments', path: '/admin/quizzes', icon: BookOpen },
+          { name: 'Evaluated Exam Papers', path: '/admin/exam-papers', icon: Award },
           { name: 'Academic Records Import', path: '/admin/import', icon: UploadCloud },
           { name: 'Institutional Reports', path: '/admin/reports', icon: FileText },
           { name: 'Platform Settings', path: '/admin/settings', icon: Settings },
@@ -79,8 +81,8 @@ export const Sidebar = ({ mobileOpen = false, setMobileOpen = () => {} }) => {
 
   return (
     <>
-      {/* 1. Desktop Fixed Sidebar */}
-      <aside className="w-64 bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-800 sticky top-16 h-[calc(100vh-4rem)] p-4 hidden md:flex flex-col justify-between transition-colors z-20 shrink-0">
+      {/* 1. Desktop Fixed Sidebar (Locked in place, never moves on scroll) */}
+      <aside className="w-64 bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-800 fixed top-16 left-0 bottom-0 p-4 hidden md:flex flex-col justify-between transition-colors z-20 shrink-0">
         <div className="space-y-1 overflow-y-auto pr-1 flex-1 no-scrollbar">
           {links.map((link) => {
             const Icon = link.icon;
@@ -135,6 +137,9 @@ export const Sidebar = ({ mobileOpen = false, setMobileOpen = () => {} }) => {
           </NavLink>
         </div>
       </aside>
+
+      {/* 2. Desktop Spacer (preserves exact flex spacing for main content without shifts) */}
+      <div className="w-64 shrink-0 hidden md:block" aria-hidden="true" />
 
       {/* 2. Mobile Responsive Slide-In Drawer */}
       {mobileOpen && (

@@ -98,6 +98,11 @@ public class WeeklySummaryService {
 
     @Transactional
     public WeeklySummary generateSummaryForStudent(User student, LocalDate weekStart) {
+        return generateSummaryForStudent(student, weekStart, null);
+    }
+
+    @Transactional
+    public WeeklySummary generateSummaryForStudent(User student, LocalDate weekStart, String overrideEmail) {
         LocalDateTime startOfWeek = weekStart.atStartOfDay();
         List<Attempt> attempts = attemptRepository.findByStudentIdAndSubmittedAtAfter(student.getId(), startOfWeek);
         if (attempts.isEmpty()) {
@@ -216,7 +221,11 @@ public class WeeklySummaryService {
         html.append("&copy; ").append(java.time.Year.now().getValue()).append(" EduPulse Adaptive Learning Platform &bull; Automated Weekly Digest");
         html.append("</div></div></body></html>");
 
-        emailService.sendEmail(student, "WEEKLY_SUMMARY", "Your EduPulse Weekly Learning Summary & Quiz Reminder - " + weekStart, html.toString());
+        if (overrideEmail != null && !overrideEmail.isBlank()) {
+            emailService.sendDirectEmail(overrideEmail, student.getName(), "WEEKLY_SUMMARY", "Your EduPulse Weekly Learning Summary & Quiz Reminder - " + weekStart, html.toString());
+        } else {
+            emailService.sendEmail(student, "WEEKLY_SUMMARY", "Your EduPulse Weekly Learning Summary & Quiz Reminder - " + weekStart, html.toString());
+        }
 
         return summary;
     }

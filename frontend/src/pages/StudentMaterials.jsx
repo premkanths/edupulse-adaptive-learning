@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { studentApi, API_BASE } from '../api/client';
 import { LoadingSpinner } from '../components/LoadingSpinner';
 import { Alert } from '../components/Alert';
+import { MarkdownRenderer } from '../components/MarkdownRenderer';
 import {
   FileText,
   BookOpen,
@@ -18,9 +19,12 @@ import {
   X,
   Copy,
   Check,
-  Printer
+  Printer,
+  Bookmark,
+  CheckCircle2
 } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams, useLocation } from 'react-router-dom';
+import { findMatchingMaterial } from '../utils/materialLauncher';
 
 export const StudentMaterials = () => {
   const [materials, setMaterials] = useState([]);
@@ -33,12 +37,18 @@ export const StudentMaterials = () => {
   const [pdfLoading, setPdfLoading] = useState(false);
   const [viewMode, setViewMode] = useState('pdf'); // 'pdf' | 'text'
   const [copied, setCopied] = useState(false);
+  const [highlightedMaterialId, setHighlightedMaterialId] = useState(null);
+
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const location = useLocation();
+  const autoOpenedRef = useRef(false);
 
   const handleOpenMaterial = async (item, mode = 'pdf') => {
     setActiveMaterial(item);
     setViewMode(mode);
     setPdfBlobUrl(null);
+    setHighlightedMaterialId(item.id);
 
     if (mode === 'pdf') {
       setPdfLoading(true);
@@ -47,11 +57,22 @@ export const StudentMaterials = () => {
         const res = await fetch(`${API_BASE}/materials/${item.id}/file`, {
           headers: token ? { Authorization: `Bearer ${token}` } : {}
         });
-        const blob = await res.blob();
-        const url = URL.createObjectURL(blob);
-        setPdfBlobUrl(url);
+        if (res.ok) {
+          const blob = await res.blob();
+          if (blob && blob.size > 100) {
+            const url = URL.createObjectURL(blob);
+            setPdfBlobUrl(url);
+          } else {
+            // Blob empty or too small, fall back to markdown text view
+            setViewMode('text');
+          }
+        } else {
+          // Endpoint error, fallback to text mode
+          setViewMode('text');
+        }
       } catch (err) {
-        console.error('Failed to load PDF preview:', err);
+        console.error('Failed to load PDF preview, fallback to text:', err);
+        setViewMode('text');
       } finally {
         setPdfLoading(false);
       }
@@ -92,7 +113,33 @@ export const StudentMaterials = () => {
     try {
       const res = await studentApi.getAvailableMaterials();
       if (res.success) {
-        setMaterials(res.data || []);
+        const allMaterials = res.data || [];
+        setMaterials(allMaterials);
+
+        // Check if query params or navigation state request auto-opening
+        const autoOpen = searchParams.get('autoOpen') === 'true' || location.state?.autoOpen;
+        const targetTopic = searchParams.get('topic') || location.state?.topic;
+        const targetSubject = searchParams.get('subject') || location.state?.subject;
+        const targetMaterialId = searchParams.get('materialId') || location.state?.materialId;
+        const targetMode = searchParams.get('mode') || location.state?.mode || 'pdf';
+
+        if (!autoOpenedRef.current && (autoOpen || targetMaterialId || targetTopic)) {
+          autoOpenedRef.current = true;
+          const matched = findMatchingMaterial(allMaterials, {
+            materialId: targetMaterialId,
+            topic: targetTopic,
+            subject: targetSubject
+          });
+
+          if (matched) {
+            setHighlightedMaterialId(matched.id);
+            if (matched.subject?.name) {
+              setSelectedSubject(matched.subject.name);
+            }
+            // Automatically launch into the material viewer modal
+            handleOpenMaterial(matched, targetMode);
+          }
+        }
       } else {
         setError(res.message || 'Failed to fetch course materials');
       }
@@ -228,16 +275,28 @@ export const StudentMaterials = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredMaterials.map((item) => {
             const badgeColor = getFileTypeBadge(item.fileType);
+            const isTargeted = highlightedMaterialId === item.id;
             return (
               <div
                 key={item.id}
-                className="bg-white dark:bg-gray-900 rounded-3xl p-6 border border-gray-200 dark:border-gray-800 shadow-xs hover:shadow-md hover:border-indigo-300 dark:hover:border-indigo-700 transition-all flex flex-col justify-between space-y-4"
+                className={`bg-white dark:bg-gray-900 rounded-3xl p-6 border transition-all flex flex-col justify-between space-y-4 ${
+                  isTargeted
+                    ? 'border-indigo-500 dark:border-indigo-400 ring-2 ring-indigo-500/30 shadow-md bg-indigo-50/10'
+                    : 'border-gray-200 dark:border-gray-800 shadow-xs hover:shadow-md hover:border-indigo-300 dark:hover:border-indigo-700'
+                }`}
               >
                 <div className="space-y-3">
                   <div className="flex items-center justify-between gap-2">
-                    <span className="text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-indigo-50 dark:bg-indigo-950/60 text-indigo-700 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-800">
-                      {item.subject?.name || 'General Course'}
-                    </span>
+                    <div className="flex items-center gap-1.5 flex-wrap">
+                      <span className="text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-indigo-50 dark:bg-indigo-950/60 text-indigo-700 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-800">
+                        {item.subject?.name || 'General Course'}
+                      </span>
+                      {isTargeted && (
+                        <span className="text-[10px] font-black px-2 py-0.5 rounded-full bg-amber-100 dark:bg-amber-950/80 text-amber-700 dark:text-amber-300 border border-amber-300 dark:border-amber-700 flex items-center gap-1">
+                          🎯 Target Reading
+                        </span>
+                      )}
+                    </div>
                     <span className={`text-[10px] font-black px-2 py-0.5 rounded-md border ${badgeColor}`}>
                       {item.fileType || 'TXT'}
                     </span>
@@ -402,8 +461,8 @@ export const StudentMaterials = () => {
                   )}
                 </div>
               ) : (
-                <div className="p-5 rounded-2xl bg-gray-50 dark:bg-gray-950/60 border border-gray-200 dark:border-gray-800 text-sm text-gray-800 dark:text-gray-200 leading-relaxed font-sans whitespace-pre-wrap">
-                  {activeMaterial.textContent}
+                <div className="p-5 rounded-2xl bg-gray-50 dark:bg-gray-950/60 border border-gray-200 dark:border-gray-800 text-sm text-gray-800 dark:text-gray-200 leading-relaxed font-sans overflow-y-auto max-h-[60vh]">
+                  <MarkdownRenderer content={activeMaterial.textContent || 'No text extracted for this material.'} />
                 </div>
               )}
             </div>

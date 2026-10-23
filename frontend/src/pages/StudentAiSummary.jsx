@@ -310,17 +310,21 @@ export const StudentAiSummary = () => {
 
             <div className="flex flex-wrap items-center gap-3 pt-2">
               <button
-                onClick={() => navigate('/student/quizzes')}
+                onClick={() => navigate('/student/quizzes?autoStart=true')}
                 className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-bold bg-indigo-600 hover:bg-indigo-700 text-white shadow-xs transition cursor-pointer"
               >
                 <span>Take 5-Min Quiz</span>
                 <ArrowRight className="w-3.5 h-3.5" />
               </button>
               <button
-                onClick={() => navigate('/student/materials')}
+                onClick={() => {
+                  const targetTopic = whatHeShouldLearn?.gaps?.[0]?.topicName || '';
+                  navigate(`/student/materials?topic=${encodeURIComponent(targetTopic)}&autoOpen=true`);
+                }}
                 className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-semibold bg-white dark:bg-gray-800 hover:bg-gray-50 text-gray-700 dark:text-gray-200 border border-gray-200 dark:border-gray-700 transition cursor-pointer"
               >
-                <span>Browse Lecture Notes</span>
+                <BookOpen className="w-3.5 h-3.5 text-indigo-500" />
+                <span>Read Lecture Notes</span>
               </button>
             </div>
           </div>
@@ -477,17 +481,26 @@ export const StudentAiSummary = () => {
                   )}
                 </div>
 
-                <div className="flex items-center justify-between pt-2 border-t border-gray-100 dark:border-gray-700">
+                <div className="flex flex-wrap items-center justify-between gap-2 pt-2 border-t border-gray-100 dark:border-gray-700">
                   <span className="text-[11px] text-gray-500">
                     Accuracy: {gap.accuracy}% ({gap.attemptsCount} attempts)
                   </span>
-                  <button
-                    onClick={() => navigate('/student/quizzes')}
-                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold bg-indigo-50 dark:bg-indigo-950/60 text-indigo-700 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-800 hover:bg-indigo-100 transition cursor-pointer"
-                  >
-                    <span>Practice Topic</span>
-                    <ArrowRight className="w-3.5 h-3.5" />
-                  </button>
+                  <div className="flex items-center gap-2">
+                    <button
+                      onClick={() => navigate(`/student/materials?topic=${encodeURIComponent(gap.topicName || gap.name || '')}&subject=${encodeURIComponent(gap.subjectName || '')}&autoOpen=true`)}
+                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-200 border border-gray-200 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-700 transition cursor-pointer"
+                    >
+                      <BookOpen className="w-3.5 h-3.5 text-indigo-500" />
+                      <span>Read Notes</span>
+                    </button>
+                    <button
+                      onClick={() => navigate(`/student/quizzes?topic=${encodeURIComponent(gap.topicName || gap.name || '')}&autoStart=true`)}
+                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold bg-indigo-50 dark:bg-indigo-950/60 text-indigo-700 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-800 hover:bg-indigo-100 transition cursor-pointer"
+                    >
+                      <span>Practice Topic</span>
+                      <ArrowRight className="w-3.5 h-3.5" />
+                    </button>
+                  </div>
                 </div>
               </div>
             ))}

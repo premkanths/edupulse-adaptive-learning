@@ -67,6 +67,14 @@ const RootRoute = () => {
   }
 };
 
+const QuizzesRedirect = () => {
+  const { user } = useAuth();
+  if (user?.role === 'TEACHER' || user?.role === 'ADMIN') {
+    return <Navigate to="/teacher/quizzes" replace />;
+  }
+  return <Navigate to="/student/quizzes" replace />;
+};
+
 const PageFallback = () => (
   <div className="py-20 flex justify-center items-center">
     <LoadingSpinner size="md" text="Loading view..." />
@@ -83,16 +91,16 @@ const Layout = ({ children }) => {
   }, [location.pathname]);
 
   return (
-    <div className="min-h-screen flex flex-col bg-gray-50 dark:bg-gray-950 text-gray-900 dark:text-gray-100 transition-colors overflow-x-hidden w-full max-w-full">
+    <div className="min-h-screen flex flex-col bg-gray-50 dark:bg-gray-950 text-gray-900 dark:text-gray-100 transition-colors w-full max-w-full">
       <Navbar
         onToggleMobileMenu={() => setMobileMenuOpen((prev) => !prev)}
         isMobileMenuOpen={mobileMenuOpen}
       />
-      <div className="flex flex-1 w-full max-w-full overflow-x-hidden">
+      <div className="flex flex-1 w-full max-w-full">
         <Sidebar mobileOpen={mobileMenuOpen} setMobileOpen={setMobileMenuOpen} />
         <main
           key={location.pathname}
-          className="flex-1 p-3.5 sm:p-6 md:p-8 pb-24 md:pb-8 max-w-7xl mx-auto w-full overflow-x-hidden animate-fade-in-up"
+          className="flex-1 p-3.5 sm:p-6 md:p-8 pb-24 md:pb-8 max-w-7xl mx-auto w-full animate-fade-in-up min-w-0"
         >
           <Suspense fallback={<PageFallback />}>
             {children}
@@ -162,6 +170,25 @@ export default function App() {
                   </ProtectedRoute>
                 }
               />
+              {/* Generic Quiz Shortcut Routes */}
+              <Route
+                path="/quizzes"
+                element={
+                  <ProtectedRoute allowedRoles={['STUDENT', 'TEACHER', 'ADMIN']}>
+                    <QuizzesRedirect />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/quiz"
+                element={
+                  <ProtectedRoute allowedRoles={['STUDENT', 'TEACHER', 'ADMIN']}>
+                    <QuizzesRedirect />
+                  </ProtectedRoute>
+                }
+              />
+
+              {/* === Student Quiz & Assessment Execution Routes === */}
               <Route
                 path="/student/quizzes"
                 element={
@@ -179,7 +206,63 @@ export default function App() {
                 }
               />
               <Route
+                path="/student/quizzes/:quizId/take"
+                element={
+                  <ProtectedRoute allowedRoles={['STUDENT']}>
+                    <Layout><QuizTaking /></Layout>
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/student/quiz/:quizId"
+                element={
+                  <ProtectedRoute allowedRoles={['STUDENT']}>
+                    <Layout><QuizTaking /></Layout>
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/student/quiz/:quizId/take"
+                element={
+                  <ProtectedRoute allowedRoles={['STUDENT']}>
+                    <Layout><QuizTaking /></Layout>
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/student/attempts/:attemptId"
+                element={
+                  <ProtectedRoute allowedRoles={['STUDENT']}>
+                    <Layout><QuizResult /></Layout>
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/student/attempts/:attemptId/result"
+                element={
+                  <ProtectedRoute allowedRoles={['STUDENT']}>
+                    <Layout><QuizResult /></Layout>
+                  </ProtectedRoute>
+                }
+              />
+              <Route
                 path="/student/attempts/:attemptId/review"
+                element={
+                  <ProtectedRoute allowedRoles={['STUDENT']}>
+                    <Layout><QuizResult /></Layout>
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/student/quizzes/:quizId/result"
+                element={
+                  <ProtectedRoute allowedRoles={['STUDENT']}>
+                    <Layout><QuizResult /></Layout>
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/student/quizzes/:quizId/results/:attemptId"
                 element={
                   <ProtectedRoute allowedRoles={['STUDENT']}>
                     <Layout><QuizResult /></Layout>
@@ -379,6 +462,38 @@ export default function App() {
                 element={
                   <ProtectedRoute allowedRoles={['ADMIN']}>
                     <Layout><AuditLogViewer /></Layout>
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/admin/quizzes"
+                element={
+                  <ProtectedRoute allowedRoles={['ADMIN']}>
+                    <Layout><TeacherQuizzes /></Layout>
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/admin/quizzes/generate"
+                element={
+                  <ProtectedRoute allowedRoles={['ADMIN']}>
+                    <Layout><AiQuizGenerator /></Layout>
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/admin/quizzes/ai-generate"
+                element={
+                  <ProtectedRoute allowedRoles={['ADMIN']}>
+                    <Layout><AiQuizGenerator /></Layout>
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/admin/exam-papers"
+                element={
+                  <ProtectedRoute allowedRoles={['ADMIN']}>
+                    <Layout><TeacherExamPapers /></Layout>
                   </ProtectedRoute>
                 }
               />

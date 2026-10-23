@@ -231,7 +231,7 @@ export const StudentAiSummaryDrawer = ({ isOpen, onClose }) => {
                     </p>
                     <div className="pt-1">
                       <Link
-                        to="/student/quizzes"
+                        to="/student/quizzes?autoStart=true"
                         onClick={onClose}
                         className="inline-flex items-center gap-1.5 text-xs font-bold text-indigo-600 dark:text-indigo-400 hover:underline"
                       >
@@ -346,15 +346,27 @@ export const StudentAiSummaryDrawer = ({ isOpen, onClose }) => {
                           <span className="text-[10px] text-gray-500">
                             Historical Accuracy: {gap.accuracy}% ({gap.attemptsCount} attempts)
                           </span>
-                          <button
-                            onClick={() => {
-                              onClose();
-                              navigate('/student/quizzes');
-                            }}
-                            className="text-xs font-bold text-indigo-600 dark:text-indigo-400 hover:underline flex items-center gap-1 cursor-pointer"
-                          >
-                            Practice Topic <ChevronRight className="w-3.5 h-3.5" />
-                          </button>
+                          <div className="flex items-center gap-3">
+                            <button
+                              onClick={() => {
+                                onClose();
+                                navigate(`/student/materials?topic=${encodeURIComponent(gap.topicName || '')}&subject=${encodeURIComponent(gap.subjectName || '')}&autoOpen=true`);
+                              }}
+                              className="text-xs font-semibold text-gray-600 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 flex items-center gap-1 cursor-pointer"
+                            >
+                              <BookOpen className="w-3.5 h-3.5" />
+                              <span>Read Notes</span>
+                            </button>
+                            <button
+                              onClick={() => {
+                                onClose();
+                                navigate(`/student/quizzes?topic=${encodeURIComponent(gap.topicName || '')}&autoStart=true`);
+                              }}
+                              className="text-xs font-bold text-indigo-600 dark:text-indigo-400 hover:underline flex items-center gap-1 cursor-pointer"
+                            >
+                              Practice Topic <ChevronRight className="w-3.5 h-3.5" />
+                            </button>
+                          </div>
                         </div>
                       </div>
                     ))}

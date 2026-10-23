@@ -218,7 +218,7 @@ export const PerformanceHistory = () => {
               <Award className="w-8 h-8 mx-auto mb-2 text-gray-400" />
               <p>No recent quiz attempts found.</p>
               <Link
-                to="/student/quizzes"
+                to="/student/quizzes?autoStart=true"
                 className="mt-3 inline-block px-3 py-1.5 rounded-xl bg-indigo-600 text-white font-bold"
               >
                 Take a Quiz
@@ -333,7 +333,7 @@ export const PerformanceHistory = () => {
                       <div className="text-[11px]">{t.attempts || 0} attempts</div>
                     </div>
                     <Link
-                      to="/student/quizzes"
+                      to={`/student/quizzes?topic=${encodeURIComponent(t.topicName || '')}&subject=${encodeURIComponent(t.subjectName || '')}&autoStart=true`}
                       className="inline-flex items-center gap-1 px-3 py-1.5 rounded-xl text-xs font-bold bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400 hover:bg-indigo-600 hover:text-white transition cursor-pointer"
                     >
                       <span>Practice</span>

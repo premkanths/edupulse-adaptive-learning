@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { studentApi } from '../api/client';
 import { LoadingSpinner } from '../components/LoadingSpinner';
+import { MarkdownRenderer } from '../components/MarkdownRenderer';
 import { Bot, User, Send, Plus, Trash2, Sparkles, Shield, BookOpen, HelpCircle, Compass, CheckCircle, ArrowRight, History, X, MessageSquare } from 'lucide-react';
 
 export const AiStudyAssistant = () => {
@@ -170,16 +171,14 @@ export const AiStudyAssistant = () => {
 
     return (
       <div className="space-y-3">
-        <div className="whitespace-pre-wrap">{mainBody.trim()}</div>
+        <MarkdownRenderer content={mainBody.trim()} />
         {notesFooter && (
           <div className="mt-3 pt-3 border-t border-gray-200 dark:border-gray-800 bg-indigo-50/50 dark:bg-indigo-950/30 rounded-xl p-3 text-xs">
             <div className="flex items-center gap-1.5 font-bold text-indigo-700 dark:text-indigo-300 mb-1">
               <BookOpen className="w-3.5 h-3.5" />
               <span>Grounded in Official Course Materials:</span>
             </div>
-            <div className="text-gray-600 dark:text-gray-300 whitespace-pre-line">
-              {notesFooter.trim()}
-            </div>
+            <MarkdownRenderer content={notesFooter.trim()} />
           </div>
         )}
       </div>

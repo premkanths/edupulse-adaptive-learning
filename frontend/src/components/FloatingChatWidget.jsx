@@ -3,6 +3,7 @@ import { useLocation } from 'react-router-dom';
 import { Bot, X, MessageSquare, Sparkles, Send } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { studentApi } from '../api/client';
+import { MarkdownRenderer } from './MarkdownRenderer';
 
 export const FloatingChatWidget = () => {
   const { role } = useAuth();
@@ -110,13 +111,13 @@ export const FloatingChatWidget = () => {
               return (
                 <div key={m.id} className={`flex ${isUser ? 'justify-end' : 'justify-start'}`}>
                   <div
-                    className={`max-w-[85%] p-3 rounded-2xl whitespace-pre-wrap leading-relaxed ${
+                    className={`max-w-[85%] p-3 rounded-2xl leading-relaxed ${
                       isUser
-                        ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-tr-none shadow-xs'
+                        ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-tr-none shadow-xs whitespace-pre-wrap'
                         : 'bg-slate-100 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-100 rounded-tl-none shadow-xs'
                     }`}
                   >
-                    {m.content}
+                    {isUser ? m.content : <MarkdownRenderer content={m.content} />}
                   </div>
                 </div>
               );

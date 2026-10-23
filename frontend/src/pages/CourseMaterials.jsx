@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import {
   BookOpen,
   Upload,
@@ -20,6 +21,7 @@ import api from '../services/api';
 import { Card, CardHeader } from '../components/ui/Card';
 import { Button } from '../components/ui/Button';
 import { Badge } from '../components/ui/Badge';
+import { MarkdownRenderer } from '../components/MarkdownRenderer';
 
 const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:8080/api';
 
@@ -30,6 +32,9 @@ export const CourseMaterials = () => {
   const [showUploadModal, setShowUploadModal] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [notification, setNotification] = useState(null);
+
+  const [searchParams] = useSearchParams();
+  const autoOpenedRef = useRef(false);
 
   // File Preview State
   const [activeMaterial, setActiveMaterial] = useState(null);
@@ -44,6 +49,12 @@ export const CourseMaterials = () => {
   const [file, setFile] = useState(null);
   const [rawText, setRawText] = useState('');
   const [inputType, setInputType] = useState('FILE'); // 'FILE' | 'TEXT'
+
+  // Create Subject Modal State
+  const [showSubjectModal, setShowSubjectModal] = useState(false);
+  const [newSubjectName, setNewSubjectName] = useState('');
+  const [newSubjectDesc, setNewSubjectDesc] = useState('');
+  const [creatingSubject, setCreatingSubject] = useState(false);
 
   // Test RAG Retrieval State
   const [testQuery, setTestQuery] = useState('');
@@ -62,7 +73,20 @@ export const CourseMaterials = () => {
         api.get('/teacher/subjects'),
       ]);
 
-      if (matRes.data?.success) setMaterials(matRes.data.data);
+      if (matRes.data?.success) {
+        const allMats = matRes.data.data || [];
+        setMaterials(allMats);
+
+        const materialId = searchParams.get('materialId');
+        const autoOpen = searchParams.get('autoOpen') === 'true';
+        if (!autoOpenedRef.current && (autoOpen || materialId)) {
+          autoOpenedRef.current = true;
+          const match = materialId ? allMats.find((m) => String(m.id) === String(materialId)) : allMats[0];
+          if (match) {
+            handleOpenMaterial(match, 'pdf');
+          }
+        }
+      }
       if (subRes.data?.success) setSubjects(subRes.data.data);
     } catch (err) {
       console.error('Failed to load course materials:', err);
@@ -86,10 +110,15 @@ export const CourseMaterials = () => {
         });
         if (!res.ok) throw new Error('Failed to stream file');
         const blob = await res.blob();
-        const url = URL.createObjectURL(blob);
-        setPdfBlobUrl(url);
+        if (blob && blob.size > 100) {
+          const url = URL.createObjectURL(blob);
+          setPdfBlobUrl(url);
+        } else {
+          setViewMode('text');
+        }
       } catch (err) {
-        console.error('Failed to load file preview:', err);
+        console.error('Failed to load file preview, fallback to text:', err);
+        setViewMode('text');
       } finally {
         setPdfLoading(false);
       }
@@ -113,6 +142,30 @@ export const CourseMaterials = () => {
       setTimeout(() => URL.revokeObjectURL(url), 2000);
     } catch (err) {
       alert('Could not download file.');
+    }
+  };
+
+  const handleCreateSubject = async (e) => {
+    e.preventDefault();
+    if (!newSubjectName.trim()) return;
+    try {
+      setCreatingSubject(true);
+      const res = await api.post('/teacher/subjects', {
+        name: newSubjectName.trim(),
+        description: newSubjectDesc.trim() || 'Curriculum Subject'
+      });
+      if (res.data?.success) {
+        setNotification({ type: 'success', message: `Subject "${res.data.data.name}" created successfully!` });
+        setSubjects((prev) => [...prev, res.data.data]);
+        setSelectedSubjectId(res.data.data.id);
+        setShowSubjectModal(false);
+        setNewSubjectName('');
+        setNewSubjectDesc('');
+      }
+    } catch (err) {
+      setNotification({ type: 'error', message: err.response?.data?.message || 'Failed to create subject.' });
+    } finally {
+      setCreatingSubject(false);
     }
   };
 
@@ -213,13 +266,22 @@ export const CourseMaterials = () => {
           </p>
         </div>
 
-        <button
-          onClick={() => setShowUploadModal(true)}
-          className="inline-flex items-center gap-2 px-4 py-2.5 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white rounded-xl text-sm font-semibold shadow-md shadow-indigo-500/20 transition-all cursor-pointer"
-        >
-          <Plus className="w-4 h-4" />
-          Upload Study Material
-        </button>
+        <div className="flex items-center gap-2.5">
+          <button
+            onClick={() => setShowSubjectModal(true)}
+            className="inline-flex items-center gap-2 px-4 py-2.5 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-750 text-gray-700 dark:text-gray-200 rounded-xl text-sm font-semibold shadow-xs transition-all cursor-pointer"
+          >
+            <Plus className="w-4 h-4 text-indigo-600 dark:text-indigo-400" />
+            New Subject
+          </button>
+          <button
+            onClick={() => setShowUploadModal(true)}
+            className="inline-flex items-center gap-2 px-4 py-2.5 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white rounded-xl text-sm font-semibold shadow-md shadow-indigo-500/20 transition-all cursor-pointer"
+          >
+            <Plus className="w-4 h-4" />
+            Upload Study Material
+          </button>
+        </div>
       </div>
 
       {notification && (
@@ -367,7 +429,7 @@ export const CourseMaterials = () => {
                 <div key={idx} className="p-3.5 rounded-xl border border-indigo-100 dark:border-indigo-900/60 bg-indigo-50/40 dark:bg-indigo-950/20 space-y-1.5 text-xs">
                   <div className="flex items-center justify-between">
                     <span className="font-bold text-indigo-900 dark:text-indigo-200">
-                      📄 {r.materialTitle} (Section {r.chunkIndex}) — {r.subjectName}
+                      ðŸ“„ {r.materialTitle} (Section {r.chunkIndex}) â€” {r.subjectName}
                     </span>
                     <span className="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-indigo-100 dark:bg-indigo-900 text-indigo-700 dark:text-indigo-300">
                       Score: {r.similarityScore}
@@ -389,7 +451,16 @@ export const CourseMaterials = () => {
 
             <form onSubmit={handleUpload} className="space-y-4 text-xs">
               <div>
-                <label className="font-semibold text-gray-700 dark:text-gray-300 block mb-1">Subject</label>
+                <div className="flex items-center justify-between mb-1">
+                  <label className="font-semibold text-gray-700 dark:text-gray-300">Subject</label>
+                  <button
+                    type="button"
+                    onClick={() => setShowSubjectModal(true)}
+                    className="text-indigo-600 dark:text-indigo-400 hover:underline text-[11px] font-bold flex items-center gap-1 cursor-pointer"
+                  >
+                    + Add New Subject
+                  </button>
+                </div>
                 <select
                   value={selectedSubjectId}
                   onChange={(e) => setSelectedSubjectId(e.target.value)}
@@ -518,7 +589,7 @@ export const CourseMaterials = () => {
               <div className="flex items-center gap-2 shrink-0">
                 <button
                   onClick={() => setViewMode(viewMode === 'pdf' ? 'text' : 'pdf')}
-                  className="px-3 py-1.5 rounded-xl text-xs font-semibold bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-200 transition cursor-pointer"
+                  className="px-3 py-1.5 rounded-xl text-xs font-semibold bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-750 text-gray-700 dark:text-gray-200 transition cursor-pointer"
                 >
                   {viewMode === 'pdf' ? 'View Text Summary' : 'View Embedded File'}
                 </button>
@@ -577,11 +648,81 @@ export const CourseMaterials = () => {
                   </div>
                 )
               ) : (
-                <div className="h-full overflow-y-auto p-6 bg-white dark:bg-gray-900 font-sans text-xs sm:text-sm text-gray-700 dark:text-gray-300 leading-relaxed whitespace-pre-wrap">
-                  {activeMaterial.rawText || 'No text extracted for this material.'}
+                <div className="h-full overflow-y-auto p-6 bg-white dark:bg-gray-900 font-sans text-xs sm:text-sm text-gray-700 dark:text-gray-300 leading-relaxed">
+                  <MarkdownRenderer content={activeMaterial.rawText || 'No text extracted for this material.'} />
                 </div>
               )}
             </div>
+          </div>
+        </div>
+      )}
+
+      {/* Create Subject Modal */}
+      {showSubjectModal && (
+        <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4 animate-fade-in">
+          <div className="bg-white dark:bg-gray-900 rounded-2xl max-w-md w-full p-6 shadow-2xl border border-gray-200 dark:border-gray-800 space-y-4 animate-scale-up">
+            <div className="flex items-center justify-between border-b border-gray-100 dark:border-gray-800 pb-3">
+              <h3 className="text-base font-bold text-gray-900 dark:text-gray-50 flex items-center gap-2">
+                <BookOpen className="w-5 h-5 text-indigo-600" />
+                Add New Curriculum Subject
+              </h3>
+              <button
+                type="button"
+                onClick={() => setShowSubjectModal(false)}
+                className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 p-1 rounded-lg"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+
+            <form onSubmit={handleCreateSubject} className="space-y-4 text-xs">
+              <div>
+                <label className="font-semibold text-gray-700 dark:text-gray-300 block mb-1">Subject Name</label>
+                <input
+                  type="text"
+                  value={newSubjectName}
+                  onChange={(e) => setNewSubjectName(e.target.value)}
+                  placeholder="e.g. Cloud Computing & Distributed Systems"
+                  className="w-full p-2.5 bg-gray-50 dark:bg-gray-950 border border-gray-200 dark:border-gray-800 rounded-xl text-gray-900 dark:text-gray-100 font-medium"
+                  required
+                />
+              </div>
+
+              <div>
+                <label className="font-semibold text-gray-700 dark:text-gray-300 block mb-1">Description (Optional)</label>
+                <textarea
+                  value={newSubjectDesc}
+                  onChange={(e) => setNewSubjectDesc(e.target.value)}
+                  placeholder="Overview of core curriculum topics, syllabus coverage, and learning outcomes..."
+                  rows={3}
+                  className="w-full p-2.5 bg-gray-50 dark:bg-gray-950 border border-gray-200 dark:border-gray-800 rounded-xl text-gray-900 dark:text-gray-100"
+                />
+              </div>
+
+              <div className="flex justify-end gap-2 pt-2 border-t border-gray-100 dark:border-gray-800">
+                <button
+                  type="button"
+                  onClick={() => setShowSubjectModal(false)}
+                  className="px-4 py-2 border border-gray-200 dark:border-gray-700 rounded-xl text-gray-600 dark:text-gray-300 font-semibold hover:bg-gray-50 dark:hover:bg-gray-800 transition cursor-pointer"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  disabled={creatingSubject || !newSubjectName.trim()}
+                  className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50 text-white rounded-xl font-bold flex items-center gap-1.5 transition cursor-pointer shadow-sm"
+                >
+                  {creatingSubject ? (
+                    <>
+                      <RefreshCw className="w-3.5 h-3.5 animate-spin" />
+                      Creating...
+                    </>
+                  ) : (
+                    'Create Subject'
+                  )}
+                </button>
+              </div>
+            </form>
           </div>
         </div>
       )}

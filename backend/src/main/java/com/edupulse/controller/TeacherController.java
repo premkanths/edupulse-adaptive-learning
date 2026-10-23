@@ -402,10 +402,12 @@ public class TeacherController {
         User student = userRepository.findById(studentId)
                 .orElseThrow(() -> new ResourceNotFoundException("Student not found with ID: " + studentId));
 
+        String overrideEmail = payload.get("overrideEmail") != null ? payload.get("overrideEmail").toString().trim() : null;
         java.time.LocalDate weekStart = java.time.LocalDate.now().with(java.time.temporal.TemporalAdjusters.previousOrSame(java.time.DayOfWeek.MONDAY));
-        weeklySummaryService.generateSummaryForStudent(student, weekStart);
+        weeklySummaryService.generateSummaryForStudent(student, weekStart, overrideEmail);
 
-        return ResponseEntity.ok(ApiResponse.success("Weekly summary email dispatched to " + student.getName()));
+        String target = (overrideEmail != null && !overrideEmail.isBlank()) ? overrideEmail : student.getEmail();
+        return ResponseEntity.ok(ApiResponse.success("Weekly summary email dispatched to " + target));
     }
 
     // === EVALUATED EXAM PAPERS & AI GRADER ===
