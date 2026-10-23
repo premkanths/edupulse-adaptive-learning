@@ -16,7 +16,7 @@ spring:
   datasource:
     url: ${SPRING_DATASOURCE_URL:jdbc:mysql://${DB_HOST:${MYSQLHOST:localhost}}:${DB_PORT:${MYSQLPORT:3306}}/${DB_NAME:${MYSQLDATABASE:edupulse}}?sslMode=${DB_SSL_MODE:PREFERRED}&allowPublicKeyRetrieval=true&serverTimezone=UTC}
     username: ${SPRING_DATASOURCE_USERNAME:${DB_USER:${MYSQLUSER:edupulse}}}
-    password: ${SPRING_DATASOURCE_PASSWORD:${DB_PASSWORD:${MYSQLPASSWORD:edupulse}}}
+    password: ${SPRING_DATASOURCE_PASSWORD:${DB_PASSWORD:${MYSQLPASSWORD:}}}
     driver-class-name: com.mysql.cj.jdbc.Driver
     hikari:
       minimum-idle: 3
@@ -48,14 +48,15 @@ spring:
 
 app:
   jwt:
-    secret: ${JWT_SECRET:EduPulseSuperSecretKeyForJwtTokenGeneration2026SecureKeyMustBeLongEnough}
+    # JWT_SECRET must be configured; do not use a committed fallback secret.
+    secret: ${JWT_SECRET}
     expiration-ms: ${JWT_EXPIRATION_MS:86400000} # 24 hours
   cors:
     allowed-origins: ${CLIENT_URL:http://localhost:5173}
 
 mail:
-  dry-run: ${MAIL_DRY_RUN:false}
-  allow-demo-accounts: ${MAIL_ALLOW_DEMO:true}
+  dry-run: ${MAIL_DRY_RUN:true}
+  allow-demo-accounts: ${MAIL_ALLOW_DEMO:false}
 
 edupulse:
   summary:
@@ -65,7 +66,7 @@ edupulse:
 
 gemini:
   api-key: ${GEMINI_API_KEY:}
-  model: ${GEMINI_MODEL:gemini-3.8-flash}
+  model: ${GEMINI_MODEL:gemini-1.5-flash}
 
 groq:
   api-key: ${GROQ_API_KEY:}
