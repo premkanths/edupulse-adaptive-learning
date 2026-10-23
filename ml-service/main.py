@@ -11,12 +11,19 @@ from akt.akt_inference import akt_engine
 
 app = FastAPI(title="EduPulse ML Risk Prediction & Attentive Knowledge Tracing Service", version="2.0.0")
 
+# Explicit origins are required when credentialed CORS is enabled. Configure
+# comma-separated origins with ML_ALLOWED_ORIGINS in each environment.
+allowed_origins = [
+    origin.strip()
+    for origin in os.getenv("ML_ALLOWED_ORIGINS", "http://localhost:5173").split(",")
+    if origin.strip()
+]
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=allowed_origins,
     allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
+    allow_methods=["GET", "POST", "OPTIONS"],
+    allow_headers=["Authorization", "Content-Type"],
 )
 
 MODEL_PATH = os.path.join(os.path.dirname(__file__), "risk_model.joblib")
@@ -34,7 +41,7 @@ def load_or_train_model():
             return
         except Exception as e:
             print(f"Error loading model: {e}")
-    
+
     print("Training new Random Forest model...")
     from train_model import train_and_export
     train_and_export()
@@ -53,8 +60,8 @@ def startup_event():
 class RiskInput(BaseModel):
     quiz_average: float = Field(..., ge=0, le=100, description="Average quiz score percentage")
     attendance_pct: float = Field(..., ge=0, le=100, description="Attendance percentage")
-    bkt_avg_mastery: Optional[float] = Field(default=None, description="Average Bayesian Knowledge Tracing mastery")
-    akt_avg_mastery: Optional[float] = Field(default=None, description="Average Attentive Knowledge Tracing mastery")
+    bkt_avg_mastery: Optional[float] = Field(default=None, ge=0, le=1, description="Average Bayesian Knowledge Tracing mastery")
+    akt_avg_mastery: Optional[float] = Field(default=None, ge=0, le=1, description="Average Attentive Knowledge Tracing mastery")
     days_inactive: int = Field(..., ge=0, le=365, description="Number of days since last platform activity")
     assignments_missed: int = Field(default=0, ge=0, le=100, description="Number of missed assignments")
 
@@ -105,12 +112,11 @@ def predict_risk(data: RiskInput):
     global model
     if model is None:
         load_or_train_model()
-    
-    # Use AKT mastery if provided, otherwise BKT mastery, otherwise 0.50 default
+
     mastery = data.akt_avg_mastery if data.akt_avg_mastery is not None else (
         data.bkt_avg_mastery if data.bkt_avg_mastery is not None else 0.50
     )
-    
+
     features = np.array([[
         data.quiz_average,
         data.attendance_pct,
@@ -118,20 +124,21 @@ def predict_risk(data: RiskInput):
         data.days_inactive,
         data.assignments_missed
     ]])
-    
+
     pred_class = int(model.predict(features)[0])
-    probabilities = model.predict_proba(features)[0] # [P(Low), P(Mod), P(High)]
-    
-    # Calculate continuous risk score: 0 to 100
-    if len(probabilities) == 3:
-        risk_score = round(float(probabilities[1] * 50.0 + probabilities[2] * 100.0), 1)
-    else:
-        risk_score = 50.0
+    probabilities = model.predict_proba(features)[0]
+
+    # Calculate a probability-weighted risk score from the model's class order.
+    classes = list(model.classes_)
+    class_probabilities = {int(label): float(prob) for label, prob in zip(classes, probabilities)}
+    risk_score = round(
+        50.0 * class_probabilities.get(1, 0.0) + 100.0 * class_probabilities.get(2, 0.0),
+        1,
+    )
 
     level_map = {0: "LOW", 1: "MODERATE", 2: "HIGH"}
     risk_level = level_map.get(pred_class, "MODERATE")
 
-    # Generate pedagogical reasons explaining the prediction
     reasons = []
     if data.quiz_average < 50.0:
         reasons.append(f"Quiz average is critically low ({data.quiz_average:.1f}%)")
@@ -140,26 +147,22 @@ def predict_risk(data: RiskInput):
 
     if data.attendance_pct < 75.0:
         reasons.append(f"Attendance ({data.attendance_pct:.1f}%) is below the minimum 75% threshold")
-
     if mastery < 0.45:
         reasons.append(f"Knowledge Tracing mastery across topics is low ({mastery*100:.0f}%)")
-
     if data.days_inactive >= 7:
         reasons.append(f"Inactive for {data.days_inactive} consecutive days")
-
     if data.assignments_missed >= 2:
         reasons.append(f"Missed {data.assignments_missed} assessment deadlines")
-
     if not reasons:
         reasons.append("Academic progress, attendance, and quiz mastery are all on track")
 
-    # Feature contribution breakdown
+    # These are transparent heuristic indicators, not SHAP values or causal effects.
     feature_contributions = {
-        "quiz_average": round(float(100.0 - data.quiz_average) * 0.35, 1),
-        "attendance_pct": round(float(100.0 - data.attendance_pct) * 0.25, 1),
-        "mastery": round(float((1.0 - mastery) * 100) * 0.20, 1),
-        "days_inactive": round(float(min(data.days_inactive * 5.0, 100)) * 0.10, 1),
-        "assignments_missed": round(float(min(data.assignments_missed * 20.0, 100)) * 0.10, 1),
+        "quiz_average": round((100.0 - data.quiz_average) * 0.35, 1),
+        "attendance_pct": round((100.0 - data.attendance_pct) * 0.25, 1),
+        "mastery": round((1.0 - mastery) * 100.0 * 0.20, 1),
+        "days_inactive": round(min(data.days_inactive * 5.0, 100.0) * 0.10, 1),
+        "assignments_missed": round(min(data.assignments_missed * 20.0, 100.0) * 0.10, 1),
     }
 
     return RiskResponse(
@@ -212,7 +215,7 @@ def get_akt_metrics():
 
 @app.post("/akt/predict")
 def predict_akt(data: AKTPredictRequest):
-    history_dicts = [item.dict() for item in data.history]
+    history_dicts = [item.model_dump() for item in data.history]
     target_q = data.target_question_id if data.target_question_id is not None else data.target_topic_id
     result = akt_engine.predict_next(
         student_id=data.student_id,
@@ -224,8 +227,8 @@ def predict_akt(data: AKTPredictRequest):
 
 @app.post("/akt/batch-predict")
 def batch_predict_akt(data: AKTBatchPredictRequest):
-    history_dicts = [item.dict() for item in data.history]
-    target_dicts = [item.dict() for item in data.target_topics]
+    history_dicts = [item.model_dump() for item in data.history]
+    target_dicts = [item.model_dump() for item in data.target_topics]
     results = akt_engine.batch_predict(
         student_id=data.student_id,
         history=history_dicts,
